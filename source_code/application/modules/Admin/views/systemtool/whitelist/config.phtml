@@ -1,0 +1,418 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+
+<div class="colMain">
+    <div class="title">
+        <p class="fl">流量配置</p>
+    </div>
+    <div class="main">
+        <div class="app-detail">
+            <form action="/Admin/systemtool_Whitelist/saveconfig" method="POST" id='addForm'>
+                <input type="hidden" name="id"  id="id" value='<?php echo $result['id'] ?>' />
+                <input name="token" type="hidden" value="<?php echo $token;?>" />
+                <ul class="form">
+                    <li> 
+                        <span class="label">配置名称：</span>
+                        <div class="fc">        
+                            <input type="text"  class="iText"   id = "conf_name" name="conf_name"  value="<?php echo $result['conf_name'] ?>"> 
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span class="label">平台类型：</span>
+                        <div class="fc">
+                            <select id="platform" name="platform">
+                                <option value="1" <?php if($result['platform'] ==1){?>SELECTED<?php } ?> >Android</option>
+                                <option value="2" <?php if($result['platform'] ==2){?>SELECTED<?php } ?> >IOS</option>
+                            </select>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <span class="label">聚合类型：</span>
+                        <div class="fc">
+                            <select id="intergration_type"  name="intergration_type" <?php if( $result['id'] ): ?> disabled ="disabled" <?php endif; ?>>
+                                <?php foreach($intergrationTypeArr as $key=>$value){ ?>
+                                    <option value="<?php echo $key; ?>" <?php if($result['intergration_type']==$key){ ?> selected <?php } ?> ><?php echo $value; ?> </option>
+                                <?php } ?>
+                            </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+
+                    <li>
+	                     <span class="label">是否选择分级售卖：</span>
+	       				 <label><input type="radio" name="is_show_priority" value="1"  <?php  if( $priority_ads_conf['is_show_priority']=='1' ): ?> checked <?php endif; ?>>是</lable>
+	                     <label><input type="radio" name="is_show_priority" value="0"  <?php  if( $priority_ads_conf['is_show_priority']=='0' || $priority_ads_conf['is_show_priority']=='' ): ?> checked <?php endif; ?> >否</lable>
+	                </li>
+	                <li id="priority_ads_show_list">
+                       <span class="label">优先展示广告商</span>             
+                        <div class="fc">
+                            <div class="grid">
+                                <table id="priority_ads_list_talbe" >
+			                        <tr><th>顺序</th><th>广告商</th> <th>次数限制</th></tr>
+			                           <?php foreach($priorityPositionList as $k2=>$v2): ?>
+                                        <tr>
+                                        	<td> <?php  echo $v2; ?></td>
+                                        	<td>
+	                                        	<select   name="priority_current_ads_id<?php  echo $v2; ?>"  id ="priority_current_ads_id<?php  echo $v2; ?>" class='priority_current_ads_id priority_ads_select'  index="<?php echo $v2; ?>"> 
+		                                        	 <option value=""  >无</option>
+                                                     <?php foreach($intergrationAdsList as $k1=>$v1){?>
+		                                        	  	<option value="<?php echo $v1['ads_id'] ;?>"   <?php   $position = $v2;     if( $priority_ads_conf['list'][$position ]['priority_current_ads_id']==$v1['ads_id'] ): ?> selected <?php endif; ?>  ><?php echo $v1['name'] ; ?></option>
+                                                     <?php } ?>
+	                                        	</select>
+                                        	</td>
+                                                <td >
+                                                    <select   name="priority_num_limit<?php  echo $v2; ?>"  id ="priority_num_limit<?php  echo $v2; ?>">
+                                                        <option value=""  <?php $position = $v2; if( $priority_ads_conf['list'][$position]['priority_num_limit']=='' ): ?> selected <?php endif; ?>>请选择</option>
+                                                        <?php foreach($priorityNumLimit as $k1=>$v1){?>
+                                                        <option value="<?php echo $v1 ; ?>"  <?php $position = $v2; if( $priority_ads_conf['list'][$position]['priority_num_limit']==$v1 ): ?> selected <?php endif; ?>><?php echo $v1 ; ?></option>
+                                                         <?php } ?>
+                                                         <option value="unlimited"  <?php $position = $v2; if( $priority_ads_conf['list'][$position]['priority_num_limit']=='unlimited' ): ?> selected <?php endif; ?> >无限</option>
+                                                    </select>
+	                                        	</td>
+                                        </tr>
+                                 	    <?php endforeach; ?>   
+                                </table>
+                            </div>
+                        </div>
+                    </li>   
+ 					<li >
+                       <span class="label">一般展示广告商</span>             
+                        <div class="fc">
+                            <div class="grid">
+                                <table id="ads_list_talbe" >
+			                        <tr><th>位置</th><th>广告商</th> <th>权重</th><th>次数限制</th></tr>
+			                           <?php foreach($positionList as $k2=>$v2): ?>
+                                        <tr>
+                                        	<td> <?php  echo $v2; ?></td>
+                                        	<td>
+	                                        	<select   name="current_ads_id<?php  echo $v2; ?>"  id ="current_ads_id<?php  echo $v2; ?>" class='current_ads_id general_ads_select' index="<?php echo $v2; ?>"> 
+		                                        	 <option value="auto" <?php $position = $v2; if( $ads_list_conf[$position]['current_ads_id']=='auto' ): ?> selected <?php endif; ?>>自动</option>
+                                                        <?php foreach($intergrationAdsList as $k1=>$v1){?>
+		                                        	  	<option value="<?php echo $v1['ads_id'] ;?>"   <?php echo  $ads_list_conf[$position]['current_ads_id']; $position = $v2; if( $ads_list_conf[$position]['current_ads_id']==$v1['ads_id'] ): ?> selected <?php endif; ?>  ><?php echo $v1['name'] ; ?></option>
+		                         						<?php } ?>
+	                                        	</select>
+                                        	</td>
+                                        	<td><input type="text"  class="iText"  style="width: 300px;" name="weight<?php  echo $v2; ?>"  value="<?php   $position = $v2;  echo $ads_list_conf[$position]['weight'] ; ?>"  /></td>
+                                            <td>
+                                                <select   name="general_num_limit<?php  echo $v2; ?>"  id ="general_num_limit<?php  echo $v2; ?>">
+                                                 <option value=""  <?php $position = $v2; if( $ads_list_conf[$position]['general_num_limit']=='' ): ?> selected <?php endif; ?>>请选择</option>
+                                                 <?php foreach($priorityNumLimit as $k1=>$v1){?>
+                                                 <option value="<?php echo $v1 ; ?>"  <?php $position = $v2; if( $ads_list_conf[$position]['general_num_limit']==$v1 ): ?> selected <?php endif; ?>><?php echo $v1 ; ?></option>
+                                                 <?php } ?> 
+                                                  <option value="unlimited" <?php $position = $v2; if( $ads_list_conf[$position]['general_num_limit']=='unlimited' ): ?> selected <?php endif; ?> >无限</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                 	    <?php endforeach; ?>   
+                                </table>
+                            </div>
+                        </div>
+                    </li>
+                    <li id='Changxian_li' style='<?php if(!$hasChangxian){echo "display:none";} ?>'>
+                        <span class="label">尝鲜广告配置：</span>
+                        <div class="fc">
+                            限制最低网速&nbsp;
+                                <label><input type="radio" name="limit_minimum_speed" value="1"  <?php  if( $extra_config['Changxian']['limit_minimum_speed']=='1' ): ?> checked <?php endif; ?>>是</lable>&nbsp;
+                                <label><input type="radio" name="limit_minimum_speed" value="0"  <?php  if( $extra_config['Changxian']['limit_minimum_speed']=='0' ): ?> checked <?php endif; ?>>否</lable>&nbsp;
+                            <input type="text"  class="iText"   name="minimum_speed" id="minimum_speed"  value="<?php  if( $extra_config['Changxian']['minimum_speed']=='0'|| empty($extra_config) ): ?>400<?php else: ?><?php echo $extra_config['Changxian']['minimum_speed']?><?php endif; ?>"> kb/s
+                        </div>
+                        <div class="fc">
+                            是否延时加载&nbsp;
+                                <label><input type="radio" name="lazy_loading" value="1"  <?php  if( $extra_config['Changxian']['lazy_loading']=='1' ): ?> checked <?php endif; ?>>是</lable>&nbsp;
+                                <label><input type="radio" name="lazy_loading" value="0"  <?php  if( $extra_config['Changxian']['lazy_loading']=='0' ): ?> checked <?php endif; ?>>否</lable>&nbsp;
+                            <input type="text"  class="iText"   name="lazy_loading_time" id="lazy_loading_time"  value="<?php  if( $extra_config['Changxian']['lazy_loading_time']=='0'|| empty($extra_config)): ?>60<?php else: ?><?php echo $extra_config['Changxian']['lazy_loading_time']?><?php endif; ?>"> s
+                        </div>
+                    </li>
+                     <li>
+	                     <span class="label">DSP广告商：</span>
+	       				 <label><input type="radio" name="is_use_dsp" value="1"  <?php  if( $result['is_use_dsp']=='1' ): ?> checked <?php endif; ?>>使用</lable>
+	                     <label><input type="radio" name="is_use_dsp" value="0"  <?php  if( $result['is_use_dsp']=='0' || $result['is_use_dsp']=='' ): ?> checked <?php endif; ?> >不使用</lable>
+	                </li>
+	               <li  class="dsp_div"> <span class="label">底价：</span>
+                       <div class="fc">        
+                        	 <input type="text"  class="iText"   name="price"  value="<?php echo $result['price']; ?>"> 
+                        </div>
+                    </li> 
+                   <li class="dsp_div">
+                       <span class="label">DSP广告商</span>             
+                        <div class="fc">
+                            <div class="grid">
+                                <table id="dsp_ads_list_talbe" >
+			                        <tr><th>位置</th><th>广告商</th></tr>
+			                           <?php foreach($positionList as $k2=>$v2): ?>
+                                        <tr>
+                                        	<td> <?php  echo $v2; ?></td>
+                                        	<td>
+	                                        	<select   name="dsp_ads_id<?php  echo $v2; ?>"  id ="dsp_ads_id<?php  echo $v2; ?>" class ='dsp_ads_id'> 
+		                                        	 <option value=""  >无</option>
+                                                        <?php foreach($dspAdsList as $k1=>$v1){?>
+		                                        	  	<option value="<?php echo $v1['ads_id'] ;?>"   <?php   $position = $v2;     if( $dsp_ads_conf[$position ]['dsp_ads_id']==$v1['ads_id'] ): ?> selected <?php endif; ?>  ><?php echo $v1['name'] ; ?></option>
+		                         						<?php } ?> 
+	                                        	</select>
+                                        	</td>
+                                        </tr>
+                                 	    <?php endforeach; ?>   
+                                </table>
+                            </div>
+                        </div>
+                    </li> 
+                    <li class="line"></li>
+                    <li>
+                        <div class="fc">
+                            <?php if($act!='view'){?>
+                            <input type="button" onclick="confirmSubmit();" value="确定" class="submit" />
+                            <?php } ?>
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $configlistUrl; ?>'" />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>
+
+<script>
+$(function(){
+    ajaxForm('addForm',function(ret){
+        ajaxRedirect(ret, baseurl+'<?php echo $whitelistUrl; ?>');
+      });
+    
+	initPriorityAdsShowList();
+	initDspAdsShowList();
+    $(".priority_ads_select").change(showHasChangxian)
+    $(".general_ads_select").change(showHasChangxian)
+    $(".priority_ads_select").change(function(){
+        var index = $(this).attr('index')
+        $("#priority_num_limit"+index).val('unlimited')
+    });
+    $(".general_ads_select").change(function(){
+        var index = $(this).attr('index')
+        $("#general_num_limit"+index).val('unlimited')
+    });
+    
+	//编辑页面
+
+	    $("input[name='is_show_priority']").click( function(){
+	    	initPriorityAdsShowList();
+   		 });
+	    
+	    $("input[name='is_use_dsp']").click( function(){
+	    	initDspAdsShowList();
+   		 });
+        
+        $("#intergration_type").change(function(){
+            ajaxGET("/Admin/systemtool_Whitelist/getAdsIdsList","intergration_type="+$(this).val(),function(data){
+                dspAdsListOptions= '<option value="">无</option>'
+                if(data.dspAdsList.length != 0){
+                    for (dspAd in data.dspAdsList)
+                    {
+                        dspAdsListOptions +='<option value="'+data.dspAdsList[dspAd]['ads_id']+'">'+data.dspAdsList[dspAd]['name']+'</option>'
+                    }
+                }
+                intergrationAdsListOptions= '<option value="auto">自动</option>'
+                if(data.intergrationAdsList.length != 0){
+                    for (intergrationAd in data.intergrationAdsList)
+                    {
+                        intergrationAdsListOptions +='<option value="'+data.intergrationAdsList[intergrationAd]['ads_id']+'">'+data.intergrationAdsList[intergrationAd]['name']+'</option>'
+                    }
+                }
+                $(".current_ads_id").html(intergrationAdsListOptions)
+                $(".priority_current_ads_id").html(intergrationAdsListOptions)
+                $(".dsp_ads_id").html(dspAdsListOptions)
+            });
+        });
+        <?php if( empty($result['id'] )): ?>
+            $("#intergration_type").change()
+        <?php endif; ?>
+});
+
+function showHasChangxian(){
+    isShow = false
+    for(var i=1;i<=5;i++){
+        if($("#priority_current_ads_id" + i).val() == 'Changxian'){
+            isShow = true
+        }
+        if($("#current_ads_id" + i).val() == 'Changxian'){
+            isShow = true
+        }
+    }
+    if(isShow){
+        $("#Changxian_li").show();
+    }else{
+        $("#Changxian_li").hide();
+    }
+    return isShow;
+}
+
+function  initDspAdsShowList(){
+    var v = $("input[name='is_use_dsp']:checked").val();
+    if(v ==1 ){
+    	$('.dsp_div').show();
+    }else{
+    	$('.dsp_div').hide();
+    }    
+}
+
+function initPriorityAdsShowList(){
+    var v = $("input[name='is_show_priority']:checked").val();
+    if(v ==1 ){
+    	$('#priority_ads_show_list').show();
+    }else{
+    	$('#priority_ads_show_list').hide();
+    }    
+}
+	
+ function confirmSubmit(){
+  	  if($.trim($("#conf_name").val()).length  == 0 ){
+         alert("请填写配置名称");
+         return false;
+     }
+  	
+
+  	//选中优先显示
+  	var is_show_priority = $('input[name="is_show_priority"]:checked ').val()
+  	var positon =1;
+  	if(is_show_priority == 1){
+ 		var temp=[];
+ 	
+	  	  $("#priority_ads_list_talbe :input[name^='priority_current_ads_id']").find("option:selected").each(function(key, val){
+				  if($(this).val() != ''){
+					  temp[key] = $(this).val();
+				  }
+	  	   });
+	  	  if(temp[0] == null){
+	  			jAlert("请选择位置一的优先展示广告商的广告商");
+	  			return false;
+	  	  }
+
+	  	  if(temp.length < 1){
+	  		jAlert("请选择优先展示广告商的广告商");
+	  		return false;
+	  	  }
+
+  		priority_num_total = $("#priority_num_total option:selected").val();
+  		if(priority_num_total == ''){
+  			jAlert("请选择优先展示广告商的优先次数");
+  			 return false;
+  		}
+  		 
+  	}
+  
+	var num = 0;
+	var flag = false;
+	$("#ads_list_talbe").find("input:text").each(function(){
+		   num = FloatAdd(num,$(this).val());
+		   flag = true;
+	   })
+	  if(flag == true && num.toFixed(3) != 1.000){
+		   	jAlert("一般广告商总权重必须为1");
+		   	return false;
+	  }
+      
+      var hasUnlimited = false
+    if(is_show_priority == 1){
+        for (var i=1;i<=5;i++)
+        {
+            if($("#priority_current_ads_id" + i).val() != ''){
+                if($("#priority_num_limit" + i ).val() == ''){
+                    jAlert('请设置第' + i + '个的优先展示广告商的次数限制')
+                    return false
+                }
+                if($("#priority_num_limit" + i ).val() == 'unlimited'){
+                     hasUnlimited = true
+                }
+            }
+        }
+    }
+    
+    for (var i=1;i<=5;i++)
+    {
+        if($("#current_ads_id" + i).val() != 'auto'){
+            if($("#general_num_limit" + i ).val() == ''){
+                jAlert('请设置第' + i + '个的一般展示广告商的次数限制')
+                return false
+            }
+            if($("#general_num_limit" + i ).val() == 'unlimited'){
+                 hasUnlimited = true
+            }
+        }
+    }
+      
+	$("#ads_list_talbe").find("input:text").each(function(){
+		   num = FloatAdd(num,$(this).val());
+		   flag = true;
+	   });
+	   
+	var arr=[];
+	  $("#ads_list_talbe select.general_ads_select").find("option:selected").each(function(){
+		  if($(this).val() != 'auto'){
+			  arr.push($(this).val());
+		  }
+	   });
+	  if(arr.length != $.unique(arr).length){
+		 	jAlert("一般展示广告商的位置有重复");
+		  return false;
+	  }
+	  
+	  
+    var arr=[];
+    $("#dsp_ads_list_talbe select").find("option:selected").each(function(){
+        if($(this).val() != ''){
+            arr.push($(this).val());
+        }
+     });
+      var is_use_dsp = $('input[name="is_use_dsp"]:checked ').val();
+      if(is_use_dsp == 1 && arr.length == 0){
+          jAlert("DSP广告商的位置不能为空");
+          return false;
+      }
+    if(arr.length != $.unique(arr).length){
+          jAlert("DSP广告商的位置有重复");
+        return false;
+    }
+    
+    //判断尝鲜广告是否有填写参数
+    var hasChangxian=showHasChangxian()
+    if(hasChangxian){
+        var limit_minimum_speed = $("input[name='limit_minimum_speed']:checked").val();
+        var lazy_loading = $("input[name='lazy_loading']:checked").val();
+        if(typeof limit_minimum_speed == 'undefined'){
+            jAlert("请设置尝鲜广告配置是否限制最低网速")
+            return false
+        }
+        if(limit_minimum_speed ==1 && !isPositiveNum($("#minimum_speed").val())){
+            jAlert("尝鲜广告配置最低网速必须是正整数")
+            return false
+        }
+        if(typeof lazy_loading == 'undefined'){
+            jAlert("请设置尝鲜广告配置是否延时加载  ")
+            return false
+        }
+        if(lazy_loading ==1 && !isPositiveNum($("#lazy_loading_time").val())){
+            jAlert("尝鲜广告配置延迟时间必须是正整数")
+            return false
+        }
+    }
+    
+  	if(!hasUnlimited){
+        jConfirm("没有次数限制为无限的广告商，继续保存？", function() {
+                $("form").submit();
+            }, function() {
+                return false
+            });
+    }else{
+        $("form").submit();
+    }
+  }
+  
+  function isPositiveNum(s){//是否为正整数
+    var re = /^[1-9]+[0-9]*$/
+    return re.test(s)
+  }
+  
+</script>

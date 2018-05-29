@@ -1,0 +1,68 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="items-main-title">
+        <p>查看渠道</p> 
+    </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap"  style="width:1000px;">
+        <form class="layui-form" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">渠道分组</label>
+                <div class="layui-input-inline">
+                    <select id="group_id"  name="group_id"  disabled>
+                        <?php foreach($channelGroupList as $k1=>$v1){?>
+                        <option value="<?php echo $k1; ?>"  <?php if( $channelInfo['group_id']==$k1 ){ ?> selected <?php } ?> ><?php echo $v1['channel_name']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">渠道号</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $channelInfo['channel_id']; ?>" name="channel_id" placeholder="" autocomplete="off" class="layui-input" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">渠道名</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $channelInfo['channel_name']; ?>" name="channel_name" placeholder="" autocomplete="off" class="layui-input" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:88px;" >是否定制渠道</label>
+                <div class="layui-input-inline">
+                <?php if($channelInfo['is_custom'] == 1){ ?> 
+                    <input type="text" value="是" name="" placeholder="" autocomplete="off" class="layui-input" disabled>
+                <?php }?>
+                <?php if($channelInfo['is_custom'] == 0){ ?> 
+                    <input type="text" value="否" name="" placeholder="" autocomplete="off" class="layui-input" disabled>
+                <?php }?>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="reset" class="layui-btn goback" >返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+var listUrl = baseurl + '<?php echo $listUrl;?>'; // 渠道列表
+
+var group_id = getQueryString('group_id');
+var channel_id = getQueryString('channel_id');
+var channel_name = getQueryString('channel_name');
+var page = getQueryString('page');
+
+layui.use(['form','element'], function(){
+    var element = layui.element;
+    var form = layui.form;
+});
+
+// 返回
+$(".goback").click(function(){
+    window.location.href = listUrl + "?group_id=" + group_id + "&channel_id="+channel_id+"&channel_name="+channel_name+"&page="+page;
+});
+
+</script>

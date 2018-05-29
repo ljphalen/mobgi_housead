@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="Keywords" content="腾讯视频好时光">
+    <meta name="author" content="idreamsky">
+    <title>腾讯视频好时光</title>
+    <script src="http://dl2.gxpan.cn/landingpage/cats/common/js/jquery-3.2.1.min.js"></script>
+    <script>
+        document.documentElement.style.fontSize = (document.documentElement.clientWidth || document.body.clientWidth) /
+            7.5 + 'px';
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            vertical-align: top;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            background: #ebecee;
+            width: 100%;
+            height: 100%;
+            font-family:"Microsoft Yahei";
+        }
+
+        .wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner {
+            position: relative;
+            width: 100%;
+
+        }
+
+        .banner img {
+            width: 100%;
+        }
+
+        .banner i{
+            position: absolute;
+            width: 1.6rem;
+            height: 1.6rem;
+            left:0.3rem;
+            top:0.3rem;
+        }
+
+        .banner .title{
+            position: absolute;
+            left: 2.15rem;
+            top: 0.4rem;
+            font-size: 0.32rem;
+            color: #FFF;
+            font-weight: bold;
+        }
+
+        .banner .c-title{
+            position: absolute;
+            left: 2rem;
+            top: 0.88rem;
+            font-size: 0.32rem;
+            color: #FFF;
+            font-weight: bold;
+        }
+
+        .banner .address{
+            position: absolute;
+            left: 2.5rem;
+            top: 1.45rem;
+            font-size: 0.24rem;
+            color: #FFF;
+            font-weight: bold;
+        }
+
+        .banner .address i{
+            width: 0.3rem;
+            height: 0.3rem;
+            top: -0.05rem;
+            left: -0.35rem;
+        }
+
+        .banner .address .address-desc{
+
+        }
+
+        .main {
+            position: relative;
+            width: 100%;
+        }
+
+        .app-info {
+            padding: 0.23rem 0.22rem;
+            width: 100%;
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .app-info i {
+            float: left;
+            display: block;
+            width: 1.29rem;
+            height: 1.29rem;
+        }
+
+        .app-info i img {
+            width: 1.29rem;
+            height: 1.29rem;
+        }
+
+        .app-info .title {
+            position: absolute;
+            left: 1.65rem;
+            top: 0.48rem;
+            font-size: 0.32rem;
+            color: #333333;
+            font-weight: bold;
+
+        }
+
+        .app-info .desc {
+            position: absolute;
+            left: 1.65rem;
+            top: 0.9rem;
+            font-size: 0.26rem;
+            color: #333333;
+        }
+
+        .app-info .qr-code {
+            float: right;
+            width: 1.58rem;
+            height: 1.29rem;
+        }
+
+        .app-info .qr-code img {
+            width: 1.58rem;
+            height: 1.29rem;
+            border-radius: 0.04rem;
+        }
+
+        .content {
+            position: absolute;
+            left: 0;
+            top: 2.5rem;
+            right: 0;
+            bottom: 0;
+            padding: 0 0.29rem 0.35rem 0.29rem;
+            box-sizing: border-box;
+        }
+
+        .content .content-wrap {
+            width: 100%;
+            height: 4rem;
+            background: #fff;
+            box-shadow: 0.00rem 0.01rem 0.03rem #999;
+            position: relative;
+        }
+
+
+        .content .content-wrap-two {
+            width: 100%;
+            min-height: 2.1rem;
+            background: #fff;
+            box-shadow: 0.00rem 0.01rem 0.03rem #999;
+            position: relative;
+            margin-top: 0.2rem;
+        }
+
+        .content .content-wrap-two .title {
+            position: absolute;
+            /* width: 3.17rem; */
+            /* height: 6.2rem; */
+            background-size: 100% auto;
+            left: 60%;
+            top: 0.3rem;
+            margin-left: -1.9rem;
+            font-size: 0.26rem;
+            color: #000;
+            text-align: center;
+            line-height: 0.48rem;
+            font-weight: bold;
+        }
+
+        .content .content-wrap-two .desc {
+            position: absolute;
+            /* width: 3.17rem; */
+            /* height: 6.2rem; */
+            background-size: 100% auto;
+            left: 60%;
+            top: 0.8rem;
+            margin-left: -1.82rem;
+            font-size: 0.20rem;
+            color: #000;
+            text-align: left;
+            line-height: 0.4rem;
+        }
+
+
+        .content .content-wrap-two i{
+            position: absolute;
+            width: 1.8rem;
+            height: 1.8rem;
+            left: 0.1rem;
+            top: 0.15rem;
+        }
+
+        .content .content-wrap-two i img {
+            width: 100%;
+        }
+
+        .content .content-wrap .title {
+            position: absolute;
+            width: 3.17rem;
+            height: 6.2rem;
+            background: url("<?php echo $staticPath;?>/coupon/images/03.png") no-repeat;
+            background-size: 100% auto;
+            left: 50%;
+            top: 0.19rem;
+            margin-left: -1.585rem;
+            font-size: 0.22rem;
+            color: #fff;
+            text-align: center;
+            line-height: 0.47rem;
+            font-weight: bold;
+
+        }
+
+        .content .content-wrap i {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 0.46rem;
+            height: 0.48rem;
+        }
+
+        .content .content-wrap i img {
+            width: 100%;
+        }
+
+        .content .content-wrap .desc {
+            position: absolute;
+            left: 0;
+            top: 1rem;
+            bottom: 0;
+            right: 0;
+        }
+
+
+        .content .content-wrap .code {
+            position: absolute;
+            width: 3.17rem;
+            height: 6.2rem;
+            background: url("<?php echo $staticPath;?>/coupon/images/04.png") no-repeat;
+            background-size: 100% auto;
+            left: 50%;
+            top: 1.8rem;
+            margin-left: -1.585rem;
+            font-size: 0.22rem;
+            color: #000;
+            text-align: center;
+            line-height: 0.47rem;
+            font-weight: bold;
+        }
+
+        .content .content-wrap .c-title {
+            position: absolute;
+            /*width: 3.17rem;*/
+            height: 6.2rem;
+            left: 58%;
+            top: 1.2rem;
+            margin-left: -2.2rem;
+            font-size: 0.25rem;
+            color: #000;
+            text-align: center;
+            line-height: 0.47rem;
+            font-weight: bold;
+        }
+
+        .content .content-wrap .desc {
+            position: absolute;
+            width: 3.17rem;
+            height: 6.2rem;
+            left: 50%;
+            top: 2.2rem;
+            margin-left: -1.585rem;
+            font-size: 0.25rem;
+            color: #CDA57E;
+            text-align: center;
+            line-height: 0.47rem;
+            font-weight: bold;
+        }
+
+        .content .content-wrap .rule {
+            position: absolute;
+            float: left;
+            text-align: left;
+            color: #333333;
+            top: 3rem;
+            font-size: 0.26rem;
+            font-weight: bold;
+            line-height: 0.4rem;
+            padding-left: 0.1rem;
+        }
+
+
+        .content .content-footer .title {
+            position: absolute;
+            /* width: 3.17rem; */
+            /* height: 6.2rem; */
+            background-size: 100% auto;
+            left: 50%;
+            top: 0.05rem;
+            margin-left: -1.8rem;
+            font-size: 0.26rem;
+            color: #000;
+            text-align: center;
+            line-height: 0.48rem;
+            font-weight: bold;
+        }
+
+        .content .content-footer .desc {
+            position: absolute;
+            /* width: 3.17rem; */
+            /* height: 6.2rem; */
+            background-size: 100% auto;
+            left: 50%;
+            top: 0.4rem;
+            margin-left: -1.82rem;
+            font-size: 0.16rem;
+            color: #000;
+            text-align: left;
+            line-height: 0.4rem;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="banner">
+        <i><img src="<?php echo $staticPath;?>/coupon/images/09.png"></i>
+        <div class="title">深圳腾讯视频好时光梅林店</div>
+        <div class="c-title">【KPL线下合作观赛点】</div>
+        <div class="address">
+            <i><img src="<?php echo $staticPath;?>/coupon/images/10.png"></i>
+            <div class="address-desc">深圳市上梅林卓悦汇购物中心六楼</div>
+        </div>
+        <img src="<?php echo $staticPath;?>/coupon/images/img_2.png" />
+    </div>
+    <div class="content">
+        <div class="content-wrap">
+            <div class="title">兑换码使用规则</div>
+            <i>
+                <img src="<?php echo $staticPath;?>/coupon/images/05.png" />
+            </i>
+            <div class="c-title">腾讯视频好时光观影包厢1小时券</div>
+            <div class="code"><p><?php echo $code;?></p></div>
+            <div class="desc">(请出示兑换码)</div>
+            <div class="rule">礼品兑换规则:凭兑换码店内兑换观影包厢1小时免费券，每个兑换码仅限兑换一次，不能重复兑换。</div>
+        </div>
+        <div class="content-wrap-two">
+            <i><img src="<?php echo $staticPath;?>/coupon/images/14.png"></i>
+            <div class="title">腾讯视频好时光观影包厢1小时券</div>
+            <div class="desc">店内出示兑换码，即可获得相关礼品；腾讯视频好时光地址：深圳市上梅林卓悦汇购物中心六楼</div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

@@ -1,0 +1,241 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/material.css?v=<?php echo $version;?>" rel="stylesheet" />
+<style>
+    .layui-btn-sm{
+        margin-top: 10px;
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+        <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>素材组管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form" method="get" action="Group">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" placeholder="请输入素材组名称查询" value="<?php echo $label;?>" class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="submit" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">查询</button>
+                            </div>
+                            <a class="right layui-btn layui-btn-normal" id="addGroup">新增素材组</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 查询条件 end  -->
+                <!-- 素材列表 begin-->
+                <div class="material-wrap" style="overflow: hidden;">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($list as $key=>$val){?>
+                        <tr>
+                            <td><?php echo $val['name'];?></td>
+                            <td><?php echo $val['create_time'];?></td>
+                            <td width="20%;"><a class="layui-btn editGroup" data-id="<?php echo $val['id'];?>" >修改</a>&nbsp;<button class="layui-btn layui-btn-danger delGroup" data-id="<?php echo $val['id'];?>" href="#">删除</button></td>
+                        </tr>
+                        <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 素材列表 end-->
+                <div id="page" style="padding-left: 40%;"></div>
+            </div>
+
+        </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+<script>
+    var addGroupUrl = baseurl + '/Admin/Spm_Material/addGroup';// 列表
+    var getGroupUrl = baseurl + '/Admin/Spm_Material/getGroup';
+    var delGroupUrl = baseurl + '/Admin/Spm_Material/delGroupMaterial';
+
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'laydate', 'table', 'upload','laypage'], function () {
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var upload = layui.upload;
+        var laypage = layui.laypage;
+
+    });
+
+    $("#addGroup").click(function(){
+        addGroup($(this),null);
+    });
+
+    $(".editGroup").click(function(){
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url : getGroupUrl ,
+            async: false,
+            data : {token:token,id:id},
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                if(data.success){
+                    addGroup($(this),data.msg);
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+    });
+
+    // 新建，编辑 活动组弹窗
+    function addGroup(that,jsonData){
+        console.log(jsonData);
+        var name='',channel_no='',text='新建';
+        if(jsonData){
+            text = '编辑' ;
+            name = jsonData.name;
+        }
+        var temp = `
+            <br>
+            <form class="layui-form" id="add_Group">
+                <div class="layui-form-item">
+                    <label class="layui-form-label long-label">素材组名称</label>
+                    <div class="layui-input-inline ">
+                        <input type="text" name="name" placeholder="" value="`+name+`" class="layui-input" autocomplete="off">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">*</div>
+                </div>
+            </form>`;
+        layer.open({
+            title : text +'素材组',
+            type: 1,
+            area: ['500px', '200px'],
+            shadeClose: true, //点击遮罩关闭
+            content: temp,
+            btn: ['保存', '取消'],
+            success: function(layero){
+                var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+                btn.on("click",function(){
+                    var arr = $("#add_Group").serializeArray();
+                    if(arr[0]['value'].length == 0){
+                        layer.msg('素材组不能为空!');
+                        return false;
+                    }
+
+                    if(jsonData){
+                        var objId = { name: 'id' , value: jsonData.id };
+                        arr.push(objId) ;
+                    }
+                    var app_id = $("select[name='app_id']").find("option:selected").val();
+                    arr.push({ name: 'token', value: token });
+                    arr.push({ name: 'app_id', value: app_id });
+                    $.ajax({
+                        url : addGroupUrl ,
+                        async: false,
+                        data : arr,
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                            layer.msg(data.msg);
+                            if(data.success){
+                                setTimeout(function(){
+                                    window.location.reload();
+                                }, 500);
+                            }
+
+                        },
+                        error:function(xhr,msg,e){
+                            layer.msg(msg);
+                        }
+                    });
+                });
+            }
+        });
+
+    }
+
+    // 删除记录
+    $(".delGroup").click(function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('是否确认删除', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : delGroupUrl,
+                async: false,
+                data : {gid:id},
+                type : 'get',
+                    dataType : 'json',
+            jsonp : 'callback',
+                success:function(data){
+                layer.msg(data.msg);
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.reload();
+                    },500);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+//            oLi.remove();
+//            layer.close(index);
+        });
+       //
+        // 阻止冒泡
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    });
+
+
+
+
+
+  //重新渲染form
+    function renderLayuiForm(){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+    //   topMenu 切换app 回调
+    var appIdSelectChange = {
+        callBack:function(id){
+           window.location.href = 'index';
+        }
+    };
+</script>

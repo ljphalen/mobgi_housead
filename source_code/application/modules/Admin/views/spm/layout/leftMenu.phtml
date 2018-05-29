@@ -1,0 +1,58 @@
+<div class="left-menu-wrap">
+    <div class="layui-side-scroll">
+        <ul id="leftmenu" class="layui-nav layui-nav-tree" lay-filter=""></ul>
+    </div>
+</div>
+<script>
+// 获取菜单信息
+$.ajax({
+    url: baseurl + '/Admin/Spm_Index/getMenuList',
+    data: { token:token },
+    type:'post',
+    success:function(data){
+        if(data.success){
+            var location = window.location.href;
+            var list = data.data;
+            var menuhtml = '',isTrue = true;
+            for(var menu in list){
+                var itemHtml = '';
+                var items = list[menu].items;
+                var isItemed = '',selected="";
+                for(var index in items){
+                    if(location.split("?")[0]==items[index].url ){
+                        localStorage.location = items[index].url; 
+                        isItemed = 'layui-nav-itemed';
+                        selected = "layui-this";
+                        isTrue = false;
+                    }else{  
+                        selected = "";
+                    }
+                    itemHtml = itemHtml + `<dd class="`+selected+`"><a href="`+items[index].url+`">`+items[index].name+`</a></dd>`
+                }
+                menuhtml = menuhtml + `<li class="layui-nav-item `+isItemed+`">
+                    <a href="javascript:;" data-id="`+list[menu].id+`">`+list[menu].name+`</a>
+                    <dl class="layui-nav-child">
+                    `+itemHtml+`
+                    </dl>
+                </li>`
+            }
+            $("#leftmenu").html(menuhtml);
+            if(isTrue){
+                $(".layui-nav-item a").each(function(){
+                    var href = $(this).attr("href");
+                    if(localStorage.location==href){
+                        $(this).parent().addClass("layui-this");
+                        return ;
+                    }
+                });
+                $(".layui-this").parent().parent().addClass("layui-nav-itemed");
+            }
+            renderLayuiFormAndTab();
+        }else{
+            layer.msg("菜单获取失败");
+        }
+    },error:function(xhr,msg,error){
+        layer.msg("菜单获取失败");
+    }
+});
+</script>

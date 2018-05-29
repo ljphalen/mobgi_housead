@@ -1,0 +1,981 @@
+<div class="items-wrap wrap-bg space-top" id="main-addpage">
+    <div class="items-main-title">
+        <?php if($act != 'view'){?>
+            <p><?php echo $info['flow_id']?'编辑':'新建';?>流量配置</p> 
+        <?php }else{ ?> 
+            <p>查看流量配置</p> 
+        <?php } ?>  
+    </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap">
+        <form class="layui-form"  >
+        	<input class="layui-input page_app_key" type="hidden" name="app_key" value="<?php echo $info['app_key'];?>"  />  
+            <input class="layui-input" type="hidden" name="flow_id"  value="<?php echo $info['flow_id'];?>" /> 
+            <input class="layui-input" type="hidden" name="token"  value="<?php echo $token;?>" /> 
+            <!-- 配置信息 begin -->
+            <div class="layui-form-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">配置名称</label>
+                    <div class="layui-input-inline imf-text">
+                        <input class="layui-input" type="text" required lay-verify="required" name="conf_name"  placeholder="请输入配置名称" autocomplete="off"  value="<?php echo $info['conf_name']?>">     
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">(建议命名规则：渠道+区域+游戏版本号+其他)</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">配置类型</label>
+                    <div class="layui-input-inline">
+                        <select id="conf_type" name="conf_type" lay-filter="conf_type"  <?php echo $info['flow_id']?'disabled':''?>>
+                            <option value="1"  <?php echo ($info['conf_type'] == 1)?"selected":'';?>>全局配置</option>
+                            <option value="2" <?php echo  ($info['conf_type'] == 2)?"selected":'';?>>定制配置</option>
+                        </select>
+                    </div> 
+                    <div class="layui-form-mid layui-word-aux">(全局配置有且仅有一个)</div> 
+                </div>
+            </div>
+            <!-- 配置信息 end -->
+            <hr class="layui-bg-gray">
+            <!-- 配置内容 begin -->
+            <div class="layui-form-item">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">渠道定向</label>
+                    <div class="layui-input-block choose-item-title">
+                        <input type="radio" name="channel_conf_type" lay-filter="channel_conf_type" value="0" title="无" <?php echo ($info['channel_conf_type'] == 0)?'checked':'';?>>
+                        <input type="radio" name="channel_conf_type" lay-filter="channel_conf_type" value="1" title="自定义" <?php echo ($info['channel_conf_type'] == 1)?'checked':'';?>>
+                    </div>
+                    <div class="layui-input-block choose-item-content <?php echo ($info['channel_conf_type'] == 1)?'open':'';?>" data-name="channel_conf_type">
+                        <div id="Channelbox" class="treecheckbox">选择渠道</div>
+                        <div class="box_selected" data-name="channel_id">
+                        	<?php if($info['channel_conf_type']){?>
+                              <?php foreach ($info['channel_conf'] as $val){?>
+                             <input type="hidden" value="<?php echo $val['id']?>" data-level=<?php echo $val['level']?> />
+                             <?php }?>
+                              <?php }?>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">区域定向</label>
+                    <div class="layui-input-block choose-item-title">
+                        <input type="radio" name="area_conf_type" lay-filter="area_conf_type" value="0" title="无" <?php echo ($info['area_conf_type'] == 0)?'checked':'';?>>
+                        <input type="radio" name="area_conf_type" lay-filter="area_conf_type" value="1" title="自定义" <?php echo ($info['area_conf_type'] == 1)?'checked':'';?>>
+                    </div>
+                    <div class="layui-input-block choose-item-content <?php echo ($info['area_conf_type'] == 1)?'open':'';?>" data-name="area_conf_type">
+                        <div id="areabox" class="treecheckbox">选择区域</div>
+                        <div class="box_selected" data-name="area_id">
+                            	<?php if($info['area_conf_type']){?>
+                              <?php foreach ($info['area_conf'] as $val){?>
+                             <input type="hidden" value="<?php echo $val['id']?>" data-level=<?php echo $val['level']?> />
+                             <?php }?>
+                              <?php }?>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">应用版本</label>
+                    <div class="layui-input-block choose-item-title">
+                        <input type="radio" name="game_conf_type" lay-filter="game_conf_type" value="0" title="无" <?php echo ($info['game_conf_type'] == 0)?'checked':'';?>>
+                        <input type="radio" name="game_conf_type" lay-filter="game_conf_type" value="1" title="自定义"  <?php echo ($info['game_conf_type'] == 1)?'checked':'';?>>
+                    </div>
+                    <div class="layui-input-block choose-item-content <?php echo ($info['game_conf_type'] == 1)?'open':'';?>" data-name="game_conf_type">
+                        <div class="versions-wrap">
+                            <ul>
+                     		  <?php if($info['game_conf_type']){?>
+                              <?php foreach ($info['game_conf'] as $val){?>
+                               <li><?php echo $val;?> <i class="game_conf_delete"></i>
+                            	 <input class="layui-input game_conf" type="hidden" name="game_conf[]" value="<?php echo $val;?>"  />
+                               </li>
+                             <?php }?>
+                              <?php }?>
+                            </ul> 
+                        </div>
+                           
+                        <div class="layui-input-inline">
+                            <input class="layui-input game_conf_content" type="text" name="" placeholder="请输入配置名称" autocomplete="off" >     
+                        </div>
+                        <button class="layui-btn layui-btn-normal game_conf_add" type="button">增加</button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户行为</label>
+                    <div class="layui-input-block choose-item-title">
+                        <input type="radio" name="user_conf_type" lay-filter="user_conf_type" value="0" title="无"  <?php echo ($info['user_conf_type'] == 0)?'checked':'';?>>
+                        <input type="radio" name="user_conf_type" lay-filter="user_conf_type" value="1" title="自定义"  <?php echo ($info['user_conf_type'] == 1)?'checked':'';?>>
+                    </div>
+                    <div class="layui-input-block choose-item-content <?php echo ($info['user_conf_type'] == 1)?'open':'';?>"  data-name="user_conf_type" >
+                     	<input type="checkbox" name="user_conf[]" title="7日付费用户" lay-skin="primary" value="3" <?php echo $info['user_conf_type'] && in_array(3, $info['user_conf'])?'checked':''; ?> >
+                        <input type="checkbox" name="user_conf[]" title="新增用户" lay-skin="primary" value="2" <?php echo $info['user_conf_type'] && in_array(2, $info['user_conf'])?'checked':''; ?>>
+                        <input type="checkbox" name="user_conf[]" title="30日付费" lay-skin="primary" value="1" <?php echo $info['user_conf_type'] && in_array(1, $info['user_conf'])?'checked':''; ?>>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">系统版本</label>
+                    <div class="layui-input-block choose-item-title">
+                        <input type="radio" name="sys_conf_type" lay-filter="sys_conf_type" value="0" title="无" <?php echo ($info['sys_conf_type'] == 0)?'checked':'';?>>
+                        <input type="radio" name="sys_conf_type" lay-filter="sys_conf_type" value="1" title="自定义" <?php echo ($info['sys_conf_type'] == 1)?'checked':'';?>>
+                    </div>
+                    <div class="layui-input-block choose-item-content <?php echo ($info['sys_conf_type'] == 1)?'open':'';?>" data-name="sys_conf_type">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <select name="sys_conf_condition" lay-filter="sys_conf_condition">
+                                    <option value="1" <?php echo ($info['sys_conf_condition'] == 1)?"selected":'';?>>高于</option>
+                                    <option value="2" <?php echo  ($info['sys_conf_condition'] == 2)?"selected":'';?>>低于</option>
+                                    <option value="3" <?php echo  ($info['sys_conf_condition'] == 3)?"selected":'';?>>等于</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="versions-wrap">
+                            <ul>
+                              <?php if($info['sys_conf_content']){?>
+                              <?php foreach ($info['sys_conf_content'] as $val){?>
+                               <li><?php echo $val;?> <i class="sys_conf_delete"></i>
+                                 <input class="layui-input sys_conf_content" type="hidden" name="sys_conf_content[]" value="<?php echo $val;?>"  />
+                               </li>
+                             <?php }?>
+                              <?php }?>
+                            </ul> 
+                         </div>
+                        <div class="layui-input-inline">
+                            <input class="layui-input sys_conf_input" type="text" name="" placeholder="请输入系统版本" autocomplete="off" >     
+                        </div>
+                        <button class="layui-btn layui-btn-normal sys_conf_add" type="button">增加</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 配置内容 end   -->
+            <hr class="layui-bg-gray">
+            <!-- 广告配置 begin -->
+            <div class="layui-form-item" id="adList" >
+                <!--  广告tab begin -->
+                <div class="layui-form-item">
+                    <ul class="ad-type-list">
+                        <?php foreach ($info['ad_Info'] as $val){?>
+                        <li>
+                            <button type="button" class="layui-btn layui-btn-primary" data-ad-type="<?php echo $val['ad_type']?>" >
+                                <?php echo $val['name'];?>
+                                <?php echo ($val['status'] == 1)?'<span class="ad-status-open"></span>':'<span class="ad-status-hide"></span>';?>
+                            </button>
+                        </li>
+                        <?php }?>
+                    </ul>
+                </div>
+             <!--    <div class="layui-form-item">
+                    <ul class="ad-type-status">
+                        <li><i></i>开启</li>
+                        <li><i></i>关闭</li>
+                    </ul>
+                </div> -->
+                <!--  广告tab end  -->
+                <?php foreach ($info['ad_Info'] as $val){?>
+                <!-- <?php echo $val;?> begin -->
+                <div class="layui-form-item ad_type_wrap" >
+                    <input class="layui-input ad_type_hidden" type="hidden" name="ad_type_<?php echo $val['ad_type']?>"  />  
+                    <div class="layui-form-item">
+                        <!-- <div class="layui-form-item ">
+                            <label class="layui-form-label ad_type_title"><?php echo $val['name'];?></label>
+                            <input type="checkbox" name="switch_isshow_<?php echo $val['ad_type']?>"  lay-filter="switch_isshow_<?php echo $val['ad_type']?>" lay-skin="switch" lay-text="显示|隐藏"  <?php echo ($val['status'] == 1)?'checked':'';?> >
+                        </div>   -->
+                     
+                        <div class="layui-form-item ad_type_content " data-switch="switch_status_<?php echo $val['ad_type']?>">
+                           <!-- 是否开启广告状态 -->
+                           <div class="layui-form-item ad_type_switch">
+                            <label class="layui-form-label">是否开启</label>  
+                            <div class="layui-input-block" >
+                                <input type="radio" name="status_<?php echo $val['ad_type']?>" lay-filter="status_<?php echo $val['ad_type']?>"  value="0" title="否" <?php echo ($val['status'] == 0)?'checked':'';?>>
+                                <input type="radio" name="status_<?php echo $val['ad_type']?>" lay-filter="status_<?php echo $val['ad_type']?>"  value="1" title="是" <?php echo ($val['status'] == 1)?'checked':'';?>>
+                            </div>
+                        </div> 
+                            <!-- 使用全局配置 -->
+                            <div class="layui-form-item switch_is_default"  style="<?php echo ($info['conf_type'] == 2)?'display: block;':'display: none;';?>">
+                                <label class="layui-form-label">使用全局配置</label>
+                                <div class="layui-input-block" >
+                                    <input type="radio" name="is_default_<?php echo $val['ad_type']?>" lay-filter="is_default_<?php echo $val['ad_type']?>"  value="0" title="否" <?php echo ($val['is_default'] == 0)?'checked':'';?>>
+                                    <input type="radio" name="is_default_<?php echo $val['ad_type']?>" lay-filter="is_default_<?php echo $val['ad_type']?>"  value="1" title="是" <?php echo ($val['is_default'] == 1)?'checked':'';?>>
+                                </div>
+                            </div> 
+                            <div class="layui-form-item switch_is_default_content" style="<?php echo ($val['is_default'] == 1)?'display: none;':'display: block;';?>">
+                                <!-- 分级售卖 -->
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">分级售卖</label>
+                                    <div class="layui-input-block choose-item-title" >
+                                        <input type="radio" name="is_priority_<?php echo $val['ad_type']?>" lay-filter="is_priority_<?php echo $val['ad_type']?>"  value="0" title="否" <?php echo ($val['is_priority'] == 0)?'checked':'';?>>
+                                        <input type="radio" name="is_priority_<?php echo $val['ad_type']?>" lay-filter="is_priority_<?php echo $val['ad_type']?>"  value="1" title="是" <?php echo ($val['is_priority'] == 1)?'checked':'';?>>
+                                    </div>
+                                    
+                                    <!-- 优先广告商 -->
+                                    <div class="layui-form-item choose-item-content <?php echo ($val['is_priority'] == 1)?'open':'';?>" data-name='is_priority_<?php echo $val['ad_type']?>' >
+                                        <label class="layui-form-label">优先广告商</label>
+                                        <div class="layui-input-block">
+                                            <table class="layui-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>顺序</th><th>广告商</th><th>次数限制</th><th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($val['priority_list'] as $priority){?>
+                                                    <tr>
+                                                        <input class="layui-input" type="hidden" name="priority_position_<?php echo $val['ad_type'];?>[]" value="<?php echo $priority['position'];?>">
+                                                        <td><?php echo $priority['position'];?></td>
+                                                        <td>
+                                                            <div class="layui-input-inline">
+                                                                <select name="priority_ads_id_<?php echo $val['ad_type'];?>[]" lay-search="">
+                                                                    <option value="" >请选择广告商</option>
+                                                                    <?php foreach($val['intergrationAdsList'] as $adsId => $name){?>
+                                                                    <option value="<?php echo $adsId;?>" <?php echo ($adsId == $priority['ads_id'])?'selected':'';?>><?php echo $name;?></option>
+                                                                    <?php }?>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                        <td><input class="layui-input" type="text" name="priority_limit_num_<?php echo $val['ad_type'];?>[]" value="<?php echo $priority['limit_num'];?>"></td>
+                                                        <td><a class="link-delete" data-ad-name="priority">删除</a></td>
+                                                    </tr>
+                                                    <?php }?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn layui-btn-small" type="button" data-ad-type="<?php echo $val['ad_type'];?>"  data-ad-name="priority"  >
+                                                <i class="layui-icon">&#xe654;</i>
+                                            </button>
+                                        </div> 
+                                    </div>
+                                </div>  
+                                <!-- 一般广告商 -->
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">一般广告商</label>
+                                    <div class="layui-input-block">
+                                        <table class="layui-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>位置</th>
+                                                    <th>广告商</th>
+                                                    <th>权重</th>
+                                                    <th>次数限制</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>                                   
+                                                <?php foreach ($val['general_list'] as $general){?>
+                                                    <tr>
+                                                        <input class="layui-input" type="hidden" name="gerneral_position_<?php echo $val['ad_type'];?>[]" value="<?php echo $general['position'];?>">
+                                                        <td><?php echo $general['position'];?></td>
+                                                        <td>
+                                                            <div class="layui-input-inline">
+                                                                <select name="gerneral_ads_id_<?php echo $val['ad_type'];?>[]" lay-search="">
+                                                                    <option value="" >请选择广告商</option>
+                                                                    <?php foreach($val['intergrationAdsList'] as $adsId => $name){?>
+                                                                    <option value="<?php echo $adsId;?>" <?php echo ($adsId == $general['ads_id'])?'selected':'';?>><?php echo $name;?></option>
+                                                                    <?php }?>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                        <td><input class="layui-input" type="text" name="gerneral_weight_<?php echo $val['ad_type'];?>[]" value="<?php echo $general['weight'];?>"></td>
+                                                        <td><input class="layui-input" type="text" name="gerneral_limit_num_<?php echo $val['ad_type'];?>[]" value="<?php echo $general['limit_num'];?>"></td>
+                                                        <td><a class="link-delete" data-ad-name="gerneral">删除</a></td>
+                                                    </tr>
+                                                    <?php }?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn layui-btn-small" type="button" data-ad-type="<?php echo $val['ad_type']?>"  data-ad-name="gerneral">
+                                            <i class="layui-icon">&#xe654;</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 尝鲜延迟加载 -->
+                                <div class="layui-form-item"  style="<?php echo ($val['ad_type'] ==1)?'display:block':'display:none'?>">
+                                    <label class="layui-form-label imf-label">尝鲜延迟加载</label>
+                                    <div class="layui-input-inline choose-item-title">
+                                        <input type="radio" name="is_delay_<?php echo $val['ad_type']?>"  lay-filter="is_delay_<?php echo $val['ad_type']?>"  value="0" title="否" <?php echo ($val['is_delay'] == 0)?'checked':'';?>>
+                                        <input type="radio" name="is_delay_<?php echo $val['ad_type']?>"  lay-filter="is_delay_<?php echo $val['ad_type']?>"  value="1" title="是" <?php echo ($val['is_delay'] == 1)?'checked':'';?>>
+                                    </div>
+                                    <div class="layui-input-inline choose-item-content <?php echo ($val['is_delay'] == 1)?'open':'';?>" data-name="is_delay_<?php echo $val['ad_type']?>">
+                                        <div class="layui-input-inline imf-short">
+                                            <input class="layui-input" type="text" name="time_<?php echo $val['ad_type']?>"   placeholder="" autocomplete="off" value="<?php echo $val['time']?$val['time']:60;?>" >     
+                                        </div>
+                                        <div class="layui-form-mid layui-word-aux">s</div>
+                                    </div>
+                                </div>
+                                <!-- DSP广告商 -->
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label imf-label">DSP广告商</label>
+                                    <div class="layui-input-inline choose-item-title">
+                                        <input type="radio" name="is_use_dsp_<?php echo $val['ad_type']?>" lay-filter="is_use_dsp_<?php echo $val['ad_type']?>" value="0" title="不使用" <?php echo ($val['is_use_dsp'] == 0)?'checked':'';?>>
+                                        <input type="radio" name="is_use_dsp_<?php echo $val['ad_type']?>" lay-filter="is_use_dsp_<?php echo $val['ad_type']?>" value="1" title="使用" <?php echo ($val['is_use_dsp'] == 1)?'checked':'';?>>
+                                    </div>
+                                    <div class="layui-form-item choose-item-content <?php echo ($val['is_use_dsp'] == 1)?'open':'';?>" data-name="is_use_dsp_<?php echo $val['ad_type']?>" >
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <label class="layui-form-label imf-short">底价</label>
+                                                <div class="layui-input-inline">
+                                                    <input class="layui-input" type="text" name="price_<?php echo $val['ad_type']?>"   placeholder="" autocomplete="off"  value="<?php echo $val['price'];?>" >     
+                                                </div>
+                                                <div class="layui-form-mid layui-word-aux">元</div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <table class="layui-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>顺序</th>
+                                                            <th>广告商</th>
+                                                            <th>操作</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php foreach ($val['dsp_list'] as $dsp){?>
+                                                        <tr>
+                                                            <input class="layui-input" type="hidden" name="dsp_position_<?php echo $val['ad_type'];?>[]" value="<?php echo $dsp['position'];?>">
+                                                            <td><?php echo $dsp['position'];?></td>
+                                                            <td>
+                                                                <div class="layui-input-inline">
+                                                                    <select name="dsp_ads_id_<?php echo $val['ad_type'];?>[]"  lay-search="">
+                                                                        <option value="" >请选择广告商</option>
+                                                                        <?php foreach($val['dspAdsList'] as $adsId => $name){?>
+                                                                        <option value="<?php echo $adsId;?>" <?php echo ($adsId == $dsp['ads_id'])?'selected':'';?>><?php echo $name;?></option>
+                                                                        <?php }?>
+                                                                    </select>
+                                                                </div>
+                                                            </td>
+                                                            <td><a class="link-delete" data-ad-name="dsp">删除</a></td>
+                                                        </tr>
+                                                    <?php }?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn layui-btn-small" type="button" data-ad-type="<?php echo $val['ad_type']?>" data-ad-name="dsp">
+                                                    <i class="layui-icon">&#xe654;</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 定制APPKey -->
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label imf-label">定制APPKey</label>
+                                    <div class="layui-input-inline choose-item-title">
+                                        <input type="radio" name="is_app_rel_<?php echo $val['ad_type']?>" lay-filter="is_app_rel_<?php echo $val['ad_type']?>"  value="0" title="全局"  <?php echo ($val['is_app_rel'] == 0)?'checked':'';?>>
+                                        <input type="radio" name="is_app_rel_<?php echo $val['ad_type']?>" lay-filter="is_app_rel_<?php echo $val['ad_type']?>"  value="1" title="定制"  <?php echo ($val['is_app_rel'] == 1)?'checked':'';?>>
+                                    </div>
+                                    <div class="layui-form-item choose-item-content <?php echo ($val['is_app_rel'] == 1)?'open':'';?>" data-name="is_app_rel_<?php echo $val['ad_type']?>">
+                                        <div class="layui-input-block">
+                                            <table class="layui-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>广告商</th>
+                                                        <th>第三方appkey</th>
+                                                        <th>密匙</th>
+                                                        <th>第三方blockid</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php foreach($val['app_rel_conf']  as $appRelConf){?>
+                                                    <tr>
+                                                        <input class="layui-input" type="hidden" name="app_key_rel_ads_id_<?php echo $val['ad_type']?>[]" value="<?php echo $appRelConf['ads_id'];?>">
+                                                        <td><?php echo $appRelConf['name'];?></td>
+                                                        <td><input class="layui-input" type="text" name="third_party_app_key_<?php echo $val['ad_type']?>[]" value="<?php echo $appRelConf['third_party_app_key'];?>"></td>
+                                                        <td><input class="layui-input" type="text" name="third_party_secret_<?php echo $val['ad_type']?>[]" value="<?php echo $appRelConf['third_party_secret'];?>"></td>
+                                                        <td><a class="link-set" data-ad-type="<?php echo $val['ad_type']?>">配置</a> <input class="layui-input" type="hidden" name="app_key_rel_pos_set_<?php echo $val['ad_type']?>[<?php echo $appRelConf['ads_id'];?>]" value='<?php echo $appRelConf['third_party_block_id'];?>' >
+                                                        </td>
+                                                        <td><a class="link-delete" data-ad-name="customAppkey">删除</a>
+                                                        </td>
+                                                    </tr>
+                                            <?php }?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="layui-input-block">
+                                            <div style="display:none;" class="form-blockList"></div>
+                                            <div class="ad_selectBox choose_selectBox" data-ad-type="<?php echo $val['ad_type']?>" data-ad-name="customAppkey"></div>
+                                            <button class="layui-btn layui-btn-small layui-btn-disabled" type="button" data-ad-type="<?php echo $val['ad_type']?>" data-ad-name="customAppkey">
+                                                <i class="layui-icon">&#xe654;</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 广告位策略 -->
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label imf-label">广告位策略</label>
+                                    <div class="layui-input-inline choose-item-title">
+                                        <input type="radio" name="is_block_policy_<?php echo $val['ad_type']?>" lay-filter="is_block_policy_<?php echo $val['ad_type']?>" value="0" title="全局" <?php echo ($val['is_block_policy'] == 0)?'checked':'';?>>
+                                        <input type="radio" name="is_block_policy_<?php echo $val['ad_type']?>" lay-filter="is_block_policy_<?php echo $val['ad_type']?>" value="1" title="定制" <?php echo ($val['is_block_policy'] == 1)?'checked':'';?>>
+                                    </div>
+                                    <div class="layui-form-item choose-item-content <?php echo ($val['is_block_policy'] == 1)?'open':'';?>" data-name="is_block_policy_<?php echo $val['ad_type']?>">
+                                        <div class="layui-input-block">
+                                            <table class="layui-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Blockid</th>
+                                                        <th>广告位名称</th>
+                                                        <th>广告位开关</th>
+                                                        <th>概率</th>
+                                                        <th>次数限制</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php foreach($val['pos_policy_rel_conf']  as $policyRelConf){?>
+                                                    <tr>
+                                                        <input  class="layui-input"  type="hidden"  name="pos_policy_pos_key_<?php echo $val['ad_type']?>[]"  value="<?php echo $policyRelConf['pos_key']; ?>">
+                                                        <td><?php echo $policyRelConf['pos_key']; ?></td>
+                                                        <td><input class="layui-input" value="<?php echo $policyRelConf['pos_name']; ?>" type="text" disabled="disabled" name="pos_policy_pos_name_<?php echo $val['ad_type']?>[]"></td>
+                                                        <td>
+                                                            <div class="layui-input-inline">
+                                                                <input type="checkbox" name="" lay-skin="switch" lay-filter="pos_policy_state" lay-text="ON|OFF"  <?php echo $policyRelConf['status']?'checked':''; ?>>
+                                                            </div> <input class="layui-input" type="hidden"name="pos_policy_state_<?php echo $val['ad_type']?>[]" value="<?php echo $policyRelConf['status']; ?>">
+                                                        </td>
+                                                        <td><input class="layui-input" type="text" name="pos_policy_rate_<?php echo $val['ad_type']?>[]" value="<?php echo $policyRelConf['rate']; ?>"></td>
+                                                        <td><input class="layui-input" type="text" name="pos_policy_limit_num_<?php echo $val['ad_type']?>[]" value="<?php echo $policyRelConf['limit_num']; ?>"></td>
+                                                    </tr>
+                                                    <?php }?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="layui-input-block">
+                                            <div class="pos_policy_selectBox choose_selectBox" data-ad-type="<?php echo $val['ad_type']?>" data-ad-name="customAppkey"></div>
+                                            <button class="layui-btn layui-btn-small layui-btn-disabled" type="button" data-ad-type="<?php echo $val['ad_type']?>" data-ad-name="pos_policy">
+                                                <i class="layui-icon">&#xe654;</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <?php echo $val;?> end  -->
+                <?php }?>
+            </div>
+            <!-- 广告配置 end  -->
+            <hr class="layui-bg-gray">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-big layui-btn-normal"  type="button" lay-submit  lay-filter="formTest">立即提交</button>
+                    <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button" >取消</button>
+                </div>
+            </div>
+        </form>
+    </div> 
+    <!-- 表单 end  -->
+</div>
+
+<script>
+    ;(function(){
+        var getAdsListURL =  baseurl +'<?php echo $getAdsListUrl;?>'; 
+         //广告 自定义
+        layui.use('form', function(){
+            //  单选 -- 
+            var form = layui.form;
+            var radios= $(".choose-item-title").find('input[type="radio"]');
+            radios.each(function(){
+                var name = $(this).attr("name");
+                form.on('radio('+name+')', function(data){
+                    if(data.elem.checked && data.value==0){
+                        $(".choose-item-content").each(function(){ 
+                            var dname = $(this).attr("data-name");
+                            if(name==dname){
+                               $(this).hide();
+                               return;
+                            }
+                        });;
+                    }else if(data.elem.checked && data.value==1){
+                        $(".choose-item-content").each(function(){ 
+                            var dname = $(this).attr("data-name");
+                            if(name==dname){
+                                $(this).show();
+                               return;
+                            }
+                         });;
+                    }
+                });
+            });
+            
+            var adList = $(".ad_type_wrap");  //  广告类型 
+
+            //  配置 全局或定制 
+            form.on('select(conf_type)', function(data){
+                if(data.value==1){
+                    $(".switch_is_default_content").show();
+                    $(".switch_is_default").hide();
+                   
+                }else if(data.value==2){
+                    $(".switch_is_default_content").show();
+                    $(".switch_is_default").show();
+                  
+                }
+                renderLayuiForm(); // 重新渲染form
+            });   
+
+            //  开启  ||  关闭 
+            adList.each(function(){       
+                var that = $(this);
+                var defaultname =  $($(this).find(".switch_is_default input[type='radio']").get(0)).attr("name");
+                form.on('radio('+defaultname+')', function(data){// 是否 该广告类型
+                 if(data.value==1){
+                        that.find(".switch_is_default_content").hide();
+                    }else{
+                        that.find(".switch_is_default_content").show();
+                    }
+                });
+            });
+            
+        });
+
+        // 新增应用版本
+        $(".game_conf_add").click(function(){
+            var game_conf =  $(this).parent().find(".game_conf_content").val();
+            if(game_conf){
+                var ul = $(this).parent().find(".versions-wrap ul");
+                var li = `<li> `+ game_conf +` <i class="game_conf_delete"></i>
+                            <input class="layui-input game_conf" type="hidden" name="game_conf[]" value="`+game_conf+`"  />   
+                        </li>`;
+                ul.append(li);
+                $(this).parent().find(".game_conf_content").val("");
+            }
+        });
+        // 删除 应用版本 
+        $(".versions-wrap").delegate('.game_conf_delete','click',function(){
+             $(this).parent().remove();
+        });
+
+        // 新增系统版本
+        $(".sys_conf_add").click(function(){
+            var sys_conf =  $(this).parent().find(".sys_conf_input").val();
+            if(sys_conf){
+                var ul = $(this).parent().find(".versions-wrap ul");
+                var li = `<li> `+ sys_conf +` <i class="sys_conf_delete"></i>
+                            <input class="layui-input sys_conf_content" type="hidden" name="sys_conf_content[]" value="`+sys_conf+`"  />   
+                        </li>`;
+                ul.append(li);
+                $(this).parent().find(".sys_conf_input").val("");
+            }
+        });
+        // 删除 应用版本 
+        $(".versions-wrap").delegate('.sys_conf_delete','click',function(){
+             $(this).parent().remove();
+        });
+
+        
+        // 广告  --  新增按钮
+        $(".layui-btn-small").click(function(){
+            var that = $(this);
+            var ad_name = $(this).attr("data-ad-name"); 
+            var ad_type = $(this).attr('data-ad-type');
+           //  优先广告商:priority , 一般广告商:gerneral ,DSP广告商:dsp ,定制APPKey:customAppkey ，广告位策略 ：pos_policy
+            if(ad_name=="priority" || ad_name=="gerneral" || ad_name=="dsp"  ){
+                getAdsList(that,ad_type,ad_name);
+            }else if(ad_name=="customAppkey"){
+                initCustomAppkeyTable(that,ad_type,ad_name);
+            }else if(ad_name=="pos_policy"){
+                initPosPolicyTable(that,ad_type,ad_name);
+            }
+        });
+        
+        // 获取广告商列表
+        function getAdsList(t,ad_type,ad_name){
+            var app_key = $(".app-key").attr("data-app-key");
+            var url = getAdsListURL+'?app_key='+app_key+"&ad_type="+ad_type;
+            $.ajax({
+                url : url,
+                async: false,
+                data : null,
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    if(data.success){
+                        var success = data.data;
+                        //  appkey 定制 和 广告策略
+                        if(ad_name=="customAppkey" || ad_name=="pos_policy"){
+                            var trs = t.parent().parent().find(".layui-table tbody tr");
+                            var blockList = success.blockList;
+                            var pos_policy = new Object();
+                           
+                            if(ad_name=="customAppkey"){
+                                var arr = new Array();
+                                for(var k in blockList){
+                                    arr.push(blockList[k]);
+                                }
+                                t.parent().find(".form-blockList").html(JSON.stringify(arr));
+                            }
+
+                            for(var k in blockList){
+                                blockList[k] = blockList[k]['pos_name'];
+                            }
+                            
+                            
+                            //  遍历 selectBox 选中项
+                            var selecteds = [];
+                            if(trs.length>0){
+                                trs.each(function(){
+                                    selecteds.push($($(this).find('input').get(0)).val());
+                                });
+                            }
+                            //  初始化 selectBox
+                            if(t.hasClass("ad_selectBox")){
+                                t.selectBox({ name: '' , title:'选择广告商', data:success.intergrationAdsList, selected:selecteds });
+                            }else{
+                                t.selectBox({ name: '' , title:'选择Blockid', data:blockList ,selected:selecteds});
+                            }
+                            t.find(".menuitem").show();
+                            t.attr("data-init",true);
+                            renderLayuiForm();
+
+                        }else{
+                            //优先广告商 , 一般广告商,DSP广告商
+                            initCommonTable(t,ad_type,ad_name,success); 
+                        } 
+                    }else{
+                        layer.msg(data.msg);  
+                    }
+                },
+                error :function(xhr,msg,e){
+                    layer.msg(data.msg); 
+                }
+            });
+        }
+        // 一般广告商 ,优先广告商 ,DSP广告商
+        function initCommonTable(that,ad_type,ad_name,data){
+            var t = that.parent().parent().find(".layui-table tbody");
+            var temp = '',tr='',list = data.intergrationAdsList;
+            if(ad_name=='gerneral'){
+                tr = `<td><input class="layui-input" type="text" name="`+ad_name+`_weight_`+ad_type+`[]" value="0"  /></td>
+                      <td>
+                        <input class="layui-input" type="text" name="`+ad_name+`_limit_num_`+ad_type+`[]" value="0"  />
+                      </td>`;
+            }else if(ad_name=='priority'){
+                tr = `<td>
+                        <input class="layui-input" type="text" name="`+ad_name+`_limit_num_`+ad_type+`[]" value="0"  />
+                      </td>`;
+            }else if(ad_name=='dsp'){
+                list = data.dspAdsList;
+            }
+            for(var key in list){
+                temp = temp + `<option value="`+ key +`" >`+list[key]+`</option>`;
+            }
+            var index = t.find("tr").length+1;
+           
+            var content = `<tr>
+                        <input class="layui-input" type="hidden" name="`+ad_name+`_position_`+ad_type+`[]" value="`+index+`" />
+                        <td>`+index+`</td>
+                        <td> 
+                            <div class="layui-input-inline">
+                                <select name="`+ad_name+`_ads_id_`+ad_type+`[]"   lay-search="">
+                                <option value="" selected>请选择广告商</option>
+                                `+ temp +`
+                                </select>
+                            </div> 
+                        </td>
+                        `+tr+`
+                        <td>
+                            <a class="link-delete" data-ad-name="`+ad_name+`" >删除</a>
+                        </td>
+                    </tr>`
+            t.append(content);
+            renderLayuiForm(); // 重新渲染form
+        }
+
+        //渲染 定制APPKey table
+        function initCustomAppkeyTable(that,ad_type,ad_name){
+            var tbody = that.parent().parent().find(".layui-table tbody");
+            var boxs =  that.parent().find(".ad_selectBox .menuitem-list input[type='checkbox']");
+            var temp = '';
+            boxs.each(function(index,el){
+                 if($(this).prop("checked")){
+                    var curval = $(this).val();
+                    var isExist = false;
+                    tbody.find("tr").each(function(){
+                         if(curval==$($(this).find("input").get(0)).val()){
+                             isExist = true;
+                         }
+                    });
+                    if(!isExist){
+                        var blockList = that.parent().find(".form-blockList").html();
+                       // console.log(blockList)
+                        temp = temp + `<tr>
+                            <input class="layui-input" type="hidden" name="app_key_rel_ads_id_`+ad_type+`[]" value="`+$(this).val()+`" >
+                            <td>`+ $(this).attr("title") +`</td>
+                            <td>
+                                <input class="layui-input" type="text" name="third_party_app_key_`+ad_type+`[]" value="">
+                            </td>
+                            <td>
+                                <input class="layui-input" type="text" name="third_party_secret_`+ad_type+`[]" value="">
+                            </td>
+                            <td>
+                                <a class="link-set" data-ad-type="`+ad_type+`" >配置</a>
+                                <input class="layui-input" type="hidden" name="app_key_rel_pos_set_`+ad_type+`[`+$(this).val()+`]" value=`+blockList+` />
+                            </td>
+                            <td>
+                                <a class="link-delete" data-ad-name="`+ad_name+`">删除</a>
+                            </td>
+                        </tr>`; 
+                    }
+                }
+            });
+            tbody.append(temp);
+            removeUnselected(tbody,boxs)
+            renderLayuiForm();
+        }
+
+        //渲染 广告位策略
+        function initPosPolicyTable(that,ad_type,ad_name){
+            var tbody = that.parent().parent().find(".layui-table tbody");
+            var boxs =  that.parent().find(".pos_policy_selectBox .menuitem-list input[type='checkbox']");
+            var temp = '';
+            boxs.each(function(index,el){
+                if($(this).prop("checked")){
+                    var curval = $(this).val();
+                    var isExist = false;
+                    tbody.find("tr").each(function(){
+                         if(curval==$($(this).find("input").get(0)).val()){
+                             isExist = true;
+                         }
+                    });
+                    if(!isExist){ 
+                        temp = temp + `<tr>
+                            <input class="layui-input" type="hidden" name="pos_policy_pos_key_`+ad_type+`[]" value="`+$(this).val()+`" >
+                            <td>`+ $(this).val()+`</td>
+                            <td> <input class="layui-input" value="`+$(this).attr('title')+`" type="text" disabled="disabled" name="pos_policy_pos_name_`+ad_type+`[]"  /></td>
+                            <td> 
+                                <div class="layui-input-inline">
+                                    <input type="checkbox" name="" lay-skin="switch" lay-filter="pos_policy_state" lay-text="ON|OFF" checked>
+                                </div>
+                                <input class="layui-input" type="hidden" name="pos_policy_state_`+ad_type+`[]" value="1"  />
+                            </td>
+                            <td> <input class="layui-input" type="text" name="pos_policy_rate_`+ad_type+`[]" value="1"  /></td>
+                            <td> <input class="layui-input" type="text" name="pos_policy_limit_num_`+ad_type+`[]" value="0"  /></td>
+                        </tr> `;
+                    }
+                }
+            });
+            tbody.append(temp);
+            removeUnselected(tbody,boxs);
+            renderLayuiForm();
+            
+        }
+    
+        layui.use('form', function(){
+            layui.form.on('switch(pos_policy_state)', function(data){
+                if(data.elem.checked){
+                    $(this).parent().parent().find(".layui-input").val(1);
+                }else{
+                    $(this).parent().parent().find(".layui-input").val(0);
+                }
+            });
+        });
+
+        // 删除 没有选中的项目 
+        function removeUnselected(tbody,boxs){
+            tbody.find("tr").each(function(){
+                var isRemove = false;
+                var current = $($(this).find("input").get(0)).val();
+                boxs.each(function(){
+                    if($(this).prop("checked")){
+                        if($(this).val()==current){
+                            isRemove = true;
+                            return;
+                        }
+                    }
+                }); 
+                if(!isRemove){
+                    $(this).remove();
+                }
+            });  
+        }
+
+       
+        
+        
+        //删除 表格行
+        $(".layui-table").delegate('.link-delete','click',function(){
+             var name = $(this).attr("data-ad-name");
+             var tbody = $(this).parent().parent().parent();
+             var inputs = $(this).parent().parent().find("input");
+             $(this).parent().parent().remove();
+             if(name!='customAppkey'){
+                var tr =tbody.find("tr");
+                tr.each(function(index,el){
+                    $($(this).find("td").get(0)).html(index+1);
+                    $($(this).find("input").get(0)).val(index+1);
+                });
+             }else{
+                var value = $(inputs.get(0)).val();
+                var menuitem = tbody.parent().parent().parent().find(".menuitem-list input[type='checkbox']");
+                menuitem.each(function(index,el){
+                     if($(this).val()==value){
+                        $(this).prop("checked",false); 
+                        $(this).parent().find(".layui-form-checked").removeClass("layui-form-checked");
+                        return;
+                     }
+                });
+             }
+        });
+       
+
+        //  配置 按钮事件
+        $(".layui-table").delegate('.link-set','click',function(){
+            var data = $(this).parent().find(".layui-input").val(); 
+            var that = $(this);
+            if(data){
+                addAppKeySetting(that,data);
+            }else{
+                var app_key = $(".app-key").attr("data-app-key");
+                var ad_type = $(this).attr('data-ad-type');
+                var url = '<?php echo $getAdsListURL;?>' + '?app_key='+app_key+"&ad_type="+ad_type;
+                $.ajax({
+                    url : url,
+                    async: false,
+                    data : null,
+                    type : 'get',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        if(data.success){
+                            var blockList = data.data.blockList;  
+                            var list = [];
+                            for(var k in blockList){
+                                list.push(blockList[k]);
+                            }
+                            addAppKeySetting(that,list);  // 渲染配置弹窗
+                        }else{
+                                layer.msg(data.msg); 
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                         layer.msg(data.msg);  
+                    }
+                });
+            }
+        });
+
+       // 添加配置
+       function addAppKeySetting(that,list){
+            var name = $(that.parent().parent().find("td").get(0)).html();
+            var body = '',rowspan = 1 ;
+            if(typeof list == 'string' && list){
+                list = JSON.parse(list);
+            }
+            for(var k in list){
+                var pos_key = list[k]['pos_key'];
+                var pos_name = list[k]['pos_name'];
+                var third_party_block_id = list[k]['third_party_block_id'];
+                body = body + `<tr><td>`+pos_key+`</td><td>`+pos_name+`</td>
+                       <td><input  class="layui-input" name="" type="text" value="`+third_party_block_id+`" /></td></tr>`;
+            }
+            var temp = ` <div class="setting-table-wrap" style="width:860px;">
+                        <table class="layui-table" >
+                            <thead>
+                                <tr>
+                                    <th>Blockid</th><th>广告位名称</th><th>`+name+` blockid</th>
+                                </tr>
+                            </thead> 
+                            <tbody>
+                                `+ body +`
+                            </tbody>
+                        </table>
+                        </div> `; 
+            layer.open({
+                title : '第三方Blockid配置('+name+')',
+                type: 1,
+                area: ['1000px', '600px'],
+                shadeClose: true, //点击遮罩关闭
+                content: temp,
+                btn: ['保存', '取消'],
+                success: function(layero){
+                    var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+                    btn.on("click",function(){
+                        var inputs = $(".setting-table-wrap tbody").find(".layui-input");
+                        var trs = $(".setting-table-wrap tbody").find("tr");
+                        var array = [];
+                        trs.each(function(){
+                            var obj = new Object();
+                            obj.pos_key = $($(this).find("td").get(0)).html();
+                            obj.pos_name = $($(this).find("td").get(1)).html();
+                            obj.third_party_block_id = $(this).find('input').val();
+                            array.push(obj);
+                        });
+                        array = JSON.stringify(array);
+                        that.parent().find(".layui-input").val(array);
+                    });
+                    //
+                }
+            });
+            
+       }
+      
+        // form 表单 提交
+        layui.use('form', function(){
+            var form = layui.form;
+            form.on('submit(formTest)', function(data){
+                     //console.log(  $('input[name="conf_type"]'))
+                     $('#conf_type').attr("disabled",false)
+                    var jsonData = $("form").serializeArray();
+                    var index = layer.load();
+                    $.ajax({
+                        url : baseurl + '<?php echo $addPostUrl;?>',
+                        async: false,
+                        data : jsonData,
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                        	layer.close(index);  
+                            layer.msg(data.msg); 
+                            if(data.success){
+                            	 setTimeout(function() {
+                         			var queryString = "<?php echo $queryString;?>";
+                          			 window.location.href= baseurl +'<?php echo $listUrl;?>?app_key='+$('.page_app_key').val()+'&'+queryString;
+								}, 500); 
+                               //跳转
+                            }
+                        },
+                        error:function(xhr,msg,e){
+                        	layer.close(index);  
+                            layer.msg(msg); 
+                        }
+                    });
+                    return false;  
+            }); 
+        });
+
+        
+        
+        //取消按钮
+        $(".cannel").click(function(){
+			var queryString = "<?php echo $queryString;?>";
+			 window.location.href= baseurl +'<?php echo $listUrl;?>?app_key='+$('.page_app_key').val()+'&'+queryString;
+        });
+        
+        //  广告类型 tab 点击事件
+        $($(".ad-type-list li").get(0)).find("button").removeClass("layui-btn-primary");
+        $($(".ad_type_content").get(0)).show();
+        $(".ad-type-list li").click(function(){
+            $(".ad-type-list li button").addClass('layui-btn-primary');
+            $(this).find("button").removeClass('layui-btn-primary');
+            var ad_type =  $(this).find("button").attr("data-ad-type");
+            $(".ad_type_content").hide();
+            $($(".ad_type_content").get(parseInt(ad_type)-1)).show();
+        });
+
+        
+
+        // 初始化 插件
+        $(".ad_selectBox").selectBox({ name:'',title:'选择广告商', data:[] });
+        $(".pos_policy_selectBox").selectBox({ name:'',title:'选择Blockid', data:[] });
+        $(".choose_selectBox").parent().find(".layui-btn-disabled").hide();
+        $(".choose_selectBox").click(function(){
+            var ad_name = $(this).attr("data-ad-name"); 
+            var ad_type = $(this).attr('data-ad-type');
+            $(this).parent().find(".layui-btn-disabled").show();
+            $(this).parent().find(".layui-btn-disabled").removeClass('layui-btn-disabled');     
+            if(!$(this).attr("data-init")){
+                getAdsList($(this),ad_type,ad_name);
+            };
+        });
+        
+    })();
+
+</script>

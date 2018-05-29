@@ -1,0 +1,116 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function confirmSubmit(){
+            var game_cover = $("#game_cover").val();
+            if(game_cover == ''){
+                layer.msg("请输入游戏覆盖率!",{icon: 2});
+                return false;
+            }
+            var mau = $("#mau").val();
+            if(mau == ''){
+                layer.msg("请输入月活跃!",{icon: 2});
+                return false;
+            }
+            var ad_income = $("#ad_income").val();
+            if(ad_income == ''){
+                layer.msg("请输入收入KPi!",{icon: 2});
+                return false;
+            }
+            var arpu = $("#arpu").val();
+            if(arpu == ''){
+                layer.msg("请输入arpu值!",{icon: 2});
+                return false;
+            }
+            var id = $('#id').val();
+
+
+            var url = 'editAppKpi';
+            var fd = new FormData();//h5上传
+            fd.append('game_cover',game_cover);
+            fd.append('mau',mau);
+            fd.append('ad_income',ad_income);
+            fd.append('arpu',arpu);
+            fd.append('id',id);
+            fd.append('token',token);
+            $.ajax({
+                url: url,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function(data) {
+                    if(data == 1){
+                        layer.msg('操作成功',{icon: 1});
+                        //location.reload();
+                        window.parent.location.reload();
+                        parent.layer.close();
+                    }else{
+                        layer.msg('操作失败',{icon: 2});
+                        //location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+    <style>
+        .importtable{
+            border-collapse: collapse;border-spacing:0;
+        }
+        .importtable thead{
+            border: 1px solid #e8e8e8; border-width: 1px;
+        }
+        .importtable thead tr th{
+            padding: 10px;
+        }
+        .importtable tbody tr td{
+            padding: 10px;
+        }
+    </style>
+<div class="colMain">
+
+    <div class="main">
+        <div class="app-detail">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <ul class="form">
+                    <li>
+                        <span class="label">MAU：</span>
+                        <div class="fc">
+                                <input type="text" name='mau' id='mau' value="<?php echo $data['mau'];?>" />
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">游戏覆盖率：</span>
+                        <div class="fc">
+                            <input type="text" name='game_cover' id='game_cover' value="<?php echo $data['game_cover'];?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">ARPU：</span>
+                        <div class="fc">
+                            <input type="text" name='arpu' id='arpu' value="<?php echo $data['arpu'];?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">收益KPI：</span>
+                        <div class="fc">
+                            <input type="text" name='ad_income' id='ad_income' value="<?php echo $data['ad_income'];?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="hidden" value="<?php echo $data['id'];?>" name="id" id="id">
+                            <input type=""  value="保存" class="submit"  onclick="confirmSubmit()"/>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->render("layout/footer1.phtml");?>

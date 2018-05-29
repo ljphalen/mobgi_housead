@@ -1,0 +1,112 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<style>
+    .sb{
+        background-color: rgb(175,79,57);
+        color: #fff;
+        border-radius: 2px;
+        line-height: 29px;
+        padding: 0 20px;
+        border: 0;
+        margin-right: 15px;
+    }
+    .progress div{
+        position: absolute;
+        background-color: rgba(0, 255, 255, 0.30);
+        height: 35px;
+        left: 5px;
+        top: 2px;
+    }
+    .progress{
+        position: relative;
+    }
+</style>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $action['configchangelogList'];?>">配置变更日志</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="#" method="GET">
+                        <select class="chosen-plugin" id="app_key" name="app_key">
+                            <option value="-1"  <?php if($data['app_key'] == "-1") echo "selected"?>>所有应用</option>
+                            <?php foreach($applist as $vals){?>
+                                <option value="<?php echo $vals['app_key'];?>" <?php if($vals['app_key'] == $params['app_key']){echo "selected";}?>><?php echo
+                                    $vals['app_name'];
+                                    ?></option>
+                            <?php }?>
+                        </select>
+                        <select class="chosen-plugin" id="ad_type" name="app_key">
+                        <option value="-1"  <?php if($data['ad_type'] == "-1") echo "selected"?>>所有类型</option>
+                        <?php foreach($ad_type as $keys=>$vals){?>
+                            <option value="<?php echo $keys;?>" <?php if($keys == $params['ad_type']){echo "selected";}?>><?php echo $vals;?></option>
+                        <?php }?>
+                        </select>
+                    <input type="button" id="sb" class="fr sb" value="提交">
+                    <div id="date_range" class="fr" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>应用</th>
+                            <th>聚合类型</th>
+                            <th>生效时间</th>
+                            <th>广告商</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($list as $key=>$value){
+                        echo "<tr>";
+                        echo "<td class='blue'>".$appMap[$value['app_key']]."</td>";
+                        echo "<td>".$ad_type[$value['ad_type']]."</td>";
+                        echo "<td>".$value['effect_time']."</td>";
+                        echo "<td>".$value['ads_positon_list']."</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+    </div>
+    <script src="<?php echo $staticPath;?>/js/common/mgchart.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath;?>/js/common/jquery.loadmask.min.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js?v=<?php echo $version;?>"></script>
+    <script>
+        $(function(){
+            var dateRange = new pickerDateRange("date_range",'date', {
+                theme : 'ta',
+                isTodayValid : 1,
+                startDate : "<?php echo $sdate;?>",
+                endDate : "<?php echo $edate;?>",
+                minValidDate : 1379174400,
+                needCompare : 0,
+                success : function (dateObj){
+                    $("#date_range").attr("sdate", dateObj.startDate);
+                    $("#date_range").attr("edate", dateObj.endDate);
+                    $("#date_range").attr("csdate", "");
+                    $("#date_range").attr("cedate", "");
+                    report.doAction();
+                }
+            });
+            $('#sb').bind('click',function(){
+                var sdate = $("#date_range").attr("sdate");
+                var edate = $('#date_range').attr("edate");
+                var appkey = $('#app_key').val();
+                var ad_type = $('#ad_type').val();
+                window.location='<?php echo $action['configchangelogList'];?>'+'?sdate='+sdate+'&edate='+edate+'&appkey='+appkey+'&ad_type='+ad_type;
+            })
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

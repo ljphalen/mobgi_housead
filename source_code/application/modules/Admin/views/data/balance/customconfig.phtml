@@ -1,0 +1,94 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+        <li class="current"><a href="<?php echo $customConfigUrl;?>">定制配置列表</a></li>
+        <li><a href="<?php echo $addCustomConfigUrl;?>">添加定制配置</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar" style="overflow:visible;">
+            <button class="fr add" style="width:80px;" type="button" onclick="javascript:resetConfig();" >重置配置</button>
+            <div class="search ">
+                <form action="<?php echo $customConfigUrl;?>" method="GET">
+                <span>
+                    <label class="ig_label">所属账号：</label>
+                     <select id="developer"  name="developer"  >
+                      <option value="">全部</option>
+	                   <?php foreach($userList as $key=>$value){?>
+                        <option value="<?php echo $value['user_id']; ?>"  <?php echo  $search['developer'] == $value['user_id']?'selected=selected':''; ?>  ><?php echo $value['email']?></option>
+                       <?php } ?>
+                     </select>
+                     <select id="status"  name="status"  >
+                        <option value="1" <?php echo  $search['status'] == 1?'selected=selected':''; ?> >有效</option>
+                        <option value="-1" <?php echo  $search['status'] == -1?'selected=selected':''; ?> >全部</option>
+                        <option value="0" <?php echo  $search['status'] == 0?'selected=selected':''; ?> >已失效</option>
+                     </select>
+                     <input type="text" class="iText" name='app_name'  value='<?php echo $search['app_name'] ;?>' placeholder="可输入应用名称查询" />
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+       
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" onclick="checkAll('.checkbox')"></th>
+                            <th>应用名称</th>
+                            <th>所属账号</th>
+                            <th>广告商利益分成比例</th>
+                            <th>自投利益分成比例</th>
+                            <th>操作人</th>
+                            <th>生效日期</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($configList as $k1=>$v1): ?>
+                        <tr>
+                            <td><input class="checkbox" name="ids[]" value="<?php echo $v1['app_key']; ?>" type="checkbox"></td>
+                            <td><?php echo $v1['app_name'].$platform[$v1['platform']]; ?></td>
+                            <td><?php echo $userList[$v1['developer']]['email']; ?></td>
+                            <td><?php echo $v1['ads_division_rate']; ?></td>
+                            <td><?php echo $v1['own_division_rate']; ?></td>
+                            <td><?php echo $v1['operator']; ?></td>
+                            <td><?php echo $v1['effect_date']; ?></td>
+                            <td style="color:<?php echo $configStatus[$v1['status']]['color']; ?>;"><?php echo $configStatus[$v1['status']]['value']; ?></td>
+                            <td><?php echo $v1['notice']; ?></td>
+                        </tr> 
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript">
+$(function(){
+	 $('#developer').chosen();
+	 $('#status').chosen();
+});
+function resetConfig(){
+    var app_list = [];
+    $("input[name='ids[]']:checked").each(function(){
+        app_list.push($(this).val());
+    });
+    if(app_list.length == 0){
+        alert('请选择应用');
+        return false;
+    }
+    var app_str = app_list.join("|");
+    var url = baseurl+'<?php echo $addCustomConfigUrl; ?>?ids='+app_str;
+    window.location.href = url;
+}
+
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

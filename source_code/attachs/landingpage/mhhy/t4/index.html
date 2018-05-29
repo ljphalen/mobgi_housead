@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>《梦幻花园》手游</title>
+    <link rel="shortcut icon" href="images/icon.png">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+    <script>
+          var oMeta = document.createElement('meta');
+          oMeta.name = 'viewport';
+          var scale = window.screen.width/640;
+          //console.log(scale)
+          oMeta.content = 'width=device-width, initial-scale='+scale+',maximum-scale='+scale+',minimum-scale='+scale;
+          document.getElementsByTagName('head')[0].appendChild(oMeta);
+    </script>
+    <style>
+
+        /*设置IOS页面长按不可复制粘贴，但是IOS上出现input、textarea不能输入，因此将使用-webkit-user-select:auto;*/
+        *{
+            -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+            -webkit-user-select:none; /*webkit浏览器*/
+            -khtml-user-select:none; /*早期浏览器*/
+            -moz-user-select:none;/*火狐*/
+            -ms-user-select:none; /*IE10*/
+            user-select:none;
+        }
+        input,textarea {
+            -webkit-user-select:auto; /*webkit浏览器*/
+            margin: 0px;
+            padding: 0px;
+            outline: none;
+        }
+        img{ vertical-align: top; display:block; font-size: 0;}
+        a,input,button{ -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-appearance : none ;  border-radius: none;   }
+        html,body{ position: relative; width: 100%; height: 100%;  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;  }
+        html,body{ overflow-x: hidden;}
+        .wrap{ position: relative;  width: 640px; height: 100%; overflow: hidden;  }
+        .header{ position:absolute; z-index: 99; height: 144px; width:640px; background: #ffb50a; box-sizing: border-box; -moz-box-sizing: border-box;  -khtml-box-sizing: border-box;  -webkit-box-sizing: border-box;  }
+        .header i{ position: absolute; left:16px; top:27px; z-index: 100;  display: inline-block; width: 141px; height:141px;    }
+        .header i img{ width: 141px; height:141px; }
+        .head-info{ position: relative; z-index: 100; float:left; height:100%; margin-left: 182px; }
+        .head-title{ color:#fff; font-size: 37px; font-weight: bold; margin: 33px 0 0 0;}
+        .head-description{ color:#fff; font-size: 19px; height: 30px; line-height: 30px; }
+        .head-grade{ overflow: hidden;  }
+        .head-grade span{ float:left; color:#b2d3f3; font-size: 16px;}
+        .head-grade ul{ float:left; padding: 2px 5px 0 0 ;} 
+        .head-grade ul li{ float:left; margin:0 0 0 5px; }
+        .mask-head{ position: absolute; z-index: 99; width: 100%; height: 100%;  background: #042e35; filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity:0.9; -webkit-opacity:0.9; opacity:0.9;  }
+        .all-star{ width: 17px; height: 16px; background:url('images/star.png') no-repeat; background-size:17px 16px; }
+        .half-star{ width: 17px; height: 16px; background:url('images/half-star.png') no-repeat; background-size:17px 16px;}
+        .head-download{ position: relative; z-index: 100; float:right; display: inline-block; margin:38px 10px 0 0; cursor: pointer; }
+        .head-download img{  width: 212px; height: 76px; }
+        .main{ height: 100%; overflow-x: hidden; overflow-y: auto;   }
+        .pic-wrap{  position: relative; z-index: 2; width: 100%; }
+        .pic-wrap>img{   position: relative; z-index: 2; width: 100%; }
+        .banner-title{ position: absolute; z-index: 3; width: 100%; left:0; bottom: 0;  }
+        .banner-title img{ width: 100%;}
+        .slider-wrap{ position:absolute; z-index: 1; width: 100%; left:0; top:0;  }
+        .swiper-container {
+            position:absolute; z-index: 3;
+            left:0; top:67px;
+            width: 640px;
+            
+        }
+        .swiper-slide {
+            background-position: center center;
+            background-size: cover;
+            width: 500px !important;
+            height: 460px;
+            margin:0 70px;
+        }
+        .swiper-pagination{ position: absolute; z-index: 9; left:0; top:0;}
+        .swiper-button-next{ position: absolute; z-index: 10; left:14px !important; top:250px; background: url('images/next.png') no-repeat; width: 55px; height: 87px;   }
+        .swiper-button-prev{ position: absolute; z-index: 10; left:550px !important;  top:250px; background: url('images/prev.png') no-repeat; width: 55px; height: 87px; }
+        .swiper-button-disabled{ opacity:1; filter:alpha(opacity=100); -moz-opacity:1; -khtml-opacity:1; -webkit-opacity:1 !important; }
+        .swiper-pagination-bullet{
+            width: 12px; height: 12px; background: #6892af; 
+        }
+        .swiper-pagination-bullet-active{  background: #fff;  }
+        .video_el{ position:absolute; left:50%; bottom:310px;  z-index: 3; width: 433px; height: 270px; margin-left:-220px; }
+        .download{ position: absolute; z-index: 3; left:50%; bottom:200px; width: 205px; height: 66px; display: block; margin-left:-102.5px;   }
+        .download img{  width: 205px; height: 66px;   } 
+        .video_el_mask{ display: none; position:absolute; left:50%; bottom:310px;  z-index: 4; width: 433px; height: 270px; margin-left:-220px; opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0; background: rgba(0,0,0,0); }
+        #play{ position: absolute; left:50%; top:73px; margin-left:-46.5px;  z-index: 5; width: 93px; height: 93px; display: block;  }
+        #play img{  width: 93px; height: 93px;  }
+
+        .footer-wrap{ position:absolute; z-index: 4; left:0; bottom: 0; width: 100%; height: 141px;   }
+        .footer-mask{ position: absolute; z-index: 4; width:100%; height: 100%; background: #2c3b45; filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity:0.6; -webkit-opacity:0.6; opacity:0.6; }
+        .footer-wrap p{ position: relative; z-index: 6; color:#fff; font-size: 16px; text-align: center; padding-top: 35px; line-height: 27px; }
+        .footer-wrap img{ position:absolute; z-index: 6;  left:0; bottom:0; width: 121px; height: 35px;  }
+    </style>
+</head>
+<body>
+      <div id="wrap" class="wrap">
+           <header class="header">
+                <i><img src="images/icon.png" /></i>  
+                <div class="head-info">
+                     <p class="head-title">梦幻花园</p>
+                     <p class="head-description">和全球玩家一起浪出一片海</p>
+                     
+                </div>
+                <a class="head-download download" href=""><img src="images/d1.png" /></a>    
+           </header>
+           <div class="main" id="main">
+               <section class="pic-wrap" style="margin-top:144px;">
+                   <img src="images/bg1.jpg" />
+                   <p class="banner-title"><img src="images/banner-title.png" /></p>   
+               </section>
+               <div class="pic-wrap">
+                   <img src="images/bg2.png" /> 
+                   <div class="slider-wrap">
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper"> 
+                                <div class="swiper-slide" style="background-image:url('images/1.png')"></div>
+                                <div class="swiper-slide" style="background-image:url('images/2.png')"></div>
+                                <div class="swiper-slide" style="background-image:url('images/3.png')"></div>
+                                <div class="swiper-slide" style="background-image:url('images/4.png')"></div>
+                            </div>
+                            <!-- Add Pagination -->  
+                        </div>
+                        
+                   </div>
+                   <div class="swiper-button-next"></div>
+                   <div class="swiper-button-prev"></div>
+               </div>
+               <div class="pic-wrap">
+                   <img src="images/bg3.jpg" /> 
+                   <video id="video_el" class="video_el" width="574" height="325" poster="images/video_cover.png"  preload="none" > 
+                        <source src="https://dl2.gxpan.cn/ad/delivery/201709/59bf250ebd434.mp4" />
+                   </video>
+                   <div id="v_mask" onclick="pausevideo()" class="video_el_mask"></div>  
+                   <a href="javascript:;" id="play" onclick="playvideo()" ><img src="images/play.png" /></a>
+                   <a class="download download" href=""><img src="images/d2.png" /></a>
+                   <div class="footer-wrap">
+                        <div class="footer-mask"></div>
+                        <p>
+                            Copyright2009-2017 深圳市创梦天地科技股份有限公司版权所有 <br>
+                             粤ICP备11018438号 粤网文【2016】6781-1632号
+                        </p> 
+                        <img src="images/footer_icon.png" /> 
+                   </div>
+                </div>
+               
+            </div>
+            
+            
+      </div>
+</body>
+</html>
+<script>
+    (function(){
+        // 判断是否为pc
+        var os = function() {  
+            var ua = navigator.userAgent,  
+            isWindowsPhone = /(?:Windows Phone)/.test(ua),  
+            isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,   
+            isAndroid = /(?:Android)/.test(ua),   
+            isFireFox = /(?:Firefox)/.test(ua),   
+            isChrome = /(?:Chrome|CriOS)/.test(ua),  
+            isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),  
+            isPhone = /(?:iPhone)/.test(ua) && !isTablet,  
+            isPc = !isPhone && !isAndroid && !isSymbian;  
+            return {  
+                isTablet: isTablet,  
+                isPhone: isPhone,  
+                isAndroid : isAndroid,  
+                isPc : isPc  
+            };  
+        }(); 
+        var swiper = new Swiper('.swiper-container',{
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            autoplay:3000,
+            loop:true,
+        });
+
+        if(os.isPc && !os.isTablet){
+            document.getElementById("wrap").style.margin = 'auto';
+        };
+
+        function getQueryString(name) { 
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+            var r = window.location.search.substr(1).match(reg); 
+            if (r != null) return unescape(r[2]); return null; 
+        } 
+        
+        var id = getQueryString('id');
+        $.ajax({
+            url :'http://hunterdev.admin.mobgi.com/api/Landingpage/getTemplateData?id='+id,
+            async:false,
+            data : '',
+            type : 'post',
+            dataType : 'jsonp',
+            jsonp : 'callback',
+            success:function(data){
+                $('.download').attr('href',data.url);
+            },
+            error :function(xhr,msg,e){
+                console.log(xhr+", "+msg+", "+e);
+            }
+        });
+        
+
+    })();
+
+    function playvideo(){
+        var video_el = document.getElementById('video_el');
+        var btn = document.getElementById('play');
+        var mask = document.getElementById('v_mask');
+        video_el.play();
+        btn.style.display = 'none';
+        mask.style.display = 'block';
+    }
+
+    function pausevideo(){
+        var video_el = document.getElementById('video_el');
+        var btn = document.getElementById('play');
+        var mask = document.getElementById('v_mask');
+        video_el.pause();
+        btn.style.display = 'block';
+        mask.style.display = 'none';
+    }
+
+</script>

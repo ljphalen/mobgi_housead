@@ -1,0 +1,683 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<style>
+    #date_range {
+        float: right;
+        margin: 5px;
+    }
+
+    #register_chart {
+        height: 300px;
+    }
+
+
+    .plan {
+        clear: both;
+        margin: 5px 0;
+        padding: 0;
+        border: 1px solid #e6e6e6;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .plan .plan-title {
+        text-indent: 1rem;
+        font-size: 16px;
+        font-family: "SimHei";
+        font-weight: 700;
+        line-height: 2.5rem;
+        color: #515151;
+        background-color: #ddd;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .plan .plan-body {
+        padding: 10px 20px;
+    }
+
+    .plan .plan-body.chart {
+        padding: 0;
+        height: 300px;
+    }
+
+    .plan .progress .progress-bar {
+        background-color: rgb(213, 237, 205);
+        display: inline-block;
+    }
+
+    .plan .progress span {
+        color: rgb(15, 136, 4);
+        margin-left: 2px;
+    }
+
+    .spilt-title {
+        font-size: 16px;
+
+    }
+
+    .spilt-title::before {
+        content: '▍';
+        color: rgb(18, 131, 197);
+        line-height: 30px;
+
+    }
+</style>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 begin  -->
+        <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+        <!-- 头部区域 end   -->
+
+        <!-- content begin   -->
+        <div class="content-wrap">
+            <!-- leftMenu begin   -->
+            <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+            <!-- leftMenu begin   -->
+
+            <div class="content-main">
+
+                <div class="wrapper">
+                    <!-- title begin -->
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">
+                            <a href="daily" class="active">投放日报</a>
+                        </li>
+                        <li>
+                            <a href="weekly"> 投放周报 </a>
+                        </li>
+                    </ul>
+                    <!-- title end  -->
+
+                    <div class="main">
+                        <div>
+                            <div id="date_range" sdate="<?php echo $sdate; ?>" edate="<?php echo $edate; ?>"></div>
+                        </div>
+                        <div class="plan">
+                            <div class="plan-title">整体计划完成进度</div>
+                            <div class="plan-body">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+
+                                    <tbody>
+                                        <tr>
+                                            <td>计划月份</td>
+                                            <td colspan="3" style='text-align: center'>计划</td>
+                                            <td colspan="3" style='text-align: center'>实际</td>
+                                            <td colspan="3" style='text-align: center'>完成</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>新增</td>
+                                            <td>预算</td>
+                                            <td>广告成本</td>
+                                            <td>新增</td>
+                                            <td>消耗</td>
+                                            <td>广告成本</td>
+                                            <td>KPI完成率(%)</td>
+                                            <td>预算使用率(%)</td>
+                                            <td>成本变动率(%)</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id='month_plan'></tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <!-- 新增效果趋势 -->
+                        <div class="plan">
+                            <div class="plan-title">新增效果趋势</div>
+                            <div class="plan-body chart">
+                                <div id="register_chart" style="height: 100%"></div>
+                            </div>
+                        </div>
+                        <!-- end新增效果趋势 -->
+
+                        <!-- 每日总体概况 -->
+                        <div class="plan">
+                            <div class="plan-title">每日总体概况</div>
+                            <div class="plan-body">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                                    <tbody>
+                                        <tr>
+                                            <td>日期</td>
+                                            <td>广告消耗</td>
+                                            <td>广告新增</td>
+                                            <td>广告次日留存数</td>
+                                            <td>广告次日留存率</td>
+                                            <td>广告新增成本</td>
+                                            <td>广告新增当天收入</td>
+                                            <td>广告新增单天LTV</td>
+                                            <td>自然新增</td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody id='general'></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- end每日总体概况 -->
+
+                        <div class="spilt-title">渠道概况</div>
+
+
+
+                        <div class="plan">
+                            <div class="plan-title">TOP5渠道激活量趋势</div>
+                            <div class="plan-body">
+                                <div id="aaa"></div>
+                            </div>
+                        </div>
+                        <div class="plan">
+                            <div class="plan-title">各渠道近7日激活量</div>
+                            <div class="plan-body">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table" id="actives_7day"></table>
+                            </div>
+                        </div>
+                        <div class="plan">
+                            <div class="plan-title">TOP5渠道成本趋势</div>
+                            <div class="plan-body"></div>
+                        </div>
+                        <div class="plan">
+                            <div class="plan-title">各渠道近7日成本</div>
+                            <div class="plan-body">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table" id="cost_7day"></table>
+
+                            </div>
+                        </div>
+
+                        <div class="plan">
+                            <div class="plan-title">TOP5渠道LTV趋势</div>
+                            <div class="plan-body"></div>
+                        </div>
+
+
+                        <div class="plan">
+                            <div class="plan-title">各渠道LTV</div>
+                            <div class="plan-body">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table" id="ltv1_7day"></table>
+                            </div>
+                        </div>
+
+                        <div class="plan">
+                            <div class="plan-title">各渠道次日留存</div>
+                            <div class="plan-body">
+                                <table cellspacing="0" cellpadding="0" border="0" class="layui-table" id="retention1_7day"></table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- content end     -->
+        </div>
+
+        <div id="blk">
+            <div id="blk_kpi" type="kpi" class="blk_view kpi" mod="submit_box"></div>
+        </div>
+        <div class="mask"></div>
+
+
+        <link href="<?php echo $staticPath; ?>/css/gri.controls.css?v=<?php echo $version; ?>" rel="stylesheet" />
+        <link href="<?php echo $staticPath; ?>/css/mgchart.css?v=<?php echo $version; ?>" rel="stylesheet" />
+        <script src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.js?v=201712151100"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery-ui.min.js?v=201712151100"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/spmchart.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.loadmask.min.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/gri.dateRange.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.SuperSlide.2.1.1.js?v=<?php echo $version;?>"></script>
+        <script type="text/javascript">
+            function get_general() {
+                app_id = parseInt(getCookie('app_id'))
+                if (app_id > 0) {
+                    // 月计划完成度
+                    var data = {
+                        'sdate': $("#date_range").attr('sdate'),
+                        'edate': $("#date_range").attr('edate'),
+                        'app_id': app_id,
+
+                        'dims': 'days',
+                        'kpis': 'real_consumption,registers,retention_stay1,retention1,cost,income_new_user,ltv1'
+                    };
+                    $.ajax({
+                        url: baseurl + '/Admin/Spm_Report/getGeneral?token=' + token,
+                        data: data,
+                        type: 'get',
+                        success: function (res) {
+                            var tbody = ''
+                            res.data.forEach(element => {
+                                tbody += `<tr><td>` + element['days'] +
+                                    `</td><td>` + element['real_consumption'] +
+                                    `</td><td>` + element['registers'] +
+                                    `</td><td>` + element['retention_stay1'] +
+                                    `</td><td class="progress"><div class="progress-bar" style="width:` +
+                                    element['retention1'] + `%">&nbsp;</div><span>` +
+                                    element['retention1'] + `%</span>` +
+                                    `</td><td>` + element['cost'] +
+                                    `</td><td>` + element['income_new_user'] +
+                                    `</td><td>` + element['ltv1'] +
+                                    `</td><td>` + element['cost_rate'] + `</td></tr>`
+                            });
+                            $("#general").html(tbody);
+                        },
+                        error: function (xhr, msg, error) {
+
+                        }
+                    });
+                };
+            }
+
+            function get_month_plan() {
+                app_id = parseInt(getCookie('app_id'))
+                if (app_id > 0) {
+                    // 月计划完成度
+                    var data = {
+                        'sdate': $("#date_range").attr('sdate'),
+                        'edate': $("#date_range").attr('edate'),
+                        'app_id': app_id
+                    };
+                    $.ajax({
+                        url: baseurl + '/Admin/Spm_Report/getMonthPlan?token=' + token,
+                        data: data,
+                        type: 'get',
+                        success: function (res) {
+                            var tbody = ''
+                            res.data.forEach(element => {
+                                tbody += `<tr><td>` + element['months'] +
+                                    `</td><td>` + element['daily_amount'] +
+                                    `</td><td>` + element['daily_consumption'] +
+                                    `</td><td>` + element['daily_cost'] +
+                                    `</td><td>` + element['registers'] +
+                                    `</td><td>` + element['real_consumption'] +
+                                    `</td><td>` + element['cost'] +
+                                    `</td><td>` + element['kpi_rate'] +
+                                    `</td><td>` + element['consumption_rate'] +
+                                    `</td><td>` + element['cost_rate'] + `</td></tr>`
+                            });
+                            $("#month_plan").html(tbody);
+                        },
+                        error: function (xhr, msg, error) {
+                            // $("#adminUser").html("管理员：null");
+                        }
+                    });
+                };
+
+            }
+
+
+            function get_channel_7day() {
+                app_id = parseInt(getCookie('app_id'))
+                if (app_id > 0) {
+                    // 月计划完成度
+                    var data = {
+                        'sdate': $("#date_range").attr('sdate'),
+                        'edate': $("#date_range").attr('edate'),
+                        'app_id': app_id,
+                        'dims': 'days,channel_gid',
+                        'kpis': 'actives,cost,ltv1,retention1'
+                    };
+                    $.ajax({
+                        url: baseurl + '/Admin/Spm_Report/getChannel7Day?token=' + token,
+                        data: data,
+                        type: 'get',
+                        success: function (res) {
+                            var kpis = data.kpis.split(',')
+                            var result = {}
+                            kpis.forEach(kpi => {
+                                result[kpi] = {}
+                            });
+                            res.data.data.forEach(element => {
+                                kpis.forEach(kpi => {
+                                    if (!result[kpi][element['days']]) {
+                                        result[kpi][element['days']] = {}
+                                    }
+                                    result[kpi][element['days']][element['channel_gid']] =
+                                        element[kpi]
+                                });
+                            });
+                            console.log(result);
+
+                            for (const kpi in result) {
+                                table_render(kpi, result[kpi], res.data['cmap'])
+                            }
+
+
+                        },
+                        error: function (xhr, msg, error) {
+
+                        }
+                    });
+                };
+            }
+
+            function table_render(kpi, data, cmap) {
+                var htmlstr = ''
+                var val = 0
+                var map = {}
+                var channels = []
+                for (const days in data) {
+                    for (const channel in data[days]) {
+                        if (!map[channel] && data[days].hasOwnProperty(channel) && parseFloat(data[days][channel]) > 0) {
+                            map[channel] = channel;
+                            channels.push(channel)
+                        }
+                    }
+                }
+                htmlstr += '<tr><td>日期</td>'
+                for (const channel in channels) {
+                    cname = cmap[channel] || "unknown"
+                    htmlstr += '<td>' + cname + '</td>'
+                }
+                htmlstr += '</tr>'
+
+                for (const days in data) {
+                    htmlstr += '<tr>'
+                    htmlstr += '<td>' + days + '</td>'
+                    for (const channel in channels) {
+                        val = data[days][channel] || 0
+                        htmlstr += '<td>' + val + '</td>'
+                    }
+                    htmlstr += '</tr>'
+                }
+                $("#" + kpi + '_7day').html(htmlstr);
+            }
+
+            function get_register() {
+                app_id = parseInt(getCookie('app_id'))
+                if (app_id > 0) {
+                    // 月计划完成度
+                    var data = {
+                        'sdate': $("#date_range").attr('sdate'),
+                        'edate': $("#date_range").attr('edate'),
+                        'app_id': app_id,
+                        'dims': 'days,is_natural',
+                        'kpis': 'real_consumption,registers,cost'
+                    };
+                    $.ajax({
+                        url: baseurl + '/Admin/Spm_Report/getGeneral?token=' + token,
+                        data: data,
+                        type: 'get',
+                        success: function (res) {
+                            // console.log('chart:', res.data);
+                            var days = {};
+                            var data = res.data.forEach(element => {
+                                if (!days[element.days]) {
+                                    days[element.days] = {
+                                        'real_consumption': 0,
+                                        'registers': 0,
+                                    }
+                                }
+                                if (parseInt(element.is_natural)) {
+                                    days[element.days]['registers0'] = element.registers
+                                } else {
+                                    days[element.days]['registers1'] = element.registers
+                                    days[element.days]['cost1'] = element.cost
+                                    days[element.days]['real_consumption'] += element.real_consumption
+                                }
+                                days[element.days]['registers'] += element.registers
+                                days[element.days]['cost'] = days[element.days]['registers'] > 0 ?
+                                    Math.round(days[element.days]['real_consumption'] / days[
+                                        element.days]['registers'] * 100) / 100 : 0;
+                            });
+                            console.log('days', days);
+                            chart_render('register_chart', days)
+                            // //按日期排序
+                            // registers0: [320 332 301 334 390];
+                            // registers1: [220 182 191 234 290];
+                        },
+                        error: function (xhr, msg, error) {
+
+                        }
+                    });
+                };
+            }
+
+
+            function chart_render(elementId, data) {
+                var legend_data = Object.keys(data)
+                var tmp = Object.map(function (key, index) {
+                    // myObject[key] *= 2;
+                    console.log('key,index=>', key, index);
+                    return index['registers']
+                });
+
+
+
+
+                // console.log('legend_data', legend_data);
+                console.log('tmp', tmp);
+
+
+
+
+                var series = data.map(function (item, label) {
+                    return item
+                });
+
+
+                // series: [{
+                //         name: 'Forest',
+                //         type: 'bar',
+                //         barGap: 0,
+                //         label: labelOption,
+                //         data: [320, 332, 301, 334, 390]
+                //     },
+                //     {
+                //         name: 'Steppe',
+                //         type: 'bar',
+                //         label: labelOption,
+                //         data: [220, 182, 191, 234, 290]
+                //     }
+                // ]
+
+
+
+
+
+                var dom = document.getElementById(elementId);
+                var myChart = echarts.init(dom);
+                var app = {};
+                option = null;
+                var posList = [
+                    'left', 'right', 'top', 'bottom',
+                    'inside',
+                    'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+                    'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+                ];
+
+                app.configParameters = {
+                    rotate: {
+                        min: -90,
+                        max: 90
+                    },
+                    align: {
+                        options: {
+                            left: 'left',
+                            center: 'center',
+                            right: 'right'
+                        }
+                    },
+                    verticalAlign: {
+                        options: {
+                            top: 'top',
+                            middle: 'middle',
+                            bottom: 'bottom'
+                        }
+                    },
+                    position: {
+                        options: echarts.util.reduce(posList, function (map, pos) {
+                            map[pos] = pos;
+                            return map;
+                        }, {})
+                    },
+                    distance: {
+                        min: 0,
+                        max: 10
+                    }
+                };
+
+                app.config = {
+                    rotate: 90,
+                    align: 'left',
+                    verticalAlign: 'middle',
+                    position: 'insideBottom',
+                    distance: 5,
+                    onChange: function () {
+                        var labelOption = {
+                            // normal: {
+                            //     rotate: app.config.rotate,
+                            //     align: app.config.align,
+                            //     verticalAlign: app.config.verticalAlign,
+                            //     position: app.config.position,
+                            //     distance: app.config.distance
+                            // }
+                        };
+                        myChart.setOption({
+                            series: [{
+                                label: labelOption
+                            }, {
+                                label: labelOption
+                            }, {
+                                label: labelOption
+                            }, {
+                                label: labelOption
+                            }]
+                        });
+                    }
+                };
+
+
+                var labelOption = {
+                    normal: {
+                        show: true,
+                        position: app.config.position,
+                        distance: app.config.distance,
+                        align: app.config.align,
+                        verticalAlign: app.config.verticalAlign,
+                        rotate: app.config.rotate,
+                        // formatter: '{c}  {name|{a}}',
+                        fontSize: 16,
+                        // rich: {
+                        //     name: {
+                        //         textBorderColor: '#fff'
+                        //     }
+                        // }
+                    }
+                };
+
+                option = {
+                    color: ['blue', 'red'],
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['Forest', 'Steppe']
+                    },
+                    toolbox: {
+                        show: true,
+                        orient: 'vertical',
+                        left: 'right',
+                        top: 'center',
+                        feature: {
+                            mark: {
+                                show: true
+                            },
+                            dataView: {
+                                show: true,
+                                readOnly: false
+                            },
+                            magicType: {
+                                show: true,
+                                type: ['line', 'bar', 'stack', 'tiled']
+                            },
+                            restore: {
+                                show: true
+                            },
+                            saveAsImage: {
+                                show: true
+                            }
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [{
+                        type: 'category',
+                        axisTick: {
+                            show: false
+                        },
+                        data: ['2012', '2013', '2014', '2015', '2016']
+                    }],
+                    yAxis: [{
+                        type: 'value'
+                    }],
+                    series: [{
+                            name: 'Forest',
+                            type: 'bar',
+                            barGap: 0,
+                            label: labelOption,
+                            data: [320, 332, 301, 334, 390]
+                        },
+                        {
+                            name: 'Steppe',
+                            type: 'bar',
+                            label: labelOption,
+                            data: [220, 182, 191, 234, 290]
+                        }
+                    ]
+                };;
+                if (option && typeof option === "object") {
+                    myChart.setOption(option, true);
+                }
+            }
+
+            $(function () {
+                var dateRange = new pickerDateRange("date_range", 'date', {
+                    theme: 'ta',
+                    isTodayValid: 1,
+                    startDate: "<?php echo $sdate;?>",
+                    endDate: "<?php echo $edate;?>",
+                    minValidDate: 1379174400,
+                    needCompare: 0,
+                    success: function (dateObj) {
+                        $("#date_range").attr("sdate", dateObj.startDate);
+                        $("#date_range").attr("edate", dateObj.endDate);
+                        $("#date_range").attr("csdate", "");
+                        $("#date_range").attr("cedate", "");
+                        get_month_plan();
+                        get_register();
+                        get_general();
+                        get_channel_7day();
+
+                    }
+                });
+                get_month_plan();
+                get_register();
+                get_general();
+                get_channel_7day();
+
+
+                // // report.setDateRangePlugin("#date_range").init(<?php echo $chartConfig;?>).run()
+                // //   topMenu 切换app 回调
+                // appIdSelectChange = {
+                //     callBack: function (id) {
+                //         console.log(id)
+                //         report.setParams('app_id', id);
+                //     }
+                // };
+
+                $('.plan-title').click(function () {
+                    $(this).next('.plan-body').toggle();
+                })
+
+                appIdSelectChange = {
+                    callBack: function (id) {
+                        location.reload()
+                    }
+                };
+
+            });
+        </script>
+</body>
+
+</html>

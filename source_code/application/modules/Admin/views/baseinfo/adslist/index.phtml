@@ -1,0 +1,78 @@
+<?php echo $this->render("layout/header1.phtml");?>
+
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $listUrl;?>">广告商列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">添加广告商</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="<?php echo $listUrl;?>" method="GET"  id="searchForm">
+                 <input type="hidden" name="ad_type" value="<?php echo $search['ad_type'] ;?>">
+                <span>
+                    <label class="ig_label">广告商类型：</label>
+                    <ul class="ip_ul clearfix ad_type">
+                       <li <?php if(  $search['ad_type']=='' ){ ?> class="cur"  <?php }; ?> > <a href="<?php echo $listUrl;?>" >全部</a></li>
+                          <?php foreach($adTypeArr as $key=>$value){?>    
+                        <li <?php if(   $search['ad_type']==$key ){ ?> class="cur"  <?php } ?> data-ad-type=<?php echo $key;?> ><?php echo $value; ?></li>
+                          <?php } ?> 
+                    </ul>
+                                          
+                     <input type="text" class="iText" name='ads_id'  value='<?php echo $search['ads_id'] ;?>' placeholder="可输入广告商id查询" />
+                    <input type="text" class="iText" name='name' value='<?php echo $search['name'] ;?>' placeholder="可输入广告商名称查询" />
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+       
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>广告商编号</th>
+                            <th>广告商名称</th>
+                             <th>广告类型</th>
+                            <th>广告子类型</th>
+                            <th>修改时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($adsList as $k1=>$v1): ?>
+                        <tr>
+                            <td><a href="<?php echo $addUrl;?>?id=<?php echo $v1['id']; ?>" ><span class="blue"><?php echo $v1['ads_id']; ?></span></a></td>
+                            <td><?php echo $v1['name']; ?></td>
+                             <td><?php echo $v1['ad_type']; ?></td>
+                            <td><?php echo $v1['ad_sub_type']; ?></td>
+                               <td><?php echo date('Y-m-d H:i:s',$v1['update_time']); ?></td>
+                            <td>
+                                <a href="<?php echo$addUrl;?>/?id=<?php echo $v1['id'];?>" class="mr10">编辑</a>
+						  		<a href="<?php echo $viewUrl;?>/?id=<?php echo $v1['id'];?>" class="mr10">查看</a>
+						  		<a href="javascript:" onclick="deleteOne('<?php echo $deleteUrl;?>/?id=<?php echo $v1['id'];?>', '', event);"　class="mr10">删除</a> 
+                                <a href="<?php echo $v1['out_url']; ?>"  title="管理后台" target="_blank">管理后台</a>
+                            </td>
+                        </tr> 
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+  </div>
+<script type="text/javascript">
+$(function(){
+	$(".ad_type li").click(function () {
+	    $(this).addClass("cur").siblings().removeClass("cur");
+	    ad_type = $(this).attr('data-ad-type');
+	     $("input[name='ad_type']").val(ad_type);
+	     $("#searchForm").submit()
+	});
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

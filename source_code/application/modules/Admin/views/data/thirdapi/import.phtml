@@ -1,0 +1,252 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function confirmSubmit(){
+            var import_type = $('#import_type').val()
+            if(import_type== ''){
+                layer.alert("请选择导入类型！",8);
+                return false;
+            }
+            var ads_id = $("#ads_id").val();
+            if(ads_id == ''){
+                layer.alert("请选择广告商！",8);
+                return false;
+            }
+            var ad_type = $("#ad_type").val();
+            if(ad_type == ''){
+                layer.alert("请选择广告类型！",8);
+                return false;
+            }
+            var currency_type = $("#currency_type").val();
+            if(currency_type == ''){
+                layer.alert("请选择货币种类！",8);
+                return false;
+            }
+            var pos_type = $("#pos_type").val();
+            if(pos_type == ''){
+                layer.alert("请选择是否有广告位！",8);
+                return false;
+            }
+            var upload_file = $("#upload_file").val();
+            if(upload_file == ''){
+                layer.alert("请选择导入文件！",8);
+                return false;
+            }
+            var cur = $("#upload_file");
+            var v = cur.val();
+            var ext = v.substring(v.lastIndexOf("."));
+            if(ext != ".xls") {
+                layer.alert("请选择xls文件！",8);
+                return false;
+            }
+            var fd = new FormData();//h5上传
+            var share_type = $('#share_type').val();
+            if(share_type){
+                fd.append('share_type',share_type);
+            }
+            if(share_type == 2){
+                var share_ratio = $('#share_retio').val();
+                if(share_ratio == ''){
+                    layer.alert("请输入分成比例",8);
+                    return false;
+                }
+                fd.append('share_ratio',share_ratio);
+            }
+            var url = '<?php echo $dealImportDataUrl;?>';
+            fd.append('ads_id',ads_id);
+            fd.append('ad_type',ad_type);
+            fd.append('currency_type',currency_type);
+            fd.append('pos_type',pos_type);
+            fd.append('import_type',import_type);
+            fd.append('upload_file',cur.get(0).files[0]);
+            fd.append('token',token);
+            $.ajax({
+                url: url,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function(data) {
+                    if(data == '-1'){
+                        layer.alert('导入失败',8);
+                    }else{
+                        layer.alert('导入成功',8);
+                    }
+                }
+            });
+
+            /*$.ajaxFileUpload({
+                url: url+"?ads_id="+ads_id+"&ad_type="+ad_type+"&currency_type="+currency_type+"&pos_type="+pos_type,
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: 'upload_file',
+                dataType: "json",
+                success: function(data) {
+                    if(data == '-1'){
+                        layer.alert("导入失败！",8);
+                    }else{
+                        layer.alert("导入成功！",9);
+                    }
+                },
+                error: function(data) {
+                    alert(data.msg);
+                }
+            });*/
+        }
+    </script>
+    <style>
+        .importtable{
+            border-collapse: collapse;border-spacing:0;
+        }
+        .importtable thead{
+            border: 1px solid #e8e8e8; border-width: 1px;
+        }
+        .importtable thead tr th{
+            padding: 10px;
+        }
+        .importtable tbody tr td{
+            padding: 10px;
+        }
+    </style>
+<div class="colMain">
+    <div class="nav">
+        <ul class="cc">
+            <li class="current"><a href="<?php echo $importUrl;?>">广告商数据导入</a></li>
+            <li ><a href="<?php echo $importLogUrl;?>">导入日志</a></li>
+        </ul>
+    </div>
+    <div class="main">
+        <div class="app-detail">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <ul class="form">
+                    <li>
+                        <span class="label">导入模板：</span>
+                        <div class="fc">
+                            <table class="importtable">
+                                <thead >
+                                <tr>
+                                    <th>日期</th>
+                                    <th>应用app_key</th>
+                                    <th>广告展示数</th>
+                                    <th>点击量</th>
+                                    <th>预计收入</th>
+                                    <th><span style="color:red;">第三方广告位名称</span> </th>
+                                </tr>
+                                </thead>
+                                <tbody><tr><td>2016/6/10</td><td>5110be2586e884a9bc61</td><td>47335</td><td>52733</td><td>404.29</td><td><span style="color:red;">暂停插页聚合</span></td></tr></tbody>
+                            </table>
+                            <span class="red">*(格式为.xls)</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">导入类型：</span>
+                        <div class="fc">
+                            <select id="import_type" name="import_type">
+                                <option value="" >- 请选择 -</option>
+                                <option value="1" >第三方数据导入</option>
+                                <option value="2" >定制渠道数据导入</option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">广告商：</span>
+                        <div class="fc">
+                            <select id="ads_id" name="ads_id">
+                                <option value="" >- 请选择 -</option>
+                                <?php foreach($ads as $k1=>$v1){ ?>
+                                    <option value="<?php echo $v1['identifier']; ?>"><?php echo $v1['identifier']; ?> </option>
+                                <?php } ?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span class="label">广告类型：</span>
+                        <div class="fc">
+                            <select id="ad_type"  name="ad_type">
+                            <option value="" >- 请选择 -</option>
+                            <option value="1" > 视频聚合 </option>
+                            <option value="2" > 插页聚合 </option>
+                            <option value="3" > 自定义</option>
+                            <option value="4" > 开屏广告 </option>
+                            <option value="5" > 原生信息流 </option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">货币种类：</span>
+                        <div class="fc">
+                            <select id="currency_type"  name="currency_type">
+                                <option value="" >- 请选择 -</option>
+                                <option value="1" > 美元 </option>
+                                <option value="2" > 人民币 </option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">广告位：</span>
+                        <div class="fc">
+                            <select id="pos_type" name="pos_type">
+                                <option value="" >- 请选择 -</option>
+                                <option value="1" > 有广告位 </option>
+                                <option value="2" > 无广告位 </option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li id="show_share" style="display:none;">
+                        <span class="label">分成模式：</span>
+                        <div class="fc">
+                            <select name="share_type" id="share_type">
+                                <option value="" >- 请选择 -</option>
+                                <option value="1" > 分成前 </option>
+                                <option value="2" > 分成后 </option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li id="show_share_ratio" style="display:none">
+                        <span class="label">分成比例：</span>
+                        <div class="fc">
+                            <input type="number" name="share_ratio" id="share_retio">
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li><span class="label">导入模板：</span>
+                        <div class="fc">
+                            <input type="file" name='upload_file' id='upload_file' /> <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type=""  value="保存" class="submit"  onclick="confirmSubmit()"/>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#import_type').bind('change',function(){
+            if($(this).val() == 2){
+                $('#show_share').css('display','block');
+            }else{
+                $('#show_share').css('display','none');
+            }
+        })
+
+        $('#share_type').bind('change',function(){
+            if($(this).val() == 2){
+                $('#show_share_ratio').css('display','block');
+            }else{
+                $('#show_share_ratio').css('display','none');
+            }
+        })
+    })
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

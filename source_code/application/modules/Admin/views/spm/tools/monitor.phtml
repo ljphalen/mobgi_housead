@@ -1,0 +1,278 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>监控管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- tab begin -->
+                <div class="layui-btn-group tabs-group">
+                    <button data-type="1" class="layui-btn tab_active">进程检查</button>
+                    <button data-type="2" class="layui-btn layui-btn-primary">目录监控</button>
+                    <button data-type="3" class="layui-btn layui-btn-primary">脚本告警</button>
+                </div>
+                <!-- tab begin -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="description" placeholder="请输入功能描述" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                            <div class="configbtns" style="float:right;">
+                                <button id="addProcess" type="button" class="layui-btn layui-btn-normal">新建监控</button>
+                                <button id="addDirectory" type="button" class="layui-btn layui-btn-normal">新建监控</button>
+                                <button id="addScriptAlarm" type="button" class="layui-btn layui-btn-normal">新建监控</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="config" lay-filter="config" ></table>
+                <script type="text/html" id="processConfig">
+                    <a class="layui-btn layui-btn-xs" lay-event="processConfig_edit">编辑</a>
+                </script>
+                <script type="text/html" id="directoryConfig">
+                    <a class="layui-btn layui-btn-xs" lay-event="directoryConfig_edit">编辑</a>
+                </script>
+                <script type="text/html" id="scriptAlarmConfig">
+                    <a class="layui-btn layui-btn-xs" lay-event="scriptAlarmConfig_edit">编辑</a>
+                </script>
+                <script type="text/html" id="barstatus">
+                    {{#   if(d.status =='ON'){     }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" checked>
+                    {{#  } else { }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" >
+                    {{#  } }}
+                </script>
+                <!-- table end  -->
+                <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+            </div>
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+<script>
+/* 请求链接 */
+var processListUrl = baseurl + "<?php echo $processListUrl; ?>"; //  进程监控列表
+var addProcessUrl = baseurl + "<?php echo $addProcessUrl; ?>"; //  新建进程监控
+var changeProcessStatusUrl = baseurl +  '<?php echo $changeProcessStatusUrl; ?>';  // 进程监控:更改合作状态
+var directoryListUrl = baseurl + "<?php echo $directoryListUrl; ?>"; //  目录监控列表
+var addDirectoryUrl = baseurl + "<?php echo $addDirectoryUrl; ?>"; //  新建目录监控
+var changeDirectoryStatusUrl = baseurl +  '<?php echo $changeDirectoryStatusUrl; ?>';  // 目录监控:更改合作状态
+var scriptAlarmListUrl = baseurl + "<?php echo $scriptAlarmListUrl; ?>"; //  脚本告警列表
+var addScriptAlarmUrl = baseurl + "<?php echo $addScriptAlarmUrl; ?>"; //  新建脚本告警
+var changeScriptAlarmStatusUrl = baseurl +  '<?php echo $changeScriptAlarmStatusUrl; ?>';  // 脚本告警:更改合作状态
+
+/* table 渲染参数 */
+var layuiTable;
+var page = true;
+var where = { token: token ,description: '' } ;
+var table_id = '#config';
+var urlArray = { "1": processListUrl, "2": directoryListUrl, "3": scriptAlarmListUrl }
+var changeUrlArray = { "1": changeProcessStatusUrl, "2": changeDirectoryStatusUrl, "3": changeScriptAlarmStatusUrl }
+var colsArray = {  //  1.进程监控列表  2.目录监控列表 3.脚本告警列表
+    '1': [[ // 进程监控列表
+        {field: 'platform', title: '平台',  sort: true  }
+        ,{field: 'description', title: '功能描述',  sort: true }
+        ,{field: 'process_list_str', title: '进程列表',  sort: true }
+        ,{field: 'remind_phone', title: '告警手机',  sort: true }
+        ,{field: 'monitor_time', title: '上次监控时间',  sort: true }
+        ,{field: 'status', title: '监控状态',  sort: true , toolbar: '#barstatus' }
+        ,{field: '', title: '操作', align:'center', toolbar: '#processConfig'}
+    ]] ,
+    '2': [[ //付费回调配置
+        {field: 'platform', title: '平台',  sort: true  }
+        ,{field: 'description', title: '功能描述',  sort: true }
+        ,{field: 'directory_list_str', title: '目录列表',  sort: true }
+        ,{field: 'delay_time', title: '允许的延迟时间（秒）',  sort: true }
+        ,{field: 'remind_phone', title: '告警手机',  sort: true }
+        ,{field: 'monitor_time', title: '上次监控时间',  sort: true }
+        ,{field: 'status', title: '监控状态',  sort: true , toolbar: '#barstatus' }
+        ,{field: '', title: '操作', align:'center', toolbar: '#directoryConfig'}
+    ]],
+    '3': [[ //用户行为回调配置
+        {field: 'description', title: '功能描述',  sort: true }
+        ,{field: 'script_name', title: '脚本名称',  sort: true }
+        ,{field: 'alarm_type', title: '告警方式',  sort: true }
+        ,{field: 'alarm_phone', title: '告警手机',  sort: true }
+        ,{field: 'alarm_email', title: '告警邮箱',  sort: true }
+        ,{field: 'alarm_time', title: '上次告警时间',  sort: true }
+        ,{field: 'status', title: '告警状态',  sort: true , toolbar: '#barstatus' }
+        ,{field: '', width:260, title: '操作', align:'center', toolbar: '#scriptAlarmConfig'}
+    ]] };
+var cols = colsArray['1']; // 默认进程监控列表 表头
+var url = processListUrl;  // 默认进程监控列表 表链接
+
+// 判断本地缓存是否 有渲染表格参数
+if(localStorage.searchData){
+    if(window.location.href == JSON.parse(localStorage.searchData).url){
+        page = JSON.parse(localStorage.searchData).page;
+        where = JSON.parse(localStorage.searchData).where;
+        // 初始化搜索条件
+        $("input[name='description']").val(where.description);
+    }
+}
+
+// 初始化 配置类型
+if(localStorage.configType){
+    $(".tabs-group button").addClass("layui-btn-primary");
+    $(".tabs-group button").removeClass("tab_active");
+    $($(".tabs-group button").get(localStorage.configType-1)).removeClass("layui-btn-primary");
+    $($(".tabs-group button").get(localStorage.configType-1)).addClass("tab_active");
+    cols = colsArray[localStorage.configType];
+    url = urlArray[localStorage.configType];
+    // 隐藏按钮
+    setConfigType(localStorage.configType) ;
+}else{
+    setConfigType("1") ;
+}
+
+/*  隐藏按钮  */
+function setConfigType(configType){
+    configType = parseInt(configType);
+    $(".configbtns button").hide();
+    $($(".configbtns button").get(configType-1)).show();
+}
+
+//  表单绑定
+layui.use(['element','form','table'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    layuiTable = layui.table;
+    // 初始化表格
+    var initTable = {
+        elem: table_id,
+        where: where,
+        url : url ,
+        cols: cols ,
+        page : page
+    };
+    renderTable(table,initTable,null);
+
+    // 切换 tab
+    $(".tabs-group button").click(function(){
+        $(".tabs-group button").addClass("layui-btn-primary");
+        $(".tabs-group button").removeClass("tab_active");
+        $(this).removeClass("layui-btn-primary");
+        $(this).addClass("tab_active");
+        //  dataType : 1.广点通配置列表  2.付费回调配置 3.用户行为回调配置
+        var dataType = parseInt($(this).attr("data-type"));
+        localStorage.configType = dataType;
+        cols = colsArray[dataType];
+        url = urlArray[dataType];
+        setConfigType(dataType);  // 隐藏按钮
+        // delete where.advertiser_id;
+        // 配置表头，查询条件，渲染表格
+        var param = {
+            elem: table_id,
+            where: where,
+            url : url ,
+            cols: cols ,
+            page : true
+        };
+        renderTable(layuiTable,param,null);
+    });
+
+    // 搜索
+    form.on('submit(search)', function(data){
+        var dataType = parseInt($(".tab_active").attr("data-type"));
+        cols = colsArray[dataType];
+        url = urlArray[dataType];
+        where.description = data.field.description;
+        var searchparam = {
+            elem: table_id,
+            where: where,
+            url : url ,
+            cols: cols ,
+            page : true
+        };
+        renderTable(layuiTable,searchparam,null);
+        return false;
+    });
+
+    //监听单元格事件  --  编辑
+    table.on('tool(config)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'processConfig_edit'){  // 进程监控配置：编辑
+            window.location.href = addProcessUrl + "?id="+data.id;
+        }else if(obj.event =='directoryConfig_edit'){ //目录监控配置: 编辑
+            window.location.href = addDirectoryUrl + "?id="+data.id;
+        }else if(obj.event =='scriptAlarmConfig_edit'){ //脚本告警配置: 编辑
+            window.location.href = addScriptAlarmUrl + "?id="+data.id;
+        }
+    });
+
+    //  付费回调配置:更改合作状态
+    form.on('switch(switchStatus)', function(data){
+        var obj = new Object();
+        if(data.elem.checked){
+            obj.status = 'ON';
+        }else{
+            obj.status = 'OFF';
+        }
+        if(localStorage.configType){
+            var changeUrl = changeUrlArray[localStorage.configType];
+        }else{
+            var changeUrl = changeUrlArray["1"];
+        }
+        obj.token = token;
+        obj.id = $(data.elem).attr("data-id");
+        $.ajax({
+            url : changeUrl ,
+            async: true,
+            data : obj,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                if(data.success){
+                    layer.msg("操作成功");
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+    });
+
+    // 新建进程监控
+    $("#addProcess").click(function(){
+        window.location.href = addProcessUrl;
+    });
+    // 新建目录监控
+    $("#addDirectory").click(function(){
+        window.location.href = addDirectoryUrl;
+    });
+    // 新建脚本告警
+    $("#addScriptAlarm").click(function(){
+        window.location.href = addScriptAlarmUrl;
+    });
+});
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link href="<?php echo $staticPath;?>/css/monitor/css/index.css" rel="stylesheet" type="text/css">
+
+<div class="colMain">
+    <div class="nav">
+        <ul class="cc">
+            <li ><a href="<?php echo $IndexUrl;?>">监控数据概览</a></li>
+            <li class="current"><a href="<?php echo $DetailsUrl;?>">监控数据详情</a></li>
+            <li ><a href="<?php echo $UsergroupListUrl;?>">监控用户组列表</a></li>
+        <!--<li ><a href="--><?php //echo $ScriptListUrl;?><!--">脚本列表</a></li>-->
+        </ul>
+	</div>
+    <div class="wrap">
+        <div class="item-wrap">
+            <div class="nav-title">
+                <div class="nav-on-off">-</div>
+                    <h2>数据预警监控列表</h2>
+            </div>
+            <section class="nav-section">
+                <!-- 搜索 begin -->
+                <form action="<?php echo $DetailsUrl;?>" method="get">
+                <div class="search-wrap">
+                        <select class="search-select" id="type" name="type">
+                            <option value="all"  <?php if($search['type'] == "all") echo "selected"?>>所有应用</option>
+                            <option value="dau"  <?php if($search['type'] == "dau") echo "selected"?>>活跃用户</option>
+                            <option value="ecpm"  <?php if($search['type'] == "ecpm") echo "selected"?>>ecpm</option>
+                            <option value="impressions"  <?php if($search['type'] == "impressions") echo "selected"?>>曝光次数</option>
+                            <option value="doublecheck"  <?php if($search['type'] == "doublecheck") echo "doublecheck"?>>DoubleCheck</option>
+                        </select>
+                        <input class="search-text" type="text" name="search" id="search" value="<?php echo $search['search'];?>" placeholder="请输入查询条件" />
+                        <input type="submit"  class="m-btn searchbtn" id="s-submit" href="javascript:;" value="搜索">
+                        <a class="m-btn m-right" id="addMonitor" href="javascript:;">新增监控</a>
+<!--                        <a class="m-btn m-right" id="globalSet" href="javascript:;" style="margin-right: 5px;">机器学习配置</a>-->
+                </div>
+                </form>
+                <!-- 搜索 end -->
+                <table class="monitor-table">
+                    <thead>
+                        <tr>
+                            <th>监测事件名称</th>
+                            <th>监测应用</th>
+                            <th>监测项</th>
+                            <th>具体描述</th>
+                            <th>下次执行时间</th>
+                            <th>运行状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($List as $key=>$value){
+                            echo "<tr>";
+                            echo "<td><input type='checkbox' class='check' value='".$value['id']."'/>&nbsp;&nbsp;".$value['title']."</td>";
+                            echo "<td>".$value['app_name']."</td>";
+                            switch ($value['params']['monitor_type']){
+                                case 'ecpm':echo "<td>ecpm</td>";break;
+                                case 'dau':echo "<td>活跃用户</td>";break;
+                                case 'impressions':echo "<td>曝光次数</td>";break;
+                                case 'doublecheck':echo "<td>DoubleCheck</td>";break;
+                                default:echo "<td>未知状态</td>";
+                            }
+                            echo "<td>".$value['desc']."</td>";
+                            echo "<td>".$value['last_time']."</td>";
+                            switch ($value['status']){
+                                case 0:echo "<td><span class='label label-danger'>错误</span><a data-status='".$value['status']."' data-id='".$value['id']."' href='javascript:;' class='al-toggle-button'></a></td></td>";break;
+                                case 1:echo "<td><span class='label label-warning'>等待</span><a data-status='".$value['status']."' data-id='".$value['id']."' href='javascript:;' class='al-toggle-button al-toggle-active'></a></td>";break;
+                                case 2:echo "<td><span class='label label-success'>运行</span></td>";break;
+                                case 3:echo "<td><span class='label label-success'>完成</span><a data-status='".$value['status']."' data-id='".$value['id']."' href='javascript:;' class='al-toggle-button al-toggle-active'></a></td>";break;
+                                case 4:echo "<td><span class='label label-light'>停止</span><a data-status='".$value['status']."' data-id='".$value['id']."' href='javascript:;' class='al-toggle-button'></a></td></td>";break;
+                                default:echo "<td>未知状态</td>";
+                            }
+                            echo "<td><a href='#' class='MonitorRule t-handle' data='".$value['id'].'_'.$value['params']['monitor_type']."'>查看监控日志</a>&nbsp;<a href='#' id='globalSet' class='t-handle' data='".$value['id']."'>高级配置</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <div class="m-handle-wrap">
+                        <a class="m-btn m-rmargin" id="deleteAll" href="javascript:;" />删除已选预警规则</a>
+                </div>   
+            </section>
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            $('#s-submit').bind('click',function(){
+                var sdate = $("#date_range").attr("sdate");
+                var edate = $('#date_range').attr("edate");
+                var appkey = $('#app_key').val();
+                window.location='<?php echo $DetailsUrl;?>'+'?sdate='+sdate+'&edate='+edate+'&appkey='+appkey;
+            })
+            $('.MonitorRule').bind('click',function () {
+                var id = $(this).attr('data')
+                layer.open({
+                    type: 2,
+                    title: '监控日志',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['1000px', '700px'],
+                    content: '<?php echo $showMonitorLogUrl;?>'+'?id='+id,
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+            $('#addMonitor').bind('click',function(){
+                layer.open({
+                    type: 2,
+                    title: '监控配置',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['700px', '700px'],
+                    content: '<?php echo $AddMonitorUrl;?>',
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+            $('#deleteAll').bind('click',function () {
+                layer.confirm('确定要删除选中项?删除后不可恢复!', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var id = '';
+                    $('.check').each(function(e,val){
+                        if($(this).attr("checked")){
+                            //console.log(val.value);
+                            if(id == ''){
+                                id = val.value;
+                            }else{
+                                id = id + ","+ val.value;
+                            }
+                        }
+                    })
+                    if(id == ''){
+                        layer.msg('没有选中删除项!',{'icon':2});
+                        return false;
+                    }
+                    $.get("<?php echo $DeleteMonitor;?>", {ids:id}, function(result){
+                        if (result== 1){
+                            //layer.msg('删除成功!',{'icon':1});
+                            location.reload();
+                        }else{
+                            layer.msg('删除失败!',{'icon':1});
+                        }
+                    },'json');
+                }, function(){
+                });
+            })
+
+            // 运行状态点击事件
+            $(".al-toggle-button").click(function(){
+                var status = parseInt($(this).attr("data-status"));
+                var id = parseInt($(this).attr("data-id"));
+                $.get("<?php echo $ChangeMonitorStatus;?>", {id:id,status:status}, function(result){
+                    if (result.status== 1){
+                        location.reload();
+                    }else{
+                        layer.msg(result.msg,{'icon':2});
+                        //location.reload();
+                    }
+                },'json');
+            });
+
+            //全局预警等级设定
+            $('#globalSet').bind('click',function(){
+                var id = $(this).attr('data');
+                layer.open({
+                    type: 2,
+                    title: '预警高级设置',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['700px', '800px'],
+                    content: '<?php echo $GlobalSetUrl;?>'+'?id='+id,
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

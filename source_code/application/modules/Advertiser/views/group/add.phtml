@@ -1,0 +1,62 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li class="current"><a href="<?php echo $listUrl;?>">用户组列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">添加用户组</a></li>
+	</ul>
+</div>
+<div class="h_a">添加用户组</div>
+<form method="post" action="<?php echo $addPostUrl;?>" id='groupForm'>
+<input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+    <table width="100%">
+        <tr class="tr">
+            <th class="th">用户组名称</th>
+            <td class="td"><input type="text" maxlength="30" name="name" class="input"></td>
+        </tr>
+        <tr class="tr">
+            <th class="th">用户组描述</th>
+            <td class="td"><textarea class="textarea" name="descrip"></textarea></td>
+        </tr>
+        <tr class="tr">
+            <th class="th">权限分配</th>
+            <td class="td">
+<?php foreach($level as $key => $val) { ?>
+                <dl class="cc purview_list">
+            <dt><label><input name="<?php echo $key;?>" onClick="checkSome('<?php echo $key;?>');" type="checkbox" value="1" class="CheckSome_<?php echo $key;?>" /><?php echo $val['name'];?></label></dt>
+            <dd>
+            <?php foreach($val['items'] as $sonKey => $sonVal) { 
+            	$name = "rvalue[".$key."][".$sonVal['id']."]";
+            	?> 
+	               <label><input name="<?php echo $name;?>" type="checkbox" value="1" class="CheckSome_<?php echo $key;?>" /><?php echo $sonVal['name'];?></label>
+            <?php } ?>
+                    </dd>
+                </dl>
+<?php } ?>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit">保存</button></span></span></div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        ajaxForm('groupForm',function(ret){
+            ajaxRedirect(ret, baseurl+'/Admin/Group/index');
+        });
+    })
+    //权限选中大类的时候同时选中小类
+    function checkSome(val) {
+        var className = 'CheckSome_'+val;
+        var classObj  = $('.'+className);
+        for (var i=1;i<classObj.length;i++) {
+            var e = classObj[i];
+            if (classObj[0].checked == true) {
+                e.checked = true;
+            } else {
+                e.checked = false;
+            }
+        }
+    }
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

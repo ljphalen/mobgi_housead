@@ -1,0 +1,283 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>推广活动组管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="date" class="layui-input" placeholder="请选择日期" id="date">
+                                <input type="hidden" name="sdate" class="layui-input" value="" >
+                                <input type="hidden" name="edate" class="layui-input" value="" >
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" placeholder="请输入活动组名称" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="channel_no" placeholder="请输入渠道号" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+                            <button type="button" id="newActivityGroup" class="right layui-btn layui-btn-normal">新建活动组</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_group_table" lay-filter="activity_group_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> -->
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+    //  请求链接 
+    var activityGroupListUrl = baseurl + "<?php echo $activityGroupListUrl; ?>";  // 列表
+    var addActivityGroupPostUrl = baseurl + '<?php echo $addActivityGroupPostUrl; ?>';// 新增
+    var activityGroupUnitUrl =  baseurl + '<?php echo $activityGroupUnitUrl; ?>'; // 编辑 
+    /* 渲染表格 参数  */
+    var layuiTable; // 表格对象
+    var table_id = '#activity_group_table';
+    var where = {token: token, app_id: JSON.parse(localStorage.app_data).app_id}; // 查询条件
+    var page = true; // 默认开启分页
+    var cols = [[ //表头
+        {field: 'id', title: 'ID',  sort: true  , }
+        ,{field: 'create_time', title: '创建时间',  sort: true  , }
+        ,{field: 'name', title: '活动名称',  sort: true ,}
+        ,{field: 'channel_no', title: '渠道号', sort: true , }
+        ,{field: 'num', title: '活动数量', sort: true , }
+        ,{field: '', title: '操作', align:'center', toolbar: '#barDemo'}
+    ]]; 
+    // 判断本地缓存是否 有
+    if(localStorage.searchData){
+        if(window.location.href == JSON.parse(localStorage.searchData).url){
+            page = JSON.parse(localStorage.searchData).page;
+            where = JSON.parse(localStorage.searchData).where;
+            where.app_id = JSON.parse(localStorage.app_data).app_id;
+            // 设置日期
+            $("#date").val(where.date);
+            $("#sdate").val(where.sdate);
+            $("#edate").val(where.edate);
+            // 设置渠道
+            $("input[name='channel_no']").val(where.channel_no); 
+            $("input[name='name']").val(where.name); 
+        }
+    }
+    //JavaScript代码区域
+    layui.use(['element','form','laydate','table'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        layuiTable = layui.table;     
+        // 初始化 date 插件
+        laydate.render({
+            elem: '#date' //指定元素
+            ,value: ''
+            ,range: true
+            ,done: function(value, date, endDate){
+                var begin = '',end='';
+                if(value){
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end  = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+        //初始化表格
+        var initTable = {
+            elem: table_id,
+            where: where,
+            url : activityGroupListUrl,
+            cols: cols,
+            page: page
+        };
+        renderTable(table,initTable,null);
+        //监听单元格事件
+        table.on('tool(activity_group_table)', function(obj){
+            var data = obj.data;
+            // 复制事件
+            var copy =document.getElementById("copy");
+            if(obj.event === 'setChannel_no'){
+                if(obj.event === 'setChannel_no'){
+                    $("#copy").val(data.channel_no);
+                }
+                copy.select(); // 选择对象
+                document.execCommand("Copy"); // 执行浏览器复制命令 */
+                layer.msg("复制到剪切板");
+            }
+            //  -- 查看 ， 编辑
+            if(obj.event === 'edit'){
+                $.ajax({
+                    url : activityGroupUnitUrl ,
+                    async: false,
+                    data : {token:token , id:data.id },
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        if(data.success){
+                            addActivityGroup(obj.tr,data.data);
+                        }else{
+                            layer.msg(data.msg); 
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg); 
+                    }
+                });
+                //
+            }
+        });
+
+        //监听搜索按钮
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            field.app_id = $("select[name='app_id']").find("option:selected").val();
+            field.token = token;
+            var params = {
+                elem: table_id,
+                url : activityGroupListUrl,
+                where: field,
+                cols: cols,
+                page: page
+            }
+            renderTable(table,params,null);
+            return false;
+        });
+        // 新增 
+        $("#newActivityGroup").click(function(){
+            addActivityGroup($(this),null);
+        });
+    });
+
+    // 新建，编辑 活动组弹窗
+    function addActivityGroup(that,jsonData){
+        var name='',channel_no='',text='新建';
+        if(jsonData){
+            text = '编辑' ;
+            name = jsonData.name;
+            channel_no = jsonData.channel_no;
+        }
+        var temp = `
+            <br>
+            <form class="layui-form" id="add_activityGroup">
+                <div class="layui-form-item">
+                    <label class="layui-form-label long-label">活动组名称</label>
+                    <div class="layui-input-inline ">
+                        <input type="text" name="name" placeholder="" value="`+name+`" class="layui-input" autocomplete="off">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">*</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label long-label">渠道号</label>
+                    <div class="layui-input-inline ">
+                        <input type="text" name="channel_no" placeholder="" class="layui-input" value="`+channel_no+`" autocomplete="off">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">（应用为安卓时必填。）</div>
+                </div>
+            </form>`;
+        layer.open({
+            title : text +'推广活动组',
+            type: 1,
+            area: ['800px', '400px'],
+            shadeClose: true, //点击遮罩关闭
+            content: temp,
+            btn: ['保存', '取消'],
+            success: function(layero){
+                var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+                btn.on("click",function(){
+                    var arr = $("#add_activityGroup").serializeArray();
+                    if(jsonData){
+                        var objId = { name: 'id' , value: jsonData.id }; 
+                        arr.push(objId) ;
+                    }
+                    var currentApp_id = $("select[name='app_id']").find("option:selected").val();
+                    arr.push({ name: 'token', value: token });
+                    arr.push({ name: 'app_id', value: currentApp_id });         
+                    $.ajax({
+                        url : addActivityGroupPostUrl ,
+                        async: false,
+                        data : arr,
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                            layer.msg(data.msg); 
+                            if(data.success){
+                                setTimeout(function(){
+                                    if(jsonData){
+                                        that.find("td").each(function(){
+                                            if($(this).attr('data-field')=='name'){
+                                                $(this).find("div").html(arr[0].value);
+                                            }
+                                            if($(this).attr('data-field')=='channel_no'){
+                                                $(this).find("div").html(arr[1].value);
+                                            }
+                                        });
+                                    }else{
+                                        window.location.reload(); 
+                                    } 
+                                }, 500);
+                            }
+                            
+                        },
+                        error:function(xhr,msg,e){
+                            layer.msg(msg); 
+                        }
+                    }); 
+                });
+            }
+        }); 
+
+    }
+//   topMenu 切换app 回调
+var appIdSelectChange = {
+    callBack:function(id){
+        console.log(id)
+        var params = {
+            elem: table_id,
+            url : activityGroupListUrl,
+            where: { token: token ,app_id: id},
+            cols: cols,
+            page: page
+        }
+        renderTable(layuiTable,params,null);
+    } 
+};
+
+
+</script>
+</body>
+</html>
+      

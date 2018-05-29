@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="Keywords" content="">
+    <meta name="author" content="idreamsky">
+    <title><?php echo $activityInfo['title'];?></title>
+    <link href="<?php echo $staticPath?>/images/icon.ico?v=<?php echo $version;?>" rel="shortcut icon">
+    <link rel="stylesheet" href="<?php echo $staticPath?>/css/style.css?v=<?php echo $version;?>">
+    <script src="<?php echo $staticPath?>/js/jquery-3.2.1.min.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath?>/js/common.js?v=<?php echo $version;?>"></script>
+    <script>
+        var token ='<?php echo $token; ?>';
+        // 防止重复抽奖
+        var state = true;
+        //反正抽奖过程点击商品详情
+        var isClickGoodsDetail=true;
+        var activity_id = '<?php echo $activity_id;?>';
+        var isShowPrizeTimes = true;
+        var user_id = '<?php echo $user_id;?>';
+        if( (user_id == '') || (typeof(user_id) == "undefined") || user_id == 'undefined'){
+            user_id = getUUID('<?php echo $webroot.$uuidUrl;?>');
+        }
+        var cw = document.documentElement.clientWidth || document.body.clientWidth;
+        document.documentElement.style.fontSize = cw / 7.5 + 'px';
+    </script>
+</head>
+<body>
+    <?php if($activityInfo){?>
+    <div class="wrapper">
+        <div class="head">
+            <img class="banner" src="<?php echo $staticPath?>/images/head.png" alt="banner" />
+            <a target="_blank" href="<?php echo $webroot.$prizeUrl.'?activity_id='.$activity_id;?>">
+                <img src="<?php echo $staticPath?>/images/head-btn.png" />
+            </a>
+            <p class="total">抽奖机会剩余
+                <span id="draw_times">0</span>次
+            </p>
+        </div>
+        <div class="main">
+            <div class="bg">
+                <img src="<?php echo $staticPath?>/images/bg.png" />
+            </div>
+            <!-- 商品列表-->
+            <ul class="list">
+            </ul>
+
+            <div class="rule-wrap">
+                <p class="title">活动规则</p>
+                <ul class="rule-list">
+                    <?php echo html_entity_decode($activityInfo['desc']);?>
+                </ul>
+            </div>
+
+        </div>
+        <!-- 奖品预览 -->
+        <div class="view-wrap">
+            <div class="view-mask"></div>
+            <div class="view-main">
+                <div class="view-details">
+                    <p class="banner">
+                        <img src="<?php echo $staticPath?>/images/test-banner.jpg" />
+                    </p>
+                    <p class="banner-title"></p>
+                    <div class="banner-desc"></div>
+                </div>
+                <i class="hide_btn"></i>
+            </div>
+        </div>
+
+        <!-- 抽奖成功 -->
+        <div class="success-wrap">
+            <div class="success-mask"></div>
+            <div class="success-main">
+                <i class="del"></i>
+                <p class="title">恭喜您中奖</p>
+                <p class="success-img">
+                    <img src="" />
+                </p>
+                <p class="desc">获得：时尚旅行超级包x1</p>
+                <a class="submit"></a>
+            </div>
+        </div>
+        <div class="error-wrap" style="display: none;">
+            <div class="mask"></div>
+            <div class="main">
+                <p class="del"></p>
+                <a class="btn del">谢谢参与</a>
+            </div>
+        </div>
+
+    </div>
+	<?php }else{ ?>
+        <p class="" style="font-size: 0.5rem;text-align: center;padding-top: 0.5rem;">活动未开始,敬请期待！</p>
+	<?php }?>
+</body>
+<script>
+    var draw_url ='<?php echo $webroot.$drawUrl; ?>';
+    var goodsData = <?php echo $goodsData;?>;
+    var prizeData ;
+    $(function(){
+        getUser('<?php echo $webroot.$getUserUrl;?>');
+        initGoodsList();
+    });
+     //关闭浮层
+    $(".del").click(function () {
+        $(".error-wrap").hide();
+        $(".success-wrap").hide();
+        $(".wrapper").css("height", 'auto');
+        $(".wrapper").css("overflow", 'auto');
+    });
+
+    //点击抽奖按钮
+    $(".list").delegate('li','click',function () {
+        var id = parseInt($(this).attr("data-id"));
+        var drawTimes = $('#draw_times').html();
+        if (id == 0) {
+            if(drawTimes == 0){
+                zdalert('提示','抽奖次数已用完');
+                return false;
+            }
+            drawPrize(); // 抽奖
+        } else {
+            if(isClickGoodsDetail){
+                goodsDeatail(id);
+            }
+        }
+    });
+    //商品收起按钮
+    $(".hide_btn").click(function () {
+        $(".view-wrap").hide();
+    });
+
+</script>
+</html>

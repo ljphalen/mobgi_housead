@@ -1,0 +1,177 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"
+            xmlns="http://www.w3.org/1999/html"></script>
+    <script type="text/javascript">
+        function confirmSubmit(){
+
+            var id = $('#id').val();
+            var float_rate = $('#float_rate').val();
+            var n_changepoints = $('#n_changepoints').val();
+            var changepoint_prior_scale = $('#changepoint_prior_scale').val();
+            var interval_width = $('#interval_width').val();
+            var holidays = $('#holidays').val();
+            var holidays_prior_scale = $('#holidays_prior_scale').val();
+            var periods = $('#periods').val();
+            var freq = $('#freq').val();
+            var is_open = $('#is_open').val();
+
+            var url = '<?php echo $GlobalSetUrl;?>';
+            var fd = new FormData();//h5上传
+            fd.append('float_rate',float_rate);
+            fd.append('n_changepoints',n_changepoints);
+            fd.append('changepoint_prior_scale',changepoint_prior_scale);
+            fd.append('interval_width',interval_width);
+            fd.append('holidays',holidays);
+            fd.append('holidays_prior_scale',holidays_prior_scale);
+            fd.append('float_rate',float_rate);
+            fd.append('periods',periods);
+            fd.append('freq',freq);
+            fd.append('is_open',is_open);
+            fd.append('id',id);
+            fd.append('token',token);
+            $.ajax({
+                url: url,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function(data) {
+                    if(data == 1){
+                        layer.msg('操作成功',{icon: 1});
+                        window.parent.location.reload();
+                        parent.layer.close();
+                    }else{
+                        layer.msg('操作失败',{icon: 2});
+                        //location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+    <style>
+        .importtable{
+            border-collapse: collapse;border-spacing:0;
+        }
+        .importtable thead{
+            border: 1px solid #e8e8e8; border-width: 1px;
+        }
+        .importtable thead tr th{
+            padding: 10px;
+        }
+        .importtable tbody tr td{
+            padding: 10px;
+        }
+    </style>
+<div class="colMain">
+
+    <div class="main">
+        <div class="app-detail">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <ul class="form">
+                    <li>
+                        <span class="label">下置信区间浮动百分比：</span>
+                        <div class="fc">
+                                <input type="text" name='float_rate' id='float_rate' value="<?php echo $params['float_rate'];?>" />
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">n_changepoints：</span>
+                        <div class="fc">
+                                <input type="text" name='n_changepoints' id='n_changepoints' value="<?php echo $params['n_changepoints'];?>" />
+                                <span class="red">*</span>
+                            <span class="red">(检测变异点个数,默认值25)*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">changepoint_prior_scale：</span>
+                        <div class="fc">
+                                <input type="text" name='changepoint_prior_scale' id='changepoint_prior_scale' value="<?php echo $params['changepoint_prior_scale'];?>" />
+                                <span class="red">*</span>
+                            <span class="red">(如果趋势变化过度（灵活性过高）或欠缺（灵活性不足）使用,默认值0.05)*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">interval_width：</span>
+                        <div class="fc">
+                            <input type="text" name='interval_width' id='interval_width' value="<?php echo $params['interval_width'];?>" />
+                            <span class="red">*</span>
+                            <span class="red">(置信区间间隔，默认值:0.80)*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">holidays：</span>
+                        <div class="fc">
+                            <textarea name='holidays' id='holidays' /><?php echo $params['holidays'];?></textarea>
+                            <span class="red">*</span>
+                            <span class="red">(节假日，寒暑假条件，用逗号隔开)*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">holidays_prior_scale：</span>
+                        <div class="fc">
+                            <input type="text" name='holidays_prior_scale' id='holidays_prior_scale' value="<?php echo $params['holidays_prior_scale'];?>" />
+                            <span class="red">*</span>
+                            <span class="red">(假期平滑度处理，减少会抑制节假日参数，默认值为10.0)*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">periods：</span>
+                        <div class="fc">
+                            <input type="text" name='periods' id='periods' value="<?php echo $params['periods'];?>" />
+                            <span class="red">*</span>
+                            <span class="red">(预测周期)*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">freq：</span>
+                        <div class="fc">
+                            <input type="text" name='freq' id='freq' value="<?php echo $params['freq'];?>" />
+                            <span class="red">*</span>
+                            <span class="red">(预测类型(D:天,H:小时))*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">启用：</span>
+                        <div class="fc">
+                            开:<input type="radio" name='is_open' id='is_open' value="1" <?php if($params['is_open'] == 1) echo "checked";?> />
+                            关:<input type="radio" name='is_open' id='is_open' value="0" <?php if($params['is_open'] == 0) echo "checked";?> />
+                            <span class="red">*</span>
+                            <span class="red">(启用高级配置，否则为默认配置)*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">说明：</span>
+                        <div class="fc">
+                            <span style="color:red;">
+                                以上值只做调优用，运营人员请忽略!
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="hidden" value="<?php echo $task_id;?>" name="id" id="id">
+                            <input type=""  value="保存" class="submit"  onclick="confirmSubmit()"/>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#monitor_type').bind('change',function(){
+            var type = $(this).val();
+            if(type == 1){
+                $('.ecpm_show').css('display','block');
+                $('.dau_show').css('display','none');
+            }else{
+                $('.dau_show').css('display','block');
+                $('.ecpm_show').css('display','none');
+            }
+        })
+
+    })
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

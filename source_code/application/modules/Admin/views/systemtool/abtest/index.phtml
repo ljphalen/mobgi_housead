@@ -1,0 +1,175 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this"><a href="<?php echo $listUrl;?>">测试列表</a></li>
+                        <li><a href="<?php echo $addUrl;?>">添加测试</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <!-- search begin -->
+                <div class="temp-search-wrap">
+                    <form class="layui-form" action="<?php echo $listUrl;?>" method="GET"  id="searchForm" >
+                        <div class="layui-form-item">
+                         <div class="layui-input-inline">
+                                <select name="conf_type" lay-verify="" lay-search>
+                                    <option value="" >所有测试类型</option>
+                                   <?php foreach ($configType as $key=> $val){?>
+                                     <option value="<?php echo $key;?>"  <?php echo ($search['conf_type'] == $key)?"selected":'';?>><?php echo $val; ?></option>
+                                    <?php }?>
+                                </select> 
+                            </div>  
+                           <div class="layui-input-inline">
+                                <select name="app_key" lay-verify="" lay-search>
+                                    <option value="" >所有应用</option>
+                                   <?php foreach ($appList as $key=> $val){?>
+                                     <option value="<?php echo $key;?>"  <?php echo ($search['app_key'] == $key)?"selected":'';?>><?php echo $val['app_name'].'('.$val['platform_cn'].')';; ?></option>
+                                    <?php }?>
+                                </select> 
+                            </div>  
+                            <div class="layui-input-inline">
+                                <input type="text" name="conf_name" placeholder="请输入名称查询" class="layui-input" value="<?php echo $search['conf_name']; ?>">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="device_id" placeholder="请输入设备号（imei/idfa）" class="layui-input" value="<?php echo $search['device_id']; ?>">
+                            </div>
+                            
+                            <div class="layui-input-inline">
+                                <button  class="layui-btn layui-btn-normal">查询</button>
+                            </div>
+                            <a id="upload-temp" type="button" class="floatright layui-btn layui-btn-normal" href="<?php echo $addUrl;?>">添加配置</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- search  end  -->
+                <!-- table begin -->
+                <div class="layui-form-item layui-form" >
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                            <th>id</th>
+                            <th>测试名称</th>
+                            <th>测试类型</th>
+                             <th>测试时间</th>
+                            <th>应用/设备号</th>
+                            <th>状态/开启上报/开发模式</th>
+                            <th>流量配置名称/权重</th>
+                            <th>操作</th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                          <?php foreach ($list as $val){?>
+                            <tr>
+                                <td><a class="link-set" href="<?php echo $viewUrl.'?conf_id='.$val['conf_id'];?>"><?php echo $val['conf_id'];?></a></td>
+                                <td><?php echo $val['conf_name'];?></td>
+                                <td><?php echo $configType[$val['conf_type']];?></td>
+                                <td><?php echo $val['start_time'].'~'.$val['end_time'];?></td>
+                                <td>
+                                <?php 
+                                echo $val['conf_type'] ==1?$appList[$val['app_key']]['app_name'].'('.$appList[$val['app_key']]['app_key'].')':$val['content'];                                
+                                ?></td>
+                                <td>
+                                    <input type="checkbox" <?php echo $val['status']?'checked=""':'';?> name="status" lay-skin="switch" lay-filter="switch" lay-text="ON|OFF" value="<?php echo $val['status'];?>" data-id="<?php echo $val['conf_id'];?>" data-filed="status">
+                                      <?php if($val['conf_type'] ==2){?>
+                                        <input type="checkbox" <?php echo $val['is_report']?'checked=""':'';?> name="is_report" lay-skin="switch" lay-filter="switch" lay-text="ON|OFF" value="<?php echo $val['is_report'];?>" data-id="<?php echo $val['conf_id'];?>" data-filed="is_report">
+                                        <input type="checkbox" <?php echo $val['dev_mode']?'checked=""':'';?> name="dev_mode" lay-skin="switch" lay-filter="switch" lay-text="ON|OFF" value="<?php echo $val['dev_mode'];?>" data-id="<?php echo $val['conf_id'];?>" data-filed="dev_mode">
+                                   <?php }?>
+                                </td>
+                                <td><?php echo $val['flow_conf']?></td>
+                                <td>
+                                    <a class="link-set" href="<?php echo $viewUrl.'?conf_id='.$val['conf_id'];?>">查看</a>
+                                    <a class="link-set" href="<?php echo $addUrl.'?conf_id='.$val['conf_id'];?>">编辑</a>
+                                    <a class="link-delete" data-id="<?php echo $val['conf_id'];?>">删除</a>
+                                </td>
+                            </tr>
+                              <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table end -->
+                <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+  layui.use('form', function(){
+	  //监听指定开关
+	  layui.form.on('switch(switch)', function(data){
+          var staus;   
+          if(data.elem.checked){
+        	     status = 1;
+             }else{
+            	 status = 0;
+             }
+          var id = $(this).attr("data-id");
+          var filed = $(this).attr("data-filed");
+          var data =  {
+                	conf_id : id,
+                	filed:filed,
+                    token : token,
+                    status:status
+                }
+          layer.confirm('确认是否修改?', {icon: 3, title:'提示'}, function(index){
+              $.ajax({
+                  url : baseurl + '<?php echo $updateStatusUrl;?>' ,
+                  async: false,
+                  data : data,
+                  type : 'post',
+                  dataType : 'json',
+                  jsonp : 'callback',
+                  success:function(data){
+                      layer.msg(data.msg);
+                      layer.close(index);
+                  },
+                  error :function(xhr,msg,e){
+                      layer.msg(msg); 
+                  }
+              });
+    	  });
+	  });
+	});
+ // 删除 
+    $(".layui-table").delegate(".link-delete","click",function(){
+        var id = $(this).attr("data-id");
+        var that = $(this);
+        var data =  {
+        	conf_id : id,
+            token : token,
+        }
+        layer.confirm('确认是否要删除?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : baseurl + '<?php echo $deleteUrl?>' ,
+                async: false,
+                data : data,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.close(index);
+                    layer.msg(data.msg);
+                    if(data.success){
+                        that.parent().parent().remove();
+                    }
+                },
+                error :function(xhr,msg,e){
+                    layer.close(index);
+                    layer.msg(msg); 
+                }
+            });
+           
+        });
+    });
+})();
+</script>
+</html>

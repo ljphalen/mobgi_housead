@@ -1,0 +1,83 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li><a href="<?php echo $listUrl;?>">用户列表</a></li>
+	</ul>
+</div>
+<div class="h_a"><?php echo $navTitle?>用户</div>
+<form method="post" action="<?php echo $checkPostUrl;?>" id="editUserFrom">
+    <input name="user_id" value="<?php echo $userInfo['user_id'];?>" type="hidden"/>
+    <input name="is_check"  id="is_check"  value="" type="hidden"/>
+    <input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+	<table width="100%">
+		<tr class="tr">
+			<th class="th">注册邮箱</th>
+			<td class="td"> <?php echo $userInfo['email']; ?></td>
+		</tr>
+		<tr class="tr">
+			<th class="th">注册类型</th>
+			<td class="td">
+				<select name="register_type"    disabled="disabled">
+				<?php foreach($registerType as $key => $value) {?>
+				                <option <?php echo $userInfo['register_type'] == $key ? 'selected="selected"' : '';?> value="<?php echo $key;?>"><?php echo $value;?></option>
+				<?php }?>
+	            </select>       
+            </td>
+		</tr>
+	
+		<tr class="tr">
+			<th class="th">用户名/企业名</th>
+			<td class="td"><?php echo $userInfo['user_name'];?> </td>
+		</tr>
+	   <tr class="tr">
+			<th class="th">身份证号/营业执照号</th>
+			<td class="td"><?php echo $userInfo['card_id'];?> </td>
+		</tr>
+	    <tr class="tr">
+			<th class="th">联系方式</th>
+			<td class="td"><?php echo $userInfo['mobile'];?> </td>
+		</tr>
+		 <tr class="tr">
+			<th class="th">联系人</th>
+			<td class="td"><?php echo $userInfo['contact'];?> </td>
+		</tr>
+		<tr class="tr">
+			<th class="th">通讯地址</th>
+			<td class="td"><?php echo $userInfo['address'];?> </td>
+		</tr>
+		
+		<tr class="tr">
+			<th class="th">用户类型</th>
+			<td class="td">
+				<select name="user_type"  id="user_type" <?php echo $userInfo['user_id']?'disabled="disabled"':'';?> >
+				<?php foreach($userType as $key => $value) {?>
+				                <option <?php echo $userInfo['user_type'] == $key ? 'selected="selected"' : '';?> value="<?php echo $key;?>"><?php echo $value;?></option>
+				<?php }?>
+	            </select>       
+            </td>
+		</tr>
+		<tr class="tr">
+			<th class="th">审批意见</th>
+			<td class="td"><input type="text" maxlength="50" name="check_msg" class="input">
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit" onclick="checkUser(1)">审批通过</button></span></span>
+<span class="btn"><span><button onfocus="blur();" type="submit" onclick="javascript:checkUser(-1)">审批不通过</button></span></span>
+<span class="btn"><span><button type="button" onclick="window.location.href='<?php echo $listUrl.'?is_check=0';?>'" >返回</button></span></span>
+</div>
+</form>
+<script type="text/javascript">
+//用户表单数据提交
+function checkUser(is_check){
+	$('#is_check').val(is_check);
+	ajaxForm('editUserFrom',function(ret){ 
+		    ajaxRedirect(ret, baseurl+'/Admin/User/index?is_check=0');
+	 });
+	 
+}
+
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

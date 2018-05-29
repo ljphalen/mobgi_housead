@@ -1,0 +1,90 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p><?php if($appsflyerConfig){ echo '编辑';}else{ echo '新建';} ?>AF应用配置</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <!-- 基本信息 begin -->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">AF的appid</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="id" value="<?php echo $appsflyerConfig['id']; ?>" />
+                                <input type="text" name="appsflyer_appid" placeholder="" value="<?php echo $appsflyerConfig['appsflyer_appid']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <hr class="layui-bg-gray">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                                <button id="cancel" type="reset" class="layui-btn layui-btn-primary">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- form end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+<script>
+/* 请求链接 */
+var addAppsflyerAppPostUrl = baseurl + '<?php echo $addAppsflyerAppPostUrl; ?>'; // 提交表单
+var appsflyerAppUrl = baseurl + '<?php echo $appsflyerAppUrl; ?>'; //  列表页面
+
+/* 默认禁止切换应用  */
+$("select[name='app_id']").attr("disabled","disabled");
+//JavaScript代码区域
+layui.use(['element','form'], function(){
+    var element = layui.element;
+    var form = layui.form;
+
+    //表单提交
+    form.on('submit(submit_form)', function(data){
+        data.field.token = token;
+        data.field.app_id = $("select[name='app_id']").find("option:selected").val();
+        $.ajax({
+            url : addAppsflyerAppPostUrl,
+            async: false,
+            data : data.field,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.msg(data.msg);
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.href = appsflyerAppUrl;
+                    },500);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+        return false;
+    });
+    // 取消
+    $("#cancel").click(function(){
+        window.location.href = appsflyerAppUrl;
+    });
+});
+</script>
+</body>
+</html>

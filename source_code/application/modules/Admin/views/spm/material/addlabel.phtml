@@ -1,0 +1,500 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/material.css?v=<?php echo $version;?>" rel="stylesheet" />
+<style>
+    .upload-list li{
+        float: left;
+        width: 200px;
+        /* height: 450px; */
+        padding-bottom: 20px;
+        border-radius: 6px;
+        background: #eee;
+        position: relative;
+        border: 1px solid #e2e2e2;
+        min-height: 100px;
+        margin: 0 20px 20px 0;
+    }
+
+    .label-list-wrap{
+       width:100%; 
+       overflow-x: hidden;
+    }
+    .label-list { 
+        float:left;
+        width:100%;
+        padding-left:110px;
+        box-sizing: border-box;
+        padding-top:10px;
+    }
+    .label-list li{
+        float:left;
+        margin:0 10px 26px 0;
+        background:#eee;
+        color:#888;
+        height:40px; 
+        line-height:40px;
+        cursor:pointer;  
+        border-radius:6px; 
+        position:relative;
+        
+    }
+
+    .label-list li span{
+        display:inline-block;
+        position:absolute;
+        z-index: 5; 
+        font-size:12px;
+        height:22px;
+        line-height:22px;
+        cursor:pointer; 
+        padding: 0 3px; 
+        display:none;
+    }
+
+    .label-list li .del{
+        bottom:-22px;
+        right:0;
+        background:#FF5722;
+        color:#fff;
+    }
+    .label-list li .edit{
+        bottom:-22px;
+        right:30px;
+        background:#009688;
+        color:#fff;
+    }
+
+    .label-list li p{
+        padding:0 20px 0 20px;
+        border-radius:6px;
+        position:relative;
+        z-index: 2;
+        min-width:80px;
+    }
+
+    .label-list li i{
+        position:absolute;
+        z-index: 5; 
+        right: 18px;
+        top: -18px;
+        color:#333;
+    }
+
+    .label-list li u{
+        display:block;
+        position:absolute;
+        z-index: 5; 
+        right: -5px;
+        top: -5px;
+        width:18px;
+        height:18px;
+        border-radius:20px;
+        line-height:18px;
+        background:#555;
+        text-align : center;
+        color:#fff;
+        text-decoration:none;
+    }
+  
+
+    #label-list2 li p{
+        color:#fff;
+        background:#5FB878; 
+    }
+
+    .label-list .active p{
+        background:#FFB800;
+        color:#fff;
+    }
+
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+
+        <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>添加标签</p>
+                </div>
+                <!-- 查询条件 begin -->
+                <form class="layui-form" action="">
+                <div class="query-condition">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">一级标签:</label>
+                            <div class="layui-input-inline" style="width:200px;">
+                                <input type="text" name="label1" required="" lay-verify="required" placeholder="请输入一级标签" autocomplete="off" class="layui-input">
+                            </div>
+                            <button type="button" class="layui-btn addLabel1" style="float:left;">
+                                <i class="layui-icon">&#xe654;</i>
+                            </button>
+                        </div>
+                        <div class="label-list-wrap">
+                            <ul id="label1-list" class="label-list">
+                            </ul>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">二级标签:</label>
+                            <div class="layui-input-inline" style="width:200px;">
+                                <input type="text" name="label2" required="" lay-verify="required" placeholder="请输入一级标签" autocomplete="off" class="layui-input">
+                            </div>
+                            <button type="button" class="layui-btn addLabel2" style="float:left;">
+                                <i class="layui-icon">&#xe654;</i>
+                            </button>
+                        </div>
+                        <div class="label-list-wrap">
+                            <ul id="label-list2" class="label-list">
+                               
+                            </ul>
+                        </div>
+                </div>
+                <!-- 查询条件 end  -->
+                <div class="layui-form-item" style="margin-top:50px;" >
+                    <div class="layui-input-block">
+<!--                    <button type="button"  class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>-->
+                    <a type="button" class="layui-btn layui-btn-primary" href="javascript:history.go(-1)">返回</a>
+                    </div>
+                </div>
+
+                </form>
+            </div>
+        </div>
+        </div>
+        
+    </div>
+
+</body>
+
+</html>
+<script>
+
+    var labelData = <?php echo $labels;?>  // all
+    var newLabelData = []; // new 
+
+    //重新渲染form
+    function renderLayuiForm(){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+    // 渲染 一级标签 
+    function renderData(id){
+        //console.log("渲染:",active)
+        var li = '';
+        for(var key in labelData){
+            var act = '';
+            if(labelData[key]['id']==id){
+                act = 'class="active"'
+            }       
+            li = li + `<li `+act+` data-pid="0"  data-id="`+labelData[key]['id']+`">
+                    <span class="edit">编辑</span><span class="del">删除</span><p>`+labelData[key]['title'] +`</p></li>`;
+        }
+        $("#label1-list").html(li);
+    }
+    renderData();
+
+
+    // 渲染 二级标签 
+    function renderDataLevel2(pid){
+        var li = '',level2 = [];
+        for(var key in labelData){
+            if(labelData[key]['id'] == pid){
+                level2 = labelData[key]['level2'];
+                break;
+            }
+        }
+        if(level2.length>0){
+            for(var index in level2){
+                li = li + '<li data-pid="'+ pid +'" data-id="'+level2[index]['id']+'"><span class="edit">编辑</span><span class="del">删除</span><p>'+level2[index]['title'] +'</p></li>';
+            }
+        }
+        $("#label-list2").html(li);
+    }
+
+    
+    
+    // 一级标签添加
+    $(".addLabel1").click(function(){
+        var Label1 = ($("input[name='label1']").val()).replace(/\s+/g, "");
+        var active =  $("#label1-list").find(".active").attr("data-id") 
+        if(!Label1){
+            layer.msg('请输入标签名'); 
+            return false;
+        }
+        // 判断是该标签否存在 
+        for(var key in labelData){
+            if(labelData[key]['title']==Label1){
+                layer.msg('该标签名已存在，请勿重复添加！'); 
+                return false;
+            }
+        }  
+        var param = {
+            id : 0 ,
+            title : Label1 ,
+            pid : 0 ,
+            type : 'add' ,
+            active : active
+        }        
+        ajaxRequest(param);
+    });
+
+    //  标签点击事件
+    $(".label-list-wrap").delegate('#label1-list li','click',function(){
+        $(this).parent().find("li").removeClass('active');
+        $(this).addClass("active");
+        var id = $(this).attr("data-id");
+        renderDataLevel2(id)
+    });
+
+
+
+    // 二级标签 添加
+    $(".addLabel2").click(function(){
+        var active = $("#label1-list .active");
+        var label = $("input[name='label2']").val().replace(/\s+/g, "");
+        if(!label){
+            layer.msg('请填写二级标签名'); 
+            return false;
+        }
+        if(active.length==0){
+            layer.msg('请选择一级标签'); 
+            return false;
+        }
+        // 判断二级标签名是否存在
+        var pid = active.attr("data-id"); // 一级标签 id 
+        var title = active.find("p").text();  // 一级标签名
+        var data = labelData; // 默认 全部
+        var labelActive = {
+            level2 : []
+        };
+        for(var key in data){  // 获取一级标签
+            if(data[key]['id']== pid){
+                labelActive = data[key]; 
+                break; 
+            }
+        }
+        // console.log(labelActive)
+        // 判断是否已有二级标签库
+        if(labelActive.level2.length > 0 ){
+            // 判断该标签名是否存在
+            var level2 = labelActive.level2;
+            for(var i in level2){ 
+                if(level2[i]['title']==label){
+                    layer.msg('该标签名已存在！'); 
+                    return false;
+                }
+            }
+        }
+
+        var label2 = {
+            id: 0 ,
+            pid: pid,
+            title: label ,
+            type : 'add' ,
+            active: title 
+        }
+        //  请求
+        ajaxRequest(label2);
+    });
+
+    var delLabelData = [];
+    // 一级标签删除
+    $("#label1-list").delegate("li .del","click",function(e){
+        var that = $(this);
+        layer.confirm('是否确认删除', {icon: 3, title:'提示'}, function(index){
+            e.stopPropagation();
+            var oLi = that.parent();
+            var active = $("#label1-list").find(".active p").text();
+            var title = oLi.find("p").text();
+            var id = oLi.attr("data-id");
+            var pid = oLi.attr("data-pid");
+            var param = {
+                id : id,
+                title : title ,
+                pid : pid ,
+                type : 'del' ,
+                active : active
+            }
+            ajaxRequest(param);   
+        }) 
+    });
+
+    // 标签编辑    
+    $(".label-list").delegate(".edit","click",function(){
+        if($(this).text()=="保存"){
+            $(this).parent().find("p").prop("contenteditable",false)
+            $(this).html("编辑");
+            var title = $(this).parent().find("p").text();
+            var id = $(this).parent().attr("data-id");
+            var pid = $(this).parent().attr("data-pid");
+            var active  = $("#label1-list").find(".active").attr("data-id");
+            if(title.length == 0){
+                layer.msg('请输入标签名称!');
+                return false;
+            }
+            var param = {
+                id : id,
+                title : title ,
+                pid : pid ,
+                type : 'edit' ,
+                active : active
+            }
+            ajaxRequest(param);
+        }else{
+            $(this).parent().find("p").prop("contenteditable",true)
+            $(this).html("保存");
+            //提交
+        }      
+    });
+
+    // 二级标签删除
+    $("#label-list2").delegate("li .del","click",function(e){
+        var that = $(this)
+        layer.confirm('是否确认添加', {icon: 3, title:'提示'}, function(index){ 
+            var oLi = that.parent();
+            var pid = oLi.attr("data-pid");
+            var id = oLi.attr("data-id");
+            var title = oLi.find("p").text();
+             // 请求
+            var label2 ={
+                pid : pid ,
+                id : id ,
+                title : title ,
+                type : 'del'
+            }
+            ajaxRequest(label2);
+        })
+         
+    });
+
+
+
+    // 鼠标移动显示
+    $(".label-list").delegate("li","hover",function(){
+        $(this).find("span").toggle();
+    });
+
+
+    // 标签--请求
+    /**
+     *  @param type add 添加 ， edit 编辑 ，del 删除 
+     */
+    function ajaxRequest(parame){
+        console.log('请求parame:',parame)
+        parame.token = token;
+        $.ajax({
+            url : 'addLabel',
+            async: false,
+            data : parame,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.msg(data.msg);
+                if(data.success){
+                    if(parseInt(parame.pid)==0){
+                        renderNewLabel(parame,data.data)
+                    }else{
+                        renderNewLabel2(parame,data.data);
+                    }
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        }); 
+    }
+
+    // 一级标签数据：添加、删除、编辑页面渲染
+    function renderNewLabel(param,id){
+        $("input[name='label1']").val(""); 
+        if(param.type == 'add'){
+            // 新增
+            var label = {
+                id : id ,
+                pid : param.pid,
+                title : param.title,
+                level2 : [],
+            }
+            labelData.push(label);  // 添加到所有数据   
+            renderData(param.active); // 重新渲染    
+        }else if(param.type == 'edit'){
+            // 编辑
+            for(var key in labelData){
+                if(labelData[key]['id']==param.id){
+                    labelData[key]['title'] = param.title; 
+                    break;
+                }
+            }
+            renderData(param.active); // 重新渲染
+        }else if(param.type == 'del'){
+            // 删除
+            for(var key in labelData){
+                if(labelData[key]['id']== param.id ){
+                    labelData.splice(key,1);
+                    break;
+                }
+            }
+            $("#label-list2").empty();
+            renderData(); // 重新渲染
+        }  
+    }
+
+    // 二级标签数据：添加、删除、编辑页面渲染
+    function renderNewLabel2(param,id){ 
+        $("input[name='label2']").val("")
+        var labelActive = {}
+        for(var key in labelData){
+            if(labelData[key]['id']== param.pid ){
+                labelActive = labelData[key]
+                break;
+            }
+        }
+        if(param.type == 'add'){ 
+            var label2 = {
+                id : id ,
+                pid : param.pid ,
+                title : param.title 
+            }
+            labelActive.level2.push(label2);  
+            
+        }else if(param.type == 'edit'){
+            for(var i in labelActive.level2){
+                if(labelActive.level2[i]['id'] == param.id){
+                    labelActive.level2[i]['title'] = param.title;
+                    break;
+                }
+            }
+            
+        }else if(param.type == 'del'){
+            for(var key in labelData){
+                if(labelData[key]['id']== param.pid){
+                    var level2 = labelData[key]['level2'];
+                    for(var i in level2){
+                        if(param.id == level2[i]['id']){ 
+                            level2.splice(i,1);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            
+        }
+        renderDataLevel2(param.pid) 
+    }
+
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'laydate', 'table', 'upload'], function () {
+        var element = layui.element;
+        var form = layui.form;
+    });
+
+</script>

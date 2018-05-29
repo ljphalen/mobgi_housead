@@ -1,0 +1,39 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+	<section class="main-content">
+		<form action="<?php echo $baseUrl; ?>" method="POST">
+			<input name="token" value="<?php echo $token; ?>" type="hidden"/>
+			<table class="table table-bordered table-striped no-margin">
+				<tr class="tr1">
+					<td class="td1">
+						选择日期：
+						<input class="input" type="text" maxlength="30" id="date" name="date" value="<?php echo $date; ?>">
+						<input type="submit" value="生成报表"/>
+					</td>
+				</tr>
+			</table>
+
+		</form>
+	</section>
+
+	<div class="table_list">
+		<table cellspacing="0" cellpadding="0" width="100%">
+			<tbody>
+			<tr class="ct">
+				<td class="td2">接口名</td>
+				<td class="td2">次数</td>
+				<td class="td2">消耗时间</td>
+			</tr>
+			<?php
+			foreach ($list as $v => $val) {
+				$url = "{$monkeytime}?name={$v}&date={$date}";
+				?>
+				<tr class="ct">
+					<td class="td2"><?php echo "<a href=\"{$url}\">{$v}</a>"; ?></td>
+					<td class="td2"><?php echo $val['num']; ?></td>
+					<td class="td2"><?php echo $val['time']; ?></td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
+	</div>
+<?php echo $this->render("layout/footer.phtml"); ?>

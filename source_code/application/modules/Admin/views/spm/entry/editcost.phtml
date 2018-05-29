@@ -1,0 +1,173 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>编辑广告成本</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <form class="layui-form">
+                    <!-- 基本信息 begin -->
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>基本信息:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">产品</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="id" value="<?php echo $entryCost['id']; ?>" />
+                                <input type="hidden" name="activity_id" value="<?php echo $entryCost['activity_id']; ?>" />
+                                <input type="text" name="app_name" placeholder="" value="<?php echo $entryCost['app_name']; ?>" readonly="readonly"  class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">投放活动</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="activity_name" placeholder="" value="<?php echo $entryCost['activity_name']; ?>" readonly="readonly" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">投放渠道组</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="channel_group_name" placeholder="" value="<?php echo $entryCost['channel_group_name']; ?>" readonly="readonly" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">投放人员</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="staff" placeholder="" value="<?php echo $entryCost['staff']; ?>" readonly="readonly" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subtitle"><p>可调参数:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">投放日期</label>
+                            <div class="layui-input-block long-label-input">
+                                <input class="layui-input" name="date_of_log" id="date_of_log" placeholder="" value="<?php echo $entryCost['date_of_log']; ?>" type="text">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">供应商</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="supplier" placeholder="" value="<?php echo $entryCost['supplier']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">投放账户</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="account" placeholder="" value="<?php echo $entryCost['account']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">账户消耗金额</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="account_consumption" placeholder="" value="<?php echo $entryCost['account_consumption']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">返点</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="rebate" placeholder="" value="<?php echo $entryCost['rebate']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">实际消耗金额</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="real_consumption" placeholder="" value="<?php echo $entryCost['real_consumption']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">充值金额</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="deposit" placeholder="" value="<?php echo $entryCost['deposit']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">展示数</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="impressions" placeholder="" value="<?php echo $entryCost['impressions']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">点击数</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="clicks" placeholder="" value="<?php echo $entryCost['clicks']; ?>" class="layui-input">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                            <button id="cancel" type="reset" class="layui-btn layui-btn-primary">取消</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+    <script>
+        /* 请求链接 */
+        var editCostPostUrl = baseurl + '<?php echo $editCostPostUrl; ?>'; // 提交表单
+        var costUrl = baseurl + '<?php echo $costUrl; ?>'; //  列表页面
+        //JavaScript代码区域
+        layui.use(['element','form','laydate'], function(){
+            var element = layui.element;
+            var form = layui.form;
+            var laydate = layui.laydate;
+
+            //常规用法
+            laydate.render({
+                elem: '#date_of_log'
+            });
+
+            //表单提交
+            form.on('submit(submit_form)', function(data){
+                data.field.token = token;
+                $.ajax({
+                    url : editCostPostUrl,
+                    async: false,
+                    data : data.field,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg);
+                        if(data.success){
+                            setTimeout(function(){
+                                window.location.href = costUrl;
+                            },500);
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+                return false;
+            });
+            // 取消
+            $("#cancel").click(function(){
+                window.location.href = costUrl;
+            });
+        });
+    </script>
+</body>
+</html>

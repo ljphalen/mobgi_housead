@@ -1,0 +1,216 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/material.css?v=<?php echo $version;?>" rel="stylesheet" />
+<style>
+    .upload-list li{
+        float: left;
+        width: 200px;
+        /* height: 450px; */
+        padding-bottom: 20px;
+        border-radius: 6px;
+        background: #eee;
+        position: relative;
+        border: 1px solid #e2e2e2;
+        min-height: 100px;
+        margin: 0 20px 20px 0;
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+
+        <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>编辑标签</p>
+                </div>
+                <!-- 查询条件 begin -->
+                <form class="layui-form" action="">
+                <div class="query-condition">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">一级标签:</label>
+                            <div class="layui-input-block" style="width:200px;">
+                                <input type="text" name="title" required="" value="<?php echo $level1['title'];?>" lay-verify="required" placeholder="请输入一级标签" autocomplete="off" class="layui-input">
+                                <input type="hidden" name="pid" value="<?php echo $level1['id']; ?>" class="layui-input" />
+                            </div>
+                        </div>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- 素材列表 begin-->
+                    <div class="material-wrap layui-form uploadFile-wrap">
+                        <ul id="uploadFile-list" class="upload-list">
+                        </ul>
+                        <ul id="upload-list" class="upload-list">
+                            <?php
+                            if(!empty($level2)){
+                                foreach ($level2 as $key=>$val){
+                            ?>
+                                <li>
+                                <p class="upload-list-title">添加二级标签</p>
+                                <i class="upload-list-del">x</i>
+                                <div class="upload-list-item">
+                                    <p class="up-list-item-title">素材标签：</p>
+                                    <p class="up-list-item-input">
+                                        <input type="text" name="label[]" id="label" placeholder="多个标签请用英文,分隔" value="<?php echo $val['title']; ?>" class="layui-input" />
+                                        <input type="hidden" name="id[]" value="<?php echo $val['id']; ?>" class="layui-input" />
+                                    </p>
+                                </div>
+                                </li>
+                            <?php } }?>
+                        </ul>
+                    </div>
+                    <!-- 素材列表 end-->
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                        <button type="button"  class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <a type="button" class="layui-btn layui-btn-primary" href="javascript:history.go(-1)">取消</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        </div>
+        
+    </div>
+
+</body>
+
+</html>
+<script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'laydate', 'table', 'upload'], function () {
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var upload = layui.upload;
+        // 初始化 日期 date 插件
+        laydate.render({
+            elem: '#date', //指定元素
+            value: '',
+            range: true,
+            done: function (value, date, endDate) {
+                var begin = '',
+                    end = '';
+                if (value) {
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            var len = $("#uploadFile-list li").length;
+            data.field.token = token;
+            data.field.count = len;
+            //data.field.app_id = $("select[name='app_id']").find("option:selected").val();
+            $.ajax({
+                url : 'editLabel',
+                async: false,
+                data : data.field,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    if(data.success){
+                        setTimeout(function(){
+                            window.location.href = 'labelManage';
+                        },500);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+            return false;
+        });
+
+    });
+
+    // 添加上传文件
+    function addLabel(obj){
+        var oLi = document.createElement('li');
+        li = `<p class="upload-list-title">添加二级标签</p>
+                        <i class="upload-list-del">x</i>
+                            <div class="upload-list-item">
+                                <p class="up-list-item-title">素材标签：</p>
+                                <p class="up-list-item-input">
+                                    <input type="text" name="label[]" id="label" placeholder="多个标签请用英文,分隔" value="" class="layui-input" />
+                                </p>
+                            </div>
+                        `;
+        $(oLi).html(li);
+        $("#uploadFile-list").append(oLi);
+        renderLayuiForm();
+    }
+
+    // 删除列表记录
+    $("#uploadFile-list").delegate('.upload-list-del','click',function(){
+        $(this).parent().remove();
+    });
+
+
+     function onfileSelected(t,type){
+         $(t).parent().find('.fileupload-input').click();
+     }
+
+
+    //重新渲染form
+    function renderLayuiForm(){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+    function creatVideo(src,oLi){
+        var video = document.createElement('video');
+        var canvas = document.createElement('canvas');
+        document.body.appendChild(video);
+        document.body.appendChild(canvas);
+        video.style.display = 'none';
+        canvas.style.display = 'none';
+        //console.log(src)
+        $(video).attr("src",'<?php echo $attachs?>'+src);
+        video.volume = 0;
+        video.play();
+        printSc($(video),$(canvas),oLi);
+    }
+
+    function printSc(video,canvas,oLi){
+        setTimeout(function(){
+            //alert('video[0].videoHeight:'+video[0].videoHeight);
+            canvas.attr({
+                width:video[0].videoWidth,
+                height:video[0].videoHeight,
+            });
+//            console.log('canvas[0].width:',canvas[0].width);
+//            console.log('canvas[0].heigh:',canvas[0].height);
+            canvas[0].getContext('2d').drawImage(video[0], 0, 0, canvas[0].width, canvas[0].height);
+            var base64 = canvas[0].toDataURL("image/jpeg");
+            // console.log(base64)
+            video[0].pause();
+            video.remove();
+            canvas.remove();
+            if(oLi){
+                oLi.find(".files-img").show();
+                oLi.find(".files-img").attr("src",base64);
+                //oLi.find(".thumb").val(canvas[0].toDataURL());
+                oLi.find(".img_width").val(video[0].videoWidth);
+                oLi.find(".img_height").val(video[0].videoHeight);
+            }
+        },1000);
+    }
+
+</script>

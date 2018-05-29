@@ -1,0 +1,21 @@
+.treebox-wrap{ width:100%; overflow: hidden;}
+.treebox-tree-list-wrap{ float:left; width:50%; background: #fff; }
+.treebox-tree-list-wrap .tree-title{ width:100%; border:1px solid #eee; border-bottom: none; line-height: 38px; padding: 0 10px; box-sizing:border-box;  }
+.treebox-tree-list-wrap .tree-title span{ padding: 0 10px;  display: inline-block; margin-left: 30px; color:#555; background: #eee; height: 30px; line-height: 30px; border-radius: 8px; }
+.treebox-tree-list-wrap .tree-search{ box-sizing: border-box; outline: none; padding: 0 10px; width:100%; border:1px solid #eee; height: 40px; line-height:40px;   }
+.treebox-tree-list-wrap .tree-list{ width:100%; max-height:400px; overflow: auto; border:1px solid #eee; border-top: none; box-sizing: border-box;   }
+.treebox-tree-list-wrap .tree-list ul{ display: none; }
+.treebox-tree-list-wrap ul li{ width: 100%; box-sizing: border-box; padding: 0 5px 0 30px;    }
+.treebox-tree-list-wrap ul li a{ position: relative; display: block; line-height: 33px; font-size: 16px;   }
+.treebox-tree-list-wrap ul li a span{  white-space:normal; word-break:break-all; }
+.treebox-tree-list-wrap ul li a i::before{ content:'+'; font-size: 22px; position: absolute; left:-15px; top:-2px; }
+.treebox-tree-list-wrap ul li a .children-active::before{ content:'-'; padding: 0 5px; font-size: 22px; position: absolute; left:-15px; top:-2px; }
+.treebox-tree-list-wrap .layui-form-checkbox{ display: none;}
+.treebox-tree-list-wrap input[type="checkbox"]{ display:inline-block;  margin: 0 5px; }
+.treebox-tree-list-wrap .tree-btns-wrap{ width:100%; border:1px solid #eee; border-top:none; padding: 10px; box-sizing:border-box; cursor: pointer; }
+.treebox-tree-list-wrap .tree-btns-wrap .tree-btn{ padding: 5px 20px; background:#1E9FFF; color:#fff; display: inline-block; margin-right: 10px;  }
+.treebox-checked-wrap{  float:left; width:50%;  box-sizing: border-box; padding-left: 20px; display: none; }
+.treebox-checked-wrap .treebox-checked-list{ width:100%; max-height: 528px; overflow-x:hidden; overflow-y:auto; box-sizing: border-box; border:1px solid #eee; padding:8px 0 0 10px; box-sizing: border-box;  }
+.treebox-checked-wrap .treebox-checked-list li{ cursor: pointer; float:left; margin:0 10px 8px 0;  background: #eeeeee;color:#333; padding:2px 5px; font-size: 14px; border-radius: 4px; }
+.treebox-checked-wrap .treebox-checked-list li i::before{ content: 'x'; padding:0 8px; cursor:pointer;   }
+.treebox-checked-wrap .treebox-checked-list li:hover { background: #d2d2d2;}

@@ -1,0 +1,53 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 3 (0x3)
+    Signature Algorithm: sha1WithRSAEncryption
+        Issuer: C=CN, ST=GuangDong, L=ShenZhen, O=Gionee, OU=Game, CN=dev.game.gionee.com
+        Validity
+            Not Before: Feb 25 03:47:09 2014 GMT
+            Not After : Feb 23 03:47:09 2024 GMT
+        Subject: C=CN, ST=GuangDong, O=Gionee, OU=Game, CN=game.3gtest.gionee.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (512 bit)
+                Modulus:
+                    00:b3:10:1b:76:83:08:5e:4d:d4:b2:a8:75:16:e3:
+                    2d:7d:dd:6c:2c:2d:e7:1d:1b:a1:bf:af:fb:af:3a:
+                    8b:46:09:e7:e1:42:bc:7d:cb:37:00:c6:51:c6:52:
+                    3d:08:af:a9:44:f1:d8:53:0e:6d:a6:28:10:57:6f:
+                    94:b7:18:1a:43
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                A4:4D:72:E5:02:B4:64:A0:4C:33:25:0E:39:6E:C1:88:09:1B:A7:EE
+            X509v3 Authority Key Identifier: 
+                DirName:/C=CN/ST=GuangDong/L=ShenZhen/O=Gionee/OU=Game/CN=dev.game.gionee.com
+                serial:83:A2:48:B1:A2:B3:1F:AC
+
+    Signature Algorithm: sha1WithRSAEncryption
+         3a:fc:e6:40:b5:6a:5a:32:85:a7:33:c0:21:1f:94:d6:05:8b:
+         88:b7:6b:0e:40:4d:4d:ec:68:98:3f:34:52:d9:1e:5e:36:2a:
+         83:5d:a5:ac:87:6a:64:12:04:b6:de:fb:5a:39:a2:a5:7f:f4:
+         44:e5:fa:f1:58:41:cf:6a:c2:a9
+-----BEGIN CERTIFICATE-----
+MIICsjCCAlygAwIBAgIBAzANBgkqhkiG9w0BAQUFADByMQswCQYDVQQGEwJDTjES
+MBAGA1UECAwJR3VhbmdEb25nMREwDwYDVQQHDAhTaGVuWmhlbjEPMA0GA1UECgwG
+R2lvbmVlMQ0wCwYDVQQLDARHYW1lMRwwGgYDVQQDDBNkZXYuZ2FtZS5naW9uZWUu
+Y29tMB4XDTE0MDIyNTAzNDcwOVoXDTI0MDIyMzAzNDcwOVowYjELMAkGA1UEBhMC
+Q04xEjAQBgNVBAgMCUd1YW5nRG9uZzEPMA0GA1UECgwGR2lvbmVlMQ0wCwYDVQQL
+DARHYW1lMR8wHQYDVQQDDBZnYW1lLjNndGVzdC5naW9uZWUuY29tMFwwDQYJKoZI
+hvcNAQEBBQADSwAwSAJBALMQG3aDCF5N1LKodRbjLX3dbCwt5x0bob+v+686i0YJ
+5+FCvH3LNwDGUcZSPQivqUTx2FMObaYoEFdvlLcYGkMCAwEAAaOB7DCB6TAJBgNV
+HRMEAjAAMCwGCWCGSAGG+EIBDQQfFh1PcGVuU1NMIEdlbmVyYXRlZCBDZXJ0aWZp
+Y2F0ZTAdBgNVHQ4EFgQUpE1y5QK0ZKBMMyUOOW7BiAkbp+4wgY4GA1UdIwSBhjCB
+g6F2pHQwcjELMAkGA1UEBhMCQ04xEjAQBgNVBAgMCUd1YW5nRG9uZzERMA8GA1UE
+BwwIU2hlblpoZW4xDzANBgNVBAoMBkdpb25lZTENMAsGA1UECwwER2FtZTEcMBoG
+A1UEAwwTZGV2LmdhbWUuZ2lvbmVlLmNvbYIJAIOiSLGisx+sMA0GCSqGSIb3DQEB
+BQUAA0EAOvzmQLVqWjKFpzPAIR+U1gWLiLdrDkBNTexomD80UtkeXjYqg12lrIdq
+ZBIEtt77WjmipX/0ROX68VhBz2rCqQ==
+-----END CERTIFICATE-----

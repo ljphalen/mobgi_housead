@@ -1,0 +1,124 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain">
+   <div class="nav">
+		<ul class="cc">
+            <li><a href="<?php echo $versionListUrl;?>">Sdk插件列表</a></li>
+			<li class="current"><a href="<?php echo $addVersionUrl;?>"><?php echo $navTitle; ?>插件</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+              <form action="<?php echo $addVersionPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id"  id="id" value='<?php echo $info['id']; ?>' />
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">
+                     <li>
+                        <span class="label">平台：</span>
+                        <div class="fc">
+                            <select id="sdk_type"  name="sdk_type">
+                                <option value="0">--请选择--</option>
+                                <?php foreach($sdkType as $k1=>$v1){ ?>
+                                    <option value="<?php echo $k1; ?>"  <?php if( $info['sdk_type']==$k1 ): ?> selected <?php endif; ?>><?php echo $v1; ?> </option>
+                                <?php } ?>
+                            </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">插件类型：</span>
+                        <div class="fc">
+                            <select name="sdk_id" id="sdk_id" >
+                                <option value="">--请选择--</option>
+                                <?php foreach($nowSdkList as $k1=>$v1){ ?>
+                                    <option value="<?php echo $v1['id']; ?>"  <?php if( $info['sdk_id']==$v1['id'] ){ ?> selected <?php } ?> ><?php echo $v1['name']; ?></option>
+                                <?php } ?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span class="label">SDK版本：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="version"  value="<?php echo $info['version']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">更新时间：</span>
+                        <div class="fc">
+                            <input class="iText" type="text" style="width:143px;" id="sdk_update_time" name="sdk_update_time" value="" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">更新日志：</span>
+                        <div class="fc">
+                            <textarea type="text" style="height:120px;"  name="update_log" ><?php echo $info['update_log']; ?></textarea>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">上传zip包：</span>
+                        <div class="fc">
+                            <ul class="uploadImg">
+                                <li id="Img">
+                                    <a href="<?php echo $info['sdk_url']?$attachPath.$info['sdk_url']:'';?>" > 下载文件</a>
+                                    <span><?php echo $info['sdk_url']?$attachPath.$info['sdk_url']:'无';?></span>
+                                    <input type="hidden" name="sdk_url" value="<?php echo $info['sdk_url']; ?>">
+                                </li>
+                            </ul>
+                            <p style="clear: both;">
+                                <iframe name="upload"
+                                        src="<?php echo $uploadZipUrl.'/?imgId=Img';?>"
+                                        style="height: 50px; width: 100%;" frameborder="0"
+                                        scrolling="no">
+                                </iframe>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">在线文档地址：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" style="width:320px;" required name="document_url"  value="<?php echo $info['document_url']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+					<li>
+                        <div class="fc">
+                            <input type="submit"  value="保存" class="submit"  />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl;?>' " />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath;?>/css/jquery.datetimepicker.css" >
+<script type="text/javascript" src="<?php echo $staticPath;?>/js/admin/jquery.datetimepicker.full.min.js"></script>
+<script>
+$(document).ready(function(){
+    $.datetimepicker.setLocale('ch');
+    $( "#sdk_update_time" ).datepicker({dateFormat: "yy-mm-dd"});
+    $("#sdk_update_time").val("<?php echo $info['sdk_update_time']; ?>")
+	ajaxForm('addForm',function(ret){ 
+	        ajaxRedirect(ret, baseurl+'<?php echo $versionListUrl;?>');
+	 },function(){
+		 return true;
+	});
+    var sdk_list = <?php echo json_encode($sdkList); ?>;
+    $('#sdk_type').change(function(){
+        var sdk_type = $(this).val();
+        var sdk_list_div = '<option value="0" parent_id="0">--请选择--</option>';
+        if(sdk_type != 0) {
+            var now_sdk_list = sdk_list[sdk_type];
+            now_sdk_list.forEach(function (data) {
+                sdk_list_div += '<option value="' + data['id'] + '" >' + data['name'] + '</option>';
+            });
+        }
+        $("#sdk_id").html(sdk_list_div);
+    });
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

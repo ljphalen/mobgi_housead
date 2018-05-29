@@ -1,0 +1,242 @@
+<div class="layui-header">
+    <div class="layui-logo"><a href="/Admin/Home/index" class="logo"><img src="<?php echo $staticPath ?>/img/logo.png" /></div>
+    <ul class="layui-nav layui-layout-left" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">MONITOR</a>
+            <dl class="layui-nav-child">
+                <?php foreach ($module as $val) {
+                    if ($val['name'] != 'Monitor') { ?>
+                    <dd><a href="<?php echo $val['url']; ?>"><?php echo $val['name']; ?></a></dd>
+                <?php 
+            }
+        } ?>
+            </dl>
+        </li>
+    </ul>
+    <form class="layui-form topMenu-form">
+        <div class="layui-input-inline">
+            <select id="appSelect" name="app_id" lay-filter="app_id" lay-search>
+            </select> 
+        </div>
+        <img id="platform_icon" style="margin-left:20px;" src="" />
+    </form>
+    
+    
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+            <a href="javascript:;" id="adminUser"></a>
+            <dl class="layui-nav-child">
+            <dd><a id="admin-user-pw"  data-id="_Admin_User_Passwd" data-parentId="_Admin_User_Module" data-href="/Admin/User/passwd">修改密码</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="/Admin/Login/logout">[注销]</a></li>
+    </ul>
+</div>
+<script>
+var currentApp_id;
+var AndroidimgPath= '<?php echo $staticPath ?>/img/Android_platform.png';
+var iOSimgPath = '<?php echo $staticPath ?>/img/iOS_platform.png';
+
+if(localStorage.app_data && localStorage.app_data!="undefined"){
+    currentApp_id =<?php echo $appid ? : 0; ?>|| JSON.parse(localStorage.app_data).app_id;
+    setCookie('app_id',currentApp_id);
+}
+// 获取应用信息
+$.ajax({
+    url: baseurl + '/Admin/Spm_Index/getApp',
+    data: null,
+    type:'get',
+    success:function(data){ 
+        data = JSON.parse(data);
+        //console.log(data);
+        if(data.success==0){
+            var applist = data.data;
+            //$("select[name='app_id']").html();
+            var option ='',isSelected = true, platform = '';
+            for(var key in applist){
+                var selected = '';
+                if(currentApp_id==applist[key]['app_id']){
+                    selected = 'selected';
+                    isSelected = false;
+                    platform = applist[key]['platform'];
+                }
+                option = option + `<option data-platform="`+applist[key]['platform']+`"  delivery_type="`+applist[key]['delivery_type']+`" data-apk-url="`+applist[key]['appstore_url']+`" `+selected+` 
+                         value="`+applist[key]['app_id']+`">`+applist[key]['app_name']+`</option>`;
+            }
+            if(isSelected){
+                $($("select[name='app_id'] option").get(0)).attr("selected","selected");
+                var platform = $($("select[name='app_id'] option").get(0)).attr("data-platform"); 
+                var obj = new Object();
+                obj.app_name = applist[0]['app_name'];
+                obj.app_id = applist[0]['app_id'];
+                obj.platform = applist[0]['platform'];
+                localStorage.app_data = JSON.stringify(obj);
+            }
+            if(platform=="ios"){
+                $("#platform_icon").show();
+                $("#platform_icon").attr("src",iOSimgPath);
+            }else if(platform=="android"){
+                $("#platform_icon").show();
+                $("#platform_icon").attr("src",AndroidimgPath);
+            }else{
+                $("#platform_icon").hide();
+            }
+            $("select[name='app_id']").html(option);
+            renderLayuiFormAndTab();
+        }else{
+            var app_data = JSON.parse(localStorage.app_data);
+            $("select[name='app_id']").html(`<option selected value="`+app_data['app_id']+`">`+app_data['app_name']+`</option>`);
+            var platform = app_data['platform'];
+            if(platform=="ios"){
+                $("#platform_icon").show();
+                $("#platform_icon").attr("src",iOSimgPath);
+            }else if(platform=="android"){
+                $("#platform_icon").show();
+                $("#platform_icon").attr("src",AndroidimgPath);
+            }else{
+                $("#platform_icon").hide();
+            }
+            renderLayuiFormAndTab();
+        }
+    },error:function(xhr,msg,error){
+        var app_data = JSON.parse(localStorage.app_data);
+        $("select[name='app_id']").html(`<option selected value="`+app_data['app_id']+`">`+app_data['app_name']+`</option>`);
+        var platform = app_data['platform'];
+        if(platform=="ios"){
+            $("#platform_icon").show();
+            $("#platform_icon").attr("src",iOSimgPath);
+        }else if(platform=="android"){
+            $("#platform_icon").show();
+            $("#platform_icon").attr("src",AndroidimgPath);
+        }else{
+            $("#platform_icon").hide();
+        }
+        renderLayuiFormAndTab();
+    }
+});
+
+// 获取管理员信息
+$.ajax({
+    url: baseurl + '/Admin/Spm_Index/getAdminUser?token='+token,
+    data: null,
+    type:'get',
+    success:function(data){
+        if(data.success){
+            $("#adminUser").html("管理员："+data.data.user_name);
+        }else{
+            $("#adminUser").html("管理员："+data.data.msg);
+        }
+    },error:function(xhr,msg,error){
+        console.log(msg);
+        $("#adminUser").html("管理员：null");
+    }
+});  
+// 切换应用
+var appIdSelectChange = null ;
+layui.use(['element','form'], function(){
+    var form = layui.form;
+    form.on('select(app_id)', function(data){
+        var obj = new Object();
+        obj.app_name = $(data.elem).find("option:selected").text();
+        obj.app_id = data.value;
+        localStorage.app_data = JSON.stringify(obj);
+        setCookie('app_id',data.value);
+        var platform = $(data.elem).find("option:selected").attr("data-platform");
+        if(platform=="ios"){
+            $("#platform_icon").show();
+            $("#platform_icon").attr("src",iOSimgPath);
+        }else if(platform=="android"){
+            $("#platform_icon").show();
+            $("#platform_icon").attr("src",AndroidimgPath);
+        }else{
+            $("#platform_icon").hide();
+        }
+        if(appIdSelectChange){
+            appIdSelectChange.callBack(data.value);
+        }
+    });   
+});
+
+// 修改密码
+$("#admin-user-pw").click(function(){
+    changePassword();
+    /* var href = $(this).attr("data-href");
+    window.location.href = href; */
+});
+
+
+
+// 修改密码
+var passwdPostUrl = baseurl+ '/Admin/User/passwdPost';
+function changePassword(){
+    var temp = `
+        <br>
+        <form class="layui-form" id="pwd_form">
+            <div class="layui-form-item">
+                <label class="layui-form-label long-label">当前密码</label>
+                <div class="layui-input-inline ">
+                    <input lay-verify="required" type="password" maxlength="20" name="current_password" placeholder="请输入当前密码" value="`+name+`" class="layui-input" autocomplete="off">
+                </div>
+                <div class="layui-form-mid layui-word-aux red">*</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label long-label">新密码</label>
+                <div class="layui-input-inline ">
+                    <input lay-verify="required" type="password" maxlength="20" name="password" placeholder="请输入新密码" value="`+name+`" class="layui-input" autocomplete="off">
+                </div>
+                <div class="layui-form-mid layui-word-aux red">*</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label long-label">重复密码</label>
+                <div class="layui-input-inline ">
+                    <input lay-verify="required" type="password" maxlength="20" name="r_password" placeholder="请输入新密码" value="`+name+`" class="layui-input" autocomplete="off">
+                </div>
+                <div class="layui-form-mid layui-word-aux red">*</div>
+            </div>
+        </form>`;
+    layer.open({
+        title : '修改密码',
+        type: 1,
+        area: ['800px', '400px'],
+        shadeClose: true, //点击遮罩关闭
+        content: temp,
+        btn: ['保存', '取消'],
+        yes: function(index, layero){   
+            var current_password = $("input[name='current_password']").val();
+            var password = $("input[name='password']").val();
+            var r_password = $("input[name='r_password']").val();
+            if(!current_password || !password || !r_password){
+                layer.msg("请输入密码"); 
+                return false;
+            }else if(password!=r_password){
+                layer.msg("输入密码不一致"); 
+                return false;
+            }
+            var arr = $("#pwd_form").serializeArray(); 
+            arr.push({ name:'token',value:token });
+            $.ajax({
+                url : passwdPostUrl ,
+                async: false,
+                data : arr,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    setTimeout(function(){
+                        layer.closeAll();
+                    },500);
+                },
+                error:function(xhr,msg,e){
+                    layer.msg("网络繁忙，请稍后再试！"); 
+                    setTimeout(function(){
+                        layer.closeAll();
+                    },500);
+                    return false; 
+                }
+            })
+            
+        }
+    })
+}
+</script>

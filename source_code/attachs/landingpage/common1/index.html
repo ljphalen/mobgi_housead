@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>落地页管理</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <div class="template-wrap">
+        <!-- top begin -->
+        <div class="t-table-bar">
+            <!-- 搜索条件 bar begin -->
+            <div class="t-table-search">
+                 <div class="t-t-item">
+                      <span>时间：</spa1fb1f0n>
+                      <input type="text" />
+                 </div>
+                 <div class="t-t-item">
+                      <span>状态：</span>
+                      <select>
+                            <option value="">发布</option>
+                            <option value="">未发布</option>
+                            <option value="">下线</option>
+                      </select>
+                 </div>
+                 <div class="t-t-item">
+                      <span>状态：</span>
+                      <select>
+                            <option value="">应用1</option>
+                            <option value="">应用2</option>
+                            <option value="">应用3</option>
+                      </select>
+                 </div>
+                <div class="t-t-item">
+                     <input type="text" placeholder="ID、页面标题" />
+                     <button>搜索</button>
+                </div>
+            </div>
+            <!-- 搜索条件 bar end -->
+            <a class="new-template" href="#">新建落地页</a>
+        </div>
+        <!-- top end  -->
+        <!-- table begin -->
+        <table class="template-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>创建时间</th>
+                    <th>所属应用</th>
+                    <th>页面标题</th>
+                    <th>链接地址</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>template id: 0001</td>
+                    <td>2017-07-03</td>
+                    <td>iOS神庙逃亡2</td>
+                    <td>《iOS神庙逃亡2》 手游</td>
+                    <td><a class="t-table-link" target="_blank" href="http://tf.uu.cc/activity/tf/ldy0531/">250http://tf.uu.cc/activity/tf/iOS/type1/ldy0731</a></td>
+                    <td>未发布</td>
+                    <td>
+                        <a class="t-table-button t-table-edit" href="#">编辑</a>
+                        <a class="t-table-button t-table-preview" href="">预览</a>
+                        <a class="t-table-button t-table-handle" href="">发布</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>template id: 0001</td>
+                    <td>2017-07-03</td>
+                    <td>iOS神庙逃亡2</td>
+                    <td>《iOS神庙逃亡2》 手游</td>
+                    <td><a class="t-table-link" target="_blank" href="http://tf.uu.cc/activity/tf/ldy0531/">http://tf.uu.cc/activity/tf/iOS/type1/ldy0731</a></td>
+                    <td>发布</td>
+                    <td>
+                        <a class="t-table-button t-table-edit" href="#">编辑</a>
+                        <a class="t-table-button t-table-preview" href="">预览</a>
+                        <a class="t-table-button t-table-handle" href="">下线</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>template id: 0001</td>
+                    <td>2017-07-03</td>
+                    <td>iOS神庙逃亡2</td>
+                    <td>《iOS神庙逃亡2》 手游</td>
+                    <td><a class="t-table-link" target="_blank" href="http://tf.uu.cc/activity/tf/ldy0531/">http://tf.uu.cc/activity/tf/iOS/type1/ldy0731</a></td>
+                    <td>未发布</td>
+                    <td>
+                        <a class="t-table-button t-table-edit" href="#">编辑</a>
+                        <a class="t-table-button t-table-preview" href="">预览</a>
+                        <a class="t-table-button t-table-handle" href="">发布</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>template id: 0001</td>
+                    <td>2017-07-03</td>
+                    <td>iOS神庙逃亡2</td>
+                    <td>《iOS神庙逃亡2》 手游</td>
+                    <td><a class="t-table-link" target="_blank" href="http://tf.uu.cc/activity/tf/ldy0531/">http://tf.uu.cc/activity/tf/iOS/type1/ldy0731</a></td>
+                    <td>发布</td>
+                    <td>
+                        <a class="t-table-button t-table-edit" href="#">编辑</a>
+                        <a class="t-table-button t-table-preview" href="">预览</a>
+                        <a class="t-table-button t-table-handle" href="">下线</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- table end   -->
+        <!-- 分页 begin -->
+        <div class="t-table-paging">
+            <div class="t-table-pagingbar">
+                 <a class="t-table-paging-btn" href="">首页</a>
+                 <a class="t-table-paging-btn" href="">上一页</a>
+                 <a class="t-table-paging-btn" href="">下一页</a>
+                 <span class="t-table-paging-text">到</span>
+                 <input class="t-table-paging-in" type="text" value="" />
+                 <span class="t-table-paging-text" style="margin-right:5px;">/10页</span>
+                 <a class="t-table-paging-btn" href="">确认</a>
+                 <select class="t-table-paging-select">
+                       <option>每页20条</option>
+                       <option>每页50条</option>
+                       <option>每页100条</option>
+                 </select>
+            </div>
+        </div>
+        <!-- 分页 end   -->
+
+    </div>
+</body>
+</html>

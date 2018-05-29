@@ -1,0 +1,4 @@
+.content th{display:none;width:0;}
+.head,.tab{height:0;display:none;}
+#default{*left:0;*top:-90px;}
+div.options{top:0;}

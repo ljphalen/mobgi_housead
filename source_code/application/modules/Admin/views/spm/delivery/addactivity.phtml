@@ -1,0 +1,393 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <?php if($activity){?>
+                        <p>编辑监测活动</p>
+                    <?php }else{ ?>
+                        <p>新建监测活动</p>
+                    <?php } ?>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                <form class="layui-form" >
+                    <input type="hidden" name="token" value="<?php echo $token; ?>" />
+                    <input type="hidden" name="id" value="<?php echo $activity['id']; ?>" /> 
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">投放渠道</label>
+                        <div class="layui-input-inline">
+                            <?php if($activity){ ?>
+                                <select name="channel_id" lay-verify="" lay-filter="channel_id" disabled >
+                                    <?php foreach($channelList as $key=>$value){ ?>
+                                        <?php if($activity['channel_id']==$value['id']){?>
+                                            <option  value="<?php echo $value['id']; ?>" selected><?php echo $value['channel_name']; ?></option>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </select>
+                            <?php }else{ ?>
+                                <select name="channel_id" lay-verify=""  lay-filter="channel_id" lay-search>
+                                    <option value="" >选择渠道</option>
+                                    <?php foreach($channelList as $key=>$value){ ?>
+                                        <option value="<?php echo $value['id']; ?>" ><?php echo $value['channel_name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            <?php } ?>
+                            
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">推广活动名称</label>
+                        <div class="layui-input-inline long-input">
+                            <input type="text" name="name" placeholder=""  value="<?php echo $activity['name']; ?>" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">(应用名称-投放渠道-MMDD-XXXX)</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">推广活动组</label>
+                        <div class="layui-input-inline">
+                            <select name="group_id" lay-verify=""  lay-filter="group_id" lay-search>
+                                <option value="" >选择活动组</option>
+                                <?php foreach($activityGroupList as $key=>$value){ ?>
+                                    <?php if($activity){ ?>
+                                        <?php if($activity['group_id']==$value['id']){?>
+                                            <option value="<?php echo $value['id']; ?>" selected><?php echo $value['name']; ?></option>
+                                        <?php }else{ ?>
+                                            <option value="<?php echo $value['id']; ?>" ><?php echo $value['name']; ?></option>
+                                        <?php } ?>
+                                    <?php }else{ ?>
+                                        <option value="<?php echo $value['id']; ?>" ><?php echo $value['name']; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+
+                        </div>
+                        <div class="layui-input-inline">
+                            <button id="add_activity" type="button" class="layui-btn">
+                                <i class="layui-icon">&#xe608;</i> 添加
+                            </button>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">跳转地址</label>
+                        <div class="layui-input-inline long-input">
+                            <input type="text" name="origin_url" placeholder="" value="<?php echo $activity['origin_url']; ?>" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item monitor-platform">
+                        <label class="layui-form-label long-label">监控平台</label>
+                        <div class="layui-input-inline">
+                            <?php if($activity){?>
+                                <select name="monitor_platform" lay-verify="" lay-search disabled>
+                                    <option value="" >选择监控平台</option>
+                                <?php foreach($monitorPlatformList as $key=>$value){ ?>
+                                    <?php if($activity['monitor_platform']==$value['id']){?>
+                                        <option value="<?php echo $value['id']; ?>" selected><?php echo $value['name']; ?></option>
+                                    <?php }else{ ?>
+                                        <option value="<?php echo $value['id']; ?>" ><?php echo $value['name']; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                                </select>
+                            <?php }else{ ?>
+                                <select name="monitor_platform" lay-verify="" lay-search>
+                                    <option value="" >选择监控平台</option>
+                                <?php foreach($monitorPlatformList as $key=>$value){ ?>
+                                    <option value="<?php echo $value['id']; ?>" ><?php echo $value['name']; ?></option>
+                                <?php } ?>
+                                </select>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <?php if($activity){?> 
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">追踪链接</label>
+                        <div class="layui-input-inline long-input">
+                            <input type="text" name="api_link" placeholder="" value="<?php echo $activity['api_link']; ?>" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">回调地址</label>
+                        <div class="layui-input-inline long-input">
+                            <input type="text" name="callback_config" placeholder=""  value="<?php echo $activity['callback_config']; ?>"  class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">短链回调状态</label>
+                        <div class="layui-input-inline">
+                            <select name="shortlink_status" lay-verify="" lay-search>
+                                <?php foreach($shortLinkStatusList as $key=>$value){ ?>
+                                    <?php if($activity['shortlink_status']==$key){ ?>
+                                        <option value="<?php echo $key; ?>" selected><?php echo $value; ?></option>
+                                    <?php }else{ ?>
+                                        <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">投放人员</label>
+                        <div class="layui-input-inline">
+                            <select name="operator" lay-verify="" lay-search>
+                                <option value="" >选择投放人员</option>
+                                <?php if($activity){?>
+                                    <option value="<?php echo $activity['operator']; ?>" selected><?php echo $activity['operator']; ?></option>
+                                    <?php foreach($userList as $key=>$value){ ?>
+                                        <?php if($activity['operator']!=$value['user_name']){ ?>
+                                            <option value="<?php echo $value['user_name']; ?>" ><?php echo $value['user_name']; ?></option>
+                                        <?php } ?> 
+                                    <?php } ?> 
+                                <?php }else{ ?> 
+                                    <?php foreach($userList as $key=>$value){ ?>
+                                        <option value="<?php echo $value['user_name']; ?>" ><?php echo $value['user_name']; ?></option>
+                                    <?php } ?> 
+                                <?php } ?>
+                                
+                            </select> 
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">状态</label>
+                        <div class="layui-input-inline">
+                            <select name="status" lay-verify="" lay-search>
+                                <?php if($activity){?>
+                                    <?php foreach($activityStatusList as $key=>$value){ ?>
+                                        <?php if($activity['status']==$key){ ?>
+                                            <option value="<?php echo $key; ?>" selected><?php echo $value; ?></option>
+                                        <?php }else{ ?>
+                                            <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
+                                        <?php } ?>
+                                    <?php } ?>
+                                <?php }else{ ?>
+                                    <?php foreach($activityStatusList as $key=>$value){ ?>
+                                        <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <?php } ?>
+                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">渠道回调事件</label>
+                        <div class="layui-input-inline">
+                            <select name="checkpoint" lay-verify="" lay-search>
+                                <option value="" >选择类型</option>
+                                <?php if($activity){?>
+                                    <?php foreach($checkpointList as $key=>$value){ ?>
+                                        <?php if($activity['checkpoint']==$key){ ?>
+                                            <option value="<?php echo $key; ?>" selected><?php echo $value; ?></option>
+                                        <?php }else{ ?>
+                                            <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
+                                        <?php } ?>
+                                    <?php } ?>
+                                <?php }else{ ?>
+                                    <?php foreach($checkpointList as $key=>$value){ ?>
+                                        <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <?php if(!$activity){?>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">批量创建</label>
+                            <div class="layui-input-block">
+                                <input type="radio" lay-filter="is_batch" name="is_batch" value="0" title="否" checked>
+                                <input type="radio" lay-filter="is_batch" name="is_batch" value="1" title="是" >
+                            </div> <!--  条数 batch_num -->
+                        </div>
+                        <div class="layui-form-item batch-num">
+                            <label class="layui-form-label long-label">活动数量</label>
+                            <div class="layui-input-inline">
+                                <input type="number" name="batch_num" placeholder="请输入1-20之间的整数"  class="layui-input">
+                            </div>
+                        </div>
+                    
+                    <?php } ?>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="new">保存</button>
+                            <a href="<?php echo $activityUrl; ?>" class="layui-btn layui-btn-primary">返回</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- 查询条件 end  -->
+
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接 */
+var submitURL = baseurl + '<?php echo $addActivityPostUrl;?>'; // 添加记录
+var addActivityGroupPostUrl = baseurl + '<?php echo $addActivityGroupPostUrl; ?>'; // 添加组
+
+/* 默认禁止切换应用  */
+$("select[name='app_id']").attr("disabled","disabled");
+
+//JavaScript代码区域
+layui.use(['element','form'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    // 获取当前选择应用 类型
+    var initDeliveryType = $("select[name='app_id']").find("option:selected").attr("delivery_type");   
+    //  判断应用类型 显示监控平台
+    if(initDeliveryType=='2'){
+        $(".monitor-platform").show();
+    }else{
+        $(".monitor-platform").hide();
+    } 
+    //  根据应用 更改链接 ， 显示监控平台
+    form.on('select(app_id)', function(data){
+        var value = data.value;
+        var that = $(data.elem).find('option:selected');
+        var url = that.attr("data-apk-url");
+        var deliveryType = that.attr("delivery_type");
+        $("input[name='origin_url']").val(url);
+        if(deliveryType=='2'){
+            $(".monitor-platform").show();
+        }else{
+            $(".monitor-platform").hide();
+        }
+        setActivityName();
+    });  
+    // 现在渠道id
+    form.on('select(channel_id)', function(data){
+        var that = $("select[name='app_id']").find('option:selected');
+        var url = that.attr("data-apk-url");
+        var deliveryType = that.attr("delivery_type");
+        $("input[name='origin_url']").val(url);
+        if(deliveryType=='2'){
+            $(".monitor-platform").show();
+        }else{
+            $(".monitor-platform").hide();
+        }
+        setActivityName();
+    });
+
+    //  根据是否批量创建显示 活动数量
+    form.on('radio(is_batch)', function(data){
+       if(parseInt(data.value)==1){
+            $(".batch-num").show();
+       }else{
+            $(".batch-num").hide();
+       }
+    });  
+    
+    // 设置活动名称
+    function setActivityName(){
+        var appName = $("select[name='app_id']").find('option:selected').html();
+        var channelName = $("select[name='channel_id']").find('option:selected').html(); 
+        var date = new Date();
+        var month = ((date.getMonth()+1).toString().length>1)?(date.getMonth()+1).toString():("0"+(date.getMonth()+1));
+        var day = (date.getDate().toString().length>1)?date.getDate().toString():("0"+date.getDate());
+        var mmdd = month + day;
+        $("input[name='name']").val(appName+"-"+channelName+"-"+mmdd);
+    } 
+
+    //表单提交
+    form.on('submit(new)', function(data){
+        data.field.app_id = $("select[name='app_id']").find("option:selected").val();
+        $.ajax({
+            url : submitURL,
+            async: false,
+            data : data.field,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.msg(data.msg); 
+                if(data.success){
+                    setTimeout(function() {
+                        window.location.href= baseurl +'<?php echo $activityUrl; ?>';
+                    }, 500); 
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg); 
+            }
+        });
+        return false;
+    });
+
+    // 添加 活动组
+    $("#add_activity").click(function(){
+        var temp = `
+            <br>
+            <form class="layui-form" id="add_activityGroup">
+                <div class="layui-form-item">
+                    <label class="layui-form-label long-label">活动组名称</label>
+                    <div class="layui-input-inline ">
+                        <input type="text" name="name" placeholder="" value="" class="layui-input" autocomplete="off">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">*</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label long-label">渠道号</label>
+                    <div class="layui-input-inline ">
+                        <input type="text" name="channel_no" placeholder="" class="layui-input" value="" autocomplete="off">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">（应用为安卓应用时出现，选填。IOS应用不出现此字段。）</div>
+                </div>
+            </form>`;
+        layer.open({
+            title : '新建推广活动组',
+            type: 1,
+            area: ['800px', '400px'],
+            shadeClose: true, //点击遮罩关闭
+            content: temp,
+            btn: ['保存', '取消'],
+            success: function(layero){
+                var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+                btn.on("click",function(){
+                    var arr = $("#add_activityGroup").serializeArray();
+                    var currentApp_id = $("select[name='app_id']").find("option:selected").val();
+                    arr.push({ name: 'token', value: token });
+                    arr.push({ name: 'app_id', value: currentApp_id });
+                    $.ajax({
+                        url : addActivityGroupPostUrl ,
+                        async: false,
+                        data : arr,
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                            layer.msg(data.msg); 
+                            if(data.success){
+                                var options = ' <option value="'+data.data.id+'" >'+data.data.name+'</option>'
+                                $("select[name='group_id']").append(options);
+                                renderLayuiFormAndTab();
+                            }
+                        },
+                        error:function(xhr,msg,e){
+                            layer.msg(msg); 
+                        }
+                    });
+                });
+            }
+        }); 
+    }); 
+
+});
+</script>
+</body>
+</html>
+      

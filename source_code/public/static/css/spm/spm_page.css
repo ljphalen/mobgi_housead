@@ -1,0 +1,338 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    color: #a5a5a5;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+    color: #a5a5a5;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+    color: #a5a5a5;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+    color: #a5a5a5;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-text-fill-color: #555 !important;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    background-color: transparent;
+    background-image: none;
+    transition: background-color 50000s ease-in-out 0s;
+}
+
+input {
+    background-color: transparent;
+}
+
+html,
+body {
+    font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+    font-size: 14px;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+}
+
+.wrapper {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.wrapper .title {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
+
+.wrapper .title p {
+    padding: 0 10px;
+    color: #1e9fff;
+    font-size: 20px;
+    line-height: 40px;
+}
+.notice{
+    position: absolute;right:10px; top:4px;
+    color:#007CD9;
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.wrapper .query-condition {
+    width: 100%;
+    padding: 20px 0 0 0;
+    box-sizing: border-box;
+}
+
+.long-input {
+    width: 500px !important;
+}
+
+.monitor-platform,
+.batch-num {
+    display: none;
+}
+
+.wrapper .inputs-wrap {
+    width: 600px;
+}
+
+.logo {
+    display: inline-block;
+}
+
+.logo img {
+    width: 150px;
+}
+
+.long-label {
+    width: 100px;
+}
+
+.long-label-input {
+    margin-left: 130px;
+}
+
+.page-table-wrap {
+    margin: 30px 100px;
+    padding: 20px 60px;
+    background: #fff;
+}
+
+.page-table-wrap .title {
+    color: #1e9fff;
+    font-size: 20px;
+    line-height: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.topMenu-form {
+    margin: -4px 0 0 400px;
+}
+
+.page-table-wrap .group-right {
+    float: right;
+}
+
+.content-wrap {
+    position: absolute;
+    left: 0;
+    top: 60px;
+    bottom: 0;
+    right: 0;
+    background: #eee;
+}
+
+.left-menu-wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 200px;
+    background: #23262e;
+}
+
+.content-main {
+    position: absolute;
+    left: 200px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 998;
+    width: auto;
+    overflow: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.tabs-group {
+    padding: 20px 0 0 0;
+}
+
+.tabs-wrapper {
+    margin: 20px 20px 0 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.right {
+    float: right;
+}
+
+
+/* .layui-table[lay-even] tr:nth-child(even){ background:#f7f7f7;}*/
+
+.layui-table tbody tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.layui-table tbody tr:hover {
+    background: #d3f0fd;
+}
+
+.padding-top20 {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.subtitle {
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.subtitle p {
+    color: #333;
+    background: #eee;
+    border-left: 3px solid #009688;
+    display: inline-block;
+    line-height: 30px;
+    font-size: 14px;
+    padding: 0 30px 0 10px;
+}
+
+.subtitle .white-bg {
+    color: #009688;
+    background: #fff;
+    border-left: 3px solid #009688;
+    display: inline-block;
+    line-height: 30px;
+    font-size: 14px;
+    padding: 0 30px 0 10px;
+}
+
+.data-result-item {
+    color: #666;
+    font-size: 15px;
+    line-height: 24px;
+    margin-bottom: 5px;
+}
+
+.data-result-item span {
+    padding: 0 10px;
+    color: #333;
+}
+
+
+/* 字体颜色 */
+
+.red {
+    color: #ff5722 !important;
+}
+
+.green {
+    color: #009688 !important;
+}
+
+.bule {
+    color: #1e9fff !important;
+}
+
+.grey {
+    color: #999 !important;
+}
+
+
+/* 菜单选中颜色 */
+
+.layui-tab {
+    margin: 0;
+}
+
+.layui-tab-title {
+    z-index: 999;
+}
+
+.layui-tab-content {
+    padding: 0;
+}
+
+.layui-tab-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 40px;
+    bottom: 0;
+    z-index: 998;
+    width: auto;
+    overflow: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.layui-nav-tree .layui-nav-child a {
+    padding: 0 0 0 35px;
+    cursor: pointer;
+}
+
+.layui-nav-tree .layui-nav-child dd.layui-this,
+.layui-nav-tree .layui-nav-child dd.layui-this a,
+.layui-nav-tree .layui-this,
+.layui-nav-tree .layui-this>a,
+.layui-nav-tree .layui-this>a:hover {
+    background: #1fb1f0;
+}
+
+.layui-nav-tree .layui-nav-bar {
+    background-color: #1fb1f0;
+}
+
+.layui-nav .layui-this:after,
+.layui-nav-bar,
+.layui-nav-tree .layui-nav-itemed:after {
+    background-color: #1fb1f0;
+}
+
+
+/* 安卓投放组 */
+
+.group-user-btn {
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+    width: 90px;
+}
+
+.group-user-btn .group-user-add {
+    position: relative;
+    z-index: 2;
+}
+
+.group-user-btn .group-userselect-hide {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+}
+
+.group-user-btn .group-userselect-hide .layui-select-title {
+    opacity: 0;
+    -moz-opacity: 0;
+    -webkit-opacity: 0;
+    -khtml-opacity: 0;
+    filter: alpha(opacity=0);
+}

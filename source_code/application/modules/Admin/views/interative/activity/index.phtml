@@ -1,0 +1,179 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this"><a href="<?php echo $listUrl;?>">活动列表</a></li>
+                        <li><a href="<?php echo $addUrl;?>">添加活动</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <!-- search begin -->
+                <div class="temp-search-wrap">
+                    <form class="layui-form" action="<?php echo $listUrl;?>" method="GET"  id="searchForm" >
+                        <div class="layui-form-item">
+
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" placeholder="请活动名称" class="layui-input" value="<?php echo $search['title']; ?>">
+                            </div>
+                            <div class="layui-input-inline">
+                                <button  class="layui-btn layui-btn-normal">查询</button>
+                            </div>
+                            <a id="upload-temp" type="button" class="floatright layui-btn layui-btn-normal" href="<?php echo $addUrl;?>">添加活动</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- search  end  -->
+                <!-- table begin -->
+                <div class="layui-form-item layui-form">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>活动名称</th>
+                                <th>限制次数</th>
+                                <th>活动状态</th>
+                                <th>有效期</th>
+                                <th>创建时间</th>
+                                <th>操作人</th>
+                                <th>操作</th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                          <?php if($avtivityList){?>
+                          <?php foreach ($avtivityList as $val){?>
+                            <tr>
+                                <td><a class="link-view" href="<?php echo $listUrl.'?id='.$val['id'];?>"><?php echo $val['id'];?></a></td>
+                                <td><?php echo $val['title'];?></td>
+                                <td><?php echo $val['limit_num'].'次/'.$limitTpe[$val['limit_type']];?></td>
+                                <td>
+                                    <input type="checkbox" 　<?php echo $val['status'] ? ' checked=""' : ''; ?>  name="status"
+                                           lay-skin="switch" lay-filter="switchStatus" lay-text="开启|关闭" data-id="<?php echo $val['id'];?>" data-status="<?php echo $val['status'];?>">
+                                </td>
+                                <td><?php echo $val['start_time'].'-'.$val['end_time'];?></td>
+                                <td><?php echo $val['create_time'];?></td>
+                                <td><?php echo $val['operator'];?></td>
+                                <td>
+                                    <a class="link-view" href="<?php echo $addUrl.'?id='.$val['id'];?>">编辑</a>
+                                    <a class="link-view" href="<?php echo $viewUrl.'?id='.$val['id'];?>">查看</a>
+                                    <a class="link-view" target="_blank" href="<?php echo $activityUrl.'?activity_id='.$val['id'];?>">预览</a>
+                                </td>
+                            </tr>
+                              <?php }?>
+						  <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table end -->
+                <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+;(function(){
+    //监听指定开关
+    layui.use('form', function(){
+        layui.form.on('switch(switchStatus)', function(switchData){
+            var loading = layer.load();
+            var staus;
+            if(switchData.elem.checked){
+                status = 1;
+            }else{
+                status = 0;
+            }
+            var id = $(this).attr("data-id");
+            var that = $(this);
+            var data =  {
+                id : id,
+                token : token,
+                status:status
+            }
+            layer.confirm('确认是否修改?', {icon: 3, title:'提示', cancel: function(){
+                    updateStausCss(that,switchData);
+                }},function(index){
+                $.ajax({
+                    url : baseurl + '<?php echo $updateStatusUrl;?>' ,
+                    async: false,
+                    data : data,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        if(!data.success){
+                           updateStausCss(that,switchData);
+                        }
+                        layer.close(loading);
+                        layer.msg(data.msg);
+                    },
+                    error :function(xhr,msg,e){
+                        layer.close(loading);
+                        layer.msg(msg);
+                    }
+                });
+            },function(){
+                updateStausCss(that,switchData);
+             });
+            renderLayuiForm();
+            layer.close(loading);
+        });
+    });
+
+
+ // 删除 
+    $(".layui-table").delegate(".link-delete","click",function(){
+        var loading = layer.load();
+        var id = $(this).attr("data-id");
+        var that = $(this);
+        var data =  {
+            id : id,
+            token : token,
+        }
+        layer.confirm('确认是否要删除?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : baseurl + '<?php echo $deleteUrl?>' ,
+                async: false,
+                data : data,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.close(loading);
+                    layer.msg(data.msg);
+                    if(data.success){
+                        that.parent().parent().remove();
+                    }
+                },
+                error :function(xhr,msg,e){
+                    layer.close(loading);
+                    layer.msg(msg); 
+                }
+            });
+           
+        });
+        layer.close(loading);
+    });
+
+})();
+function updateStausCss(that,switchData) {
+    if(that.attr("data-status") == '1'){
+        switchData.elem.checked = true;
+        that.parent().find('div').addClass('layui-form-onswitch');
+        that.parent().find('em').html('开启');
+    }else{
+        switchData.elem.checked = false;
+        that.parent().find('div').removeClass('layui-form-onswitch');
+        that.parent().find('em').html('关闭')
+    }
+}
+</script>
+</html>

@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="target-densitydpi=device-dpi,width=device-width,user-scalable=no" /> 
+    <meta name="format-detection" content="telephone=no"/>
+    <title>视频广告</title>
+    <link media="screen" href="css/layout.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="page" id="page">
+        <div class="header">
+            <img src="images/close.png" class="close" width="27" alt="关闭" onclick="handleJS('close')"/>
+            <img src="images/reset.png" class="reset" width="27" alt="重置" onclick="handleJS('replay')"/>
+        </div>
+        <div class="content clearfix">
+            <div class="banner" >
+                <ul class="runContent clearfix">
+                    <li class="cur"><img src="{{mainpic}}" onclick="handleJS('download')"/></li>
+                </ul>
+            </div>
+            <div class="banner-width" >
+                <div class="banner-width-only">
+                    <img src="{{mainpic}}" onclick="handleJS('download')"/>
+                </div>
+            </div>
+            <div class="info clearfix">
+                <div class="pd15">
+                    <div class="icon" onclick="handleJS('download')"><img src="{{iconpic}}"/></div>
+                    <div class="md">
+                        <div class="name" onclick="handleJS('download')">{{videotitle}}</div>
+                        <div class="det" onclick="handleJS('download')">
+                            <img src="images/star1.png" class="starimg1" />（{{commentnum}}）<!--<span class="num">（1699）</span>-->
+                        
+                        </div>
+                        <p class="desc" onclick="handleJS('download')">{{videodesc}}</p>
+                    </div>
+                    <a href="#" class="download" style="background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#5bd65d), to(#269726));" onclick="handleJS('download')"><img class="loadpng" src="images/load.png" width="27"/><span class="dowz">{{buttonvalue}}</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+    var width, height, w, h;
+	var u = navigator.userAgent;
+    var isAndroidPlat = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOSPlat = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    var isiOS;
+    if (isAndroidPlat&&!isiOSPlat) {
+        isiOS=false;
+    };
+    if (!isAndroidPlat&&isiOSPlat) {
+        isiOS=true;
+    };
+    $(function () {
+        changeScrenn();
+    });
+
+    $(window).resize(function () {
+        changeScrenn();
+    });
+	
+	function handleJS(s) {
+        if (s=='close') {
+            if (isiOS) window.location.href = 'ld://close';
+            else MobgiNativeObject.close();
+        }
+        else if (s=='replay') {
+            if (isiOS) window.location.href = 'ld://replay';
+			else MobgiNativeObject.replay();
+        }
+        else if (s=='download') {
+            if (isiOS) window.location.href = 'ld://download';
+            else  MobgiNativeObject.download();
+         }
+    }
+	
+    function changeScrenn() {
+        width = $(window).width();
+        height = $(window).height();
+        w = document.documentElement.offsetWidth;
+        h = document.documentElement.offsetHeight;
+        
+        if (width > height) {
+            $(".page").addClass("page_width").removeClass("page_height").css("height", "100%");
+            $(".banner").hide().siblings(".banner-width").show();
+            $(".banner-width").css("height", height + "px");
+            $(".info").css("height", height + "px");
+            $(".banner-width-only").css("line-height", height + "px");
+            $(".md").css("width", "100%");
+            $(".name").css("font-size", w / 20 + "px");
+            $(".det").css("font-size", w / 50 + "px");
+            $(".desc").css({ "font-size": w / 48 + "px", "line-height": w / 32 + 'px' });
+            //$(".star").css({ "height": w / 40 + "px", "width": w / 40 * 75 / 12 + 'px' });
+            $(".starimg1").css({ "height": w / 40 + "px" });
+            $(".download").css({ "height": w / 12 + "px", "line-height": w / 12 + 'px', "width": "auto", "margin-top": w / 40 +"px"});
+            $(".dowz").css("font-size", w / 30 + "px");
+            $(".icon img").css("height","auto");
+            $(".loadpng").css({ "width": w / 30 + "px", "top": -2 * w / 300 + 'px' });
+            $(".pd15").css("padding-top", w / 12 + "px");
+        } else {
+            $(".page").addClass("page_height").removeClass("page_width").css("height", height + "px");
+            $(".banner").show().siblings(".banner-width").hide();
+            $(".pd15").css("margin-top", "auto");
+            $(".info").css("height", "auto");
+            $(".icon img").css("height", w / 6 + "px");
+            $(".md").css("width", "auto");
+            $(".det").css("font-size", "12px");
+            $(".name").css("font-size", w / 15 + "px");
+            $(".desc").css({ "font-size": w / 24 + "px", "line-height": w / 32 + 'px' });
+            //$(".star").css({ "height": w / 30 + "px", "width": w / 30 * 75 / 12 + 'px' });
+            $(".starimg1").css({ "height": w / 30 + "px" });
+            $(".download").css({ "height": w / 6 + "px", "line-height": w / 6 + 'px', "width": w / 6 + 'px',"margin-top":"0"});
+            $(".loadpng").css({ "width": w / 10 + "px", "top": '0px' });
+        }
+    };
+</script>
+</html>

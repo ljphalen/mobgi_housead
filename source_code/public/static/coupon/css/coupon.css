@@ -1,0 +1,330 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    vertical-align: top;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    background: #ebecee;
+    width: 100%;
+    height: 100%;
+    font-family:"Microsoft Yahei";
+}
+
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+
+}
+
+.banner img {
+    width: 100%;
+}
+
+.banner i{
+    position: absolute;
+    width: 1.6rem;
+    height: 1.6rem;
+    left:0.3rem;
+    top:0.3rem;
+}
+
+.banner .title{
+    position: absolute;
+    left: 2.15rem;
+    top: 0.4rem;
+    font-size: 0.32rem;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.banner .c-title{
+    position: absolute;
+    left: 2rem;
+    top: 0.88rem;
+    font-size: 0.32rem;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.banner .address{
+    position: absolute;
+    left: 2.5rem;
+    top: 1.45rem;
+    font-size: 0.24rem;
+    color: #FFF;
+    font-weight: bold;
+}
+
+.banner .address i{
+    width: 0.3rem;
+    height: 0.3rem;
+    top: -0.05rem;
+    left: -0.35rem;
+}
+
+.banner .address .address-desc{
+
+}
+
+.main {
+    position: relative;
+    width: 100%;
+}
+
+.app-info {
+    padding: 0.23rem 0.22rem;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.app-info i {
+    float: left;
+    display: block;
+    width: 1.29rem;
+    height: 1.29rem;
+}
+
+.app-info i img {
+    width: 1.29rem;
+    height: 1.29rem;
+}
+
+.app-info .title {
+    position: absolute;
+    left: 1.65rem;
+    top: 0.48rem;
+    font-size: 0.32rem;
+    color: #333333;
+    font-weight: bold;
+
+}
+
+.app-info .desc {
+    position: absolute;
+    left: 1.65rem;
+    top: 0.9rem;
+    font-size: 0.26rem;
+    color: #333333;
+}
+
+.app-info .qr-code {
+    float: right;
+    width: 1.58rem;
+    height: 1.29rem;
+}
+
+.app-info .qr-code img {
+    width: 1.58rem;
+    height: 1.29rem;
+    border-radius: 0.04rem;
+}
+
+.content {
+    position: absolute;
+    left: 0;
+    top: 2.5rem;
+    right: 0;
+    bottom: 0;
+    padding: 0 0.29rem 0.35rem 0.29rem;
+    box-sizing: border-box;
+}
+
+.content .content-wrap {
+    width: 100%;
+    height: 4.5rem;
+    background: #fff;
+    box-shadow: 0.00rem 0.01rem 0.03rem #999;
+    position: relative;
+}
+
+
+.content .content-wrap-two {
+    width: 100%;
+    min-height: 2.1rem;
+    background: #fff;
+    box-shadow: 0.00rem 0.01rem 0.03rem #999;
+    position: relative;
+    margin-top: 0.2rem;
+}
+
+.content .content-wrap-two .title {
+    position: absolute;
+    /* width: 3.17rem; */
+    /* height: 6.2rem; */
+    background-size: 100% auto;
+    left: 60%;
+    top: 0.3rem;
+    margin-left: -1.9rem;
+    font-size: 0.26rem;
+    color: #000;
+    text-align: center;
+    line-height: 0.48rem;
+    font-weight: bold;
+}
+
+.content .content-wrap-two .desc {
+    position: absolute;
+    /* width: 3.17rem; */
+    /* height: 6.2rem; */
+    background-size: 100% auto;
+    left: 60%;
+    top: 0.8rem;
+    margin-left: -1.82rem;
+    font-size: 0.20rem;
+    color: #000;
+    text-align: left;
+    line-height: 0.4rem;
+}
+
+
+.content .content-wrap-two i{
+    position: absolute;
+    width: 1.8rem;
+    height: 1.8rem;
+    left: 0.1rem;
+    top: 0.15rem;
+}
+
+.content .content-wrap-two i img {
+    width: 100%;
+}
+
+.content .content-wrap .title {
+    position: absolute;
+    width: 3.17rem;
+    height: 6.2rem;
+    background: url("../images/03.png") no-repeat;
+    background-size: 100% auto;
+    left: 50%;
+    top: 0.19rem;
+    margin-left: -1.585rem;
+    font-size: 0.22rem;
+    color: #fff;
+    text-align: center;
+    line-height: 0.47rem;
+    font-weight: bold;
+
+}
+
+.content .content-wrap i {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0.46rem;
+    height: 0.48rem;
+}
+
+.content .content-wrap i img {
+    width: 100%;
+}
+
+.content .content-wrap .desc {
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    bottom: 0;
+    right: 0;
+}
+
+
+.content .content-wrap .code {
+    position: absolute;
+    width: 3.17rem;
+    height: 6.2rem;
+    background: url("../images/04.png") no-repeat;
+    background-size: 100% auto;
+    left: 50%;
+    top: 1.8rem;
+    margin-left: -1.585rem;
+    font-size: 0.22rem;
+    color: #000;
+    text-align: center;
+    line-height: 0.47rem;
+    font-weight: bold;
+}
+
+.content .content-wrap .c-title {
+    position: absolute;
+    width: 100%;
+    height: 6.2rem;
+    /* left: 58%; */
+    top: 1.2rem;
+    /* margin-left: -2.2rem; */
+    font-size: 0.25rem;
+    color: #000;
+    text-align: center;
+    line-height: 0.47rem;
+    font-weight: bold;
+}
+
+
+.content .content-wrap .desc {
+    position: absolute;
+    width: 3.17rem;
+    height: 6.2rem;
+    left: 50%;
+    top: 2.2rem;
+    margin-left: -1.585rem;
+    font-size: 0.25rem;
+    color: #CDA57E;
+    text-align: center;
+    line-height: 0.47rem;
+    font-weight: bold;
+}
+
+.content .content-wrap .rule {
+    position: absolute;
+    float: left;
+    text-align: left;
+    color: #333333;
+    top: 3rem;
+    font-size: 0.26rem;
+    font-weight: bold;
+    line-height: 0.4rem;
+    padding-left: 0.1rem;
+}
+
+
+.content .content-footer .title {
+    position: absolute;
+    /* width: 3.17rem; */
+    /* height: 6.2rem; */
+    background-size: 100% auto;
+    left: 50%;
+    top: 0.05rem;
+    margin-left: -1.8rem;
+    font-size: 0.26rem;
+    color: #000;
+    text-align: center;
+    line-height: 0.48rem;
+    font-weight: bold;
+}
+
+.content .content-footer .desc {
+    position: absolute;
+    /* width: 3.17rem; */
+    /* height: 6.2rem; */
+    background-size: 100% auto;
+    left: 50%;
+    top: 0.4rem;
+    margin-left: -1.82rem;
+    font-size: 0.16rem;
+    color: #000;
+    text-align: left;
+    line-height: 0.4rem;
+}

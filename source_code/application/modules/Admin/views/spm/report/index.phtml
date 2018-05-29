@@ -1,0 +1,753 @@
+<?php echo $this->render("./spm/layout/header.phtml"); ?>
+<style>
+    #date_range {
+        float: right;
+        margin: 5px;
+    }
+
+    .spilt-title {
+        font-size: 14px;
+    }
+
+    .spilt-title::before {
+        content: '▍';
+        color: rgb(18, 131, 197);
+        line-height: 30px;
+
+    }
+
+    .highline {
+        color: #FF6600
+    }
+
+    .layui-tab {
+        clear: both;
+    }
+
+    .layui-tab-title {
+        margin-bottom: 10px;
+    }
+
+    .layui-tab.plan {
+        padding: 0;
+        margin: 0 10px 20px 0;
+        border: 1px solid #ccc;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .plan.odd {
+        margin: 0 0 20px 10px;
+    }
+
+    .plan .layui-tab-title {
+
+        padding-left: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .plan .layui-table td,
+    .plan .layui-table th {
+        padding: 5px 15px;
+    }
+
+    .plan .layui-tab-title span {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 14px;
+        width: auto;
+        line-height: 30px;
+        padding-top: 5px;
+        text-align: left;
+        border-bottom: 0;
+        margin: 0 10px 0 0;
+        padding: 0;
+    }
+
+    .plan .layui-tab-title li {
+        min-width: 50px;
+    }
+
+    .layui-table td,
+    .layui-table th {
+        text-align: center;
+
+    }
+
+    .layui-tab-title .title::before {
+        content: "▌";
+        color: rgb(25, 158, 216);
+    }
+
+    .layui-tab-content {
+        position: inherit;
+        min-height: 10px;
+        clear: both;
+    }
+
+    .plan .layui-tab-content {
+        border: 0;
+
+    }
+
+
+    .plan .progress .progress-bar {
+        background-color: rgb(69, 176, 160);
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 28px;
+        line-height: 28px;
+        margin: 5px 0;
+        color: #fff;
+        text-align: right;
+    }
+
+    .plan .progress .progress-bar span {
+        background-color: inherit;
+    }
+
+    .plan .progress .progress-bar span::after {
+        content: "%";
+        margin-right: 5px;
+    }
+
+    .layui-tab-brief>.layui-tab-title .layui-this {
+        color: rgb(25, 158, 216);
+        border: 0;
+    }
+
+    .layui-table,
+    .layui-table-view {
+        margin: 0;
+    }
+</style>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 begin  -->
+        <?php echo $this->render("./spm/layout/topMenu.phtml"); ?>
+        <!-- 头部区域 end   -->
+
+        <!-- content begin   -->
+        <div class="content-wrap">
+            <!-- leftMenu begin   -->
+            <?php echo $this->render("./spm/layout/leftMenu.phtml"); ?>
+            <!-- leftMenu begin   -->
+
+            <div class="content-main">
+
+                <div class="wrapper">
+                    <!-- title begin -->
+
+                    <div class="title">
+                        <p>产品概览</p>
+                    </div>
+                    <!-- title end  -->
+                    <div style="position: relative;height:30px;">
+                        <div id="date_range" sdate="2018-04-01" edate="2018-04-11" style="position: absolute;top:0;right:0"></div>
+                    </div>
+                    <div>
+                        <div class="spilt-title">KPI完成进度</div>
+                        <table cellspacing="0" cellpadding="0" border="0" class="layui-table">
+                            <colgroup>
+                                <col width="10%">
+                                <col width="9%">
+                                <col width="9%">
+                                <col width="10%">
+                                <col width="9%">
+                                <col width="9%">
+                                <col width="10%">
+                                <col width="12%">
+                                <col width="12%">
+                                <col width="12%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <td>产品</td>
+                                    <td colspan="3" style='text-align: center'>计划</td>
+                                    <td colspan="3" style='text-align: center'>实际</td>
+                                    <td colspan="3" style='text-align: center'>完成</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>新增</td>
+                                    <td>预算</td>
+                                    <td>广告成本</td>
+                                    <td>新增</td>
+                                    <td>消耗</td>
+                                    <td>广告成本</td>
+                                    <td>KPI完成率</td>
+                                    <td>预算使用率</td>
+                                    <td>成本变动率</td>
+                                </tr>
+                            </thead>
+                            <tbody id="plan_list"></tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="layui-row" style="margin-top:5px;">
+                        <div class="layui-tab" lay-filter="kpi">
+                            <ul class="layui-tab-title" style="margin-bottom:0">
+                                <li class="layui-this" lay-id="staff">投放师KPI完成进度</li>
+                                <li lay-id="channel">渠道KPI完成进度</li>
+                            </ul>
+                        </dev>
+                        <div class="layui-tab layui-tab-brief" lay-filter="subkpi">
+                            <ul class="layui-tab-title layui-tab-brief">
+                                <li class="layui-this" lay-id="staff">KPI完成率</li>
+                                <li lay-id="channel">预算使用率</li>
+                                <li lay-id="channel">成本变动率</li>
+                            </ul>
+                        </div>
+                        <div id="chart_kpi" style="width: 95%;height:650px;"> </div>
+
+                        <!-- <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                            <div class="spilt-title">投放师KPI完成进度</div>
+                            <div id="chart_staff" style="width: 95%;height:650px;"> </div>
+                        </div>
+                        <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                            <div class="spilt-title">渠道KPI完成进度</div>
+                            <div id="chart_channel" style="width: 95%;height:650px;"> </div>
+                        </div> -->
+                    </div>
+
+                    <div class="layui-tab layui-tab-brief" lay-filter="top5" style="margin-top:10px;">
+                        <ul class="layui-tab-title ">
+                            <li class="layui-this" lay-id="all">整体渠道Top5</li>
+                        </ul>
+                    </div>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-row">
+                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                    <div class="layui-tab plan layui-tab-brief">
+                                        <ul class="layui-tab-title">
+                                            <span class="title" style="margin-top: 5px;">新增 Top5</span>
+                                        </ul>
+                                        <table id="register" class="layui-table" lay-filter="register" lay-skin="nob"></table>
+                                    </div>
+                                </div>
+                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                    <div class="layui-tab plan odd layui-tab-brief" lay-filter="roi">
+                                        <ul class="layui-tab-title">
+                                            <span class="title">ROI Top5</span>
+                                            <li lay-id="roi1" class="layui-this">累计</li>
+                                            <li lay-id="roi7">7日</li>
+                                            <li lay-id="roi14">14日</li>
+                                            <li lay-id="roi30">30日</li>
+                                        </ul>
+                                        <table id="roi" class="layui-table progress" lay-filter="roi" lay-even="" lay-skin="nob"></table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                    <div class="layui-tab plan layui-tab-brief" lay-filter="retention">
+                                        <ul class="layui-tab-title ">
+                                            <span class="title">留存 Top5</span>
+                                            <li lay-id="retention1" class="layui-this">次日</li>
+                                            <li lay-id="retention7">7日</li>
+                                            <li lay-id="retention14">14日</li>
+                                            <li lay-id="retention30">30日</li>
+                                        </ul>
+                                        <table id="retention" class="layui-table progress" lay-filter="retention" lay-even lay-skin="nob"></table>
+                                    </div>
+                                </div>
+
+                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                    <div class="layui-tab plan odd layui-tab-brief" lay-filter="ltv">
+                                        <ul class="layui-tab-title">
+                                            <span class="title">LTV Top5</span>
+                                            <li lay-id="ltv1" class="layui-this">次日</li>
+                                            <li lay-id="ltv7">ltv7</li>
+                                            <li lay-id="ltv14">ltv14</li>
+                                            <li lay-id="ltv30">ltv30</li>
+                                        </ul>
+                                        <table id="ltv" class="layui-table progress" lay-filter="ltv" lay-even="" lay-skin="nob"></table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- content end     -->
+        </div>
+
+        <div id="blk">
+            <div id="blk_kpi" type="kpi" class="blk_view kpi" mod="submit_box"></div>
+        </div>
+        <div class="mask"></div>
+
+
+        <link href="<?php echo $staticPath; ?>/css/gri.controls.css?v=<?php echo $version; ?>" rel="stylesheet" />
+        <link href="<?php echo $staticPath; ?>/css/mgchart.css?v=<?php echo $version; ?>" rel="stylesheet" />
+        <script src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.js?v=201712151100"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery-ui.min.js?v=201712151100"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/spmchart.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.loadmask.min.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/gri.dateRange.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.SuperSlide.2.1.1.js?v=<?php echo $version; ?>"></script>
+        <script type="text/javascript">
+            //   topMenu 切换app 回调
+            // appIdSelectChange = {
+            //     callBack: function (id) {
+            //         location.reload()
+            //     }
+            // };
+            var staff_kpi,channel_kpi;
+            var kpiId=0,subkpiId=0;
+            var mymap ={
+                'registers':{ name: '新增用户数', type: 'bar' , label: '用户数' },
+                'daily_amount':{  name: '新增KPI', type: 'bar', label: '用户数' },
+                'kpi_rate':{  name: 'KPI完成率', type: 'line', label: 'KPI完成率(%)' },
+                
+                'real_consumption':{ name: '实际消耗', type: 'bar', label: '金额(元)' },
+                'daily_consumption':{  name: '预算', type: 'bar', label: '金额(元)' },
+                'consumption_rate':{  name: '预算使用率', type: 'line' , label: '预算使用率(%)'},
+
+                'cost':{ name: '成本', type: 'bar', label: '金额(元)' },
+                'daily_cost':{  name: '计划成本', type: 'bar', label: '金额(元)' },
+                'cost_rate':{  name: '成本变动率', type: 'line', label: '成本变动率(%)' },
+            };
+            var chartmap = [
+                    [['registers','daily_amount'],'kpi_rate'],
+                    [['real_consumption','daily_consumption'],'consumption_rate'],
+                    [['cost','daily_cost'],'cost_rate'],
+                ];
+            function chart_render(data,mytype,param1,param2) {
+                var category=[]
+                var series=[]
+                var legend_data=[]
+                var tdata=[];
+                var axis=[];
+                console.log(mytype);
+                
+                if(typeof(param1)!= "object"){param1=[param1]}
+                if(typeof(param2)!= "object"){param2=[param2]}
+
+                data.forEach(element => {
+                    legend_data.push(element[mytype])
+                });
+                param1.forEach((p1,id) => {
+                    tdata=[]
+                    data.forEach(element => {
+                        tdata.push(element[p1])
+                    });
+                    series.push({
+                        name:mymap[p1]['name'],
+                        type:mymap[p1]['type'],
+                        stack:p1,
+                        data:tdata,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'inside'
+                            }
+                        },
+                    })
+                    if(!axis[0]){
+                        axis[0]={
+                            type: 'value',
+                            name: mymap[p1]['label']
+                            // axisLabel: { formatter: '{value} ml' }
+                        }
+                    }
+                });
+                param2.forEach((p2,id) => {
+                    tdata=[]
+                    data.forEach(element => {
+                        tdata.push(element[p2])
+                    });
+                    series.push({
+                        name:mymap[p2]['name'],
+                        type:mymap[p2]['type'],
+                        yAxisIndex: 1,
+                        data:tdata,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top',
+                                formatter: '{c} %'
+                            }
+                        },
+                    })
+                    if(!axis[1]){
+                        axis[1]={
+                            type: 'value',
+                            name: mymap[p2]['label'],
+
+                            // axisLabel: { formatter: '{value} ml' }
+                        }
+                    }
+                });
+                data.forEach((e, si) => {
+                    category.push(e[mytype])     
+                })
+                var option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            crossStyle: {
+                                color: '#999'
+                            }
+                        }
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    legend: { data: legend_data },         
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: category,
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        }
+                    ],
+                    yAxis: axis,
+                    "series": series
+                }
+                var myChart = echarts.init(document.getElementById('chart_kpi'));
+                console.log('series',series);                
+                myChart.setOption(option);
+            }
+
+            function table_render(param) {
+                var fields = [];
+                var thead = '<thead><tr>';
+                var tbody = '<tbody>';
+                param.cols[0].forEach(element => {
+                    fields.push(element.field)
+                    thead += '<th data-field="' + element.field +
+                        '"><div class="layui-table-cell laytable-cell-custom-' + element.field + '"><span>' +
+                        element.title +
+                        '</span></div></th>'
+                });
+                thead += '</tr></thead>';
+                if(param.data){
+                    param.data.forEach((element, index) => {
+                        tbody += '<tr data-index="' + index + '">'
+                        fields.forEach(field => {
+                            tbody += '<td data-field="' + field + '">'
+                            if (field == 'rate') {
+                                var progress_width = element[field] > 100 ? 100 : element[field]
+                                var progress_color = element[field] > 100 ? 100 : element[field]
+                                tbody += '<div class="progress-bar" style="width:' + progress_width +
+                                    '%"><span>' + element[field] + '</span></div>'
+                            } else {
+                                tbody += '<div class="layui-table-cell laytable-cell-custom-' + field +
+                                    '">'
+                                tbody += '<span>' + element[field] + '</span></div></td>'
+                            }
+
+                            tbody += '</td>'
+                        });
+                        tbody += '</tr>'
+                    });
+                }
+
+
+                tbody += '</tbody>';
+                $(param.elem).html(thead + tbody)
+            }
+
+            //JavaScript代码区域
+            layui.use(['element', 'table', 'form'], function () {
+                var element = layui.element;
+                var table = layui.table;
+                var form = layui.form;
+                layuiTable = layui.table;
+
+
+                appIdSelectChange = {
+                    callBack: function (id) {
+                        getPlan({
+                            'sdate': "<?php echo $sdate ?>",
+                            'edate': "<?php echo $edate ?>",
+                        })
+                        getStaffKpi({
+                            'sdate': "<?php echo $sdate ?>",
+                            'edate': "<?php echo $edate ?>",
+                        })
+                        getChannelKpi({
+                            'sdate': "<?php echo $sdate ?>",
+                            'edate': "<?php echo $edate ?>",
+                        })
+                        getTop5({
+                            'sdate': "<?php echo $sdate ?>",
+                            'edate': "<?php echo $edate ?>",
+                        })
+                    }
+                };
+
+                var topDate = [];
+                var srcData = [];
+                var regCols = [
+                    [
+                        { field: 'id', title: '序号', width: 80 },
+                        { field: 'name', title: '渠道' },
+                        { field: 'count', title: '新增用户数', width: 120 }
+                    ]
+                ];
+                var roiCols = [
+                    [
+                        { field: 'id', title: '序号', width: 80 },
+                        { field: 'name', title: '渠道' },
+                        { field: 'rate', title: 'ROI', width: 120 } 
+                    ]
+                ];
+                var retCols = [
+                    [
+                        { field: 'id', title: '序号', width: 80 },
+                        { field: 'name', title: '渠道' },
+                        { field: 'rate', title: '留存率', width: 120 }
+                    ]
+                ];
+                var ltvCols = [
+                    [
+                        { field: 'id', title: '序号', width: 80 },
+                        { field: 'name', title: '渠道' },
+                        { field: 'count', title: 'LTV', width: 120
+                        }
+                    ]
+                ];
+                // 获取广告计划
+                function getPlan(data) {
+                    app_id = parseInt(getCookie('app_id'))
+                    if (app_id > 0) {
+                        data['app_id'] = app_id;
+                        $.ajax({
+                            url: baseurl + '/Admin/Spm_Index/getAdPlan',
+                            data: data,
+                            type: 'get',
+                            success: function (res) {
+                                if (res.success) {
+                                    // console.log(data.data);
+                                    var tbody = ''
+                                    res.data.data.forEach(element => {
+                                        tbody += `<tr><td>` + element['app_name'] +
+                                            `</td><td>` + element['daily_amount'] +
+                                            `</td><td>` + element['daily_consumption'] +
+                                            `</td><td>` + element['daily_cost'] +
+                                            `</td><td>` + element['registers'] +
+                                            `</td><td>` + element['real_consumption'] +
+                                            `</td><td>` + element['cost'] +
+                                            `</td><td>` + element['kpi_rate'] +
+                                            `</td><td>` + element['consumption_rate'] +
+                                            `</td><td>` + element['cost_rate'] +
+                                            `</td></tr>`
+                                    });
+                                    $("#plan_list").html(tbody);
+                                } else {
+
+                                }
+                            },
+                            error: function (xhr, msg, error) {
+                                $("#adminUser").html("管理员：null");
+                            }
+                        });
+                    } else {
+                        console.log('app_id');
+
+                    }
+                }
+
+
+                // 获取TOP5信息
+                function getTop5(data) {
+                    app_id = parseInt(getCookie('app_id'))
+                    if (app_id > 0) {
+                        data['app_id'] = app_id;
+                        // console.log(data);
+                        $.ajax({
+                            url: baseurl + '/Admin/Spm_Index/getTop5',
+                            data: data,
+                            type: 'get',
+                            success: function (res) {
+                                if (res.success) {
+                                    topDate = res.data
+                                    // element.tabChange('top5', 'all');
+                                    element.tabChange('top5', 'all');
+                                    element.tabChange('roi', '1day');
+                                    element.tabChange('retention', '1day');
+                                    element.tabChange('ltv', '1day');
+                                } else {}
+                            },
+                            error: function (xhr, msg, error) {}
+                        });
+                    } else {
+                        console.log('getTop5 app_id');
+
+                    }
+
+                }
+
+                // 投放师KPI完成进度
+                function getStaffKpi(data) {
+                    app_id = parseInt(getCookie('app_id'))
+                    if (app_id > 0) {
+                        data['app_id'] = app_id;
+                        $.ajax({
+                            url: baseurl + '/Admin/Spm_Index/getStaffKpi',
+                            data: data,
+                            type: 'get',
+                            success: function (res) {
+                                if (res.success) {
+                                    staff_kpi = res.data
+                                    chart_render(res.data, 'staff',['registers','daily_amount'],'kpi_rate')
+                                } 
+                            },
+                            error: function (xhr, msg, error) {}
+                        });
+                    } else {
+                        console.log('getStaffKpi failed!');
+                    }
+
+                }
+
+                // 渠道KPI完成进度
+                function getChannelKpi(data) {
+                    app_id = parseInt(getCookie('app_id'))
+                    if (app_id > 0) {
+                        data['app_id'] = app_id;
+                        $.ajax({
+                            url: baseurl + '/Admin/Spm_Index/getChannelKpi',
+                            data: data,
+                            type: 'get',
+                            success: function (res) {
+                                if (res.success) {
+                                    channel_kpi = res.data
+                                } else {}
+                            },
+                            error: function (xhr, msg, error) {}
+                        });
+                    } else {
+                        console.log('getStaffKpi failed!');
+                    }
+
+                }
+
+                var dateRange = new pickerDateRange("date_range", 'date', {
+                    theme: 'ta',
+                    isTodayValid: 1,
+                    startDate: "<?php echo $sdate ?>",
+                    endDate: "<?php echo $edate ?>",
+                    minValidDate: 1379174400,
+                    needCompare: 0,
+                    success: function (dateObj) {
+                        getPlan({
+                            'sdate': dateObj.startDate,
+                            'edate': dateObj.endDate,
+                        })
+                        getStaffKpi({
+                            'sdate': dateObj.startDate,
+                            'edate': dateObj.endDate,
+                        })
+                        getChannelKpi({
+                            'sdate': dateObj.startDate,
+                            'edate': dateObj.endDate
+                        })
+                        getTop5({
+                            'sdate': dateObj.startDate,
+                            'edate': dateObj.endDate,
+                        })
+                    }
+                });
+                getPlan({
+                    'sdate': "<?php echo $sdate ?>",
+                    'edate': "<?php echo $edate ?>",
+                })
+                getStaffKpi({
+                    'sdate': "<?php echo $sdate ?>",
+                    'edate': "<?php echo $edate ?>",
+                })
+                getChannelKpi({
+                    'sdate': "<?php echo $sdate ?>",
+                    'edate': "<?php echo $edate ?>",
+                })
+                getTop5({
+                    'sdate': "<?php echo $sdate ?>",
+                    'edate': "<?php echo $edate ?>",
+                })
+
+
+                element.on('tab(top5)', function (data) {
+                    srcData = topDate[data.index]
+                    table_render({
+                        elem: '#register',
+                        cols: regCols,
+                        data: srcData.register[0]
+                    });
+                    table_render({
+                        elem: '#roi',
+                        cols: roiCols,
+                        data: srcData.roi[0]
+                    });
+                    table_render({
+                        height: 250,
+                        elem: '#ltv',
+                        cols: ltvCols,
+                        data: srcData.ltv[0]
+                    });
+                    table_render({
+                        height: 250,
+                        elem: '#retention',
+                        cols: retCols,
+                        data: srcData.retention[0]
+                    });
+                });
+                element.on('tab(roi)', function (data) {
+                    table_render({
+                        elem: '#roi',
+                        cols: roiCols,
+                        data: srcData.roi[data.index]
+                    });
+                });
+                element.on('tab(ltv)', function (data) {
+                    table_render({
+                        height: 250,
+                        elem: '#ltv',
+                        cols: ltvCols,
+                        data: srcData.ltv[data.index]
+                    });
+                });
+                element.on('tab(retention)', function (data) {
+                    table_render({
+                        height: 250,
+                        elem: '#retention',
+                        cols: retCols,
+                        data: srcData.retention[data.index]
+                    });
+                });
+                element.on('tab(kpi)', function (data) {
+                    kpiId=data.index
+                    if(data.index==0){
+                        chart_render(staff_kpi,'staff',chartmap[subkpiId][0],chartmap[subkpiId][1]);
+                    }else{
+                        chart_render(channel_kpi,'channel_name',chartmap[subkpiId][0],chartmap[subkpiId][1]);
+                    }
+                });
+                element.on('tab(subkpi)', function (data) {
+                    subkpiId=data.index
+                    if(kpiId){
+                        chart_render(channel_kpi,'channel_name',chartmap[data.index][0],chartmap[data.index][1]);
+                    }else{
+                        chart_render(staff_kpi,'staff',chartmap[data.index][0],chartmap[data.index][1]);
+
+                    }
+                });
+            });
+        </script>
+</body>
+
+</html>

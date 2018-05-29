@@ -1,0 +1,108 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain">
+   <div class="nav">
+		<ul class="cc">
+	    	<li ><a href="<?php echo $listUrl;?>">旧配置列表</a></li>
+			<li class="current"><a href="<?php echo $addUrl;?>"><?php echo $navTitle; ?>旧配置</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+              <form action="<?php echo $addPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id"  id="id" value='<?php echo $info['id']; ?>' />
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">   
+                <li>
+                        <span class="label">配置名称：</span>
+                        <div class="fc">                                                      
+                        	<input type="text" id="conf_desc" class="iText" name="name"  style="width:220px;" value="<?php echo $info['name']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">平台类型：</span>
+                        <div class="fc">
+                            <select id="platform"  name="platform" onchange="javascript:autoPlatform();"   <?php if( $info['id'] ){ ?> disabled ="disabled" <?php } ?>>
+                                <option value="1" <?php if( $info['platform']==1 ){ ?> selected <?php } ?>>Android</option>
+                                <option value="2" <?php if( $info['platform']==2 ){ ?> selected <?php } ?>>IOS</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">描述：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="conf_desc" class="iText" name="conf_desc"  style="width:220px;" value="<?php echo $info['conf_desc']; ?>" />
+                        </div>
+                    </li>   
+                    <li>
+                       <span class="label">应用：</span>
+                         <div class="fc">
+                         <select id="app_key"  name="app_key" onchange="add_pos(this.value)"  <?php if( $info['id'] ){ ?> disabled ="disabled" <?php } ?>>
+                         <?php foreach($appList as $k1=>$v1){ ?>
+                           <option value="<?php echo $v1['app_key']; ?>"  <?php if( $info['app_key']==$v1['app_key'] ){ ?> selected <?php } ?> ><?php echo $v1['app_name']; ?></option>
+                         <?php } ?>
+                        </select>
+                        </div>
+                    </li>
+                                        <li class="line"></li>
+                    <li>
+                        <span class="label">广告商配置：</span>
+                        <span class="label" style="display: none">广告概率：</span>
+                        <div class="fc">
+                            <div class="grid">
+                                <table>
+                                <thead>
+			                        <tr>
+			                            <th>广告商</th>
+			                            <th>展示概率</th>
+			                        </tr>
+			                    </thead>
+                                    <tbody>
+                                        <?php if( $adsList ){?>
+                                        <?php foreach($adsList as $k1=>$v1){ ?>
+                                        <tr>
+                                        	<td>
+                                        		<?php echo $k1; ?>
+                                        	</td>
+                                        	<td>
+                                       			<input id="<?php echo $k1; ?>" name="video_ads_com_conf[<?php echo $v1['ads_id']; ?>]" value="<?php echo $v1['percent']; ?>"/>
+                                        	</td>
+                                        </tr>
+                                        <?php }?>
+                                        <?php }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </li>
+					<li>
+                        <div class="fc">
+                            <input type="submit" onclick="confirmSubmit();" value="保存" class="submit"  id="save_fiter_conf" />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl;?>' " />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="<?php echo $staticPath; ?>/css/zTreeStyle.css" type="text/css">
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/jquery.tablednd.0.8.min.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath;?>/js/common/Categorywidget_sdk.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+
+<script>
+$(function(){
+	ajaxForm('addForm',function(ret){ 
+	        ajaxRedirect(ret, baseurl+'<?php echo $listUrl; ?>');
+	 },function(){
+	  	$("#app_key").attr("disabled",false);
+	  	$("#platform").attr("disabled",false);
+	});
+    $('#app_key').chosen();
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

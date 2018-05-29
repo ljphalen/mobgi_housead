@@ -1,0 +1,67 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li class="current"><a href="<?php echo $listUrl;?>">用户组列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">编辑用户组</a></li>
+	</ul>
+</div>
+<div class="h_a">编辑用户组</div>
+<form method="post" action="<?php echo $editPostUrl;?>" id='groupForm'>
+<input type="hidden" name="groupid" value="<?php echo $groupInfo['groupid'];?>">
+<input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+    <table width="100%">
+        <tr class="tr">
+            <th class="th">用户组名称</th>
+            <td class="td"><input type="text" maxlength="30" value="<?php echo $groupInfo['name'];?>" name="name" class="input"></td>
+        </tr>
+        <tr class="tr">
+            <th class="th">用户组描述</th>
+            <td class="td"><textarea class="textarea" name="descrip"><?php echo $groupInfo['descrip'];?></textarea></td>
+        </tr>
+        <tr class="tr">
+            <th class="th">权限分配</th>
+            <td class="td">
+<?php foreach($level as $key => $val) { ?>
+                <dl class="cc purview_list">
+            <dt><label><input name="<?php echo $key;?>" onClick="checkSome('<?php echo $key;?>');" type="checkbox" value="1" class="CheckSome_<?php echo $key;?>" /><?php echo $val['name'];?></label></dt>
+            <dd>
+            <?php foreach($val['items'] as $sonKey => $sonVal) { ?> 
+	            <?php if ($groupInfo['rvalue'][$key][$sonVal['id']] && $groupInfo['rvalue'][$key][$sonVal['id']]  == 1){
+	            	?> 
+	               <label><input name="<?php echo "rvalue[".$key."][".$sonVal['id']."]";?>" checked="checked" type="checkbox" value="1" class="CheckSome_<?php echo $key;?>" /><?php echo $sonVal['name'];?></label>
+	            <?php } else {?>
+	               <label><input name="<?php echo "rvalue[".$key."][".$sonVal['id']."]";?>" type="checkbox" value="1" class="CheckSome_<?php echo $key;?>" /><?php echo $sonVal['name'];?></label>
+	            <?php }?>
+            <?php } ?>
+                    </dd>
+                </dl>
+<?php } ?>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button type="submit">保存</button></span></span></div>
+</form>
+<script type="text/javascript">
+//表单数据提交
+$(document).ready(function(){
+    ajaxForm('groupForm',function(ret){
+        ajaxRedirect(ret, baseurl+'/Admin/Group/index');
+    });
+})
+//权限选中大类的时候同时选中小类
+function checkSome(val) {
+    var className = 'CheckSome_'+val;
+    var classObj  = $('.'+className);
+    for (var i=1;i<classObj.length;i++) {
+        var e = classObj[i];
+        if (classObj[0].checked == true) {
+            e.checked = true;
+        } else {
+            e.checked = false;
+        }
+    }
+}
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

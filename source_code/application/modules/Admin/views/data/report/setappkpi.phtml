@@ -1,0 +1,116 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath?>/css/layui.css"/>
+<style>
+    *{ margin: 0; padding: 0;}
+    ul,li{ list-style: none; }
+    html,body{
+        font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        font-size: 14px;
+    }
+    .wrapper{
+        background:#f2f2f2; padding:5px 20px 50px 20px; box-sizing:border-box;
+    }
+    .items-main-title{ width: 120%; overflow:hidden; padding: 10px 0 5px 0; box-sizing: border-box; border-bottom:1px solid #eee;  }
+    .items-main-title p{ float:left; padding-left: 5px; color: #1E9FFF; display: inline-block; font-size: 20px; line-height: 40px;  }
+    .items-main-search{ width: 120%;  padding: 10px 0 0 0; }
+    .items-main-buttons{ float:right; display: inline-block; }
+    .table-wrap{ width: 120%;}
+</style>
+<body>
+<div class="layui-fluid">
+
+    <div class="items-main-title"><p>应用KPI设置</p></div>
+    <!-- top begin -->
+    <div class="items-main-search ">
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">格式示例：</label>
+                <div class="layui-input-block" style="width: 65%;">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>年份</th>
+                            <th>月份</th>
+                            <th>appkey</th>
+                            <th>应用名称</th>
+                            <th>平台</th>
+                            <th>是否定制渠道</th>
+                            <th>MAU</th>
+                            <th>游戏覆盖率</th>
+                            <th>ARPU</th>
+                            <th>收益KPI</th>
+                        </tr>
+                        <tr>
+                            <td>2017</td>
+                            <td>1</td>
+                            <td>5110be2586e884a9bc61</td>
+                            <td>iOS神庙逃亡2</td>
+                            <td>IOS</td>
+                            <td>0</td>
+                            <td>100000</td>
+                            <td>100%</td>
+                            <td>0.267</td>
+                            <td>10000</td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <button class="layui-btn" id="downloadDemo">下载示例文件</button>
+                </div>
+            </div>
+        <form class="layui-form"  class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">上传：</label>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+                    <button type="button" class="layui-btn" id="test9">开始上传</button>
+                </div>
+            </div>
+            <blockquote class="layui-elem-quote">注意：<br>1.请保证appkey与admin后台的appkey一致<br>
+                                                      2.未导入的API的应用不会显示在应用明细报表中
+            </blockquote>
+        </form>
+    </div>
+    <!-- top end  -->
+
+</div>
+</body>
+</html>
+<script src="<?php echo $staticPath; ?>/js/admin/lay/layui.js"></script>
+<script>
+    token = token;
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['laydate','form','table','upload'], function(){
+        var table = layui.table;
+        var upload = layui.upload;
+        //选完文件后不自动上传
+        upload.render({
+            elem: '#test8'
+            ,url: 'setAppKpi?token='+token
+            ,auto: false
+            ,multiple: true
+            ,accept: 'file' //普通文件
+            ,bindAction: '#test9'
+            ,done: function(res){
+                if(res == 1){
+                    layer.msg('导入成功!', {icon: 1});
+                }else{
+                    layer.msg('导入失败!', {icon: 2});
+                }
+            }
+        });
+    });
+    $(function(){
+        $('#downloadDemo').bind('click',function(){
+                window.location = '/static/template/importDemo.xls';
+        })
+    })
+</script>
+<?php echo $this->render("layout/footer.phtml"); ?>

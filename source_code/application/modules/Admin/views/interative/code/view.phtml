@@ -1,0 +1,59 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain" style="min-height: 173px;">
+      <div class="nav">
+		<ul class="cc">
+				<li class="current"><a href="<?php echo $listUrl;?>">渠道列表</a></li>
+				<li><a href="javascript:"><?php echo $navTitle; ?>渠道</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+                <ul class="form">
+                         <li>
+                        <span class="label">渠道分组：</span>
+                        <div class="fc">
+                                <select id="group_id"  name="group_id"  >
+			                     <?php foreach($channelGroupList as $k1=>$v1){?>
+			                       <option value="<?php echo $k1; ?>"  <?php if( $channelInfo['group_id']==$k1 ){ ?> selected <?php } ?> ><?php echo $v1['channel_name']; ?></option>
+			                     <?php } ?>
+			                    </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">渠道号：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="channel_id"  style="width:220px;" value="<?php echo $channelInfo['channel_id']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">渠道名：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="name" class="iText required" name="channel_name" required style="width:220px;" value="<?php echo $channelInfo['channel_name']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">是否定制渠道：</span>
+                        <div class="fc Menu2">
+                            <?php if($channelInfo['is_custom'] == 1){ ?> 是 <?php }?>
+                            <?php if($channelInfo['is_custom'] == 0){ ?> 否 <?php }?>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc"> 
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl?>'">
+                        </div>
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>
+<script>
+$(function(){;
+	$('#group_id').chosen();
+})   
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

@@ -1,0 +1,570 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/material.css?v=<?php echo $version;?>" rel="stylesheet" />
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+        <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>素材编辑</p>
+                </div>
+                <!-- 查询条件 begin -->
+                <form class="layui-form" action="">
+                <div class="query-condition">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">素材类型</label>
+                            <div class="layui-input-block" style="width:200px;">
+                                <select id="uploadType" lay-filter="uploadType" name="type" lay-verify="required">
+                                    <?php foreach ($materialType as $key=>$val){?>
+                                        <option disabled value="<?php echo $key;?>" <?php if($info['type'] == $key) echo 'selected';?>><?php echo $val;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                        </div>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- 素材列表 begin-->
+                    <div class="material-wrap layui-form uploadFile-wrap">
+                        <ul id="uploadFile-list" class="upload-list">
+                        </ul>
+<!--                        <ul id="upload-list" class="upload-list">-->
+<!--                            <li>-->
+<!--                                <button type="button" onclick="addUpload()" style="position: absolute;left: 50%;top: 50%;margin: -25% 0 0 -20%;" class="layui-btn layui-btn-normal">-->
+<!--                                <i class="layui-icon">&#xe608;</i> 添加-->
+<!--                                </button>-->
+<!--                            </li>-->
+<!--                        -->
+<!--                        </ul>-->
+                    </div>
+                    <!-- 素材列表 end-->
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                        <button type="button"  class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <a type="button" class="layui-btn layui-btn-primary" href="javascript:history.go(-1)">取消</a>
+                        </div>
+                    </div>
+
+                    <video id="video" preload src="" style="display:none;" ></video>
+                    <canvas id="canvas" style="display:none;"  ></canvas>
+                </form>
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+<script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'laydate', 'table', 'upload'], function () {
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var upload = layui.upload;
+        // 初始化 日期 date 插件
+        laydate.render({
+            elem: '#date', //指定元素
+            value: '',
+            range: true,
+            done: function (value, date, endDate) {
+                var begin = '',
+                    end = '';
+                if (value) {
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            var len = $("#uploadFile-list li").length;
+            data.field.token = token;
+            data.field.count = len;
+            //data.field.app_id = $("select[name='app_id']").find("option:selected").val();
+            $.ajax({
+                url : 'saveEdit',
+                async: false,
+                data : data.field,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    if(data.success){
+                        setTimeout(function(){
+                            window.location.href = 'index';
+                        },500);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+            return false;
+        });
+
+
+        var selectDefault = <?php echo $info['type'];?>; // 默认图片类型
+        $("#uploadType").find("option[value='"+selectDefault+"']").prop("selected",true);
+        // 上传类型切换
+        form.on('select(uploadType)', function(data){
+            if($("#uploadFile-list li").length==0 || data.value==selectDefault){
+                selectDefault = data.value
+                return false;
+            }
+            layer.open({
+                type: 1
+                ,offset: 'auto'
+                ,id: 'reminder' //防止重复弹出
+                ,content: '<div style="padding: 20px 100px;">更改素材类型，将不会保存当前编辑内容！</div>'
+                ,btn: ['不管，我就要', '亚麻跌']
+                ,btnAlign: 'r' //按钮居中
+                ,shade: 0.5 //不显示遮罩
+                ,yes: function(){
+                    selectDefault = data.value
+                    $("#uploadFile-list").html(' ')
+                    layer.closeAll();
+                }
+                ,btn2:function(){
+                    $("#uploadType").find("option[value='"+selectDefault+"']").prop("selected",true);
+                    renderLayuiForm();
+                }
+                ,cancel: function(){
+                    $("#uploadType").find("option[value='"+selectDefault+"']").prop("selected",true);
+                    renderLayuiForm();
+                }
+            });
+        });
+    });
+
+    // 添加上传文件
+    function addUpload(obj){
+        var selected = "<?php echo $info['type'];?>";
+        var isText = 'display:none',isFiles='display:block';
+        var li = ``,text='图片',desc=' 100k以内的png／jpg／gif';
+        var completeText='',imgSrc='',gid = '',imgIsshow = 'display:none',size = '',img_width = '', img_height='',other_file = '',id='',video_length='',thumb='',thumb_pic='';
+        var fileName = '',file;
+        if(obj){
+            completeText = '上传 100%';
+            imgSrc = obj.url;
+            imgIsshow = 'display:block';
+            img_width = obj.img_width;
+            img_height = obj.img_height;
+            size = obj.size;
+            fileName = file.name;
+            file = obj.file;
+        }else if(selected == 2){
+            //completeText = '上传 100%';
+            imgSrc = '<?php echo $info['file_url'];?>';
+            gid = '<?php echo $info['gid'];?>';
+            imgIsshow = 'display:block';
+            img_width = '<?php echo $info['width'];?>';
+            img_height = '<?php echo $info['heigh'];?>';
+            size = '<?php echo $info['size'];?>';
+            other_file = '<?php echo $info['other_file']?>';
+            video_length = '<?php echo $info['video_length'];?>';
+            thumb_pic = '<?php echo $attachs;?>'+'<?php echo $info['thumb'];?>';
+            thumb = '<?php echo $info['thumb'];?>';
+            id = '<?php echo $info['id'];?>';
+        }else if(selected == 1){
+            imgSrc = '<?php echo $info['file_url'];?>';
+            imgIsshow = 'display:block';
+            gid = '<?php echo $info['gid'];?>';
+            img_width = '<?php echo $info['width'];?>';
+            img_height = '<?php echo $info['heigh'];?>';
+            size = '<?php echo $info['size'];?>';
+            other_file = '<?php echo $info['other_file']?>';
+            thumb_pic = '<?php echo $attachs;?>'+'<?php echo $info['thumb'];?>';
+            thumb = '<?php echo $info['thumb'];?>';
+            id = '<?php echo $info['id'];?>';
+        }else if(selected == 3){
+            other_file = '<?php echo $info['other_file']?>';
+            id = '<?php echo $info['id'];?>';
+            gid = '<?php echo $info['gid'];?>';
+        }
+        if(selected==1){
+            text='图片',desc='2M以内的png／jpg／gif';
+        }else if(selected==2){
+            text='视频',desc='100M以内的MP4';
+        }else{
+            text='文案';
+            isText = 'display:block';
+            isFiles='display:none';
+        }
+        var oLi = document.createElement('li');
+        li = `<p class="upload-list-title">`+text+`</p>
+                        <input class="file_name" type="hidden" name="file_name" value="`+imgSrc+`"/>
+                        <input type="hidden" id="picture" name="picture" value=""/>
+                        <input type="hidden" id="gid" name="gid" value="`+gid+`"/>
+                        <input class="img_width" type="hidden" name="img_width" value="`+ img_width+`"/>
+                        <input class="img_height" type="hidden" name="img_height" value="`+img_height +`"/>
+                        <input class="file_size" type="hidden" name="file_size" value="`+size +`"/>
+                        <input class="other_file" type="hidden" name="other_file" value="`+other_file+`" />
+                        <input class="video_length" type="hidden" name="video_length" value="`+video_length+`" />
+                        <input class="thumb" type="hidden" name="thumb" value="`+thumb+`" />
+                        <input class="id" type="hidden" name="id" value="`+id+`" />
+                        <!--<i class="upload-list-del">x</i>-->
+                            <div class="upload-list-files" style="`+isFiles+`">
+                                <img style="`+imgIsshow+`" onclick="onfileSelected(this,`+selected+`)" class="files-img" src="`+thumb_pic+`" />
+                                <!-- <p class="files-mask"></p> -->
+                                <div class="files-btns">
+                                    <span class="files-desc">
+                                    `+desc+`
+                                    </span>
+                                    <div class="files-btns-item">
+                                        <input class="fileupload-input" onchange="fileSelected(this,`+selected+`)" type="file" multiple />
+                                        <p class="fileupload-btn">上传</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="upload-list-item">
+                                <!-- <p class="up-list-item-title">状态：</p> -->
+                                <p class="uploadInfo up-list-item-text red center">` +completeText+` </p>
+                            </div>
+                            <div class="upload-list-item" style="`+isText+`">
+                                <p class="up-list-item-title">推广文案：</p>
+                                <p class="up-list-item-input">
+                                    <input type="text" name="content" placeholder="" value="<?php echo $info['content']?>" class="layui-input" />
+                                </p>
+                            </div>
+                            <div class="upload-list-item" style="`+isFiles+`">
+                                <p class="up-list-item-title">标题：</p>
+                                <p class="up-list-item-input">
+                                    <input type="text" name="name" placeholder="" value="<?php echo $info['name']?>" class="layui-input" />
+                                </p>
+                            </div>
+                            <div class="upload-list-item">
+                                <p class="up-list-item-title">制作人：</p>
+                                <div class="up-list-item-input">
+                                    <select lay-verify="" lay-search name="mk_operator" id="mk_operator">
+                                        <?php foreach ($userList as $key=>$val){?>
+                                        <option value="<?php echo $val['user_id'];?>" <?php if($info['mk_operator'] == $val['user_id']) echo 'selected';?>><?php echo $val['user_name'];?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="upload-list-item">
+                                <p class="up-list-item-title">源文件：</p>
+                                <div class="up-list-item-input">
+                                    <p class="fileupload-btn">上传源文件</p>
+                                    <input class="fileupload-input" type="file" onchange="fileSelected(this,'other')" />
+                                </div>
+                                <p class="up-list-item-text"></p>
+                            </div>
+                        `;
+        $(oLi).html(li);
+        $("#uploadFile-list").append(oLi);
+        // 視頻毗連
+        if(obj && selected==2){
+           
+        }else if(selected == 2){
+            //console.log(imgSrc);
+           
+            $('.files-img').attr('src',"<?php echo $attachs;?>"+"<?php echo $info['thumb'];?>");
+        }
+        if(obj && selected==2){
+            creatVideo(obj.url,$(oLi))
+        }if(!obj && selected==2){
+            creatVideo(imgSrc,$(oLi))
+        }else if(obj && selected==1){
+            picFileReader(file,$(oLi))
+        }    
+
+        renderLayuiForm();
+    }
+
+    // 删除列表记录
+    $("#uploadFile-list").delegate('.upload-list-del','click',function(){
+        $(this).parent().remove();
+    });
+
+
+    // 图片预览和文件读取状态
+    function fileSelected(t,type) {
+       // console.log(t.files.length)
+        if(t.files.length>1 && t.files.length>0){
+            layer.msg('修改禁用批量上传!');
+        }else if(t.files.length==1){
+            //单个
+            var file = t.files[0];
+            //console.log(file);
+            var allowUp = false;
+            if (type == 1){
+                if(file.type == 'image/jpeg' || file.type == 'image/png' || file.type == 'image/gif'){
+                    allowUp = true;
+                }
+            }else if(type ==2){
+                if(file.type == 'video/mp4'){
+                    allowUp = true;
+                }
+            }else{
+                allowUp = true;
+            }
+            //console.log(type);
+            if(allowUp == false){
+                layer.msg('上传类别错误!');
+                return false;
+            }
+            var that;
+            if(type=='other'){
+                that =  $(t).parent().parent().parent().find('.uploadInfo');
+            }else{
+                that =  $(t).parent().parent().parent().parent().find('.uploadInfo');
+            }
+            //console.log(file);
+            readFile(that,file,type)
+        }
+    }
+
+    // 读取文件状态
+    function readFile(t,file,type){
+        if (file) {
+            var fileSize = 0;
+            if (file.size > 1024 * 1024)
+                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            else
+                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+            t.html(file.name +' ' + fileSize )
+            uploadFile(file,t,type);
+        }
+    }
+
+    //  上传文件
+     function uploadFile(file,info,type,complete) {
+         console.log(file)
+        var fd = new FormData();
+        fd.append("fileToUpload", file);
+        fd.append("token",token);
+        fd.append("groupId",$('#gid').val());
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener("progress", function(evt){
+            if (evt.lengthComputable) {
+                info.html("上传 "+ Math.round(evt.loaded * 100 / evt.total) +"%" );
+            }else{
+                info.html("上传成功");
+                if(complete){
+                    console.log(complete);
+                }
+            }
+        }, false);
+        xhr.addEventListener("load", function(evt){
+            console.log('服务器响应：',evt);
+        }, false);
+        xhr.addEventListener("error", function(evt){
+            console.log(evt)
+            info.html("文件上传错误");
+        }, false);
+        xhr.addEventListener("abort", function(){
+            console.log(evt)
+            info.html("文件上传失败")
+        }, false);
+        xhr.open("POST", "addPost");//修改成自己的接口
+        xhr.send(fd);
+        xhr.onreadystatechange = function() { 
+            if (xhr.readyState == 4) { 
+              if(xhr.status == 200){
+                var data = JSON.parse(xhr.response);
+                if(data.success){
+                    var oLi = info.parent().parent();
+                    //console.log(type)
+                    if(type==1){
+                        if(!complete){
+                            oLi.find(".file_name").val(data.data.data);
+                            oLi.find(".file_size").val(data.data.size);
+                            var img = new Image();
+                            img.src = '<?php echo $attachs?>' + data.data.data;
+                            img.onload = function(){
+                                //console.log('img.width:',img.width)
+                                oLi.find(".img_width").val(img.width)
+                                oLi.find(".img_height").val(img.height)
+                            }
+                            oLi.find(".files-img").show();
+                           // oLi.find(".files-img").attr("src",'<?php echo $attachs;?>' + data.data.data)
+                            oLi.find("input[name='name']").val(file.name)
+                            picFileReader(file,oLi);
+                        }else{
+                            var obj = new Object();
+                            obj.size = data.data.size;
+                            var img = new Image();
+                            img.src = '<?php echo $attachs?>' + data.data.data;
+                            img.onload = function(){
+                                //console.log('img.width:',img.width)
+                                obj.img_width = img.width;
+                                obj.img_height = img.height;
+                                obj.url = '<?php echo $attachs?>' + data.data.data;
+                                obj.data = data.data.data;
+                                obj.file = file;
+                                addUpload(obj)
+                            }
+                        }
+                    }else if(type==2){
+                        if(!complete){
+                            oLi.find(".file_name").val(data.data.data);
+                            oLi.find(".file_size").val(data.data.size);
+                            creatVideo(data.data.data,oLi)
+                            oLi.find("input[name='name']").val(file.name)
+                        }else{
+                            var obj = new Object();
+                            obj.size = data.data.size;
+                            obj.url = '<?php echo $attachs?>' + data.data.data;
+                            obj.data = data.data.data;
+                            obj.file = file;
+                            addUpload(obj)
+                        }
+
+                    }else if(type == 'other'){
+                        oLi.find(".other_file").val(data.data.data);
+                    }
+                }else{
+                    layer.msg(data.msg);
+                }
+              }else{
+                  layer.msg('通信错误!');
+              } 
+            }
+        } 
+      }
+
+     // 批量弹窗
+     function batchListTips(files,type){
+        var tbody = ``;
+        for(var i=0;i<files.length;i++){
+            var file = files[i];
+            var fileSize = 0;
+            if (file.size > 1024 * 1024){
+                fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            }else{
+                fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+            }
+            tbody = tbody + `<tr>
+            <td>`+ file.name +`</td>
+            <td>`+ fileSize +`</td>
+            <td class="file_state" id="file_state`+i+`">待处理</td>
+             </tr>`;
+        }
+        var content = `<div style="padding:20px; box-sizing:border-box; width:100%; height:400px; overflow-x:hidden; overflow-y:auto;">
+             <table id="files_table" class="layui-table">
+             <colgroup>
+             <col width="300">
+             <col width="300">
+             <col>
+            </colgroup>
+            <thead>
+                <tr>
+                <th>文件名称</th>
+                <th>文件大小</th>
+                <th>文件状态</th>
+                </tr>
+            </thead>
+            <tbody>
+               `+ tbody +`
+            </tbody>
+            </table>
+        </div>`;
+        layer.open({
+            type: 1
+            ,offset: 'auto'
+            ,area: ['960px', '600px']
+            ,id: 'batchListTips' //防止重复弹出
+            ,content: content
+            ,btnAlign: 'r' //
+            ,btn: ['批量上传']
+            ,shade: 0.5 //不显示遮罩
+            ,yes: function(index,layero){
+                batchListAction(files,type);
+                var btn = layero.find('.layui-layer-btn');
+                btn.find('.layui-layer-btn0').hide()
+              //  layer.closeAll();
+            }
+        });
+     }
+
+     //批量上传文件
+     function batchListAction(files,type){
+        $('#files_table tbody .file_state').each(function(index,el){
+            var id = $(this).attr('id')
+            uploadFile(files[index],$("#"+id),type,'批量')
+        });
+     }
+
+     function onfileSelected(t,type){
+         $(t).parent().find('.fileupload-input').click();
+     }
+
+
+
+    //重新渲染form
+    function renderLayuiForm(){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+    function creatVideo(src,oLi){
+        var video = document.createElement('video');
+        var canvas = document.createElement('canvas');
+        document.body.appendChild(video);
+        document.body.appendChild(canvas);
+        video.style.display = 'none';
+        canvas.style.display = 'none';
+        //console.log(src)
+        $(video).attr("src",'<?php echo $attachs?>'+src);
+        video.volume = 0;
+        video.play();
+        printSc($(video),$(canvas),oLi);
+    }
+
+    function printSc(video,canvas,oLi){
+        setTimeout(function(){
+            //alert('video[0].videoHeight:'+video[0].videoHeight);
+            canvas.attr({
+                width:video[0].videoWidth,
+                height:video[0].videoHeight,
+            });
+//            console.log('canvas[0].width:',canvas[0].width);
+//            console.log('canvas[0].heigh:',canvas[0].height);
+            canvas[0].getContext('2d').drawImage(video[0], 0, 0, canvas[0].width, canvas[0].height);
+            var base64 = canvas[0].toDataURL("image/jpeg");
+            // console.log(base64)
+            video[0].pause();
+            video.remove();
+            canvas.remove();
+            if(oLi){
+                oLi.find(".files-img").show();
+                oLi.find(".files-img").attr("src",base64);
+                //oLi.find(".thumb").val(canvas[0].toDataURL());
+                oLi.find(".img_width").val(video[0].videoWidth)
+                oLi.find(".img_height").val(video[0].videoHeight)
+            }
+        },1000);
+    }
+
+    function picFileReader(files,oLi){
+        var read = new FileReader() // 创建FileReader对像;
+        read.readAsDataURL(files)  // 调用readAsDataURL方法读取文件;
+        read.onload=function(){
+            var base64 = read.result  // 拿到读取结果;
+            oLi.find("input[name='picture']").val(base64);
+            oLi.find(".files-img").attr("src",base64)
+        }
+    }
+
+    $(function(){
+        addUpload();
+    })
+</script>

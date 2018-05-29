@@ -1,0 +1,16 @@
+<?php
+echo $this->render("layout/header.phtml");
+echo <<<HTML
+<div class="wrap">
+    <div id="error_tips">
+        <h2>信息提示</h2>
+        <div class="error_cont">
+            <ul>
+                <li>$msg</li>
+            </ul>
+            <div class="error_return"><a href="javascript:history.back()" class="btn">返回</a></div>
+        </div>
+    </div>
+</div>
+HTML;
+echo $this->render("layout/footer.phtml");

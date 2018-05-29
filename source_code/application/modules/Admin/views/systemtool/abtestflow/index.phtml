@@ -1,0 +1,102 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this"><a href="<?php echo $listUrl;?>">流量列表</a></li>
+                        <li><a href="<?php echo $addUrl;?>">添加流量</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <!-- search begin -->
+                <div class="temp-search-wrap">
+                    <form class="layui-form" action="<?php echo $listUrl;?>" method="GET"  id="searchForm" >
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="conf_name" placeholder="请输入名称查询" class="layui-input" value="<?php echo $search['conf_name']; ?>">
+                            </div>
+                            <div class="layui-input-inline">
+                                <button  class="layui-btn layui-btn-normal">查询</button>
+                            </div>
+                            <a id="upload-temp" type="button" class="floatright layui-btn layui-btn-normal" href="<?php echo $addUrl;?>">添加配置</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- search  end  -->
+                <!-- table begin -->
+                <div class="layui-form-item">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                            <th>id</th>
+                            <th>名称</th>
+                            <th>使用该配置的测试数量</th>
+                            <th>操作</th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                          <?php foreach ($list as $val){?>
+                            <tr>
+                                <td><a class="link-set" href="<?php echo $viewUrl.'?flow_id='.$val['flow_id'];?>"><?php echo $val['flow_id'];?></a></td>
+                                <td><?php echo $val['conf_name'];?></td>
+                                <td><?php echo $val['config_num'];?></td>
+                                <td>
+                                    <a class="link-set" href="<?php echo $viewUrl.'?flow_id='.$val['flow_id'];?>">查看</a>
+                                    <a class="link-set" href="<?php echo $addUrl.'?flow_id='.$val['flow_id'];?>">编辑</a>
+                                    <a class="link-delete" data-id="<?php echo $val['flow_id'];?>">删除</a>
+                                </td>
+                            </tr>
+                              <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table end -->
+                <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+ // 删除 
+    $(".layui-table").delegate(".link-delete","click",function(){
+        var id = $(this).attr("data-id");
+        var that = $(this);
+        var data =  {
+        	flow_id : id,
+            token : token,
+        }
+        layer.confirm('确认是否要删除?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : baseurl + '<?php echo $deleteUrl?>' ,
+                async: false,
+                data : data,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.close(index);
+                    layer.msg(data.msg);
+                    if(data.success){
+                        that.parent().parent().remove();
+                    }
+                },
+                error :function(xhr,msg,e){
+                    layer.close(index);
+                    layer.msg(msg); 
+                }
+            });
+           
+        });
+    });
+})();
+</script>
+</html>

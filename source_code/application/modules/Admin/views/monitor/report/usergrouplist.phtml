@@ -1,0 +1,145 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link href="<?php echo $staticPath;?>/css/monitor/css/index.css" rel="stylesheet" type="text/css">
+<div class="colMain">
+    <div class="nav">
+        <ul class="cc">
+            <li ><a href="<?php echo $IndexUrl;?>">监控数据概览</a></li>
+            <li ><a href="<?php echo $DetailsUrl;?>">监控数据详情</a></li>
+            <li class="current"><a href="<?php echo $UsergroupListUrl;?>">监控用户组列表</a></li>
+<!--            <li ><a href="--><?php //echo $ScriptListUrl;?><!--">脚本列表</a></li>-->
+        </ul>
+	</div>
+    <div class="wrap">
+        <div class="item-wrap">
+            <div class="nav-title">
+                <div class="nav-on-off">-</div>
+                    <h2>监控用户组列表</h2>
+            </div>
+            <section class="nav-section">
+                <!-- 搜索 begin -->
+                <div class="search-wrap">
+                        <input class="search-text" type="text" value="" placeholder="请输入用户昵称" />
+                        <a class="m-btn" id="s-submit" href="javascript:;">搜索</a>
+                        <a class="m-btn m-right" id="addMonitorGroup" href="javascript:;">新增用户组</a>
+                </div>
+                <!-- 搜索 end -->
+                <table class="monitor-table">
+                    <thead>
+                        <tr>
+                            <th>用户组名称</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($user_group as $key=>$value){
+                            echo "<tr>";
+                            echo "<td><input type='checkbox' class='check' value='".$value['id']."' />&nbsp;&nbsp;".$value['group_name']."</td>";
+                            echo "<td>".$value['create_time']."</td>";
+                            if($value['status'] == 1){
+                                echo "<td><span class='label label-success'>正常</span></td>";
+                            }else{
+                                echo "<td><span class='label label-warning'>停止</span></td>";
+                            }
+                            echo "<td><a class='t-handle addNewUser' data=".$value['id']." href='#'>添加用户</a>&nbsp;&nbsp;<a href='#' class='MonitorRule t-handle seeUsers' data='".$value['id']."'>查看用户列表</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <div class="m-handle-wrap">
+                        <a class="m-btn m-rmargin" id="deleteAll" href="javascript:;" />删除已选</a>
+                </div>   
+            </section>
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            $('#s-submit').bind('click',function(){
+                var sdate = $("#date_range").attr("sdate");
+                var edate = $('#date_range').attr("edate");
+                var appkey = $('#app_key').val();
+                window.location='<?php echo $DetailsUrl;?>'+'?sdate='+sdate+'&edate='+edate+'&appkey='+appkey;
+            })
+            $('#addMonitorGroup').bind('click',function(){
+                layer.open({
+                    type: 2,
+                    title: '新增用户组',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['600px', '300px'],
+                    content: '<?php echo $AddMonitorGroup;?>',
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+            $('.addNewUser').bind('click',function(){
+                var gid = $(this).attr('data');
+                layer.open({
+                    type: 2,
+                    title: '新增用户',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['600px', '500px'],
+                    content: '<?php echo $AddUserUrl;?>'+"?gid="+gid,
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+
+            $('.seeUsers').bind('click',function(){
+                var gid = $(this).attr('data');//获取组id
+                //页面层
+                layer.open({
+                    type: 2,
+                    title: '查看用户',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['800px', '500px'],
+                    content: '<?php echo $UserListUrl;?>'+"?gid="+gid,
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+
+            $('#deleteAll').bind('click',function () {
+                layer.confirm('确定要删除选中项?删除后不可恢复!', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var id = '';
+                    $('.check').each(function(e,val){
+                        if($(this).attr("checked")){
+                            //console.log(val.value);
+                            if(id == ''){
+                                id = val.value;
+                            }else{
+                                id = id + ","+ val.value;
+                            }
+                        }
+                    })
+                    if(id == ''){
+                        layer.msg('没有选中删除项!',{'icon':2});
+                        return false;
+                    }
+                    $.get("<?php echo $DelMonitorGroup;?>", {ids:id}, function(result){
+                        if (result== 1){
+                            //layer.msg('删除成功!',{'icon':1});
+                            location.reload();
+                        }else{
+                            layer.msg('删除失败!',{'icon':1});
+                        }
+                    },'json');
+                }, function(){
+                });
+            })
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

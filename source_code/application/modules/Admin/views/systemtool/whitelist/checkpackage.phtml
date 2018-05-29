@@ -1,0 +1,168 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link href="<?php echo $staticPath;?>/css/monitor/css/index.css" rel="stylesheet" type="text/css">
+
+<div class="colMain">
+    <div class="wrap">
+        <div class="item-wrap">
+            <div class="nav-title">
+                <div class="nav-on-off">-</div>
+                    <h2>APK信息管理</h2>
+            </div>
+            <section class="nav-section">
+                <!-- 搜索 begin -->
+                <!--<form action="<?php echo $DetailsUrl;?>" method="get">
+                <div class="search-wrap">
+                        <select class="search-select" id="type" name="type">
+                            <option value="all"  <?php if($search['type'] == "all") echo "selected"?>>所有应用</option>
+                            <option value="act"  <?php if($search['type'] == "act") echo "selected"?>>活跃用户</option>
+                            <option value="ecpm"  <?php if($search['type'] == "ecpm") echo "selected"?>>ecpm</option>
+                            <option value="capital"  <?php if($search['type'] == "capital") echo "selected"?>>人均次数</option>
+                        </select>
+                        <input class="search-text" type="text" name="search" id="search" value="<?php echo $search['search'];?>" placeholder="请输入查询条件" />
+                        <input type="submit"  class="m-btn searchbtn" id="s-submit" href="javascript:;" value="搜索">
+                        <a class="m-btn m-right" id="addMonitor" href="javascript:;">新增监控</a>
+                        <a class="m-btn m-right" id="globalSet" href="javascript:;" style="margin-right: 5px;">全局预警等级设置</a>
+                </div>
+                </form>-->
+                <!-- 搜索 end -->
+                <table class="monitor-table">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>应用</th>
+                            <th>图标信息</th>
+                            <th>APK版本号</th>
+                            <th>APK版本名</th>
+                            <th>APK包名</th>
+                            <th>已接入插页广告商</th>
+                            <th>已接入视频广告商</th>
+                            <th>渠道</th>
+                            <th>插页广告版本</th>
+                            <th>视频广告版本</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($data as $key=>$value){
+                            echo "<tr>";
+                            echo "<td><input type='checkbox' class='check' value='".$value['id']."'/>&nbsp;&nbsp;".$value['title']."</td>";
+                            echo "<td>".$value['appname']."</td>";
+                            echo "<td>".$value['appicon']."</td>";
+                            echo "<td>".$value['versioncode']."</td>";
+                            echo "<td>".$value['versionname']."</td>";
+                            echo "<td>".$value['packagename']."</td>";
+                            echo "<td>".$value['interstitialplatform']."</td>";
+                            echo "<td>".$value['videoplatform']."</td>";
+                            echo "<td>".$value['channel']."</td>";
+                            echo "<td>".$value['interstitialversion']."</td>";
+                            echo "<td>".$value['videoversion']."</td>";
+                            //echo "<td><a class='t-handle' href='#'>监控图表</a>&nbsp;&nbsp;<a href='#' class='MonitorRule t-handle' data='".$value['id']."'>报警规则</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                
+            </section>
+        </div>
+    </div>
+
+    <script>
+        $(function(){
+            $('#s-submit').bind('click',function(){
+                var sdate = $("#date_range").attr("sdate");
+                var edate = $('#date_range').attr("edate");
+                var appkey = $('#app_key').val();
+                window.location='<?php echo $DetailsUrl;?>'+'?sdate='+sdate+'&edate='+edate+'&appkey='+appkey;
+            })
+            $('.MonitorRule').bind('click',function () {
+                var id = $(this).attr('data')
+                layer.open({
+                    type: 2,
+                    title: '监控配置',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['700px', '500px'],
+                    content: '<?php echo $EditMonitorUrl;?>'+'?id='+id,
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+            $('#addMonitor').bind('click',function(){
+                layer.open({
+                    type: 2,
+                    title: '监控配置',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['700px', '700px'],
+                    content: '<?php echo $AddMonitorUrl;?>',
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+            $('#deleteAll').bind('click',function () {
+                layer.confirm('确定要删除选中项?删除后不可恢复!', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var id = '';
+                    $('.check').each(function(e,val){
+                        if($(this).attr("checked")){
+                            //console.log(val.value);
+                            if(id == ''){
+                                id = val.value;
+                            }else{
+                                id = id + ","+ val.value;
+                            }
+                        }
+                    })
+                    if(id == ''){
+                        layer.msg('没有选中删除项!',{'icon':2});
+                        return false;
+                    }
+                    $.get("<?php echo $DeleteMonitor;?>", {ids:id}, function(result){
+                        if (result== 1){
+                            //layer.msg('删除成功!',{'icon':1});
+                            location.reload();
+                        }else{
+                            layer.msg('删除失败!',{'icon':1});
+                        }
+                    },'json');
+                }, function(){
+                });
+            })
+
+            // 运行状态点击事件
+            $(".al-toggle-button").click(function(){
+                var status = parseInt($(this).attr("data-status"));
+                var id = parseInt($(this).attr("data-id"));
+                $.get("<?php echo $ChangeMonitorStatus;?>", {id:id,status:status}, function(result){
+                    if (result.status== 1){
+                        location.reload();
+                    }else{
+                        layer.msg(result.msg,{'icon':2});
+                        //location.reload();
+                    }
+                },'json');
+            });
+
+            //全局预警等级设定
+            $('#globalSet').bind('click',function(){
+                layer.open({
+                    type: 2,
+                    title: '全局预警等级设定',
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ['700px', '400px'],
+                    content: '<?php echo $GlobalSetUrl;?>',
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            })
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

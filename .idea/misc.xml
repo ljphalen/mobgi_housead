@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="http://svn.ids111.com:81/dgc/mobgi_housead/branches" />
+                  <option value="http://svn.ids111.com:81/dgc/mobgi_housead/tags" />
+                  <option value="http://svn.ids111.com:81/dgc/mobgi_housead/trunck" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="http://svn.ids111.com:81/dgc/mobgi_housead/branches/mobgi_housead_200170629" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+</project>

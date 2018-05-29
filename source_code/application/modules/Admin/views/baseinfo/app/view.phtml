@@ -1,0 +1,119 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<script src="<?php echo $staticPath; ?>/js/common/app-type.js?<?php echo $version; ?>" type="text/javascript"></script>
+ <script src="<?php echo $staticPath; ?>/js/common/games.js?<?php echo $version; ?>" type="text/javascript"></script>
+<style>
+#gamelist{width:30%;background:#fff;border:1px solid #dedede;padding:5px;}
+#gamelist li{width:100%;height:25px;line-height:25px;text-indent:15px;
+             border-bottom:1px dashed #ccc;color:#666;cursor:pointer;}
+</style>
+<div class="colMain">
+     <div class="nav">
+		<ul class="cc">
+	    	<li ><a href="<?php echo $listUrl;　?>">应用列表</a></li>
+	    	<li  class="current"><a href="javascript:">查看应用</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+                <ul class="form">
+                    <li>
+                        <span class="label">应用名：</span>
+                        <div class="fc">
+                            <?php echo $appInfo['app_name']; ?>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">Appkey：</span>
+                        <div class="fc Menu2">
+                            <?php echo $appInfo['app_key']; ?>
+                            <input type="hidden" name="app_key" value="<?php echo $appInfo['app_key']; ?>">
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">开发者：</span>
+                        <div class="fc">
+                  			 <?php echo $appInfo['developer']; ?>
+                        </div>
+                    </li>               
+                    
+                    <li>
+                        <span class="label">平台类型：</span>
+                        <div class="fc">
+                            <select id="platform">
+                                <option value="1" <?php if( $appInfo['platform']==1 ): ?>selected="selected"<?php endif; ?> >Android</option>
+                                <option value="2" <?php if( $appInfo['platform']==2 ): ?>selected="selected"<?php endif; ?> >IOS</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">应用类型：</span>
+                        <div class="fc">
+                            <div class="iText" id="appType"><span><?php echo $appInfo['appcate_name']; ?></span><input type='hidden' name="appcate_id" value="<?php echo $appInfo['appcate_id']; ?>" autocomplete="off" /></div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">关键字：</span>
+                        <div class="fc">
+                            <textarea name="app_desc"><?php echo $appInfo['app_desc']; ?></textarea>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span class="label">广告位：</span>
+                        <div class="fc">
+                            <table width="80%" id="pos_tb_box" boder='1'>
+                                <tr><td>广告位ID</td><td>广告位名称</td><td>广告位形式</td><td>广告位状态</td></tr>
+                                <?php if($appPosList){ ?>
+                                <?php foreach($appPosList as $k1=>$v1){ ?>
+                                <tr id="<?php echo $v1['id']; ?>">
+                                    <td><?php echo $v1['dever_pos_key']; ?>       
+                                    </td>
+                                    <td><?php echo $v1['dever_pos_name']; ?></td>
+                                    <td>
+                                        <?php  echo $adPosType[$v1['pos_key_type']]; ?>
+                                    </td>
+                                    <td>
+                                        <input type="radio" name="pos_state_<?php echo $v1['id']; ?>"  <?php if( $v1['state'] == 1  ){ ?>checked<?php }; ?> value="1"><label>开</label>
+                                        <input type="radio" name="pos_state_<?php echo $v1['id']; ?>"  <?php if( $v1['state'] == 0 ){ ?>checked<?php }; ?> value="0"><label>关</label>
+                                    </td>
+                                </tr>
+                                <?php }; ?>
+                                <?php }; ?>
+                            </table>
+                        </div>
+                    </li>
+   
+                    <li>
+                        <span class="label">应用链接：</span>
+                        <div class="fc">
+                            <a href="<?php echo $appInfo['apk_url']; ?>"><?php echo $appInfo['apk_url']; ?></a>
+                        </div>
+                    </li>
+    
+                    <li>
+                        <span class="label">审批意见：</span>
+                        <div class="fc">
+                            <input type='text' class="iText required" name="check_msg" value="<?php echo $appInfo['check_msg']; ?>" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="hidden" value="<?php echo $appInfo['dev_id']; ?>" name="dev_id" />          
+                            <input type="button" onclick="location.href='<?php echo $listUrl;　?>';return false;" value="返回" class="submit" />
+                           
+                        </div>
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>
+<script>
+$(function(){
+    $("#appType").appType({
+   	 url:baseurl+"/admin/Baseinfo_App/appType",
+     param:{'token':token}
+    });
+})
+
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

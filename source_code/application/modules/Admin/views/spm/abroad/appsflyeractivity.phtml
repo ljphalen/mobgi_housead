@@ -1,0 +1,195 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>AF活动管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <select name="channel_id" lay-verify="" lay-search>
+                                    <option value="" >所有渠道</option>
+                                    <?php foreach($channelList as $key=>$value){ ?>
+                                        <option value="<?php echo $value['id'] ?>" ><?php echo $value['channel_name'] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="date" class="layui-input" placeholder="请选择日期" id="date">
+                                <input type="hidden" name="sdate" class="layui-input" value="" >
+                                <input type="hidden" name="edate" class="layui-input" value="" >
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" placeholder="请输入标题" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+                </script>
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+<script>
+    var appsflyerActivityListUrl = baseurl + "<?php echo $appsflyerActivityListUrl; ?>";
+    var activityUnitUrl = baseurl +  '<?php echo $activityUnitUrl; ?>';
+    var layuiTable;
+    var cols = [[ //表头
+        {field: 'create_time', title: '创建时间',  sort: true  , }
+        ,{field: 'name', title: '活动名称',  sort: true ,style:'cursor: pointer; color:#009688' , edit: 'text'}
+        ,{field: 'app_name', title: '投放应用',  sort: true  ,}
+        ,{field: 'channel_name', title: '渠道', sort: true , }
+        ,{field: 'id_sign', title: '活动标识',  sort: true , style:'text-align: center;',align:'center'}
+//        ,{field: 'update_time', title: '更新时间', sort: true , }
+//        ,{field: 'id', title: '操作', align:'center', toolbar: '#barDemo'}
+    ]];
+    //JavaScript代码区域
+    layui.use(['element','form','laydate','table'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        layuiTable = layui.table;
+
+        // 初始化 date 插件
+        laydate.render({
+            elem: '#date' //指定元素
+            ,value: ''
+            ,range: true
+            ,done: function(value, date, endDate){
+                var begin = '',end='';
+                if(value){
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end  = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+
+        //初始化表格
+        var initTable = {
+            elem: '#activity_table',
+            where: {token:token ,app_id:JSON.parse(localStorage.app_data).app_id},
+            url : appsflyerActivityListUrl,
+            cols: cols
+        };
+        renderTable(table,initTable);
+
+        //监听单元格编辑
+        table.on('edit(activity_table)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            var arr = new Object();
+            arr.token = token ;
+            arr.id = data.id;
+            $.ajax({
+                url : activityUnitUrl ,
+                async: false,
+                data : arr,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    if(data.success){
+                        layer.msg("操作成功");
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+        });
+
+        //监听搜索按钮
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            field.app_id = $("select[name='app_id']").find("option:selected").val();
+            field.token = token;
+            var params = {
+                elem: '#activity_table',
+                url : appsflyerActivityListUrl,
+                where: field,
+                cols: cols
+            }
+            renderTable(table,params);
+            return false;
+        });
+    });
+
+
+    //   topMenu 切换app 回调
+    var appIdSelectChange = {
+        callBack:function(id){
+            var initTable = {
+                elem: '#activity_table',
+                where: { token: token ,app_id: id},
+                url : appsflyerActivityListUrl,
+                cols: cols
+            };
+            renderTable(layuiTable,initTable);
+        }
+    };
+
+    //  渲染table
+    function renderTable(table,data){
+        //第一个实例
+        table.render({
+            elem: data.elem
+            ,url: data.url //数据接口
+            ,method: 'post'
+            ,response: {
+                statusName: 'success' //数据状态的字段名称，默认：code success
+                ,statusCode: 0 //成功的状态码，默认：0
+                ,msgName: 'msg' //状态信息的字段名称，默认：msg
+                ,countName: 'count' //数据总数的字段名称，默认：count
+                ,dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            ,where: data.where
+            ,limit: '10'
+            ,page: true //开启分页
+            ,cols: data.cols
+        });
+    }
+
+
+
+
+</script>
+</body>
+</html>

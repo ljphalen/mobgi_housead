@@ -1,0 +1,46 @@
+<?php if($code && $msg){ ?>
+<script>s
+//上传错误，需要重新上传
+window.parent.showLandingpageImage('<?php echo $code;?>' ,'<?php echo $msg;?>' ,'<?php echo $imgId;?>' ,'<?php echo $filepath;?>', '<?php echo $url;?>', '<?php echo $width ?>', '<?php echo $height ?>');
+</script>
+<?php }elseif($filepath){ ?>
+<script>
+//上传成功
+window.parent.showLandingpageImage('<?php echo $code;?>' ,'<?php echo $msg;?>' ,'<?php echo $imgId;?>' ,'<?php echo $filepath;?>', '<?php echo $url;?>', '<?php echo $width ?>', '<?php echo $height ?>');
+</script>
+<?php }else{ ?>
+
+<?php } ?>
+
+<form id="form1" name="form1" method="post" action="<?php echo $uploadPostUrl;?>" onsubmit="return checkFrom()" enctype="multipart/form-data">
+<input type="hidden" name="token" value="<?php echo $token;?>" /> 
+<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+<input name="imgId" value="<?php echo $imgId;?>" type="hidden" />
+<input name="mkthumb" value="<?php echo $mkthumb;?>" type="hidden" />
+<?php
+    if($filepath){
+?>
+        <input id="isUploaded" name="isUploaded" value="1" type="hidden" />
+<?php        
+    }
+?>
+<input type="file" id="img" name="img" class="mr20" onchange="submitForm();" style="height: 100%;width:100%"/>  
+<!--<input type="submit" name="sub" value="上传"  class="btn"> 允许上传的图片格式为：png jpeg jpg gif 且图片大小不能超过2M-->
+</form>
+
+<script> var par = /^.*?\.(jpg|gif|jpeg|png)$/i;
+function checkFrom() {
+	if($("#img").val()==''){
+		window.parent.showError('出错','请选择要上传的图片');
+		return false;
+	}else if (!par.test($("#img").val())){
+		window.parent.showError('出错','仅支持JPG、GIF、PNG图片文件，且文件小于2M');
+		return false;
+	}else{
+		return true;
+	}
+}
+function submitForm() {
+    document.getElementById("form1").submit();
+}
+</script>

@@ -1,0 +1,144 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="colMain">
+    <div class="main">
+        <div class="chart app-detail">
+            <ul class="chart-filter">
+                <li class="date-filter">
+                    <div id="date_range" class="fr" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>"></div>
+                    <div class=" fr"><button class="btn-export">导出</button></div>
+                    <div style="clear:both;"></div>
+                </li>
+
+            </ul>
+
+
+            <dl class="chart-show">
+                <dt class="chart-title">收益概况</dt>
+                <dd style="margin:0 20px;">
+                    <ul class="income">
+                        <li>昨日收入：<b>$<?php echo number_format($income['yesterday'],2);?></b></li>
+                        <li>本月收入：<b>$<?php echo number_format($income['thisMonth'],2);?></b></li>
+                        <li>上月收入：<b>$<?php echo number_format($income['lastMonth'],2);?></b></li>
+                    </ul>
+                </dd>
+            </dl>
+
+            <div class="chart-show">
+                <div class="chart-title">近30天广告收益走势图</div>
+                <div id="data_charts"></div>
+            </div>
+            <hr>
+            <div class="chart-table">
+                <div class="chart-title">详细数据</div>
+                <div id="mg_talbe"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="blk">
+    <div id="blk_kpi" type="kpi" class="blk_view kpi" mod="bottom_box">
+        <div class="check_box">
+            <dl id="kpi_client" title="客户端上报"></dl>
+            <dl id="kpi_third" title="第三方数据"></dl>
+            <dl id="kpi_common" title="统计扩展"></dl>
+            <dl id="kpi_server" title="服务端上报"></dl>
+        </div>
+    </div>
+</div>
+
+
+<link href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/mgchart.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticPath;?>/js/common/highcharts.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/mobgichart.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery.loadmask.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js?v=<?php echo $version;?>"></script>
+<script type="text/javascript">
+    $(function(){
+
+        var dateRange = new pickerDateRange("date_range",'date', {
+            theme : 'ta',
+            isTodayValid : 1,
+            startDate : "<?php echo $sdate;?>",
+            endDate : "<?php echo $edate;?>",
+            minValidDate : 1379174400,
+            needCompare : 0,
+            success : function (dateObj){
+                $("#date_range").attr("sdate", dateObj.startDate);
+                $("#date_range").attr("edate", dateObj.endDate);
+                $("#date_range").attr("csdate", "");
+                $("#date_range").attr("cedate", "");
+                report.doAction();
+            }
+        });
+        option=<?php echo $config;?>
+
+        report=new Mg.Report();
+        report.setDateRangePlugin("#date_range").bingConfig(option).setChartShow(0).setDefaultDims({'app_key':[]}).run();
+
+
+        report2=new Mg.Report();
+        report2.setDateRange("<?php echo $params['sdate'];?>","<?php echo $params['edate'];?>").bingConfig(option).setTableShow(0)
+        .setDefaultDims({'days':[]}).setDefaultKpis({'common':{"ad_income":1}}).run();
+
+
+
+        $("#"+dateRange.submitBtn).click(function(){
+            submitForm()
+        });
+        $(".ta_select_day").click(function(){
+            submitForm()
+        });
+        $("#operate_type").change(function(){
+            submitForm()
+        })
+        $("#account_type").change(function(){
+            submitForm()
+        })
+
+        function submitForm(){
+            sdate = $("#date_range").attr("sdate")
+            edate = $("#date_range").attr("edate")
+
+        //window.location.href='/Advertiser/Account/log/?sdate=' + sdate + "&edate=" + edate + "&operate_type="+ operate_type + "&account_type="+ account_type;
+    }
+    $(".btn-export").click(function(event) {
+        report.export();
+//        window.location.href = "exportData?"+report.getConfStr();
+    });
+    $("#set_dayconsumption_limit").click(function(){
+        oldvalue = $("#day_consume").html();
+        str = '<input type="text" class="input" value="'+ oldvalue +'"   id="set_dayconsumption_limit_value">'
+        $(this).siblings('.input').remove();
+        $("#day_consume").hide().after(str)
+        inputId='set_dayconsumption_limit_value'
+        $("#set_dayconsumption_limit_value").focus()
+        $("#set_dayconsumption_limit_value").blur(function(){
+            limit = $("#set_dayconsumption_limit_value").val();
+            $.ajax({
+                url:  baseurl+"/Advertiser/Account/setDayconsumptionLimit",
+                type: "POST",
+                dataType : 'json',
+                data : { 'token':token, 'limit':limit},
+                success: function(ret) {
+                    if (ret.success) {
+                        showMsg('', ret.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                    $("#day_consume").show()
+                    $("#" + inputId).remove()
+                }
+            });
+        });
+    });
+
+
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

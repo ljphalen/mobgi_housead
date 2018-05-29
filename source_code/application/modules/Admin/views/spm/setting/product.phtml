@@ -1,0 +1,202 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p><?php if($payConfig){ echo '编辑';}else{ echo '新建';} ?>监控平台</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <form class="layui-form">
+                    <!-- 基本信息 begin -->
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>基本信息:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">应用名称</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="" placeholder="" value="<?php echo $app['app_name']; ?>" readonly="readonly" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">应用平台</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="" placeholder="" value="<?php echo $app['platform']; ?>" readonly="readonly" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">投放类型</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="" placeholder="" value="<?php echo $app['delivery_type']; ?>" readonly="readonly" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">应用商店 ID</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="" placeholder="" value="<?php echo $app['appstore_id']; ?>" readonly="readonly" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">consumerKey</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="" placeholder="" value="<?php echo $app['consumer_key']; ?>" readonly="readonly" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">包名</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="" placeholder="" value="<?php echo $app['bundleid']; ?>" readonly="readonly" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">下载地址</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="" placeholder="" value="<?php echo $app['appstore_url']; ?>" readonly="readonly" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>追踪配置（超出有效期的点击将不会被追因）:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">api点击有效期</label>
+                            <div class="layui-input-inline">
+                                <select name="api_click_period" lay-verify=""  lay-filter="type" lay-search>
+                                    <option value="" >选择有效期</option>
+                                    <?php foreach($trackTime as $key=>$value){ ?>
+                                        <option value="<?php echo $key; ?>" <?php if($key==$appDetail['api_click_period']){ echo 'selected';} ?> ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">ipua点击有效期</label>
+                            <div class="layui-input-inline">
+                                <select name="ipua_click_period" lay-verify=""  lay-filter="type" lay-search>
+                                    <option value="" >选择有效期</option>
+                                    <?php foreach($trackTime as $key=>$value){ ?>
+                                        <option value="<?php echo $key; ?>" <?php if($key==$appDetail['ipua_click_period']){ echo 'selected';} ?> ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subtitle"><p>统计配置:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">回流用户统计</label>
+                            <div class="layui-input-inline">
+                                <select name="backflow_status" lay-verify=""  lay-filter="type" lay-search>
+                                    <option value="" >选择有效期</option>
+                                    <?php foreach($trackStatus as $key=>$value){ ?>
+                                        <option value="<?php echo $key; ?>" <?php if($key==$appDetail['backflow_status']){ echo 'selected';} ?> ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">自然量二次归因</label>
+                            <div class="layui-input-inline">
+                                <select name="second_track_status" lay-verify=""  lay-filter="second_track_status" lay-search>
+                                    <option value="" >选择有效期</option>
+                                    <?php foreach($trackStatus as $key=>$value){ ?>
+                                        <option value="<?php echo $key; ?>" <?php if($key==$appDetail['second_track_status']){ echo 'selected';} ?> ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="second_track_range" <?php if(!$appDetail['second_track_status']){ echo 'style="display: none;"';} ?>>
+                            <label class="layui-form-label long-label">重新匹配范围</label>
+                            <div class="">
+                                激活前 <input type="text" style="display:inline;width:40px" id="active_front_time" name="active_front_time" value="<?php echo $appDetail['active_front_time']; ?>" class="layui-input" /> 秒——
+                                激活后 <input type="text" style="display:inline;width:40px" id="active_behind_time" name="active_behind_time" value="<?php echo $appDetail['active_behind_time']; ?>" class="layui-input" /> 秒
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                        </div>
+                    </div>
+                    <div>
+                        <img style="position: absolute;right:30px;top:80px;width:150px;height:150px;border-radius:1em;"
+                             src="<?php echo $app['icon']; ?>" >
+                    </div>
+                </form>
+                <!-- form end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+<script>
+    /* 请求链接 */
+    var addProductDetailPostUrl = baseurl + '<?php echo $addProductDetailPostUrl; ?>'; // 提交表单
+    var indexUrl = baseurl + '<?php echo $indexUrl; ?>'; //  列表页面
+    //JavaScript代码区域
+    layui.use(['element','form'], function(){
+        var element = layui.element;
+        var form = layui.form;
+
+        //表单提交
+        form.on('submit(submit_form)', function(data){
+            data.field.token = token;
+            data.field.app_id = $("select[name='app_id']").find("option:selected").val();
+            $.ajax({
+                url : addProductDetailPostUrl,
+                async: false,
+                data : data.field,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+//                    if(data.success){
+//                        setTimeout(function(){
+//                            window.location.href = indexUrl;
+//                        },500);
+//                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+            return false;
+        });
+        // 取消
+//        $("#cancel").click(function(){
+//            window.location.href = indexUrl;
+//        });
+
+        form.on('select(second_track_status)',function(data){
+             if(data.value==1){
+                 $("#second_track_range").show();
+             }else{
+                 $("#second_track_range").hide();
+             }
+        });
+    });
+
+    //   topMenu 切换app 回调
+    var appIdSelectChange = {
+        callBack:function(id){
+            window.location.reload();
+        }
+    };
+
+</script>
+</body>
+</html>

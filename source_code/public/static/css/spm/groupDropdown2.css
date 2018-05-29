@@ -1,0 +1,269 @@
+div,
+p,
+span,
+i,
+u,
+ul,
+li,
+a {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+.jq-groupDropdown-wrap {
+    width: 100%;
+}
+
+.jq-groupDropdown {
+    float: left;
+    position: relative;
+    width: 200px;
+    border: 1px solid #d2d2d2;
+    background: #fff;
+    border-radius: 4px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, .12); */
+    box-sizing: border-box;
+    height: 35px;
+    font-size: 14px;
+}
+
+.jq-groupDropdown-wrap .clearfloat {
+    clear: both;
+}
+
+.jq-groupDropdown .jq-groups-text {
+    float: left;
+    outline: none;
+    border: 1px solid #d2d2d2;
+    width: 180px;
+    margin: 5px 9px;
+    height: 35px;
+    line-height: 35px;
+    color: #555;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background: #eee;
+}
+
+.jq-groupDropdown .jq-group-add {
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 10px;
+}
+
+.jq-groupDropdown .jq-group-add select {
+    outline: none;
+    width: 120px;
+    border: 1px solid #555;
+    height: 30px;
+    float: left;
+}
+
+.jq-groupDropdown .jq-group-add .layui-form-select {
+    width: 120px;
+    display: inline-block;
+}
+
+.jq-groupDropdown .jq-group-add .jq-add-btn {
+    float: right;
+    background: #009688;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+    padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.jq-groupDropdown .jq-group-list {
+    float: left;
+}
+
+.jq-groupDropdown .jq-close {
+    content: "x";
+    display: none;
+    position: absolute;
+    z-index: 5;
+    right: 4px;
+    top: 4px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #999;
+    background: #fff;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.jq-groupDropdown .jq-gsb-a {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 65px 0 10px;
+    box-sizing: border-box;
+    height: 33px;
+    line-height: 33px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    color: #555;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /** 对象作为伸缩盒子模型显示 **/
+    -webkit-box-orient: vertical;
+    /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+    -webkit-line-clamp: 1;
+    /** 显示的行数 **/
+    overflow: hidden;
+    /** 隐藏超出的内容 **/
+    cursor: pointer;
+}
+
+.jq-groupDropdown .jq-gsb-text {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 65px 0 10px;
+    box-sizing: border-box;
+    height: 33px;
+    line-height: 33px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+    color: #555;
+}
+
+.jq-groupDropdown .jq-num {
+    position: absolute;
+    z-index: 3;
+    display: inline-block;
+    background: #5FB878;
+    color: #fff;
+    text-align: center;
+    padding: 0 5px;
+    right: 25px;
+    top: 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+.jq-groupDropdown .jq-edge {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-width: 6px;
+    border-style: dashed;
+    border-color: transparent;
+    overflow: hidden;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    z-index: 3;
+    margin-top: -3px;
+    cursor: pointer;
+    border-top-color: #c2c2c2;
+    border-top-style: solid;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+}
+
+.jq-groupDropdown .jq-edgeed {
+    margin-top: -9px;
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.jq-groupDropdown .jq-groups-wrap {
+    position: absolute;
+    z-index: 99;
+    left: 0;
+    top: 38px;
+    min-width: 200px;
+    max-height: 300px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+    box-sizing: border-box;
+    padding: 0 0 10px 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: none;
+    background: #fff;
+}
+
+.jq-groupDropdown .active {
+    display: block;
+}
+
+.jq-groupDropdown .jq-group {
+    float: left;
+    width: 100%;
+}
+
+.jq-groupDropdown .jq-group .nolist {
+    width: 100%;
+    line-height: 30px;
+    color: #999;
+    box-sizing: border-box;
+    padding-left: 20px;
+}
+
+.jq-groupDropdown .jq-group .jq-g-title {
+    width: 100%;
+    padding: 0 0 0 10px;
+    box-sizing: border-box;
+    line-height: 35px;
+    color: #999;
+}
+
+.jq-groupDropdown .jq-group ul {
+    float: left;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 0 0 20px;
+}
+
+.jq-groupDropdown .jq-group ul li {
+    float: left;
+    line-height: 25px;
+    color: #555;
+    margin: 0 12px 5px 0;
+    cursor: pointer;
+    background: #fff;
+    padding: 0 8px;
+}
+
+.jq-groupDropdown .jq-group ul li:hover {
+    background: #F2F2F2;
+}
+
+.jq-groupDropdown .jq-group ul .jq-g-checked {
+    background: #5FB878 !important;
+    color: #fff !important;
+}
+
+.jq-group-selectedData {
+    float: left;
+    margin: 4px 0 0 15px;
+}
+
+.jq-group-selectedData li {
+    float: left;
+    line-height: 27px;
+    color: #fff;
+    background: #5FB878;
+    border-radius: 6px;
+    padding: 0 10px;
+    cursor: pointer;
+    font-size: 12px;
+    margin: 0 10px 4px 0;
+}

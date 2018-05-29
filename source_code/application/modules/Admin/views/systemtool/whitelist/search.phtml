@@ -1,0 +1,378 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+<div class="colMain" style="min-height: 196px;">
+	<div class="main">
+	<form action="<?php echo $searchUrl ;?>" id="searchForm" method="get">
+		<!--<input name="token" type="hidden" value="<?php echo $token;?>" />-->
+        <input type ="hidden" name="action" id="action" value="check" />
+        <div class="table_full">
+        	<table width="100%">
+        	   <tr class="tr">
+        			<th class="th">平台</th>
+        			<td class="td">
+                        <select id="platform" name="platform">
+                            <option value="" <?php if ($params['platform'] =='0'){?>SELECTED<?php } ?> >不限</option>
+                            <option value="1" <?php if ($params['platform'] =='1'){?>SELECTED<?php } ?> >Android</option>
+                            <option value="2" <?php if ($params['platform'] =='2'){?>SELECTED<?php } ?> >IOS</option>
+                        </select>
+                    </td>
+                    <th class="th">imei_idfa</th>
+                    <td class="td">
+                        <input type="text" class="iText" name='imei_idfa' id='imei_idfa' value='<?php echo $params['imei_idfa']; ?>' placeholder="" />
+                    </td>
+                    <th class="th">广告类型</th>
+                    <td class="td">
+                        <select id="ad_type" name="ad_type">
+                            <option value="" <?php if ($params['ad_type'] =='0'){?>SELECTED<?php } ?> >不限</option>
+                            <option value="1" <?php if ($params['ad_type'] =='1'){?>SELECTED<?php } ?> >视频广告</option>
+                            <option value="2" <?php if ($params['ad_type'] =='2'){?>SELECTED<?php } ?> >插页广告</option>
+                            <option value="3" <?php if ($params['ad_type'] =='3'){?>SELECTED<?php } ?> >自定义广告</option>
+                            <option value="4" <?php if ($params['ad_type'] =='4'){?>SELECTED<?php } ?> >开屏广告</option>
+                            <option value="5" <?php if ($params['ad_type'] =='5'){?>SELECTED<?php } ?> >原生流式广告</option>
+                        </select>
+                    </td>
+                    <th class="th">事件类型</th>
+                    <td class="td">
+                        <select id="event_type" name="event_type">
+                            <option value="" <?php if ($params['event_type'] =='0'){?>SELECTED<?php } ?> >不限</option>
+                            <?php foreach($eventtype_name_config as $key=>$value){ ?>
+                                <option value="<?php echo $key; ?>" <?php if($params['event_type'] ==$key){ ?>SELECTED <?php }?> ><?php echo  $value; ?></option>
+                            <?php } ?>
+                        </select>
+                    </td>
+                    
+            	</tr>
+                <tr class="tr">
+                    <th class='th'>应用版本:</th>
+                    <td class='td'><input value="<?php echo $params['app_version']; ?>" name="app_version" id="app_version" class="iText" typt="text"></td>
+                    <th class='th'>sdk版本:</th>
+                    <td class='td'><input value="<?php echo $params['sdk_version']; ?>" name="sdk_version" id="sdk_version" class="iText" typt="text"></td>
+                    <th class='th'>pos_key:</th>
+                    <td class='td'><input value="<?php echo $params['pos_key']; ?>" name="pos_key" id="pos_key" class="iText" typt="text" style='width:230px;'></td>
+                </tr>
+                <tr class="tr">
+                    
+                    <th class='th'>app_key</th>
+                    <td class='td'><input value="<?php echo $params['app_key']; ?>" name="app_key" id="app_key" class="iText" typt="text" style='width:230px;'></td>
+                    <th class='th'>上报时间:</th>
+                    <td class='td search' colspan="2">
+                        <input type="hidden" name="screatedate"  id="screatedate" value="<?php echo $params['screatedate'];?>">
+                        <input type="hidden" name="ecreatedate" id="ecreatedate" value="<?php echo $params['ecreatedate'];?>">
+                        <!--<input type="text" class="iText datepicker" name="date_range" id="date_range" value="" style="width:160px;"/>-->
+                        <div class="mui-filter-group" id="date_range" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>" csdate="" cedate=""></div>
+                    </td>
+                </tr>
+        	</table>
+        </div>
+        <div class="mb10 tac">
+            <span><button type="button" class="btn" onclick="confirmSubmit();">搜 索</button></span>
+        </div>
+    </form>
+
+    <div class="table_list">
+        <div class="h_a">
+            <span class="btn2">
+                <span><button id="cleardata" type="button">清空历史数据</button></span>
+            </span>
+            <span>共 <?php echo $total;?> 条结果</span>
+        </div>
+    
+        <table width="100%">
+            <tr class="hd">
+                <td>id</td>
+                <td>设备名称</td>
+                <td>imei</td>
+                <td>应用版本</td>
+                <td>sdk版本</td>
+                <td>事件类型</td>
+                <td>app_key</td>
+                <td>pos_key</td>
+                <td>系统平台</td>
+                <td>聚合类型</td>
+                <td>广告商</td>
+                <td>上报版本</td>
+                <td>上报时间</td>
+                <td>操作</td>
+            </tr>
+            <?php if($result){?>
+                <?php foreach ($result as $item){ ?>
+                <tr class="ct">
+                    <td><?php echo $item['id']; ?></td>
+                    <td><?php echo $item['device_name']; ?></td>
+                    <td><?php echo $item['imei']; ?></td>
+                    <td><?php echo $item['app_version']; ?></td>
+                    <td><?php echo $item['sdk_version']; ?></td>
+                    <td><?php echo $item['eventtype_name']; ?></td>
+                    <td><?php echo $item['app_key']; ?></td>
+                    <td><?php echo $item['pos_key']; ?></td>
+                    <td><?php echo $item['platform_name']; ?></td>
+                    <td><?php echo $item['ad_type_name']; ?></td>
+                    <td><?php echo $item['ads_id']; ?></td>
+                    <td><?php echo $item['report_vername']; ?></td>
+                    <td><?php echo $item['server_time_format']; ?></td>
+                    <td class="ct show_detail" 
+                    id="<?php echo $item['id']; ?>" ssp_id="<?php echo $item['ssp_id']; ?>" ads_id="<?php echo $item['ads_id']; ?>" orig_id="<?php echo $item['orig_id']; ?>" bit_id="<?php echo $item['bit_id']; ?>"
+                    app_key="<?php echo $item['app_key']; ?>" pos_key="<?php echo $item['pos_key']; ?>" ad_type="<?php echo $item['ad_type']; ?>" ad_sub_type="<?php echo $item['ad_sub_type']; ?>" cid="<?php echo $item['cid']; ?>"
+                    brand="<?php echo $item['brand']; ?>" model="<?php echo $item['model']; ?>" operator="<?php echo $item['operator']; ?>" net_type="<?php echo $item['net_type']; ?>" event_type="<?php echo $item['event_type']; ?>"
+                    event_value="<?php echo $item['event_value']; ?>" imei="<?php echo $item['imei']; ?>" imsi="<?php echo $item['imsi']; ?>" platform="<?php echo $item['platform']; ?>" uuid="<?php echo $item['uuid']; ?>"
+                    app_version="<?php echo $item['app_version']; ?>" sdk_version="<?php echo $item['sdk_version']; ?>" client_ip="<?php echo $item['client_ip']; ?>" server_time="<?php echo $item['server_time']; ?>" charge_type="<?php echo $item['charge_type']; ?>"
+                    currency="<?php echo $item['currency']; ?>" price="<?php echo $item['price']; ?>" vh="<?php echo $item['vh']; ?>" point_x="<?php echo $item['point_x']; ?>" point_y="<?php echo $item['point_y']; ?>"
+                    width="<?php echo $item['width']; ?>" height="<?php echo $item['height']; ?>" ver="<?php echo $item['ver']; ?>" >查看源数据</td>
+                </tr>
+                <?php }?>
+            <?php }?>
+        </table>
+        </div>
+        <div class="mr10 cc tc">
+        <?php echo $pager;?>
+        </div>
+	</div>
+</div>
+</div>
+
+<script type="text/html" id="DLgridPopUp">
+<ul class="form">
+    <div class="table_list">
+        <table width="100%">
+                <tr class="hd">
+                    <td>id/id</td>
+                    <td>ssp_id/ssp_id</td>
+                    <td>广告商/ads_id</td>
+                    <td>创意id/orig_id</td>
+                    <td>请求id/bit_id</td>
+                </tr>               
+                <tr>
+                    <td id="td_id">1</td>
+                    <td id="td_ssp_id"></td>
+                    <td id="td_ads_id"></td>
+                    <td id="td_orig_id"></td>
+                    <td id="td_bit_id"></td>
+                </tr>
+                <tr class="hd">
+                    <td>app_key/app_key</td>
+                    <td>广告位/pos_key</td>
+                    <td>广告类型/ad_type</td>
+                    <td>广告子类型/ad_sub_type</td>
+                    <td>渠道号/cid</td>
+                </tr>                
+                <tr>
+                    <td id="td_app_key"></td>
+                    <td id="td_pos_key"></td>
+                    <td id="td_ad_type"></td>
+                    <td id="td_ad_sub_type"></td>
+                    <td id="td_cid"></td>
+                </tr>
+                
+                <tr class="hd">
+                    <td>设备型号/brand</td>
+                    <td>设备类型/model</td>
+                    <td>运营商/operator</td>
+                    <td>网络类型/net_type</td>
+                    <td>事件类型/event_type</td>
+                </tr>               
+                <tr>
+                    <td id="td_brand">1</td>
+                    <td id="td_model"></td>
+                    <td id="td_operator"></td>
+                    <td id="td_net_type"></td>
+                    <td id="td_event_type"></td>
+                </tr>
+                <tr class="hd">
+                    <td>事件参数/event_value</td>
+                    <td>国际移动设备标识码/imei</td>
+                    <td>国际移动用户识别码/imsi</td>
+                    <td>平台/platform</td>
+                    <td>用户标识/uuid</td>
+                </tr>
+                     
+                <tr>
+                    <td id="td_event_value"></td>
+                    <td id="td_imei"></td>
+                    <td id="td_imsi"></td>
+                    <td id="td_platform"></td>
+                    <td id="td_uuid"></td>
+                </tr>
+                
+                <tr class="hd">
+                    <td>应用版本/app_version</td>
+                    <td>Sdk版本/sdk_version</td>
+                    <td>客户端ip/client_ip</td>
+                    <td>服务器时间/server_time</td>
+                    <td>计费类型/charge_type</td>
+                </tr>                
+                <tr>
+                    <td id="td_app_version">1</td>
+                    <td id="td_sdk_version"></td>
+                    <td id="td_client_ip"></td>
+                    <td id="td_server_time"></td>
+                    <td id="td_charge_type"></td>
+                </tr>
+                
+                <tr class="hd">
+                    <td>货币类型/currency</td>
+                    <td>计费单价/price</td>
+                    <td>横竖屏/vh</td>
+                    <td>x坐标/point_x</td>
+                    <td>y坐标/point_y</td>
+                </tr>
+                
+                <tr>
+                    <td id="td_currency"></td>
+                    <td id="td_price"></td>
+                    <td id="td_vh"></td>
+                    <td id="td_point_x"></td>
+                    <td id="td_point_y"></td>
+                </tr>
+                
+                <tr class="hd">
+                    <td>分辨率-宽/width</td>
+                    <td>分辨率-高/height</td>
+                    <td>数据版本/ver</td>
+                </tr>
+                <tr>
+                    <td id="td_width">1</td>
+                    <td id="td_height"></td>
+                    <td id="td_ver"></td>
+                </tr>
+        </table>
+    </div>
+</ul>
+<div style="text-align:center;padding:10px 0;">
+    <a href="javascript:void(0)" class="btn" id="ok">确定</a>
+    <a href="javascript:void(0)" class="cancel">取消</a>
+</div>
+</script>
+
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>
+
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+
+<script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js??v=<?php echo $version;?>"></script>
+<link href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+
+<script>
+$(function(){
+    
+});
+</script>
+
+    <script type="text/javascript">
+    $(function () {
+        $("#platform").val("<?php echo $params['platform']; ?>")
+        $("#platform").chosen({});
+        $("#event_type").val("<?php echo $params['event_type']; ?>")
+        $("#event_type").chosen({});
+        $("#ad_type").val("<?php echo $params['ad_type']; ?>")
+        $("#ad_type").chosen({});
+        
+        $("#cleardata").click(function(){
+            msg = '确认删除所有上报数据吗？';
+            showConfirm(msg, function() {
+			      ajaxGET("<?php echo $cleardataUrl;?>", "", function(data) {
+                    if (data.success) {
+                        showMsg('', data.msg);
+                        setTimeout(function() {
+                                    location.reload();
+                                }, 500);
+                    } else {
+                        alert(data.msg);
+                        return false;
+                    }
+                })
+		  	});
+        });
+        
+        $(".show_detail").click(function(){
+            var $content = $('<div class="tjgl"></div>').append($("#DLgridPopUp").html());
+            var param = {};
+            var PopUp = jDialog({
+                width:960,
+                height:480,
+                content:$content
+            });
+            $("#td_id").html($(this).attr("id"));
+            $("#td_ssp_id").html($(this).attr("ssp_id"));
+            $("#td_ads_id").html($(this).attr("ads_id"));
+            $("#td_orig_id").html($(this).attr("orig_id"));
+            $("#td_bit_id").html($(this).attr("bit_id"));
+            $("#td_app_key").html($(this).attr("app_key"));
+            $("#td_pos_key").html($(this).attr("pos_key"));
+            $("#td_ad_type").html($(this).attr("ad_type"));
+            $("#td_ad_sub_type").html($(this).attr("ad_sub_type"));
+            $("#td_cid").html($(this).attr("cid"));
+            
+            $("#td_brand").html($(this).attr("brand"));
+            $("#td_model").html($(this).attr("model"));
+            $("#td_operator").html($(this).attr("operator"));
+            $("#td_net_type").html($(this).attr("net_type"));
+            $("#td_event_type").html($(this).attr("event_type"));
+            $("#td_event_value").html($(this).attr("event_value"));
+            $("#td_imei").html($(this).attr("imei"));
+            $("#td_imsi").html($(this).attr("imsi"));
+            $("#td_platform").html($(this).attr("platform"));
+            $("#td_uuid").html($(this).attr("uuid"));
+            
+            $("#td_app_version").html($(this).attr("app_version"));
+            $("#td_sdk_version").html($(this).attr("sdk_version"));
+            $("#td_client_ip").html($(this).attr("client_ip"));
+            $("#td_server_time").html($(this).attr("server_time"));
+            $("#td_charge_type").html($(this).attr("charge_type"));
+            $("#td_currency").html($(this).attr("currency"));
+            $("#td_price").html($(this).attr("price"));
+            $("#td_vh").html($(this).attr("vh"));
+            $("#td_point_x").html($(this).attr("point_x"));
+            $("#td_point_y").html($(this).attr("point_y"));
+            
+            $("#td_width").html($(this).attr("width"));
+            $("#td_height").html($(this).attr("height"));
+            $("#td_ver").html($(this).attr("ver"));
+            
+            $content.find(".cancel").click(function(){
+                if(PopUp){PopUp.close();}
+            });
+            $content.find("#ok").click(function(){
+                if(PopUp){PopUp.close();}
+            });
+        })
+    });
+
+    var dateRange = new pickerDateRange("date_range",'date', {
+        theme : 'ta', // 日期选择器TA主题
+        isTodayValid : 1,
+        startDate : "<?php echo $params['screatedate'];;?>",
+        endDate : "<?php echo $params['ecreatedate'];;?>",
+        minValidDate : 1379174400,
+        needCompare : 0,
+        success : function (dateObj){
+            $("#date_range").attr("sdate", dateObj.startDate);
+            $("#date_range").attr("edate", dateObj.endDate);
+            $("#date_range").attr("csdate", "");
+            $("#date_range").attr("cedate", "");
+        }
+    });
+
+    var screatedate = "<?php echo $params['screatedate'];?>";
+    var ecreatedate = "<?php echo $params['ecreatedate'];?>";
+    if (screatedate != '' && ecreatedate != '') {
+        $("#date_range").val("<?php echo $params['screatedate'].' 至 '.$params['ecreatedate'];?>")
+    }
+
+    function confirmSubmit()
+    {
+        sdate = $("#date_range").attr("sdate")
+        edate = $("#date_range").attr("edate")
+        if (sdate != '' & edate != '')
+        {
+            $("#screatedate").attr("value", sdate);
+            $("#ecreatedate").attr("value", edate);
+        }
+        imei_idfa = $("#imei_idfa").val();
+        platform = $("#platform").val();
+//        if(imei_idfa && (platform == 0)){
+//            jAlert('请选择平台');
+//            return false;
+//        }
+        $("#searchForm").submit();
+    }
+    
+    </script>

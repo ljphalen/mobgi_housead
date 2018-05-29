@@ -1,0 +1,137 @@
+<?php echo $this->render("layout/header_layui.phtml"); ?>
+<body>
+<div class="layui-fluid wrapper">
+    <div class="layui-row layui-col-space30">
+        <div class="items-wrap wrap-bg space-top mian-h">
+            <!-- titile begin -->
+            <div class="layui-tab layui-tab-brief">
+                <ul class="layui-tab-title">
+                    <li><a href="<?php echo $listUrl; ?>">活动列表</a></li>
+                    <li class="layui-this"><a href="<?php echo $viewUrl; ?>">查看活动</a></li>
+                </ul>
+            </div>
+            <!-- titile end  -->
+            <div class="temp-upload-wrap">
+                <form class="layui-form" action="" method="POST" id="addForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动标题</label>
+                        <div class="layui-form-mid layui-word-aux">
+							<?php echo $info['title']; ?>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">抽奖次数</label>
+                        <div class="layui-form-mid layui-word-aux">
+                            <?php echo $info['limit_num'].'次/'.$limitType[$info['limit_type']]; ?>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动状态</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" 　<?php echo $info['status'] ? ' checked=""' : ''; ?>  name="status" disabled
+                                   lay-skin="switch" lay-filter="switchStatus" lay-text="上架|下架">
+                        </div>
+                    </div>
+                    <div class="layui-form-item ">
+                        <label class="layui-form-label">有效时间</label>
+                        <div class="layui-input-inline">
+                            <input type="hidden" name="start_time" class="start_time" class="layui-input"
+                                   value="<?php echo $info['start_time']; ?>">
+                            <input type="hidden" name="end_time" class="end_time" class="layui-input"
+                                   value="<?php echo $info['end_time']; ?>">
+                            <input type="text" name="date" class="layui-input" id="date" placeholder="有效时间"
+                                   value="<?php echo $info['start_time']; ?> - <?php echo $info['end_time']; ?>">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动说明</label>
+                        <div class="layui-input-inline">
+                            <textarea id="desc" name="desc" style="width:1000px;height:240px;" placeholder="请输入内容"
+                                      class="layui-textarea"><?php echo $info['desc']; ?></textarea>
+                        </div>
+                    </div>
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">活动配置</label>
+                        <div class="layui-input-block">
+                            <table class="layui-table">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>奖品图片</th>
+                                    <th>奖品名称</th>
+                                    <th>剩余库存</th>
+                                    <th>权重</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+								<?php if ($info['conf_rel_list']) { ?>
+									<?php foreach ($info['conf_rel_list'] as $key => $conf) { ?>
+                                        <tr>
+                                            <td><?php echo $key + 1; ?></td>
+                                            <td><img src="<?php echo $conf['icon']; ?>" width="100px" height="100px">
+                                            </td>
+                                            <td><?php echo $conf['title']; ?></td>
+                                            <td><?php echo $conf['left_num']; ?></td>
+                                            <td><?php echo $conf['rate']; ?></td>
+
+                                        </tr>
+									<?php } ?>
+								<?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<link media="all" rel="stylesheet" type="text/css"
+      href="<?php echo $staticPath; ?>/js/umeditor/themes/default/css/umeditor.css"/>
+<!--<script type="text/javascript" src="--><?php //echo $staticPath; ?><!--/js/umeditor/third-party/jquery.min.js"></script>-->
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/umeditor/third-party/template.min.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/umeditor/umeditor.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/umeditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    ;(function () {
+
+        //实例化编辑器
+        var um = UM.getEditor('desc', {
+            'imageUrl': "<?php echo $uploadDescImgUrl; ?>?token=" + token, //图片上传提交后台对应的地址
+            // toolbar:['source','insertcode',],
+        });
+
+        //取消按钮
+        $(".cannel").click(function () {
+            window.location.href = baseurl + '<?php echo $listUrl;?>';
+        });
+
+
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#date'
+                , range: true
+                , done: function (value, date, endDate) {
+                    $('.start_time').val(date.year + '-' + date.month + '-' + date.date);
+                    $('.end_time').val(endDate.year + '-' + endDate.month + '-' + endDate.date);
+                }
+            });
+        });
+
+
+    })();
+
+
+</script>

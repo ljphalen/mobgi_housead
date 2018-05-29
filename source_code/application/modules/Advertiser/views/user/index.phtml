@@ -1,0 +1,38 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li class="current"><a href="<?php echo $listUrl;?>">用户列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">添加用户</a></li>
+	</ul>
+</div>
+<div class="table_list">
+	<table width="100%">
+		<tr class="hd">
+			<td width="60">UID</td>
+			<td>用户名</td>
+			<td>用户组</td>
+			<td>注册时间</td>
+			<td>注册IP</td>
+			<td>操作</td>
+		</tr>
+<?php foreach($users as $key => $value) {?>
+		<tr class="ct">
+			<td><?php echo $value['uid'];?></td>
+			<td><?php echo $value['username'];?></td>
+			<td><?php echo $value['groupid'] == 0 ? '超级管理员' : $groups[$value['groupid']]['name'];?></td>
+            <td><?php echo date('Y-m-d H:i:s', $value['registertime']);?></td>
+			<td><?php echo ip2long($value['registerip']);?></td>
+			<td>
+			<a href="<?php echo $editUrl;?>/?uid=<?php echo $value['uid'];?>" class="mr10">编辑</a>
+			<?php if($value['groupid'] !=0){ ?>
+			<a href="javascript:" onclick="deleteOne('<?php echo $deleteUrl;?>/?uid=<?php echo $value['uid'];?>', '', event);">删除</a>
+			<?php } ?>
+			</td>
+		</tr>
+<?php } ?>
+	</table>
+</div>
+<div class="mr10 cc">
+<?php echo $pager;?>
+</div>
+<?php echo $this->render("layout/footer.phtml");?>

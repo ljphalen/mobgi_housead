@@ -1,0 +1,395 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+<div class="colMain" style="min-height: 196px;">
+	<div class="main">
+        <form action="<?php echo $unitListUrl;?>" method="get" id="searchForm">
+            <input name="token" type="hidden" value="<?php echo $token;?>" />
+            <div class="table_full">
+                <table width="100%">	
+                   <tr class="tr">
+                        <th class="th">投放单元名称</th>
+                        <td class="td"><input type="text" class="iText" name="name" value="<?php echo $search['name'];?>"></td>
+                        <th class="th">投放单元活动状态</th>
+                        <td class="td">
+                         <select name="status" class="select wa">
+                            <option  value="0">全部</option>
+                            <?php foreach ($unitStatus as $key=>$val ){?>
+                            <option  value="<?php echo $key; ?>" <?php echo  $search['status'] == $key?'selected=selected':''?> ><?php echo $val; ?></option>
+                            <?php }?>
+                         </select>
+                       </td>
+                       <th class="th">投放方式</th>
+                        <td class="td">
+                         <select name="mode_type" class="select wa">
+                            <option  value="0">全部</option>
+                            <?php foreach ($modeType as $key=>$val ){?>
+                            <option  value="<?php echo $key; ?>" <?php echo  $search['mode_type'] == $key?'selected=selected':''?> ><?php echo $val; ?></option>
+                            <?php }?>
+
+                         </select>
+                       </td>
+                    </tr>
+                    <tr>
+                        <th class="th">投放时间</th>
+                        <td class="td">
+                            <input class="iText" type="text" maxlength="30" style="width:85px;" id="start_time" name="start_time" value="<?php echo $search['start_time'] ;?>"  readonly="readonly" />
+                             至 <input class="iText" type="text" maxlength="30" style="width:85px;" id="end_time" name="end_time" value="<?php echo $search['end_time'] ;?>"  readonly="readonly" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="mb10 tac">
+                <span><button type="submit" class="btn">搜 索</button></span>
+            </div>
+            <div class="fr ml10 mb20">
+                <span ><button type="button" class="btn" id="btn-export">导出</button></span>
+             </div>
+        </form>
+		<form id="batchForm" action="<?php echo $batchUpdateUnitInfoUrl;?>" method="post">
+            <input name="token" type="hidden" value="<?php echo $token;?>" />
+            <input name="action" id="action" type="hidden" value="" />
+            <input name="value" id="value" type="hidden" value="" />
+            <div class="h_a mb10">
+                <span class="bt2"><span><button onclick="javascript:deleteAll()" type="button">删除</button></span></span>
+            	<span class="bt2"><span><button  type="button" onclick="javascript:editStatus('修改状态');" >修改状态</button></span></span>
+                <span class="bt2"><span><button  type="button" onclick="javascript:editLimit('修改限额');">修改限额</button></span></span>
+                <span class="bt2"><span><button  type="button" onclick="javascript:editModeType('修改投放方式');">修改投放方式</button></span></span>
+                <span class="bt2"><span><button  type="button" onclick="javascript:showUnitDiv('新建投放单元', '1', '0');">新建</button></span></span>
+            </div>
+    		<div class="content">
+    			<div class="grid">
+    				<table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" onclick="checkAll('.checkbox')"></th>
+                                <th>投放单元ID</th>
+                                <th>投放单元名称</th>
+                                <th>状态</th>
+                                <th>投放方式</th>
+                                <th>是否内部订单</th>
+                                <th>限额（元）</th>
+                                <th>消耗（元）</th>
+                                <th>曝光</th>
+                                <th>点击</th>
+                                <th>激活</th>
+                                <th>点击率（%）</th>
+                                <th>点击均价</th>
+                                <th>激活率（%）</th>
+                                 <th>CPA</th>
+                            </tr>
+                        </thead>
+                        <?php foreach ($unitList as $key=>$val ){?>
+                        <tr>
+                            <td><input class="checkbox" name="ids[]" value="<?php echo $val['id']; ?>" type="checkbox"></td>
+                            <td><?php echo $val['id']; ?></td>
+                            <td><a href="<?php echo $adManageListUrl.'?unit_id='.$val['id']; ?>" class="name_span"> <span><?php echo $val['name']; ?></span>
+                            </a> <a class='edit ml20 edit_name' ad_name='<?php echo $val['name']?>' ad_id='<?php echo $val['id'];?>'></a></td>
+                            <td><?php echo $unitStatus[$val['status']]; ?></td>
+                            <td><?php echo $modeType[$val['mode_type']]; ?></td>
+                            <td><?php echo ($val['unit_type'] ==  1) ?'否':'是';   ?></td>
+                            <td><?php echo ($val['limit_type'] ==  1) ?$val['limit_range']:'无限';   ?></td>
+                            <td><?php echo number_format($val['amount'],2); ?></td>
+                            <td><?php echo number_format($val['views']); ?></td>
+                            <td><?php echo number_format($val['clicks']); ?></td>
+                            <td><?php echo number_format($val['actives']); ?></td>
+                            <td><?php echo number_format($val['click_rate'],2); ?></td>
+                            <td><?php echo number_format($val['amount_rate'],2); ?></td>
+                            <td><?php echo number_format($val['active_rate'],2); ?></td>
+                             <td><?php echo number_format($val['cpa'],2); ?></td>
+                            </td>
+                        </tr>
+                        <?php }?>
+    				</table>
+    			</div>
+    			<div class="mt10 cc tc">
+                    <?php echo $pager;?>
+                </div>
+    		</div>
+        </form>
+	</div>
+</div>
+</div>
+
+<div id="showDeliveryDiv" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+  <ul class="form">
+         <li> 
+			<span class="label">投放单元名称：</span>
+			<div class="fc">
+				<input name="unit_id" type="hidden" value="" class="iText " > 
+                <label><input name="unit_name" type="text" value="" class="iText " > </label> 
+            </div>
+		 </li>
+		  <li> 
+			<span class="label">投放限额：</span>
+			<div class="fc">
+                <label><p><input type="radio" value="0" name="limit_type" id="limit_type_unlimited" class="radio">无限</p></label>
+                <label><p><input type="radio" value="1" name="limit_type" class="radio">每日限额</label>
+                <label><input name="limit_range" id="limit_range" type="text" value="" class="iText " > </label> </p>
+            </div>
+		 </li>
+		 <li> 
+			<span class="label">投放方式：</span>
+			<div class="fc">
+                <label><p><input type="radio" value="1" name="mode_type" class="radio">匀速</p></label>
+                <label><p><input type="radio" value="2" name="mode_type" class="radio">普通</p></label>
+            </div>
+		 </li>
+         <li> 
+			<span class="label">是否内部订单：</span>
+			<div class="fc">
+                <label><p><input type="radio" value="1" name="unit_type" class="radio">否</p></label>
+                <label><p><input type="radio" value="2" name="unit_type" class="radio">是</p></label>
+            </div>
+		 </li>
+	</ul>
+</div>
+
+<div id="editStatus" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+  <ul class="form">
+		  <li> 
+			<span class="label">状态：</span>
+			<div class="fc">
+			    <?php foreach ($unitStatus as $key=>$val ){
+			        if($key == 3){
+			            continue;
+                    }
+                ?>
+			 	<p><input type="radio" value="<?php echo $key; ?>" name="editStatus" class="radio"><?php echo $val; ?></p>
+	        <?php }?>
+            </div>
+		 </li>
+	</ul>
+</div>
+
+<div id="editLimit" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+  <ul class="form">
+	<li> 
+		<span class="label">投放限额：</span>
+		<div class="fc">
+            <label><p><input type="radio" value="0" name="edit_limit_type" class="radio" id="edit_limit_type_unlimited">无限</p></label>
+                <label><p><input type="radio" value="1" name="edit_limit_type" class="radio">每日限额</label>
+            <label><input name="edit_limit_range" id="edit_limit_range" type="text" value="" class="iText " > </label> </p>
+        </div>
+	 </li>
+	</ul>
+</div>
+
+<div id="editModeType" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+  <ul class="form">
+	<li> 
+		<span class="label">投放方式：</span>
+		<div class="fc">
+		 	<p><input type="radio" value="1" name="edit_mode_type" class="radio">匀速</p>
+            <p><input type="radio" value="2" name="edit_mode_type" class="radio">普通</p>
+        </div>
+	 </li>
+	</ul>
+</div>
+
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<script type="text/javascript">
+//广告表单数据提交
+$(document).ready(function(){
+	 $('#start_time').datepicker();
+     $('#end_time').datepicker();
+	ajaxForm('batchForm',function(ret){
+		ajaxRedirect(ret, baseurl+'/Advertiser/Delivery/unitList');
+	});
+/*     $(".name_span").click(function(){
+        return false;
+  	  	unitId = $(this).siblings('.edit_name').attr('ad_id');
+        $.ajax({
+            url:  baseurl+"/Advertiser/Delivery/getUnitInfo",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'unitId':unitId},
+            success: function(ret) {
+                if (ret.success) {
+             	    $("input[name='unit_id']").val(ret.data.id);
+	                $("input[name='unit_name']").val(ret.data.name);
+	        		$("input[name='limit_type']").each(function(){
+						if(ret.data.limit_type == $(this).val()){
+							$(this).attr('checked', true);
+						}else{
+							$(this).attr('checked', false);
+						}
+	            	});
+	        		$("input[name='mode_type']").each(function(){
+						if(ret.data.mode_type == $(this).val()){
+							$(this).attr('checked', true);
+						}else{
+							$(this).attr('checked', false);
+						}
+	            	});
+	            	if(ret.data.limit_type){
+	            		$("input[name='limit_range']").val(ret.data.limit_range)
+			         }
+	            	showUnitDiv('编辑投放单元', '1', '1');
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+     }); */
+	
+
+	$(".edit_name").click(function(){
+        name = $(this).attr('ad_name')
+        id = $(this).attr('ad_id')
+        inputId = 'modify_name' + id
+        $(this).siblings('.input').remove();
+        str = '<input type="text" class="input" value="'+ name +'"   id="'+inputId+'">'
+        $(this).siblings('.name_span').hide().after(str);
+        $("#" + inputId).focus()
+        $("#" + inputId).blur(function(){
+            adName = $("#"+inputId).val();
+            if( $.trim(adName) == ''){
+        		return false;
+             }
+            $.ajax({
+                url:  baseurl+"<?php echo $updateUnitNameUrl;  ?>",
+                type: "POST",
+                dataType : 'json',
+                data : { 'token':token, 'id':id, 'name': adName},
+                success: function(ret) {
+                    if (ret.success) {
+                        showMsg('', ret.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                    $("#" + inputId).siblings('.name_span').show()
+                    $("#" + inputId).remove()
+                }
+            });
+        });
+    });
+    
+    $("#btn-export").click(function() {
+
+            var confarr = [];
+            var name = "";
+            var value = "";
+            $("#searchForm input").each(function(){
+                name = $(this).attr("name");
+                value = $(this).val();
+                if(value != ""){
+                    confarr.push(name + "=" + value);
+                }
+            });
+            $("#searchForm select").each(function(){
+                name = $(this).attr("name");
+                $(this).find("option:selected").each(function(){
+                    value = $(this).val();
+                });
+                if(value != 0){
+                    confarr.push(name + "=" + value);
+                }
+            });
+            var str = confarr.join("&");
+            window.location.href = "<?php echo $exportUnitUrl; ?>"+"?"+str;
+        });
+        
+        $("input[name=limit_type]").click(function(){
+            if($(this).val() == 0 ){
+                $("#limit_range").val('')
+                $("#limit_range").attr("disabled", "disabled");
+            }else{
+                $("#limit_range").removeAttr("disabled");
+            }
+        });
+        $("input[name=edit_limit_type]").click(function(){
+            if($(this).val() == 0 ){
+                $("#edit_limit_range").val('')
+                $("#edit_limit_range").attr("disabled", "disabled");
+            }else{
+                $("#edit_limit_range").removeAttr("disabled");
+            }
+        });
+})
+
+function editLimit(title){
+	return $("#editLimit").dialog({
+        title : title,
+        draggable : false,
+        width:600,
+        modal : true,
+        resizable : false,
+        buttons: {
+                'ok': function() {
+                    limit_type =  $("input[name='edit_limit_type']:checked").val();
+                    limit_range = $.trim($("input[name='edit_limit_range']").val());
+                    if(limit_type==null || limit_type == 'undefined' ){
+                        alert("投放限额没选中!");
+                        return false;
+                    }
+                    if(limit_type == 1 && limit_range == ''){
+                        alert("每日限额不能为空!");
+                        return false;
+                    }
+                    $('#action').val('limit');
+                    $('#value').val(limit_type+'_'+limit_range);
+                    $("#batchForm").submit();
+                },
+                Cancel: function() {
+                    $(this).dialog('close');
+                }
+            }
+    });
+}
+
+function editStatus(title){
+	return $("#editStatus").dialog({
+					title : title,
+					draggable : false,
+					width:600,
+					modal : true,
+					resizable : false,
+					buttons: {
+					        'ok': function() {
+					        	status =  $("input[name='editStatus']:checked").val();			
+					           	if(status==null || status == 'undefined') {
+					                alert("状态没选中!");
+					                return false;
+					            }
+					        	$('#action').val('status');
+					        	$('#value').val(status);
+					        	$("#batchForm").submit();
+					     	
+					        },
+					        Cancel: function() {
+					            $(this).dialog('close');
+					        }
+					    }
+				});
+}
+
+function editModeType(title){
+	return $("#editModeType").dialog({
+					title : title,
+					draggable : false,
+					width:600,
+					modal : true,
+					resizable : false,
+					buttons: {
+					        'ok': function() {
+					        	mode_type =  $("input[name='edit_mode_type']:checked").val();		
+					        	if(mode_type==null || mode_type == 'undefined'){
+					                alert("投放方式没选中!");
+					                return false;
+					            }
+					        	$('#action').val('modeType');
+					        	$('#value').val(mode_type);
+					        	$("#batchForm").submit();
+					     	
+					        },
+					        Cancel: function() {
+					            $(this).dialog('close');
+					        }
+					    }
+				});
+}
+</script>
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>

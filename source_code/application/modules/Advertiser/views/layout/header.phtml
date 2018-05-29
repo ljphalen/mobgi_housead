@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title><?php echo $titlepre ?>子客投放系统</title>
+<link rel="shortcut icon" href="<?php echo $staticPath;?>/favicon.ico" />
+<link href="<?php echo $staticPath;?>/css/reset.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/style.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/layout.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/jquery-ui.css?v=<?php echo $version;?>" rel="stylesheet"  />
+<link href="<?php echo $staticPath;?>/css/star/star.source.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/advertiser.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/chosen.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticPath;?>/js/common/jquery.js??v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery.form.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/common.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/chosen.jquery.js?v=<?php echo $version;?>"></script>
+<script>
+var token = "<?php echo $token; ?>";
+var baseurl = "<?php echo $webRoot;?>";
+</script>
+</head>
+<body>
+<div class="header">
+    <h1>HouseAd</h1>
+    <p class="fr">
+    <span>欢迎您，</span>
+    <a href="#"><?php echo $advertiser_name;?></a>
+    <a href="/Advertiser/login/logout" class="logout">退出</a>
+    </p>
+</div>
+<div class="mainWrap clearfix" >
+    <?php
+        if($isreport){
+    ?>
+            <div class="sidebar" id="menu">
+                <div class="box">
+                    <div class="title"><h3 class="kfz">数据报表</h3></div>
+                    <ul>
+                        <li  id="mli_401"><a href="/Advertiser/Stat/index">数据报表</a></li>
+                    </ul>
+                </div>
+            </div>
+    <?php
+        }else{
+    ?>
+    <div class="sidebar" id="menu">
+        <div class="box">
+            <ul>
+                <li  id="mli_101"  > <a href="/Advertiser/Index/index">首页</a></li>
+            </ul>
+        </div>
+        <div class="box">
+            <div class="title"><h3 class="kfz">投放管理</h3></div>
+            <ul>
+                <li  id="mli_201"><a href="/Advertiser/Delivery/unitList">广告计划</a></li>
+<!--                <li  id="mli_201"><a href="/Advertiser/Delivery/addAdStep1">新建广告</a></li>-->
+                <li  id="mli_202"><a href="/Advertiser/Delivery/index">广告活动</a></li>
+                <li  id="mli_203"><a href="/Advertiser/Delivery/originalityList">广告创意</a></li>
+                <li  id="mli_204"><a href="/Advertiser/Direct/list">定向管理</a></li>
+            </ul>
+        </div>
+        <div class="box">
+            <div class="title"><h3 class="kfz">数据报表</h3></div>
+            <ul>
+                <li  id="mli_401"><a href="/Advertiser/Stat/index">数据报表</a></li>
+            </ul>
+        </div>
+        <div class="box">
+            <div class="title"><h3 class="kfz">财务管理</h3></div>
+            <ul>
+                <li  id="mli_301"><a href="/Advertiser/account/log">财务记录</a></li>
+
+            </ul>
+        </div>
+        <div class="box">
+            <div class="title"><h3 class="kfz">系统管理</h3></div>
+            <ul>
+                <li  id="mli_501"><a href="/Advertiser/User/management">帐号管理</a></li>
+                <li  id="mli_502"><a href="/Advertiser/management/operatelog">操作日志</a></li>
+<!--                <li  id="mli_503"><a href="/Advertiser/Direct/list">定向管理</a></li>-->
+            </ul>
+        </div>
+        <?php if($gdtconfig){?>
+        <div class="box">
+            <div class="title"><h3 class="kfz">广点通直投</h3></div>
+            <ul>
+                <li  id="mli_604"><a href="/Advertiser/GdtDelivery/gdtCampaignList">广点通推广计划</a></li>
+                <li  id="mli_601"><a href="/Advertiser/GdtDelivery/addAdStep1">广点通新建广告</a></li>
+                <li  id="mli_602"><a href="/Advertiser/GdtDelivery/index">广点通已同步广告管理</a></li>
+                <li  id="mli_602"><a href="/Advertiser/GdtDelivery/gdtTargetingList">广点通定向管理</a></li>
+            </ul>
+        </div>
+        <?php } ?>
+    </div>
+    <?php
+        }
+    ?>

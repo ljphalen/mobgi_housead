@@ -1,0 +1,641 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>广点通配置管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- tab begin -->
+                <div class="layui-btn-group tabs-group">
+                    <button data-type="1" class="layui-btn tab_active">广点通配置列表</button>
+                    <button data-type="2" class="layui-btn layui-btn-primary">付费回调配置</button>
+                    <button data-type="3" class="layui-btn layui-btn-primary">用户行为回调配置</button>
+                </div>
+                <!-- tab begin -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="advertiser_id" placeholder="请输入广告主ID查询" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                            <div class="configbtns" style="float:right;">
+                                <button id="addGdtConfig" type="button" class="layui-btn layui-btn-normal">新建配置</button>
+                                <button id="addGdtPayConfig" type="button" class="layui-btn layui-btn-normal">新建配置</button>
+                                <button id="addGdtActionConfig" type="button" class="layui-btn layui-btn-normal">新建配置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="config" lay-filter="config" ></table>
+                <script type="text/html" id="gdtConfig">
+                    <a class="layui-btn layui-btn-xs" lay-event="gdtConfig_edit">编辑</a>
+                </script>
+                <script type="text/html" id="gdtPayConfig">
+                    <a class="layui-btn layui-btn-xs" lay-event="gdtPayConfig_edit">编辑</a>
+                </script>
+                <script type="text/html" id="gdtActionConfig">
+                    <a class="layui-btn layui-btn-xs" lay-event="gdtAConfig_edit">编辑</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="gdtAConfig_getCode">获取code</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="gdtAConfig_attestation">重新认证</a>
+                </script>
+                <script type="text/html" id="barstatus">
+                    {{#   if(d.status =='ON'){     }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" checked>
+                    {{#  } else { }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" >
+                    {{#  } }}
+                </script>
+                <!-- table end  -->
+                <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+            </div>
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接 */
+var gdtConfigListUrl = baseurl + "<?php echo $gdtConfigListUrl; ?>"; //  广点通配置列表
+var gdtConfigUnitUrl =  baseurl + '<?php echo $gdtConfigUnitUrl; ?>'; // 查询对应记录
+var addGdtConfigPostUrl = baseurl + '<?php echo $addGdtConfigPostUrl; ?>';
+var gdtPayConfigListUrl = baseurl + "<?php echo $gdtPayConfigListUrl; ?>"; //  付费回调配置
+var gdtPayConfigUnitUrl =  baseurl + '<?php echo $gdtPayConfigUnitUrl; ?>'; // 查询对应记录
+var addGdtPayConfigPostUrl = baseurl + '<?php echo $addGdtPayConfigPostUrl; ?>';
+var changeGdtPayConfigStatusUrl = baseurl +  '<?php echo $changeGdtPayConfigStatusUrl; ?>';  // 付费回调配置:更改合作状态
+var gdtActionConfigListUrl = baseurl + "<?php echo $gdtActionConfigListUrl; ?>"; //  用户行为回调配置
+var gdtActionConfigUnitUrl =  baseurl + '<?php echo $gdtActionConfigUnitUrl; ?>'; // 查询对应记录
+var addGdtActionConfigPostUrl = baseurl + '<?php echo $addGdtActionConfigPostUrl; ?>';
+
+/* table 渲染参数 */
+var layuiTable;
+var page = true; 
+var where = { token: token ,advertiser_id: '' } ;
+var table_id = '#config';
+var urlArray = { "1": gdtConfigListUrl, "2": gdtPayConfigListUrl, "3": gdtActionConfigListUrl }
+var colsArray = {  //  1.广点通配置列表  2.付费回调配置 3.用户行为回调配置
+    '1': [[ // 广点通配置列表
+        {field: 'app_name', title: '应用名称',  sort: true  }
+        ,{field: 'app_id', title: '广点通应用ID',  sort: true  }
+        ,{field: 'advertiser_id', title: '广告主id',  sort: true }
+        ,{field: 'sign_key', title: 'sign_key',  sort: true }
+        ,{field: 'encrypt_key', title: 'encrypt_key',  sort: true }
+        ,{field: '', title: '操作', align:'center', toolbar: '#gdtConfig'}
+    ]] ,
+    '2': [[ //付费回调配置
+        {field: 'advertiser_id', title: '广告主id',  sort: true }
+        ,{field: 'notice', title: '备注',  sort: true }
+        ,{field: 'update_time', title: '更新时间',  sort: true }
+        ,{field: 'status', title: '合作状态',  sort: true , toolbar: '#barstatus' }
+        ,{field: '', title: '操作', align:'center', toolbar: '#gdtPayConfig'}
+    ]],
+    '3': [[ //用户行为回调配置
+        {field: 'app_name', title: '应用名称',  sort: true }
+        ,{field: 'app_id', title: 'app_id',  sort: true }
+        ,{field: 'app_key', title: '应用secret',  sort: true }  
+        ,{field: 'account_id', title: '广告主id',  sort: true }
+        ,{field: 'authorization_code', title: 'code(5分钟内有效)',  sort: true }
+        ,{field: 'code_time', title: 'code获取时间',  sort: true }
+        ,{field: 'access_token', title: 'token(24小时内有效)',  sort: true }
+        ,{field: 'token_time', title: 'token获取时间',  sort: true }
+        ,{field: 'update_time', title: '更新时间',  sort: true }
+        ,{field: '', width:260, title: '操作', align:'center', toolbar: '#gdtActionConfig'}
+    ]] };
+var cols = colsArray['1']; // 默认广点通配置 表头
+var url = gdtConfigListUrl;  // 默认广点通配置 表链接
+
+// 判断本地缓存是否 有渲染表格参数
+if(localStorage.searchData){
+    if(window.location.href == JSON.parse(localStorage.searchData).url){
+        page = JSON.parse(localStorage.searchData).page;
+        where = JSON.parse(localStorage.searchData).where; 
+        // 初始化搜索条件
+        $("input[name='advertiser_id']").val(where.advertiser_id); 
+    }
+}
+
+// 初始化 配置类型
+if(localStorage.configType){
+    $(".tabs-group button").addClass("layui-btn-primary");
+    $(".tabs-group button").removeClass("tab_active");
+    $($(".tabs-group button").get(localStorage.configType-1)).removeClass("layui-btn-primary");
+    $($(".tabs-group button").get(localStorage.configType-1)).addClass("tab_active"); 
+    cols = colsArray[localStorage.configType]; 
+    url = urlArray[localStorage.configType];
+    // 隐藏按钮 
+    setConfigType(localStorage.configType) ; 
+}else{
+    setConfigType("1") ; 
+}
+
+/*  隐藏按钮  */
+function setConfigType(configType){
+    $(".configbtns button").hide();
+    if(configType=="1"){
+        $("#addGdtConfig").show();
+        where.app_id = JSON.parse(localStorage.app_data).app_id;
+    }else if(configType=="2"){
+        delete where.app_id;
+        $("#addGdtPayConfig").show();
+    }else if(configType=="3"){
+        delete where.app_id;
+        $("#addGdtActionConfig").show();
+    }
+}
+
+//  表单绑定
+layui.use(['element','form','table'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table; 
+    layuiTable = layui.table;    
+    // 初始化表格 
+    var initTable = {
+        elem: table_id,
+        where: where,
+        url : url ,
+        cols: cols ,
+        page : page
+    };
+    renderTable(table,initTable,null);
+    
+    // 切换 tab 
+    $(".tabs-group button").click(function(){
+        $(".tabs-group button").addClass("layui-btn-primary");
+        $(".tabs-group button").removeClass("tab_active");
+        $(this).removeClass("layui-btn-primary");
+        $(this).addClass("tab_active");
+        //  dataType : 1.广点通配置列表  2.付费回调配置 3.用户行为回调配置
+        var dataType = parseInt($(this).attr("data-type"));
+        localStorage.configType = dataType;
+        cols = colsArray[dataType]; 
+        url = urlArray[dataType];
+        setConfigType(dataType);
+        // delete where.advertiser_id;
+        // 配置表头，查询条件，渲染表格
+        var param = {
+            elem: table_id,
+            where: where,
+            url : url ,
+            cols: cols ,
+            page : true
+        };
+        renderTable(layuiTable,param,null);
+    });
+
+    // 搜索  
+    form.on('submit(search)', function(data){
+        var dataType = parseInt($(".tab_active").attr("data-type"));
+        cols = colsArray[dataType]; 
+        url = urlArray[dataType];
+        where.advertiser_id = data.field.advertiser_id;
+        var searchparam = {
+            elem: table_id,
+            where: where,
+            url : url ,
+            cols: cols ,
+            page : true
+        };
+        renderTable(layuiTable,searchparam,null);
+        return false; 
+    });
+    
+    //监听单元格事件  --  编辑
+    table.on('tool(config)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'gdtConfig_edit'){  // 广点通配置列表：编辑
+            var requestData = { token:token, id:data.id, app_id:data.app_id, advertiser_id:data.advertiser_id, sign_key:data.sign_key, encrypt_key:data.encrypt_key };
+            ajaxRequestAction(gdtConfigUnitUrl,requestData,gdtCallback,obj,1);       
+        }else if(obj.event =='gdtPayConfig_edit'){ //付费回调配置: 编辑
+            var requestData = {token:token , id:data.id , advertiser_id:data.advertiser_id , notice:data.notice };
+            ajaxRequestAction(gdtPayConfigUnitUrl,requestData,gdtCallback,obj,2);
+        }else if(obj.event =='gdtAConfig_edit'){ //用户行为回调配置: 编辑
+            var requestData = {token:token , id:data.id , app_id:data.app_id , app_key:data.app_key, app_name:data.app_name, account_id:data.account_id };
+            ajaxRequestAction(gdtActionConfigUnitUrl,requestData,gdtCallback,obj,3);
+        }else if(obj.event =='gdtAConfig_getCode'){ //用户行为回调配置: 获取code
+            layer.msg('用户行为回调配置: 获取code');
+        }else if(obj.event =='gdtAConfig_attestation'){ //用户行为回调配置: 重新认证
+            layer.msg('用户行为回调配置: 重新认证');
+        }  
+    });
+
+    //  付费回调配置:更改合作状态
+    form.on('switch(switchStatus)', function(data){
+        var obj = new Object();
+        if(data.elem.checked){
+            obj.status = 'ON';
+        }else{
+            obj.status = 'OFF';
+        }
+        obj.token = token;
+        obj.id = $(data.elem).attr("data-id");
+        $.ajax({
+            url : changeGdtPayConfigStatusUrl ,
+            async: true,
+            data : obj,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                if(data.success){
+                    layer.msg("操作成功");
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+    });
+
+    // 新建广点通配置
+    $("#addGdtConfig").click(function(){
+        addGdtConfig($(this),null);
+    });
+
+    // 新建广点通付费配置
+    $("#addGdtPayConfig").click(function(){
+        addGdtPayConfig($(this),null);
+    });
+
+    // 新建广点通用户行为配置
+    $("#addGdtActionConfig").click(function(){
+        addGdtActionConfig($(this),null);
+    });
+});
+
+
+/**
+ *   编辑回调 
+ *   @param data: ajax回调 对象
+ *   @param obj:当前的行 回调对象 
+ *   @param type: 类型  
+ */
+var gdtCallback = {
+    success:function(data,obj,type){
+        if(data.success){
+            var objData = obj.data;
+            if(type==1){
+                addGdtConfig(obj.tr,objData);
+            }else if(type==2){
+                addGdtPayConfig(obj.tr,objData);
+            }else if(type==3){
+                addGdtActionConfig(obj.tr,objData);
+            }
+        }else{
+            layer.msg(data.msg);
+        }
+    },
+    error:function(xhr,msg,e){
+        layer.msg(msg);
+    }
+};
+
+//  ajax 请求
+function ajaxRequestAction(url,data,callback,obj,datatype){
+    $.ajax({
+        url : url ,
+        async: true,
+        data : data,
+        type : 'post',
+        dataType : 'json',
+        jsonp : 'callback',
+        success:function(data){
+            callback.success(data,obj,datatype);
+        },
+        error:function(xhr,msg,e){
+            callback.error(xhr,msg,e);
+        }
+    });
+} 
+ 
+// 切换应用回调
+var appIdSelectChange = {
+    callBack: function(data){
+        var dataType = $(".tab_active").attr("data-type");
+        cols = colsArray[dataType]; 
+        url = urlArray[dataType];   
+        if(dataType=="1"){
+            where.app_id = JSON.parse(localStorage.app_data).app_id ;
+        }else{
+            delete where.app_id ;
+        }
+        var searchparam = {
+            elem: table_id,
+            where: where,
+            url : url ,
+            cols: cols ,
+            page : true
+        };
+        renderTable(layuiTable,searchparam,null);
+    }
+};
+
+// 新建，编辑 广点通配置
+function addGdtConfig(that,jsonData){
+    var app_id='',advertiser_id='',sign_key='',encrypt_key='',text='新建';
+    if(jsonData){
+        text = '编辑' ;
+        app_id = jsonData.app_id;
+        advertiser_id = jsonData.advertiser_id;
+        sign_key = jsonData.sign_key;
+        encrypt_key = jsonData.encrypt_key;
+    }
+    var temp = `
+    <br>
+    <form class="layui-form" id="add_gdtConfig">
+        <div class="layui-form-item">
+            <label class="layui-form-label long-label">广点通应用ID</label>
+            <div class="layui-input-inline ">
+            <input type="text" name="gdt_app_id" placeholder="" value="`+app_id+`" class="layui-input" autocomplete="off">
+            </div>
+            <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label long-label">广告主id</label>
+            <div class="layui-input-inline ">
+                    <input type="text" name="advertiser_id" placeholder="" value="`+advertiser_id+`" class="layui-input" autocomplete="off">
+            </div>
+                <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label long-label">sign_key</label>
+            <div class="layui-input-inline ">
+                <input type="text" name="sign_key" placeholder="" value="`+sign_key+`" class="layui-input" autocomplete="off">
+            </div>
+            <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label long-label">encrypt_key</label>
+            <div class="layui-input-inline ">
+                    <input type="text" name="encrypt_key" placeholder="" value="`+encrypt_key+`" class="layui-input" autocomplete="off">
+            </div>
+            <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+    </form>`;
+    layer.open({
+        title : text +'广点通配置',
+        type: 1,
+        area: ['800px', '400px'],
+        shadeClose: true, //点击遮罩关闭
+        content: temp,
+        btn: ['保存', '取消'],
+        success: function(layero){
+            var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+            btn.on("click",function(){
+                var arr = $("#add_gdtConfig").serializeArray();
+                if(jsonData){
+                    var objId = { name: 'id' , value: jsonData.id };
+                    arr.push(objId) ;
+                }
+                var currentApp_id = $("select[name='app_id']").find("option:selected").val();
+                arr.push({ name: 'token', value: token });
+                arr.push({ name: 'app_id', value: currentApp_id });
+                $.ajax({
+                    url : addGdtConfigPostUrl ,
+                    async: false,
+                    data : arr,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg);
+                        if(data.success){
+                            setTimeout(function(){
+                                if(jsonData){
+                                    that.find("td").each(function(){
+                                        if($(this).attr('data-field')=='advertiser_id'){
+                                            $(this).find("div").html(arr[0].value);
+                                        }
+                                        if($(this).attr('data-field')=='sign_key'){
+                                            $(this).find("div").html(arr[1].value);
+                                        }
+                                        if($(this).attr('data-field')=='encrypt_key'){
+                                            $(this).find("div").html(arr[2].value);
+                                        }
+                                    });
+                                }else{
+                                    window.location.reload();
+                                }
+                            }, 500);
+                        }
+
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+            });
+        }
+    });
+
+}
+
+
+// 新建，编辑 付费回调配置
+function addGdtPayConfig(that,jsonData){
+    var advertiser_id='',notice='',text='新建';
+    if(jsonData){
+        text = '编辑' ;
+        advertiser_id = jsonData.advertiser_id;
+        notice = jsonData.notice;
+    }
+    var temp = `
+<br>
+    <form class="layui-form" id="add_gdtPayConfig">
+        <div class="layui-form-item">
+        <label class="layui-form-label long-label">广告主id</label>
+        <div class="layui-input-inline ">
+        <input type="text" name="advertiser_id" placeholder="" value="`+advertiser_id+`" class="layui-input" autocomplete="off">
+        </div>
+        <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label long-label">备注</label>
+        <div class="layui-input-inline ">
+        <input type="text" name="notice" placeholder="" value="`+notice+`" class="layui-input" autocomplete="off">
+        </div>
+        <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        </form>`;
+    layer.open({
+        title : text +'广点通付费配置',
+        type: 1,
+        area: ['800px', '400px'],
+        shadeClose: true, //点击遮罩关闭
+        content: temp,
+        btn: ['保存', '取消'],
+        success: function(layero){
+            var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+            btn.on("click",function(){
+                var arr = $("#add_gdtPayConfig").serializeArray();
+                if(jsonData){
+                    var objId = { name: 'id' , value: jsonData.id };
+                    arr.push(objId) ;
+                }
+                var currentApp_id = $("select[name='app_id']").find("option:selected").val();
+                arr.push({ name: 'token', value: token });
+                arr.push({ name: 'app_id', value: currentApp_id });
+                $.ajax({
+                    url : addGdtPayConfigPostUrl,
+                    async: false,
+                    data : arr,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg);
+                        if(data.success){
+                            setTimeout(function(){
+                                if(jsonData){
+                                    that.find("td").each(function(){
+                                        if($(this).attr('data-field')=='advertiser_id'){
+                                            $(this).find("div").html(arr[0].value);
+                                        }
+                                        if($(this).attr('data-field')=='notice'){
+                                            $(this).find("div").html(arr[1].value);
+                                        }
+                                    });
+                                }else{
+                                    window.location.reload();
+                                }
+                            }, 500);
+                        }
+
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+            });
+        }
+    });
+
+}
+
+
+
+// 新建，编辑 用户行为回调配置
+function addGdtActionConfig(that,jsonData){
+    var app_id='',app_key='',app_name='',account_id='',text='新建';
+    if(jsonData){
+        text = '编辑' ;
+        app_id = jsonData.app_id;
+        app_key = jsonData.app_key;
+        app_name = jsonData.app_name;
+        account_id = jsonData.account_id;
+    }
+    var temp = `
+<br>
+    <form class="layui-form" id="add_gdtActionConfig">
+        <div class="layui-form-item">
+        <label class="layui-form-label long-label">app_id</label>
+        <div class="layui-input-inline ">
+        <input type="text" name="app_id" placeholder="" value="`+app_id+`" class="layui-input" autocomplete="off">
+        </div>
+        <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label long-label">应用secret</label>
+        <div class="layui-input-inline ">
+        <input type="text" name="app_key" placeholder="" value="`+app_key+`" class="layui-input" autocomplete="off">
+        </div>
+        <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label long-label">应用名称</label>
+        <div class="layui-input-inline ">
+        <input type="text" name="app_name" placeholder="" value="`+app_name+`" class="layui-input" autocomplete="off">
+        </div>
+        <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label long-label">广点通账号id</label>
+        <div class="layui-input-inline ">
+        <input type="text" name="account_id" placeholder="" value="`+account_id+`" class="layui-input" autocomplete="off">
+        </div>
+        <div class="layui-form-mid layui-word-aux">*</div>
+        </div>
+        </form>`;
+    layer.open({
+        title : text +'广点通用户行为配置',
+        type: 1,
+        area: ['800px', '400px'],
+        shadeClose: true, //点击遮罩关闭
+        content: temp,
+        btn: ['保存', '取消'],
+        success: function(layero){
+            var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+            btn.on("click",function(){
+                var arr = $("#add_gdtActionConfig").serializeArray();
+                if(jsonData){
+                    var objId = { name: 'id' , value: jsonData.id };
+                    arr.push(objId) ;
+                }
+                arr.push({ name: 'token', value: token });
+                $.ajax({
+                    url : addGdtActionConfigPostUrl ,
+                    async: false,
+                    data : arr,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg);
+                        if(data.success){
+                            setTimeout(function(){
+                                if(jsonData){
+                                    that.find("td").each(function(){
+                                        if($(this).attr('data-field')=='app_id'){
+                                            $(this).find("div").html(arr[0].value);
+                                        }
+                                        if($(this).attr('data-field')=='app_key'){
+                                            $(this).find("div").html(arr[1].value);
+                                        }
+                                        if($(this).attr('data-field')=='app_name'){
+                                            $(this).find("div").html(arr[2].value);
+                                        }
+                                        if($(this).attr('data-field')=='account_id'){
+                                            $(this).find("div").html(arr[3].value);
+                                        }
+                                    });
+                                }else{
+                                    window.location.reload();
+                                }
+                            }, 500);
+                        }
+
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+            });
+        }
+    });
+
+}
+</script>
+</body>
+</html>
+      

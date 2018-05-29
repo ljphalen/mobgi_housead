@@ -1,0 +1,262 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p><?php if($channel){ echo '编辑';}else{ echo '新建';} ?>投放渠道</p>
+                </div>
+                <!-- title end  -->
+
+                <!-- form begin -->
+                <form class="layui-form">
+                    <!-- 基本信息 begin -->
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>基本参数:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">渠道编号</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="id" value="<?php echo $channel['id']; ?>" />
+                                <input type="text" name="channel_no" placeholder="" value="<?php echo $channel['channel_no']; ?>" <?php if($channel){ echo 'disabled';} ?> class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">渠道名称</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="channel_name" placeholder="" value="<?php echo $channel['channel_name']; ?>" class="layui-input">
+                            </div>
+                        </div>
+<!--                        <div class="layui-form-item">-->
+<!--                            <label class="layui-form-label long-label">跟踪方式</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <select name="track_type" lay-verify=""  lay-filter="track_type" lay-search --><?php //if($channel){ echo 'disabled';} ?><!-- >-->
+<!--                                    <option value="" >选择跟踪方式</option>-->
+<!--                                    --><?php //foreach($trackType as $key=>$value){ ?>
+<!--                                        <option value="--><?php //echo $key; ?><!--" --><?php //if($key==$channel['track_type']){ echo 'selected';} ?><!-- >--><?php //echo $value; ?><!--</option>-->
+<!--                                    --><?php //} ?>
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">短链回调状态</label>
+                            <div class="layui-input-inline">
+                                <select name="shortlink_status" lay-verify=""  lay-filter="track_type" lay-search  >
+                                    <?php foreach($shortLinkStatusList as $key=>$value){ ?>
+                                        <option value="<?php echo $key; ?>" <?php if($key==$channel['shortlink_status']){ echo 'selected';} ?> ><?php echo $value; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 基本信息 end  -->
+                    <hr class="layui-bg-gray">
+                    <div class="subtitle"><p>iOS:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">自投点击模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['template']; }else{ echo $defaultTemplate['ios_track_template']; } ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">自投回调模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text"  name="callback_template" placeholder="" value="<?php echo $channelDetail['callback_template']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">代投点击模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="agent_template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['agent_template']; }else{ echo $defaultTemplate['ios_agent_track_template']; } ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">代投回调模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="callback_agent_template" placeholder="" value="<?php echo $channelDetail['callback_agent_template']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="layui-bg-gray">
+                    <div class="subtitle"><p>Android:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">自投点击模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="android_template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['android_template']; }else{ echo $defaultTemplate['android_track_template']; } ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">自投回调模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text"  name="callback_android_template" placeholder="" value="<?php echo $channelDetail['callback_android_template']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">代投点击模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="agent_android_template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['agent_android_template']; }else{ echo $defaultTemplate['android_agent_track_template']; } ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">代投回调模板</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="callback_agent_android_template" placeholder="" value="<?php echo $channelDetail['callback_agent_android_template']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="layui-bg-gray">
+                    <div class="subtitle"><p>对接参数:</p><span class="bule" id="isShow" style="cursor: pointer; padding:0 10px;">  [点击展开]</span></div>
+                    <div class="layui-form-item" style="display:none;" id="showList">
+                        <label class="layui-form-label long-label">平台模式</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-input-inline">
+                                <select name="delivery_type" lay-verify="" lay-search>
+                                    <option value="1" >ios自投</option>
+                                    <option value="2" >ios代投</option>
+                                    <option value="3" >android自投</option>
+                                    <option value="4" >android代投</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label class="layui-form-label">渠道参数</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="channel_param" placeholder="" value="" class="layui-input">
+                        </div>
+                        <label class="layui-form-label long-label">后台参数</label>
+                        <div class="layui-input-inline">
+                            <div class="layui-input-inline">
+                                <select name="backend_param" lay-verify="" lay-search>
+                                    <option value="" >选择后台参数</option>
+                                    <?php foreach($backendMacros as $value){ ?>
+                                        <option value="<?php echo $value ?>" ><?php echo $value ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-input-inline">
+                            <button id="updata" type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="updata_delivery" >更新</button>
+                        </div>
+                    </div>
+
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                            <button id="cancel" type="reset" class="layui-btn layui-btn-primary">取消</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end  -->
+            </div>
+           
+
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接  */
+var addChannelPostUrl = baseurl + '<?php echo $addChannelPostUrl; ?>'; // 提交表单
+var callbackUrl = baseurl + '<?php echo $indexUrl; ?>';
+var replaceLinkParamsUrl = '<?php echo $replaceLinkParamsUrl; ?>';
+  
+/* 默认禁止切换应用  */
+$("select[name='app_id']").attr("disabled","disabled");
+
+//JavaScript代码区域
+layui.use(['element','form'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    //表单提交
+    form.on('submit(submit_form)', function(data){
+        data.field.token = token;
+        $.ajax({
+            url : addChannelPostUrl,
+            async: false,
+            data : data.field,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.msg(data.msg);
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.href = callbackUrl;
+                    },500);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+        return false;
+    });
+
+    // 点击展开
+    // 取消
+    $("#isShow").click(function(){
+        var isShow = $("#showList").hasClass("show");
+        if(!isShow){
+            $("#showList").addClass("show");
+            $(this).html("[点击隐藏]");
+            $("#showList").show();
+        }else{
+            $("#showList").removeClass("show");
+            $(this).html("[点击展开]");
+            $("#showList").hide();
+        }
+    });
+
+    // 更新对接参数
+    form.on('submit(updata_delivery)', function(data){
+        data.field.token = token;
+        $.ajax({
+            url : replaceLinkParamsUrl,
+            async: false,
+            data : data.field,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.msg(data.msg);
+                if(data.success){
+                    var list = data.data;
+                    for(var k in list){
+                        $("input[name='"+ k +"']").val(list[k]);
+                    }
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+        return false;
+    });
+    // 取消
+    $("#cancel").click(function(){
+        window.location.href = callbackUrl;
+    });
+
+});
+
+</script>
+</body>
+</html>
+      

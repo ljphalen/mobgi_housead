@@ -1,0 +1,48 @@
+.icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+}
+.icon i {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    position: absolute;
+}
+.ico-tips {
+    margin-right: 3px;
+    margin-left: 5px;
+}
+.ico-tips i {
+    background-image: url(gdt-img/gdt-toufang-global.png);
+    background-position: -208px -72px;
+    top: -3px;
+}
+.c-tx3 {
+    color: #909090;
+}
+._toggle {
+    border-bottom: 1px solid #E5E6E7;font-size:16px;padding: 0 0 7px 20px;cursor: pointer;
+}
+._toggle .toggle_tile {
+    font-weight:bold;
+}
+._toggle.arrow::after {
+    content: "▲";
+    color: #ccc;
+    margin: 0 0 5px 5px;
+}
+._toggle::after {
+    content: "▼";
+    color: #ccc;
+    margin: 0 0 5px 5px;
+    cursor: pointer;
+}
+strong {
+    font-weight:bold;
+}
+.region_type{
+    cursor: pointer;
+}

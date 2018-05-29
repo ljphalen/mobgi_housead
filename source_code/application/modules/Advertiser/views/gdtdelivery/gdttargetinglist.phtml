@@ -1,0 +1,189 @@
+<?php echo $this->render("layout/header.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl">定向管理</p>
+        </div>
+        <div class="main">
+            <div class="toolbar">
+                <a href="<?php if(empty($gdtconfig)){echo $addUrl;}else{echo $addGdtTargetingUrl;} ?>" class="fr add" style="width:80px;">新增定向</a>
+            </div>
+            
+            <div style="margin:10px 0" class="app-detail">
+                <div class="main">
+                    <div class="content">
+                        <div class="grid">
+                            <table>
+                                <?php if(empty($gdtconfig)){ ?>
+                                
+                                <?php }else{ ?>
+                                    <thead>
+                                        <tr>
+                                            <th width="15%">定向名称</th>
+                                            <th width="7%">年龄</th>
+                                            <th width="7%">关键词</th>
+                                            <th width="15%">app行为定向</th>
+                                            <th width="7%">设备价格</th>
+                                            <th width="7%">操作系统</th>
+                                            <th width="7%">联网方式</th>
+                                            <th width="7%">移动运营商</th>
+                                            <th width="7%">移动媒体分类定向</th>
+                                            <th width="10%">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if(is_array($list)){ foreach ($list as $direct){ ?>
+                                        <tr>
+                                            <td><?php echo $direct['targeting_name']?></td>
+                                            <td><?php if($direct['targeting_setting']['age'][0]){echo $direct['targeting_setting']['age'][0];}else{echo "不限";} ?></td>
+                                            <td><?php if($direct['targeting_setting']['keyword']['words']){echo implode(',', $direct['targeting_setting']['keyword']['words']);}?></td>
+                                            <td>
+                                                <?php  if($direct['targeting_setting']['app_behavior']){?>
+                                                    类型:
+                                                    <?php foreach($direct['targeting_setting']['app_behavior']['object_id_list'] as $object_id){ 
+                                                        echo $apps[$object_id]['name']." ";
+                                                    } ?>
+                                                    <br>行为:
+                                                    <?php foreach($direct['targeting_setting']['app_behavior']['act_id_list'] as $act){ 
+                                                        echo $gdt_app_act[$act]."&nbsp;";
+                                                    } ?>
+                                                    <?php if($direct['targeting_setting']['app_behavior']['time_window']){?>
+                                                        <?php echo '<br>距今 '.$direct['targeting_setting']['app_behavior']['time_window']." 天内" ?>
+                                                    <?php }?>
+                                                <?php }else{ 
+                                                    echo "不限";
+                                                }?>
+                                            </td>
+                                            <td>
+                                                <?php if($direct['targeting_setting']['device_price']){?>
+                                                    <?php 
+                                                    foreach($direct['targeting_setting']['device_price'] as $price){ 
+                                                        echo $gdt_device_price[$price]."<br>";
+                                                    } ?>
+                                                <?php 
+                                                    }else{
+                                                        echo '不限';
+                                                }?>
+                                            </td>
+                                            <td>
+                                                <?php if($direct['targeting_setting']['user_os']){?>
+                                                    <?php 
+                                                    foreach($direct['targeting_setting']['user_os'] as $os){ 
+                                                        echo $gdt_user_os[$os]."<br>";
+                                                    } ?>
+                                                <?php 
+                                                    }else{
+                                                        echo '不限';
+                                                }?>
+                                            </td>
+                                            <td>
+                                            <?php if($direct['targeting_setting']['network_type']){?>
+                                                    <?php 
+                                                    foreach($direct['targeting_setting']['network_type'] as $network){ 
+                                                        echo $gdt_network_type[$network]."<br>";
+                                                    } ?>
+                                                <?php 
+                                                    }else{
+                                                        echo '不限';
+                                                }?>
+                                            </td>
+                                            <td>
+                                                <?php if($direct['targeting_setting']['network_operator']){?>
+                                                    <?php 
+                                                    foreach($direct['targeting_setting']['network_operator'] as $operator){ 
+                                                        echo $gdt_network_operator[$operator]."<br>";
+                                                    } ?>
+                                                <?php 
+                                                    }else{
+                                                        echo '不限';
+                                                }?>
+                                            </td>
+                                            <td>
+                                                <?php  if($direct['targeting_setting']['media_category_union']){?>
+                                                    <?php foreach($direct['targeting_setting']['media_category_union'] as $object_id){
+                                                        echo $medias[$object_id]['name']." ";
+                                                     } ?>
+                                                <?php }else{
+                                                        echo '不限';
+                                                } ?>
+                                            </td>
+                                            <td>
+                                                <a href="<?php echo $addGdtTargetingUrl. "?targeting_id=". $direct['targeting_id']?>">编辑</a>&nbsp;
+                                                <a onclick="deleteOne('<?php echo $delGdtTargetingUrl;?>/?targeting_id=<?php echo $direct['targeting_id'];?>', '是否要删除该定向？', event);" href='javascript:'>删除</a>
+                                            </td>
+                                        </tr>
+                                        <?php }}?>
+                                    </tbody>
+                                <?php } ?>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <?php echo $pager;?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js??v=<?php echo $version;?>"></script>
+<link href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script type="text/javascript">
+$(function(){
+   
+    $(".copy").click(function(){
+        id = $(this).attr('id')
+        $.ajax({
+            url: "<?php echo $copyUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'id':id },
+            success: function(ret) {
+                if (ret.success) {
+                    showMsg('', ret.msg);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    });
+    
+    $(".edit_name").click(function(){
+        direct_name = $(this).attr('direct_name')
+        direct_id = $(this).attr('direct_id')
+        input_id = 'name_input_' + direct_id
+        input_str = '<input type="text" class="" value="'+ direct_name +'" class="direct_name" id="'+input_id+'">'
+        $(this).siblings('.direct_name_span').hide().after(input_str);
+        $("#" + input_id).focus()
+        $("#" + input_id).blur(function(){
+            $.ajax({
+                url: "<?php echo $changenameUrl  ?>",
+                type: "POST",
+                dataType : 'json',
+                data : { 'token':token, 'id':direct_id, 'direct_name':$("#"+input_id).val() },
+                success: function(ret) {
+                    if (ret.success) {
+                        showMsg('', ret.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                    $("#" + input_id).siblings('.direct_name_span').show()
+                    $("#" + input_id).remove()
+                }
+            });
+        });
+    });
+
+    
+    
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

@@ -1,0 +1,20 @@
+.choice-t-app{ width: 100%; padding: 50px 0 10px 0; }
+       .choice-t-app-title{ float:left; margin-right: 10px; display: inline-block; color:#333; font-size: 14px; height: 30px; line-height: 30px;  }
+       .choice-t-app select{ outline: none; background: #fff; border:1px solid #ddd; width: 160px; height: 30px;  }
+       .choice-t-tempwrap{ width: 100%; overflow: hidden; }
+       .choice-t-chooseli{ float:left; }
+       .choice-t-chooseli li{ float:left; width: 160px; height: 300px; margin: 0 20px 20px 0; display:inline;   }
+       .choice-t-chooseli li p{ float:left; border:1px solid #ddd;  width: 100%; height: 250px; overflow-x: hidden; overflow-y: auto; }
+       .choice-t-chooseli li p img{ width: 100%; }
+       .choice-t-btn{ position: relative; z-index: 1; left:50%; float:left; width:20px; height: 20px;  border:1px solid #999; border-radius: 25px; -moz-border-radius: 25px; -khtml-border-radius: 25px; margin:20px 0 0 -10px;  }
+       .choice-t-btn i{ position:absolute; z-index: 2; left:50%; top:50%; background: #ddd;  display: inline-block; width: 16px; height:16px; margin:-8px 0 0 -8px; border-radius: 25px; -moz-border-radius: 25px; -khtml-border-radius: 25px;  }
+       .choice-t-btn i:hover{ background: #999;}
+       .choice-t-chooseli-active p{ border: 1px solid #1eb3ed;   }  
+       .choice-t-chooseli-active .choice-t-btn{  border:1px solid #1eb3ed; }
+       .choice-t-chooseli-active .choice-t-btn i{background: #1eb3ed; }
+
+       .choice-t-center{ width: 100%; text-align: center; padding: 10px 0;}
+       .choice-t-cancel{ display: inline-block; width:100px; height: 30px; line-height: 30px; color:#999; background: #ddd; text-decoration: none; box-shadow: 0 0 2px #ddd; border-radius: 4px; margin-right: 20px;  }
+       .choice-t-cancel:hover{ text-decoration: none; }
+       .choice-t-submit{ display: inline-block; width:120px; height: 30px; line-height: 30px; color:#fff; background: #1eb3ed; text-decoration: none; box-shadow: 0 0 2px #ddd; border-radius: 4px;}
+       .choice-t-submit:hover{ text-decoration: none;}

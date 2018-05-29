@@ -1,0 +1,21 @@
+</div>
+<script>
+$(function(){
+    $("#menu").find(".title").css({cursor:'pointer'}).live('click', function(){
+        var dis = $(this).next('ul');
+        if (dis.css('display') == 'none') {
+            dis.show();
+        }else{
+            dis.hide();
+        }
+    });
+
+    $("#menu").find("li").click(function(){
+         clsid = $(this).attr("id");
+         $('#'+clsid).addClass('cur');
+    }).removeClass('cur');
+
+});
+</script>
+</body>
+</html>

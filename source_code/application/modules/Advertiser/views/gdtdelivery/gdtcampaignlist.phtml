@@ -1,0 +1,74 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="colMain" style="min-height: 196px;">
+	<div class="title">
+		<p class="fl">推广计划管理列表</p>
+	</div>
+	<div class="main">
+        <div class="toolbar">
+            <a class="fr add" style="width:80px;" href="javascript:void(0)" onclick="addID();">新增计划</a>
+        </div>
+		<form id="batchForm" action="<?php echo $batchUpdateAdInfoUrl;?>" method="post">
+        <input name="token" type="hidden" value="<?php echo $token;?>" />
+        <input name="action" id="action" type="hidden" value="" />
+        <input name="value" id="value" type="hidden" value="" />
+    		<div class="content">
+    			<div class="grid">
+    				<table>
+    					<thead>
+    						<tr>
+                                <th>本地ID</th>
+                                <th>推广计划ID</th>
+                                <th>推广计划名称</th>
+                                <th>配置状态</th>
+                                <th>日消耗限额</th>
+                                <th>投放速度类型</th>
+                                <th>操作</th>
+                            </tr>
+    					</thead>
+    				 <?php if(is_array($list)){ foreach ($list as $key=>$val ){?>
+    					<tr>
+							<td><?php echo $val['outer_campaign_id']; ?></td>
+                            <td><?php echo $val['campaign_id']; ?></td>
+                            <td><?php echo $val['campaign_name']; ?></td>
+                            <td style="color:<?php echo $val['configured_status_color']; ?>;"><?php echo $val['configured_status_cn'];?></td>
+    						<td><?php echo $val['daily_budget'];?></td>
+    						<td><?php echo $val['speed_mode_cn'];?></td>
+                            <td><a onclick="syncOne('<?php echo $gdtCampaignSyncUrl;?>',<?php echo $val['campaign_id'];?>, '是否同步数据到本地？', event);" href='javascript:'>同步</a></td>
+    					</tr>
+    				   <?php }}?>
+    				</table>
+    			</div>
+    			<div class="mt10 cc tc">
+                    <?php echo $pager;?>
+                </div>
+    		</div>
+    		</form>
+	</div>
+</div>
+</div>
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<script src="<?php echo $staticPath;?>/js/common/core.js"></script>
+<script type="text/javascript">
+// 新增弹窗
+function addID() {
+    var $content = $('<div class="gril"></div>');
+    var PopUp = jDialog({
+        width: 550,
+        height: 320,
+        draggable:true,
+        autoOpen: false,
+        content: $content
+    });
+    $content.load("<?php if(empty($gdtconfig)){echo $addUrl;}else{echo $addGdtCampaignUrl;} ?>", function() {
+        $content.find("#cancel").click(function() {
+            if (PopUp) {
+                PopUp.close();
+                window.location.reload();
+            }
+        });
+    });
+}
+
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

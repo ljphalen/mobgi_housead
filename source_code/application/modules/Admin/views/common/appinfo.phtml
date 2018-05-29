@@ -1,0 +1,95 @@
+<div class="ms-left ms-height wrap-bg">
+    <div class="items-wrap">
+        <h1>应用 (<?php echo $total;?>)</h1>
+        <form action="<?php echo $listUrl;?>" method="GET"  id="searchForm">  
+        <input type="hidden" name="platform" value="<?php echo $search['platform'] ;?>">   
+        <!--  搜索 begin -->
+        <div class="layui-form">
+            <div class="layui-inline">
+                    <input type="text" name="app_name"   placeholder="请应用名或者AppKey搜索" class="layui-input"　 value="<?php echo $search['app_name'] ;?>" />  
+            </div>
+            <div class="layui-inline">
+                    <button class="layui-btn layui-bg-blue"　type="submit">搜索</button>
+            </div>
+            <div class="tab-buttons">
+                <div class="layui-inline platform">
+                   <button class="layui-btn <?php echo ($search['platform'] == '')?'layui-btn-normal':'layui-btn-primary';?>" type="button" data-platform="">全部</button>
+                </div>
+                <div class="layui-inline platform">
+                    <button class="layui-btn <?php echo ($search['platform'] == '1')?'layui-btn-normal':'layui-btn-primary';?>" type="button" data-platform="1">Android</button>
+                </div>
+                <div class="layui-inline platform">
+                    <button class="layui-btn <?php echo ($search['platform'] == '2')?'layui-btn-normal':'layui-btn-primary';?>" type="button" data-platform="2">iOS</button>
+                </div>
+        
+            </div>
+        </div>
+        <hr class="layui-bg-gray">
+        <!--  搜索 end  -->  
+        </form> 
+    </div>
+    <!--  列表 list begin -->
+    <ul class="appList">
+        <?php foreach($appList as $k1=>$v1){ ?>
+        <li>
+            <i class="app-icon"><img src="<?php echo $v1['icon'];?>" /></i>
+            <div class="app-info">
+                <p class="app-title" data-app-key="<?php echo $v1['app_key']; ?>"><?php echo $v1['app_name']; ?></p>
+                <p class="app-type">
+                    <?php if( $v1['platform'] == 1 ){ ?>  
+                        <i class="android"></i>
+                        <span>Android</span>
+                    <?php }else{ ?>
+                        <i class="ios"></i>
+                        <span>iOS</span>
+                    <?php }?>
+                </p>
+            </div>
+            <p class="app-config <?php echo ($v1['is_config'] == false)?'':'green';?>"><?php echo $v1['is_config']?'已配置':'未配置';?></p>
+        </li>
+         <?php } ?>
+    </ul>
+    <!--  列表 list end  -->
+    <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+</div>
+ <script type="text/javascript">
+$(function(){
+	$(".platform button").click(function (){
+		$(".platform button").removeClass("layui-btn-primary").removeClass("layui-btn-normal");
+		$(".platform button").addClass("layui-btn-primary");
+		$(this).removeClass("layui-btn-primary");
+		$(this).addClass("layui-btn-normal");
+	     platform = $(this).attr('data-platform');
+	     $("input[name='platform']").val(platform);
+	     $("#searchForm").submit()
+    });
+
+	 // 列表点击
+    $(".appList li").click(function(){  
+        var app_key = getQueryString('app_key');
+        var href = window.location.href;
+        var param = '';
+        app_key = $(this).find(".app-title").attr("data-app-key");
+        if(href.split("?").length>1){
+            var platform = getQueryString('platform');
+            var app_name = $("input[name='app_name']").val();
+            var page = getQueryString('page');
+            if(platform){
+                param =  param + '&platform='+platform;
+            }
+            if(app_name){
+                param = param + '&app_name='+app_name;
+            }
+            if(page){
+                param = param + '&page='+page;
+            }
+        }
+        window.location.href = baseurl +'<?php echo $listUrl;?>?app_key='+app_key + param;
+    });
+    
+  
+});
+
+
+
+</script>

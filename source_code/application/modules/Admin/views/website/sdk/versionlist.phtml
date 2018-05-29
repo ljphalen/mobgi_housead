@@ -1,0 +1,82 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $versionListUrl;?>">Sdk版本列表</a></li>
+		<li><a href="<?php echo $addVersionUrl;?>"><?php echo $navTitle;?></a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="<?php echo $versionListUrl;?>" method="GET">
+                <div>
+                    <label class="ig_label">平台：</label>
+                    <ul class="ip_ul clearfix">
+                        <li class="<?php echo ($search['sdk_type'] == '')?'cur':'';?>"  > <a href="<?php echo $versionListUrl;?>?sdk_type=" >全部</a></li>
+                        <li class="<?php echo ($search['sdk_type'] == 1)?'cur':'';?>" > <a href="<?php echo $versionListUrl;?>?sdk_type=1" >Android</a></li>
+                        <li class="<?php echo ($search['sdk_type'] == 2)?'cur':'';?>" ><a href="<?php echo $versionListUrl;?>?sdk_type=2" >IOS</a></li>
+                    </ul>
+                    <select name="sdk_id" id="sdk_id" >
+                        <option value="">全部插件</option>
+                        <?php foreach($sdkList as $k1=>$v1){ ?>
+                            <option value="<?php echo $v1['id']; ?>"  <?php if( $search['sdk_id']==$v1['id'] ){ ?> selected <?php } ?> ><?php echo $v1['name']; ?></option>
+                        <?php } ?>
+                    </select>
+                    <input type="submit" class="submit" value="" 　/>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>平台</th>
+                            <th>插件类型</th>
+                            <th>版本号</th>
+                            <th>更新时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                       <tbody>
+                        <?php foreach($list as $k1=>$v1){?>
+                        <tr>
+                            <td><span class="blue"><?php echo  ($v1['sdk_type']==1)?'Android':'IOS'  ?></span></td>
+                        	<td><?php echo $sdkMap[$v1['sdk_id']]['name']; ?></td>
+                    		<td><?php echo $v1['version']; ?></td>
+                    		<td><?php echo $v1['sdk_update_time']; ?></td>
+                            <td>
+                                <?php if($v1['status']){  ?>
+                                    <span class="green">正常</span>
+                                <?php }else{  ?>
+                                    <span class="red">已下线</span>
+                                <?php }  ?>
+                            </td>
+                            <td>
+                                <a href="<?php echo$addVersionUrl;?>/?id=<?php echo $v1['id'];?>" class="mr10">编辑</a>
+                                <?php if($v1['status']){  ?>
+                                    <a href="javascript:" onclick="changeStatus('<?php echo $changeVersionStatusUrl;?>/?id=<?php echo $v1['id'];?>&status=0', '确认下线该条信息？', event);"　class="mr10">下线</a>
+                                <?php }else{  ?>
+                                    <a href="javascript:" onclick="changeStatus('<?php echo $changeVersionStatusUrl;?>/?id=<?php echo $v1['id'];?>&status=1', '确认上线该条信息？', event);"　class="mr10">上线</a>
+                                <?php }  ?>
+                            </td>
+                        </tr> 
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript">
+$(function(){
+    $('#sdk_id').chosen();
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

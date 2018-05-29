@@ -1,0 +1,142 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>广告成本录入</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <form class="layui-form">
+                    <!-- 基本信息 begin -->
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>录入格式:</p></div>
+                    <div class="inputs-wrap" style="width:1600px;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">表格格式</label>
+                            <div class="layui-input-block long-label-input">
+                                <table class="mui-data-table layui-table">
+                                    <thead>
+                                    <tr>
+                                        <th>日期</th><th style="color:darkseagreen;">产品</th><th style="color:darkseagreen;">投放渠道</th><th>投放活动</th><th>供应商</th><th>投放账户</th><th style="color:darkseagreen;">投放人员</th><th>账户消耗金额</th><th>返点</th><th style="color:darkseagreen;">实际消耗金额</th><th>充值金额</th><th>展示数</th><th>点击数</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody><tr>
+                                        <td>2017/3/9</td><td style="color:darkseagreen;">苍穹变</td><td style="color:darkseagreen;">广点通</td><td>苍穹变-广点通<span style="color:red;">-N4210</span></td><td>银橙</td><td>3138167335</td><td style="color:darkseagreen;">人员A</td><td>¥54,8003.64</td><td>9%</td><td style="color:darkseagreen;">¥50,275.82</td><td></td><td>1,753,690</td><td>25,886</td>
+                                    </tr></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">注意事项</label>
+                            <div class="layui-input-block long-label-input">
+                                <div style="padding-top:10px;font-size:15px;">
+                                    <p style="color:green;">1.标绿的项占位，录入时候只根据活动来自动搜索；</p>
+                                    <p style="color:red;">2.标红的为活动标识，必须存在，否则无法匹配对应活动；</p>
+                                    <p style="color:green;">3.第一行为表头，<span style="color:red;">从第二行开始</span>数据处理；</p>
+                                    <p style="color:green;">4.币种暂时只支持人民币，最好不要有币种符号；</p>
+                                    <p style="color:green;">5.数值项的特殊符号（¥）将被过滤；</p>
+                                    <p style="color:green;">6.表格格式支持<span style="color:red;">xls和xlsx</span>；</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subtitle"><p>录入信息:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">EXCEL文件</label>
+                            <div class="layui-upload">
+                                <button type="button" class="layui-btn layui-btn-normal" id="selectFile">选择文件</button>
+                                <span id="filename" class="layui-inline"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="layui-bg-gray" style="margin-top: 30px">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn" id="submitFile">确认导入</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+    <script>
+        /* 请求链接 */
+        var costAddPostUrl = baseurl + '<?php echo $costAddPostUrl; ?>'; // 提交表单
+        layui.use('upload', function() {
+            var $ = layui.jquery
+                , upload = layui.upload;
+            var filename = '';
+            upload.render({
+                elem: '#selectFile'
+                ,data:{'token':token}
+                ,url: costAddPostUrl
+                ,auto: false
+                ,accept: 'file' //普通文件
+                ,exts: 'xls|xlsx' //只允许上传excel文件
+                ,bindAction: '#submitFile'
+                ,choose: function(obj){
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                    obj.preview(function(index, file, result){
+                        filename = file.name;
+                        $("#filename").html(filename + "<span style='color:darkgreen;'>（未导入）</span>");
+                    });
+//                    layer.load();
+                }
+                ,done: function(data){
+                    layer.closeAll('loading'); //关闭loading
+                    if(data.success){
+                        $("#filename").html(filename + "<span style='color:darkgreen;'>（导入成功）</span>");
+                        layer.msg(data.msg);
+                    }else{
+                        $("#filename").html(filename + "<span style='color:red;'>（导入失败）</span>");
+                        layer.open({
+                            type: 1
+                            ,offset: 'auto'
+                            ,id: 'layerDemoauto'
+                            ,maxmin: true //开启最大化最小化按钮
+                            ,area: '650px'
+                            ,content: '<div style="padding: 20px 20px;">'+ data.msg +'</div>'
+                            ,btn: '确定'
+                            ,btnAlign: 'c' //按钮居中
+                            ,shade: 0 //不显示遮罩
+                            ,yes: function(){
+                                layer.closeAll();
+                            }
+                        });
+                    }
+                }
+                ,error: function(index, upload) {
+                    layer.closeAll('loading'); //关闭loading
+                }
+            });
+            // 取消
+            $("#submitFile").click(function(){
+                var filename = $("#filename").html();
+                if(filename == ''){
+                    layer.msg("请选择导入文件");
+                }else{
+                    layer.load();
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

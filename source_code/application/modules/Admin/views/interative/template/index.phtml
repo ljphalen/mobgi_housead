@@ -1,0 +1,102 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+                <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this"><a href="<?php echo $listUrl;?>">互动广告列表</a></li>
+                        <li><a href="<?php echo $addUrl;?>">添加互动广告模板</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <!-- search begin -->
+                <div class="temp-search-wrap">
+                    <form class="layui-form" action="<?php echo $listUrl;?>" method="GET"  id="searchForm" >
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" placeholder="请输入模板名称查询" class="layui-input" value="<?php echo $search['name']; ?>">
+                            </div>
+                            <div class="layui-input-inline">
+                                <button  class="layui-btn layui-btn-normal">查询</button>
+                            </div>
+                            <a id="upload-temp" type="button" class="floatright layui-btn layui-btn-normal" href="<?php echo $addUrl;?>">添加模板</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- search  end  -->
+                <!-- table begin -->
+                <div class="layui-form-item">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                            <th>模板id</th>
+                            <th>模板名称</th>
+                            <th>模板地址</th>
+                            <th>操作</th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                          <?php foreach ($templateList as $val){?>
+                            <tr>
+                                <td><?php echo $val['id'];?></td>
+                                <td><?php echo $val['template_name'];?></td>
+                                <td><a href="<?php echo $val['url'];?>"><?php echo $val['url'];?></a></td>
+                                <td>
+                                    <a class="link-view" href="<?php echo $val['url'];?>">下载</a>
+                                    <a class="link-set" href="<?php echo $addUrl.'?id='.$val['id'];?>">编辑</a>
+                                    <a class="link-delete" data-id="<?php echo $val['id'];?>">删除</a>
+                                </td>
+                            </tr>
+                              <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table end -->
+                <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+ // 删除 
+    $(".layui-table").delegate(".link-delete","click",function(){
+        var id = $(this).attr("data-id");
+        var that = $(this);
+        var data =  {
+            id : id,
+            token : token,
+        }
+        layer.confirm('确认是否要删除?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : baseurl + '<?php echo $deleteUrl?>' ,
+                async: false,
+                data : data,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.close(index);
+                    layer.msg(data.msg);
+                    if(data.success){
+                        that.parent().parent().remove();
+                    }
+                },
+                error :function(xhr,msg,e){
+                    layer.close(index);
+                    layer.msg(msg); 
+                }
+            });
+           
+        });
+    });
+})();
+</script>
+</html>

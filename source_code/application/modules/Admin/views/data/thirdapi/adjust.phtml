@@ -1,0 +1,138 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function confirmSubmit(){
+            var ads_id = $("#ads_id").val();
+            if(ads_id == ''){
+                layer.alert("请选择广告商！",8);
+                return false;
+            }
+            var currency_type = $("#currency_type").val();
+            if(currency_type == ''){
+                layer.alert("请选择货币类型！",8);
+                return false;
+            }
+            var amount = $("#amount").val();
+            if(amount == ''){
+                layer.alert("请输入金额!",8);
+                return false;
+            }
+
+            var month = $("#month").val();
+            if(month == ''){
+                layer.alert("请选择月份！",8);
+                return false;
+            }
+
+            var remark = $("#remark").val();
+            if(remark == ''){
+                layer.alert("请输入说明！",8);
+                return false;
+            }
+            var url = '<?php echo $actions['adjustUrl'];?>';
+            layer.load('正在处理....', 3);
+            var fd = new FormData();//h5上传
+            fd.append('ads_id',ads_id);
+            fd.append('currency_type',currency_type);
+            fd.append('month',month);
+            fd.append('amount',amount);
+            fd.append('remark',remark);
+            fd.append('id',$('#id').val())
+            fd.append('token',token);
+            $.ajax({
+                url: url,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function(data) {
+                    if(data == 1){
+                        layer.alert('操作成功',8);
+                        location.reload();
+                    }else{
+                        layer.alert('操作失败',8);
+                        location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+    <style>
+        .importtable{
+            border-collapse: collapse;border-spacing:0;
+        }
+        .importtable thead{
+            border: 1px solid #e8e8e8; border-width: 1px;
+        }
+        .importtable thead tr th{
+            padding: 10px;
+        }
+        .importtable tbody tr td{
+            padding: 10px;
+        }
+    </style>
+<div class="colMain">
+    <div class="nav">
+        <ul class="cc">
+            <li class="current"><a href="/Admin/Data_ThirdApi/adjust">广告商收益变更</a></li>
+            <li ><a href="/Admin/Data_ThirdApi/adjustLog">变更日志</a></li>
+        </ul>
+    </div>
+    <div class="main">
+        <div class="app-detail">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <ul class="form">
+                    <li>
+                        <span class="label">广告商：</span>
+                        <div class="fc">
+                            <select id="ads_id" name="ads_id">
+                                <option value="" >- 请选择 -</option>
+                                <?php foreach($ads as $k1=>$v1){ ?>
+                                    <option value="<?php echo $v1['identifier']; ?>" <?php if($data['ads_id'] ==$v1['identifier']) echo "selected";?> ><?php echo $v1['identifier']; ?> </option>
+                                <?php } ?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">货币种类：</span>
+                        <div class="fc">
+                            <select id="currency_type"  name="currency_type">
+                                <option value=""  >- 请选择 -</option>
+                                <option value="1" <?php if($data['currency'] =='1') echo "selected";?> > 美元 </option>
+                                <option value="2" <?php if($data['currency'] =='2') echo "selected";?> > 人民币 </option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">金额：</span>
+                        <div class="fc">
+                            <input type="number" name='amount' id='amount' value="<?php echo $data['amount'];?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">月份：</span>
+                        <div class="fc">
+                            <input type="text" name='month' id='month'  value="<?php echo $data['date'];?>" onFocus="WdatePicker({readOnly:true,dateFmt:'yyyy-MM',maxDate:'%y-%M-%d'})" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li><span class="label">说明：</span>
+                        <div class="fc">
+                            <input type="text" name='remark' id='remark' value="<?php echo $data['remark'];?>"/> <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="hidden" value="<?php echo $data['id'];?>" name="id" id="id">
+                            <input type=""  value="保存" class="submit"  onclick="confirmSubmit()"/>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<?php echo $this->render("layout/footer1.phtml");?>

@@ -1,0 +1,89 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="items-main-title">
+        <p><a href="<?php echo $checklistUrl;?>">审核列表</a> </p> 
+    </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap">
+        <form class="layui-form" action="<?php echo $checklistUrl;?>" method="GET"  id="searchForm"  >
+            <input type="hidden" name="platform" value="<?php echo $search['platform'] ;?>">
+            <div class="layui-inline">
+                <button class="platform layui-btn <?php echo ($search['platform'] == '')?'layui-btn-normal':'layui-btn-primary';?>" type="button" data-platform="">全部</button>
+            </div>
+            <div class="layui-inline">
+                <button  class="platform layui-btn <?php echo ($search['platform'] == '1')?'layui-btn-normal':'layui-btn-primary';?>" type="button" data-platform="1">Android</button>
+            </div>
+            <div class="layui-inline">
+                <button  class="platform layui-btn <?php echo ($search['platform'] == '2')?'layui-btn-normal':'layui-btn-primary';?>" type="button" data-platform="2">iOS</button>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" name="app_name" value="<?php echo $search['app_name'] ;?>" placeholder="可输入应用名称或key查询" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    <button type="submit" lay-filter="btn_submit" class="layui-btn submit">立即查询</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 表单 begin -->
+
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>icon</th>
+                <th>应用名</th>
+                <th>appkey</th>
+                <th>平台</th>
+                <th>状态</th>
+                <th>更新时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($appList as $key => $value) {?>
+            <tr>
+                <td style="text-align: center;"> <img style="width:32px; height:32px;" class="imgRadio" alt="" src="<?php echo $value['icon'];?>"></td>
+                <td><?php echo $value['app_name'];?></td>
+                <td><?php echo $value['app_key'];?></td>
+                <td><?php echo ($value['platform'] == 1)?'Android':'IOS';?> </td>
+                <td><?php echo ($value['is_check'] == MobgiApi_Service_AdAppModel::ISCHECKING)?'<span class="green">待审核</span>':'<span class="red">审核不通过</span>'; ?> </td>
+                <td><?php echo date('Y-m-d H:i:s', $value['update_time']);?> </td>
+                <td><button type="button" data-id="<?php echo $value['app_id'];?>" class="layui-btn layui-btn-xs edit_form" lay-event="edit">编辑</button></td>
+            </tr> 
+        <?php } ?> 
+        </tbody> 
+    </table>
+    <!-- 分页 begin -->
+    <div class="mr10 mt10 cc tc">
+        <?php echo $pager;?>
+    </div>
+    <!-- 分页 end  -->
+</div>
+<script type="text/javascript">
+var checkUrl = baseurl + '<?php echo $checkUrl;?>'; // 审核界面
+
+layui.use(['form','element'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var platform = getQueryString('platform');
+    var app_name = getQueryString('app_name');
+    var page = getQueryString('page');
+
+    // 平台选择
+    $(".platform").click(function(){
+        var platform = $(this).attr("data-platform");
+        $("input[name='platform']").val(platform);
+        $("form").submit();
+    });
+
+    //  编辑
+    $(".edit_form").click(function(){
+        var id = $(this).attr("data-id");
+        window.location.href = checkUrl + "?app_id=" + id + "&platform="+platform+"&app_name="+app_name+"&page="+page;
+    });
+    
+    
+});
+
+</script>

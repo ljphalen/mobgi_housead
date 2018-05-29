@@ -1,0 +1,201 @@
+<?php echo $this->render("layout/header.phtml");?>
+<form action="<?php echo $auditUrl;?>" method="post">
+    <input name="token" type="hidden" value="<?php echo $token;?>" />
+    <div class="table_full">
+        <table width="100%">
+             <tr class="tr">
+                <th class="th">申请人</th>
+                <td class="td"><input type="text" class="iText" name="applyby"  id="applyby" value=""></td>
+                <th class="th">任务ID</th>
+                <td class="td"><input type="text" class="iText" name="taskid" id="taskid" value=""></td>
+                <th class="th">任务名称</th>
+                <td class="td"><input type="text" class="iText" name="taskname" id="taskname" value=""></td>
+                <th class="th">任务申请时间</th>
+                <td class="td">
+                    <input class="iText " type="text" style="width:143px;" id="apply_sdate" name="apply_sdate" value="" />
+                    到
+                    <input class="iText " type="text" style="width:143px;" id="apply_edate" name="apply_edate" value="" />
+                </td>
+            </tr>
+            <tr class="tr">
+
+                <th class="th">操作类型</th>
+                <td class="td">
+                    <select name="opertype" id="opertype" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_opertype_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">审核状态</th>
+                <td class="td">
+                    <select name="auditstate" id="auditstate" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_auditstate_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">任务状态</th>
+                <td class="td">
+                    <select name="taskstate" id="taskstate" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_taskstate_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">任务到期时间</th>
+                <td class="td">
+                    <input class="iText " type="text" style="width:143px;" id="expire_sdate" name="expire_sdate" value="" />
+                    到
+                    <input class="iText " type="text" style="width:143px;" id="expire_edate" name="expire_edate" value="" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="mb10 tac"><span class="btn"><span><button type="button" id="submitForm">搜 索</button></span></span></div>
+</form>
+
+
+<div class="table_list">
+    <div class="h_a">
+        <span>共 <?php echo $total;?> 条结果</span>
+    </div>
+    <table width="100%">
+		<tr class="hd">
+			<td>任务名称</td>
+			<td>任务id</td>
+			<td>操作类型</td>
+			<td>审核状态</td>
+			<td>任务状态</td>
+            <td>到期时间</td>
+            <td>申请人</td>
+            <td>任务申请时间</td>
+            <td>操作</td>
+		</tr>
+        <?php foreach ($list as $task){ ?>
+        <tr class="ct">
+            <td><?php echo $task['taskname']?></td>
+            <td><?php echo $task['taskid']?></td>
+            <td><?php echo $Admin_account_opertype_config[$task['opertype']]?></td>
+            <td><?php echo $Admin_account_auditstate_config[$task['auditstate']]?></td>
+            <td><?php echo $Admin_account_taskstate_config[$task['taskstate']]?></td>
+            <td><?php echo date('Y-m-d H:i:s', $task['expire_time'])?></td>
+            <td><?php echo $task['applyby']?></td>
+            <td><?php echo date('Y-m-d H:i:s', $task['apply_time'])?></td>
+            <td>
+                <a href="<?php echo $detailUrl."?taskid=". $task['taskid']?>">查看详情</a>&nbsp;&nbsp;
+                <?php if($task['auditstate'] == 'not_check'){ ?>
+                    <a href="#" taskid="<?php echo $task['taskid']?>" class="checked_success">审核通过</a>&nbsp;&nbsp;
+                    <a href="#" taskid="<?php echo $task['taskid']?>" class='checked_failed'>审核不通过</a>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php }?>
+        </table>
+</div>
+
+
+<div class="mr10 cc tc">
+<?php echo $pager;?>
+</div>
+    
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js?v=<?php echo $version;?>"></script>
+<script type="text/javascript">
+    
+    
+$(function(){
+    $("#apply_sdate").val("<?php echo $apply_sdate ?>")
+    $("#apply_edate").val("<?php echo $apply_edate ?>")
+    $("#expire_sdate").val("<?php echo $expire_sdate ?>")
+    $("#expire_edate").val("<?php echo $expire_edate ?>")
+    $("#applyby").val("<?php echo $applyby ?>")
+    $("#taskid").val("<?php echo $taskid ?>")
+    $("#taskname").val("<?php echo $taskname ?>")
+    $("#opertype").val("<?php echo $opertype ?>")
+    $("#auditstate").val("<?php echo $auditstate ?>")
+    $("#taskstate").val("<?php echo $taskstate ?>")
+    
+    $('#apply_sdate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#apply_edate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#expire_sdate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#expire_edate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+         
+    
+    
+    function submitForm(){
+        apply_sdate = $("#apply_sdate").val()
+        apply_edate = $("#apply_edate").val()
+        expire_sdate = $("#expire_sdate").val()
+        expire_edate = $("#expire_edate").val()
+        applyby = $("#applyby").val()
+        taskid = $("#taskid").val()
+        taskname = $("#taskname").val()
+        opertype = $("#opertype").val()
+        auditstate = $("#auditstate").val()
+        taskstate = $("#taskstate").val()
+        window.location.href='<?php echo $auditUrl ?>?apply_sdate=' + apply_sdate + "&apply_edate=" + apply_edate 
+                + "&expire_sdate="+ expire_sdate+ "&expire_edate="+ expire_edate 
+                + "&applyby="+ applyby+ "&taskid="+ taskid
+                + "&taskname="+ taskname+ "&opertype="+ opertype
+                + "&auditstate="+ auditstate+ "&taskstate="+ taskstate;
+    }
+    
+    $("#submitForm").click(submitForm);
+    
+    $(".checked_success").click(function(){
+        taskid = $(this).attr("taskid")
+        auditstate = 'checked_success'
+        setauditstate(taskid, auditstate)
+    })
+    
+    $(".checked_failed").click(function(){
+        taskid = $(this).attr("taskid")
+        auditstate = 'checked_failed'
+        setauditstate(taskid, auditstate)
+    })
+    
+    function setauditstate(taskid, auditstate){
+        $.ajax({
+            url: "<?php echo $auditPostUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'taskid':taskid, 'auditstate':auditstate },
+            success: function(ret) {
+                if (ret.success) {
+                    showMsg('', ret.msg);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    }
+    
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

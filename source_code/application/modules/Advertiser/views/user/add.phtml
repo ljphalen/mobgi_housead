@@ -1,0 +1,49 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li><a href="<?php echo $listUrl;?>">用户列表</a></li>
+    <li class="current"><a href="javascript:;">添加用户</a></li>
+	</ul>
+</div>
+<div class="h_a">添加用户</div>
+<form method="post" action="<?php echo $addPostUrl;?>" id="addUserFrom">
+<input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+	<table width="100%">
+		<tr class="tr">
+			<th class="th">用户名</th>
+			<td class="td"><input type="text" class="input" name="username" maxlength="30" value=""></td>
+		</tr>
+		<tr class="tr">
+			<th class="th">用户Email</th>
+			<td class="td"><input type="text" maxlength="30" name="email" class="input"></td>
+		</tr>
+		<tr class="tr">
+			<th class="th">用户密码</th>
+			<td class="td"><input type="password" maxlength="20" name="password" class="input"></td>
+		</tr>
+		<tr class="tr">
+			<th class="th">重复密码</th>
+			<td class="td"><input type="password" maxlength="20" name="r_password" class="input"></td>
+		</tr>
+		<tr class="tr">
+			<th class="th">用户组</th>
+			<td class="td"><select name="groupid">
+<?php foreach($groups as $key => $value) {?>
+                <option value="<?php echo $value['groupid'];?>"><?php echo $value['name'];?></option>
+<?php }?>
+            </select></td>
+		</tr>
+	</table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit">提交</button></span></span></div>
+</form>
+<script type="text/javascript">
+//用户表单数据提交
+$(document).ready(function(){
+	ajaxForm('addUserFrom',function(ret){
+		ajaxRedirect(ret, baseurl+'/Admin/User/index');
+	});
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

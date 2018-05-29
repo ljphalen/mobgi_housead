@@ -1,0 +1,180 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p><?php if($monitorUnit){ echo '编辑';}else{ echo '新建';} ?>目录监控</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <!-- 基本信息 begin -->
+                        <p class="padding-top20"></p>
+                        <div class="subtitle"><p>基本信息:</p></div>
+                        <div class="inputs-wrap">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">平台</label>
+                                <div class="layui-input-inline">
+                                    <select name="platform" lay-verify=""  lay-filter="platform" lay-search>
+                                        <option value="" >选择平台</option>
+                                        <?php foreach($monitorPlatform as $key => $value){ ?>
+                                            <option value="<?php echo $key; ?>" <?php if($key==$monitorUnit['platform']){ echo 'selected';} ?> ><?php echo $value; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">功能描述</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="hidden" name="id" value="<?php echo $monitorUnit['id']; ?>" />
+                                    <input type="text" name="description" placeholder="" value="<?php echo $monitorUnit['description']; ?>" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <p class="padding-top20"></p>
+                        <div class="subtitle"><p>所属子集:</p></div>
+                        <div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">目录列表</label>
+                                <div class="layui-input-block" style="margin:0 0 10px 0; ">
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][0]; ?>" class="layui-input "/>
+                                    </div>
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][1]; ?>" class="layui-input "/>
+                                    </div>
+                                </div>
+                                <div class="layui-input-block" style="margin:0 0 10px 130px; ">
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][2]; ?>" class="layui-input "/>
+                                    </div>
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][3]; ?>" class="layui-input "/>
+                                    </div>
+                                </div>
+                                <div class="layui-input-block" style="margin:0 0 10px 130px; ">
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][4]; ?>" class="layui-input "/>
+                                    </div>
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][5]; ?>" class="layui-input "/>
+                                    </div>
+                                </div>
+                                <div class="layui-input-block" style="margin:0 0 10px 130px; ">
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][6]; ?>" class="layui-input "/>
+                                    </div>
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][7]; ?>" class="layui-input "/>
+                                    </div>
+                                </div>
+                                <div class="layui-input-block" style="margin:0 0 10px 130px; ">
+                                    <div class="layui-input-inline" style="width:280px;">
+                                        <input type="text" name="directory_list[]" value="<?php echo $monitorUnit['directory_list'][8]; ?>" class="layui-input "/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="padding-top20"></p>
+                        <div class="subtitle"><p>监控参数:</p></div>
+                        <div class="inputs-wrap">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">文件后缀</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="suffix" placeholder="" value="<?php echo $monitorUnit['suffix']; ?>" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">不匹配文件</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="filter_file" placeholder="" value="<?php echo $monitorUnit['filter_file']; ?>" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">允许的延迟时间（秒）</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="delay_time" placeholder="" value="<?php echo $monitorUnit['delay_time']; ?>" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <p class="padding-top20"></p>
+                        <div class="subtitle"><p>联系方式:</p></div>
+                        <div class="inputs-wrap">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">告警手机号码</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="remind_phone" placeholder="" value="<?php echo $monitorUnit['remind_phone']; ?>" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="layui-bg-gray">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                                <button id="cancel" type="reset" class="layui-btn layui-btn-primary">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- form end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+    <script>
+        var token = '<?php echo $token;?>';
+        var baseurl = "<?php echo $adminroot; ?>";
+        var page = getQueryString("page");
+        var description = getQueryString("description");
+        var addDirectoryPostUrl = baseurl + '<?php echo $addDirectoryPostUrl; ?>'; // 提交表单
+        var callbackUrl = baseurl + '<?php echo $monitorUrl; ?>' +'?page='+page+'&description='+description;
+        //JavaScript代码区域
+        layui.use(['element','form'], function(){
+            var element = layui.element;
+            var form = layui.form;
+
+            //表单提交
+            form.on('submit(submit_form)', function(data){
+                data.field.token = token;
+                $.ajax({
+                    url : addDirectoryPostUrl,
+                    async: false,
+                    data : data.field,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg);
+                        if(data.success){
+                            setTimeout(function(){
+                                window.location.href = callbackUrl;
+                            },500);
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+                return false;
+            });
+            // 取消
+            $("#cancel").click(function(){
+                window.location.href = callbackUrl;
+            });
+        });
+    </script>
+</body>
+</html>

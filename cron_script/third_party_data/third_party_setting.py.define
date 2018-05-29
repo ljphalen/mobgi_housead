@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+LOGPATH="log/"
+SQLFILEPATH="reportinsertsql/"
+
+ENV = "PROD"  # 环境模式　DEV：开发环境模式　 PROD:生产环境模式
+if ENV == "DEV":
+    NUM=1
+    SLEEPSECOND=1
+    REQUEST_BATCHNUM=100
+    REPORT_FORWARD_NUM=3
+    REDIS_POP_NUM = 2
+    CLICK_EVENT_TYPE = 6
+    SHOW_EVENT_TYPE = 5
+    REDIS={"host":"192.168.141.216","port":6378}
+    MYSQL_REQUST = {"host": "192.168.141.216", "port":5029, "db": "bh_housead_data", "table": "third_report_data", "user": "root", "passwd": "123456"}
+    FIELD="(`id`,`request_id`,`ad_unit_id`,`originality_id`,`event_type`,`request_status`,`request_time`)"
+    FIELDS="(id,request_id,ad_unit_id,originality_id,event_type,request_status,request_time)"
+    FIELD_LIST=["request_id","ad_unit_id","originality_id","event_type","request_status","request_time"]
+elif ENV == "TEST":
+    NUM=1
+    SLEEPSECOND=1
+    REQUEST_BATCHNUM=100
+    REPORT_FORWARD_NUM=3
+    REDIS_POP_NUM = 2
+    CLICK_EVENT_TYPE = 6
+    SHOW_EVENT_TYPE = 5
+    REDIS={"host":"127.0.0.1","port":6378}
+    MYSQL_REQUST = {"host": "127.0.0.1", "port": 5029, "db": "bh_housead_data", "table": "third_report_data", "user": "root", "passwd": "123456"}
+    FIELD="(`id`,`request_id`,`ad_unit_id`,`originality_id`,`event_type`,`request_status`,`request_time`)"
+    FIELDS="(id,request_id,ad_unit_id,originality_id,event_type,request_status,request_time)"
+    FIELD_LIST=["request_id","ad_unit_id","originality_id","event_type","request_status","request_time"]
+else:
+    NUM=1
+    SLEEPSECOND=1
+    REQUEST_BATCHNUM=100
+    REPORT_FORWARD_NUM=3
+    REDIS_POP_NUM = 500
+    CLICK_EVENT_TYPE = 6
+    SHOW_EVENT_TYPE = 5
+    REDIS={"host":"codis.ad.housead.queue.ids.com","port":18000}
+    MYSQL_REQUST={"host":"db.housead.ib.ids.com","port":5029,"db":"bh_housead_data","table":"third_report_data","user":"mobgi_housead","passwd":"RUdqc9Ek7A9U"}
+    FIELD="(`id`,`request_id`,`ad_unit_id`,`originality_id`,`event_type`,`request_status`,`requset_time`)"
+    FIELDS="(id,request_id,ad_unit_id,originality_id,event_type,request_status,request_time)"
+    FIELD_LIST=["request_id","ad_unit_id","originality_id","event_type","request_status","request_time"]

@@ -1,0 +1,150 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>AF应用配置管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="appsflyer_appid" placeholder="AF应用ID" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                            <button id="addConfig" type="button" class="right layui-btn layui-btn-normal">新建配置</button>
+
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+<script>
+    /* 请求链接 */
+    var addAppsflyerAppUrl = baseurl + '<?php echo $addAppsflyerAppUrl; ?>'; // 新建，编辑 AF应用配置
+    var appsflyerAppListUrl = baseurl + "<?php echo $appsflyerAppListUrl; ?>"; // 列表
+
+    // 渲染表格参数
+    var page = true; // 默认开启分页
+    var where = { token:token , appsflyer_appid:'', app_id:JSON.parse(localStorage.app_data).app_id };// 默认渲染table的初始条件
+    var layuiTable, table_id = "#activity_table"; // table 渲染对象 ,table 渲染id
+    var cols = [[ //表头
+        {field: 'appsflyer_appid', title: 'AF应用ID',  sort: true }
+        ,{field: 'update_time', title: '更新时间',  sort: true }
+        ,{field: '', title: '操作', align:'center', toolbar: '#barDemo'}
+    ]];
+
+    // 判断本地缓存是否 有渲染表格参数
+    if(localStorage.searchData){
+        if(window.location.href == JSON.parse(localStorage.searchData).url){
+            page = JSON.parse(localStorage.searchData).page;
+            where = JSON.parse(localStorage.searchData).where;
+            $("input[name='appsflyer_appid']").val(where.appsflyer_appid);
+        }
+    }
+
+    //JavaScript代码区域
+    layui.use(['element','form','laydate','table'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var table = layui.table;
+        layuiTable = layui.table;
+        //初始化表格
+        var initTable = {
+            elem: table_id,
+            where: where,
+            url : appsflyerAppListUrl ,
+            cols: cols ,
+            page : page
+        };
+        renderTable(table,initTable,null);
+
+        //监听搜索按钮
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            field.token = token;
+            field.app_id = JSON.parse(localStorage.app_data).app_id;
+            where = field;
+            var params = {
+                elem: table_id,
+                where: where,
+                url : appsflyerAppListUrl ,
+                cols: cols ,
+                page : page
+            }
+            renderTable(table,params,null);
+            return false;
+        });
+
+        //监听单元格事件  -- 查看 ， 编辑
+        table.on('tool(activity_table)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){  // 编辑
+                window.location.href = addAppsflyerAppUrl + "?id="+data.id;
+            }
+        });
+
+        // 新建配置
+        $("#addConfig").click(function(){
+            window.location.href = addAppsflyerAppUrl;
+        });
+
+        // 新建渠道
+        $("#label").click(function(){
+            window.location.href = labelUrl;
+        });
+
+    });
+
+    //   topMenu 切换app 回调
+    var appIdSelectChange = {
+        callBack:function(id){
+            where.app_id = id;
+            var initTable = {
+                elem: table_id,
+                where: where,
+                url : appsflyerAppListUrl ,
+                cols: cols ,
+                page : page
+            };
+            renderTable(layuiTable,initTable);
+        }
+    };
+</script>
+</body>
+</html>

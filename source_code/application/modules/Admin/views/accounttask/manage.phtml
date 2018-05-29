@@ -1,0 +1,364 @@
+<?php echo $this->render("layout/header.phtml");?>
+<form action="<?php echo $origainalityListUrl;?>" method="post">
+    <input name="token" type="hidden" value="<?php echo $token;?>" />
+    <div class="table_full">
+        <table width="100%">
+             <tr class="tr">
+                <th class="th">申请人</th>
+                <td class="td"><input type="text" class="iText" name="applyby"  id="applyby" value=""></td>
+                <th class="th">任务ID</th>
+                <td class="td"><input type="text" class="iText" name="taskid" id="taskid" value=""></td>
+                <th class="th">任务名称</th>
+                <td class="td"><input type="text" class="iText" name="taskname" id="taskname" value=""></td>
+                <th class="th">任务申请时间</th>
+                <td class="td">
+                    <input class="iText " type="text" style="width:143px;" id="apply_sdate" name="apply_sdate" value="" />
+                    到
+                    <input class="iText " type="text" style="width:143px;" id="apply_edate" name="apply_edate" value="" />
+                </td>
+            </tr>
+            <tr class="tr">
+
+                <th class="th">操作类型</th>
+                <td class="td">
+                    <select name="opertype" id="opertype" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_opertype_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">审核状态</th>
+                <td class="td">
+                    <select name="auditstate" id="auditstate" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_auditstate_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">任务状态</th>
+                <td class="td">
+                    <select name="taskstate" id="taskstate" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_taskstate_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">任务到期时间</th>
+                <td class="td">
+                    <input class="iText " type="text" style="width:143px;" id="expire_sdate" name="expire_sdate" value="" />
+                    到
+                    <input class="iText " type="text" style="width:143px;" id="expire_edate" name="expire_edate" value="" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="mb10 tac"><span class="btn"><span><button type="button" id="submitForm">搜 索</button></span></span></div>
+</form>
+
+
+<div class="table_list">
+    <div class="h_a">
+        <span class="btn2">
+           <span><button onclick="singleAdd('单个帐号操作')" type="button">单个帐号操作</button></span>
+        </span>
+        <span class="btn2">
+           <span><button onclick="batchAdd('批量操作')" type="button">批量操作</button></span>
+        </span>
+        <span>共 <?php echo $total;?> 条结果</span>
+    </div>
+    <table width="100%">
+		<tr class="hd">
+			<td>任务名称</td>
+			<td>任务id</td>
+			<td>操作类型</td>
+			<td>审核状态</td>
+			<td>任务状态</td>
+            <td>到期时间</td>
+            <td>申请人</td>
+            <td>任务申请时间</td>
+            <td>操作</td>
+		</tr>
+        <?php foreach ($list as $task){ ?>
+        <tr class="ct">
+            <td><?php echo $task['taskname']?></td>
+            <td><?php echo $task['taskid']?></td>
+            <td><?php echo $Admin_account_opertype_config[$task['opertype']]?></td>
+            <td><?php echo $Admin_account_auditstate_config[$task['auditstate']]?></td>
+            <td><?php echo $Admin_account_taskstate_config[$task['taskstate']]?></td>
+            <td><?php echo date('Y-m-d H:i:s', $task['expire_time'])?></td>
+            <td><?php echo $task['applyby']?></td>
+            <td><?php echo date('Y-m-d H:i:s', $task['apply_time'])?></td>
+            <td><a href="<?php echo $detailUrl."?taskid=". $task['taskid']?>">查看详情</a></td>
+        </tr>
+        <?php }?>
+        </table>
+</div>
+
+
+<div class="mr10 cc tc">
+<?php echo $pager;?>
+</div>
+
+<div id="singleAdd" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+	<form id="singleAddForm" action="<?php echo $singleaddPostUrl;?>" method="post">
+	  <input name="token" type="hidden" value="<?php echo $token;?>" />
+      <ul class="form">
+       <li> 
+            <span class="label">任务名称：</span>
+            <div class="fc">
+               <input name="single_taskname" id="single_taskname" type="text" value="" class="iText " >         
+            </div>
+        </li>
+        <li> 
+            <span class="label">操作类型：</span>
+            <div class="fc">
+                <select name="single_opertype" id="single_opertype" class="wa">
+                    <option value="" >请选择操作类型</option>
+                    <?php foreach($Admin_account_opertype_config as $key=>$value){ ?>
+                        <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </li>
+        <li> 
+            <span class="label">对象帐号：</span>
+            <div class="fc">
+                <input name="single_email"  name="single_email"  type="text" value="" class="iText " >
+            </div>
+        </li>
+        <li> 
+            <span class="label">帐号类型：</span>
+            <div class="fc">
+                <select name="single_virtualaccount" id="single_virtualaccount" class="wa">
+                    <option value="" >请选择帐号类型</option>
+                    <?php foreach($Admin_virtualaccount_type_config as $key=>$value){ ?>
+                        <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </li>
+        <li> 
+            <span class="label">金额：</span>
+            <div class="fc">
+                <input name="single_money"  name="single_money"  type="text" value="" class="iText " >
+            </div>
+        </li>
+        <li> 
+            <span class="label">备注：</span>
+            <div class="fc">
+                <input name="single_applymsg"  name="single_applymsg"  type="text" value="" class="iText " >
+            </div>
+        </li>
+        <li id="single_expire_time_li"> 
+            <span class="label">到期时间：</span>
+            <div class="fc">
+                <input class="iText " type="text" style="width:143px;" id="single_expire_time" name="single_expire_time" value="" /> 
+            </div>
+        </li>
+        </ul>
+    </form>
+</div>
+
+<div id="batchAdd" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+	<form id="batchAddForm" action="<?php echo $batchaddPostUrl;?>" method="post">
+	  <input name="token" type="hidden" value="<?php echo $token;?>" />
+      <ul class="form">
+       <li> 
+            <span class="label">任务名称：</span>
+            <div class="fc">
+               <input name="batch_taskname" id="batch_taskname" type="text" value="" class="iText " >         
+            </div>
+        </li>
+        <li> 
+            <span class="label">操作类型：</span>
+            <div class="fc">
+                <select name="batch_opertype" id="batch_opertype" class="wa">
+                    <option value="" >请选择操作类型</option>
+                    <?php foreach($Admin_account_opertype_config as $key=>$value){ ?>
+                        <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </li>
+        <li> 
+            <span class="label">帐号类型：</span>
+            <div class="fc">
+                <select name="batch_virtualaccount" id="batch_virtualaccount" class="wa">
+                    <option value="" >请选择帐号类型</option>
+                    <?php foreach($Admin_virtualaccount_type_config as $key=>$value){ ?>
+                        <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </li>
+        <li> 
+            <span class="label">备注：</span>
+            <div class="fc">
+                <input name="batch_applymsg"  name="batch_applymsg"  type="text" value="" class="iText " >
+            </div>
+        </li>
+        <li id="batch_expire_time_li"> 
+            <span class="label">到期时间：</span>
+            <div class="fc">
+                <input class="iText " type="text" style="width:143px;" id="batch_expire_time" name="batch_expire_time" value="" /> 
+            </div>
+        </li>
+        <li> 
+            <div id="originality_type2" >
+            <span class="label">上传文件:</span>   	
+                <div id="batchCsv"  style="margin-left:200px;">
+                    <input type="hidden" name="batch_csv_file"  id="batch_csv_file" value="">
+                </div>
+                <div class="fc"  >
+                    <p style="clear:both;">
+                    <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=batchCsv';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                     </iframe>
+                    </p>
+                </div>   
+            </div>
+        </li>
+        
+        </ul>
+    </form>
+</div>
+    
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js?v=<?php echo $version;?>"></script>
+<script type="text/javascript">
+    function singleAdd(title){
+        return $("#singleAdd").dialog({
+            title : title,
+            draggable : false,
+            width:800,
+            modal : true,
+            resizable : false,
+            buttons: {
+                    '完成': function() {
+                        $("#singleAddForm").submit();
+                    },
+                    '取消': function() {
+                        $(this).dialog('close');
+                    }
+                }
+        });
+    }
+    
+    function batchAdd(title){
+        return $("#batchAdd").dialog({
+            title : title,
+            draggable : false,
+            width:800,
+            modal : true,
+            resizable : false,
+            buttons: {
+                    '完成': function() {
+                        $("#batchAddForm").submit();
+                    },
+                    '取消': function() {
+                        $(this).dialog('close');
+                    }
+                }
+        });
+    }
+    
+$(function(){
+    
+    ajaxForm('singleAddForm',function(ret){
+		ajaxRedirect(ret, baseurl+'<?php echo $manageUrl; ?>');
+	});
+    
+    ajaxForm('batchAddForm',function(ret){
+		ajaxRedirect(ret, baseurl+'<?php echo $manageUrl; ?>');
+	});
+    
+    $("#apply_sdate").val("<?php echo $apply_sdate ?>")
+    $("#apply_edate").val("<?php echo $apply_edate ?>")
+    $("#expire_sdate").val("<?php echo $expire_sdate ?>")
+    $("#expire_edate").val("<?php echo $expire_edate ?>")
+    $("#applyby").val("<?php echo $applyby ?>")
+    $("#taskid").val("<?php echo $taskid ?>")
+    $("#taskname").val("<?php echo $taskname ?>")
+    $("#opertype").val("<?php echo $opertype ?>")
+    $("#auditstate").val("<?php echo $auditstate ?>")
+    $("#taskstate").val("<?php echo $taskstate ?>")
+    
+    $('#apply_sdate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#apply_edate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#expire_sdate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#expire_edate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#single_expire_time').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#batch_expire_time').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $("#single_opertype").change(function(){
+        if($(this).val()=='recovery'){
+            $("#single_expire_time").val('')
+            $("#single_expire_time_li").hide()
+        }else{
+            $("#single_expire_time_li").show()
+        }
+    });
+    
+    $("#batch_opertype").change(function(){
+        if($(this).val()=='recovery'){
+            $("#batch_expire_time").val('')
+            $("#batch_expire_time_li").hide()
+        }else{
+            $("#batch_expire_time_li").show()
+        }
+    });
+    function submitForm(){
+        apply_sdate = $("#apply_sdate").val()
+        apply_edate = $("#apply_edate").val()
+        expire_sdate = $("#expire_sdate").val()
+        expire_edate = $("#expire_edate").val()
+        applyby = $("#applyby").val()
+        taskid = $("#taskid").val()
+        taskname = $("#taskname").val()
+        opertype = $("#opertype").val()
+        auditstate = $("#auditstate").val()
+        taskstate = $("#taskstate").val()
+        window.location.href='<?php echo $manageUrl ?>?apply_sdate=' + apply_sdate + "&apply_edate=" + apply_edate 
+                + "&expire_sdate="+ expire_sdate+ "&expire_edate="+ expire_edate 
+                + "&applyby="+ applyby+ "&taskid="+ taskid
+                + "&taskname="+ taskname+ "&opertype="+ opertype
+                + "&auditstate="+ auditstate+ "&taskstate="+ taskstate;
+    }
+    
+    $("#submitForm").click(submitForm);
+    
+    
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

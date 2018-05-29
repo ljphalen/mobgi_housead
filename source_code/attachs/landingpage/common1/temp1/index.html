@@ -1,0 +1,252 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>《苍穹变》 手游</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport">
+<link href="images/icon.png" rel="shortcut icon">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!--横版： horizon 竖版：vertical-->
+	<div class="slide vertical">
+        <div class="swiper-wrapper">
+            <!-- <div class="swiper-slide" style="background-image: url(images/6.png);"></div>
+            <div class="swiper-slide" style="background-image: url(images/2.jpg);"></div>
+            <div class="swiper-slide" style="background-image: url(images/3.jpg);"></div>
+            <div class="swiper-slide" style="background-image: url(images/4.jpg);"></div>
+            <div class="swiper-slide" style="background-image: url(images/5.jpg);"></div> -->
+            <!-- end -->
+        </div>
+    </div>
+    <div class="intro">
+        <div class="game-info">
+            <img src="images/icon.png" alt="game" class="icon" >
+            <div class="detail-items">
+                <h2 class="game-name"> </h2>
+                <div class="stars">
+                    <!--这个data-star 值取0-5 1.5表示一个半星-->
+                    <span class="star-box app-star" data-star="4.5">
+                        <i class="star full"></i>
+                        <i class="star full"></i>
+                        <i class="star full"></i>
+                        <i class="star full"></i>
+                        <i class="star half"></i>
+                    </span>
+                    <span class="count">(0)</span>
+                </div>
+                <div class="dls">
+                    <span class="app-installer">0MB</span>
+                    <span class="dl-count">0次下载</span>
+                </div>
+            </div>
+        </div>
+        <div class="recommend-count">
+            <div class="title">评分</div>
+            <div class="num">
+                
+            </div>
+        </div>
+    </div>
+    <div class="txt-intro">
+        <div class="txt">
+          
+        </div>
+    </div>
+    <a class="img-intro">
+        <img src="images/user-protect.jpg" alt="believe it">
+    </a>
+   	    <div class="comments" id="comments">
+            <h3 class="title comment-title"></h3> 
+         <div class="item">
+            <div class="user-box clear-fix">
+                <div class="avatar-wrap">
+                    <img src="images/1474950390356701.jpg" alt="" class="avatar">
+                    <div class="user-desc">
+                        <div class="name">
+                            
+                        </div>
+                        <div class="star-box" data-star="5">
+                            <i class="star full"></i>
+                            <i class="star full"></i>
+                            <i class="star full"></i>
+                            <i class="star full"></i>
+                            <i class="star full"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="follows">
+                    <span class="counts">98</span>
+                    <i class="hand js-follow"></i>
+                </div>
+            </div>
+            <div class="item-content">
+             
+            </div>
+        </div> 
+     </div>
+        
+    <p class="copyright">Copyright © 2009-2017 深圳市创梦天地科技有限公司版权所有粤ICP备11018438号 粤网文（2016）6817-1632号</p>
+    <a href="" class="down-btn active" id="down"></a>
+    
+    <script>
+        //自适应代码
+        function rePosition(){
+            var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var ratio = width/640;
+            if(width<=640){
+                document.getElementsByTagName('html')[0].style.fontSize=100*ratio+"px";
+            }else{
+                document.getElementsByTagName('html')[0].style.fontSize="100px";
+            }
+        }
+        rePosition();
+        window.onresize = function(){
+            rePosition();
+        }
+    </script>
+    <!-- 打包文件：jq、swiper、主程序 -->
+    <script src="js/swiper.min.js"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript">
+    window.onload = function(){
+        if(window.addEventListener){
+                window.addEventListener('message',eventHandlerMethod,false);  
+        }else{
+                window.attachEvent("message",eventHandlerMethod);
+        }    
+        initSwiper();
+        
+
+    }
+    //  
+    function eventHandlerMethod(e){
+         if(e.source!=window.parent) return;  
+         var data = {
+              scrollHeight : document.body.scrollHeight?document.body.scrollHeight:null,
+              scrollTop : document.body.scrollTop? document.body.scrollTop:document.documentElement.scrollTop,
+         };
+         var settings = $.extend(true,e.data,data);
+         initPageParame(settings);
+         window.parent.postMessage(settings,'*');
+    }
+    
+    // 初始化页面
+    function initPageParame(settings){
+         //page
+         var pageModule = settings.pageModule;
+         document.title = pageModule.pageTitle;
+         $(".copyright").html(pageModule.pageCopyright);
+         //app 
+         var appModule = settings.appModule;
+         $(".game-name").html(appModule.appName);
+         if(parseFloat(appModule.appStar)){
+               var appstar = parseFloat(appModule.appStar);
+               initAppStar('.app-star',appstar.toFixed(1));
+         }else{
+              initAppStar('.app-star',0);
+         }
+         $(".count").html("("+appModule.appComment+")"); 
+         $(".dl-count").html(appModule.appDownCount+'次下载');
+         $(".app-installer").html(appModule.appPackage+'MB');
+         $(".txt").html(appModule.appIntro);
+         $(".num").html(appModule.appScore);
+         $(".icon").attr('src',appModule.appIcon);
+         // 评论区
+         var comments = settings.commentsModule;
+         initComments(settings.commentsModule);
+         // 下载按钮
+         var downModule = settings.downModule;
+         $("#down").css("background",downModule.DownColor);
+         $("#down").attr("href",downModule.DownLink);
+         $("#down").html(downModule.DownText);
+         //banner
+         var bannerModule = settings.bannerModule;
+         $(".img-intro").attr("href",bannerModule.bannerLink);
+         $(".img-intro img").attr("src",bannerModule.bannerPic);
+
+         //轮播 
+         var downModule = settings.swiperModule;
+         var imgTemp = '';
+         for(var key in downModule){
+            imgTemp += '<div class="swiper-slide" style="background-image: url('+downModule[key]+');"></div>';
+         }
+         $('.swiper-wrapper').html(imgTemp);
+         initSwiper();
+         
+    }
+
+    // 评论初始化
+    function initComments(comments){        
+        $(".comment-title").html(comments.commentTitle);
+        var commentslist = comments.commentsList;
+        var sComment ='';
+        for(var k in commentslist){
+            sComment = sComment + `<div class="item"><div class="user-box clear-fix">
+                    <div class="avatar-wrap">
+                        <img src=" `+ commentslist[k]['commentIcon']+`" alt="" class="avatar">
+                        <div class="user-desc">
+                            <div class="name comments-name">
+                            `+ commentslist[k]['commentNickname']+`
+                            </div>
+                            <div class="star-box" data-star="`+ commentslist[k]['commentStar']+`"></div>
+                        </div>
+                    </div>
+                    <div class="follows">
+                        <span class="counts">`+ commentslist[k]['commentLike']+`</span>
+                        <i class="hand js-follow"></i>
+                    </div>
+                </div>
+                <div class="item-content">
+                `+ commentslist[k]['commentCont']+`
+                </div>
+            </div>`; 
+        }
+        $('.item').remove();
+        $('.comments').append(sComment);
+        var list = $('.star-box');
+        for(var i=0;i<list.length;i++){
+            initAppStar(list[i],$(list[i]).attr('data-star'));
+        } 
+    }
+    //初始化星星
+    function initAppStar(id,n){
+        $(id).attr('data-star',n);
+        if(parseFloat(n)){
+            var star = '';
+            for(var i=0;i<parseInt(n);i++){
+                star = star +'<i class="star full"></i>';
+            }
+            if(n.split(".")[1]!=0){
+                star = star + '<i class="star half"></i>';        
+            }
+            $(id).html(star);
+        }else{
+            $(id).html('');
+        }
+    }
+
+    // 初始化 swiper 插件
+    var swiper; 
+    function initSwiper(){
+        if(swiper){
+            swiper.destroy(false); 
+        }
+        swiper = new Swiper('.slide', {
+                effect: 'coverflow',
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: 'auto',
+                coverflow: {
+                    rotate: 50,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1,
+                    slideShadows : true
+            }
+        });
+    }
+    
+
+	</script>
+</html>

@@ -1,0 +1,317 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function confirmSubmit() {
+            var title = $("#title").val();
+            if (title == '') {
+                layer.msg("请输入监控名称!", {icon: 2});
+                return false;
+            }
+            var monitor_type = $("#monitor_type").val();
+            if (monitor_type == 0) {
+                layer.msg("请选择监控事件!", {icon: 2});
+                return false;
+            }
+
+            var warning_type = $('input:radio[name="warning_type"]:checked').val();
+            if (warning_type == '') {
+                layer.msg("请选择报警类型!", {icon: 2});
+                return false;
+            }
+
+            var gid = $("#gid").val();
+            if (gid == 0) {
+                layer.msg("请选择预警对象组！", {icon: 2});
+                return false;
+            }
+
+            var app_key = $("#app_key").val();
+            var ad_type = $('#ad_type').val();
+            var ecpm_min_val = $('#ecpm_min_val').val();
+            var ads_id = $('#ads_id').val();
+            var time_length = $('#time_length').val();
+            var channel_gid = $('#channel_gid').val();
+            var pos_key = $('#pos_key').val();
+            var script_id = $("#script_id").val();
+            if (script_id == 0) {
+                layer.msg("请选择脚本！", {icon: 2});
+                return false;
+            }
+
+            var period = $('#period').val();
+
+            var url = '<?php echo $AddMonitorUrl;?>';
+            var fd = new FormData();//h5上传
+            fd.append('title', title);
+            fd.append('channel_gid', channel_gid);
+            fd.append('pos_key', pos_key);
+            fd.append('app_key', app_key);
+            fd.append('monitor_type', monitor_type);
+            fd.append('ad_type', ad_type);
+            fd.append('ecpm_min_val', ecpm_min_val);
+            fd.append('warning_type', warning_type);
+            fd.append('script_id', script_id);
+            fd.append('period', period);
+            //fd.append('report_time',report_time);
+            fd.append('ads_id', ads_id);
+            fd.append('time_length', time_length);
+            fd.append('gid', gid);
+            fd.append('token', token);
+            $.ajax({
+                url: url,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function (data) {
+                    if (data == 1) {
+                        layer.msg('操作成功', {icon: 1});
+                        //location.reload();
+                        window.parent.location.reload();
+                        parent.layer.close();
+                    } else {
+                        layer.msg('操作失败', {icon: 2});
+                        //location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+    <script>
+        $(function(){
+            $('#app_key').bind('change',function(){
+                var monitor_type = $('#monitor_type').val();
+                var app_key = $(this).val();
+                if(monitor_type == 'impressions'){
+                    $.post('getAppkeyPosKey',{app_key:app_key,token:token},function(msg){
+                        $("#pos_key").empty();
+                        $("#pos_key").append("<option value='0'>-请选择-</option>");
+                        for(posKey in msg){
+                            $("#pos_key").append("<option value='"+posKey+"'>"+msg[posKey]+"</option>");
+                        }
+                    },'json')
+                }
+            })
+        })
+    </script>
+    <style>
+        .importtable{
+            border-collapse: collapse;border-spacing:0;
+        }
+        .importtable thead{
+            border: 1px solid #e8e8e8; border-width: 1px;
+        }
+        .importtable thead tr th{
+            padding: 10px;
+        }
+        .importtable tbody tr td{
+            padding: 10px;
+        }
+    </style>
+<div class="colMain">
+
+    <div class="main">
+        <div class="app-detail">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <ul class="form">
+                    <li>
+                        <span class="label">监控名称：</span>
+                        <div class="fc">
+                                <input type="text" name='title' id='title' value="<?php echo $data['title'];?>" />
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">监控事件：</span>
+                        <div class="fc">
+                            <select id="monitor_type"  name="monitor_type">
+                                <option value="-1"  >- 请选择 -</option>
+                                <option value="ecpm" > ecpm值 </option>
+                                <option value="dau" > 活跃用户 </option>
+                                <option value="impressions" > 曝光次数 </option>
+                                <option value="doublecheck" > DoubleCheck </option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li class="app" style="display:none;">
+                        <span class="label">监控应用：</span>
+                        <div class="fc">
+                            <select id="app_key"  name="app_key">
+                                <option value="-1"  >- 请选择 -</option>
+                                <?php foreach ($app as $key=>$val){?>
+                                    <option value="<?php echo $key;?>" > <?php echo $val;?> </option>
+                                <?php }?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li class="channel" style="display:none;"><span class="label">渠道(IOS不选)：</span>
+                        <div class="fc">
+                            <select id="channel_gid"  name="channel_gid">
+                                <option value="0">- 请选择 -</option>
+                                <?php foreach ($channel_gid as $key=>$val){?>
+                                    <option value="<?php echo $key;?>" > <?php echo $val;?> </option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="posKey" style="display:none;"><span class="label">广告位：</span>
+                        <div class="fc">
+                            <select id="pos_key"  name="pos_key">
+                                <option value="0">- 请选择 -</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="adType" style="display:none;"><span class="label">广告类型：</span>
+                        <div class="fc">
+                            <select id="ad_type"  name="ad_type">
+                                <option value="0">- 请选择 -</option>
+                                <?php  foreach ($ad_type as $key=>$val){?>
+                                    <option value="<?php echo $key;?>" ><?php echo $val;?> </option>
+                                <?php  }?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li class="ads" style="display:none;"><span class="label">广告商：</span>
+                        <div class="fc">
+                            <select id="ads_id"  name="ads_id">
+                                <option value="0"  >- 请选择 -</option>
+                                <?php foreach ($ads as $key=>$val){?>
+                                    <option value="<?php echo $key;?>" ><?php echo $val;?> </option>
+                                <?php  }?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li class="dayRange" style="display:none;"><span class="label">监控时间跨度(天)：</span>
+                        <div class="fc">
+                            <input type="number" name='time_length' id='time_length' value=""/> <span class="red">*系统自动重跑验证时间跨度</span>
+                        </div>
+                    </li>
+                    <li class="ecpm" style="display:none;"><span class="label">最低ecpm值：</span>
+                        <div class="fc">
+                            <input type="number" name='ecpm_min_val' id='ecpm_min_val' value=""/> <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li class="monitorType" style="display:none;"><span class="label">报警方式：</span>
+                        <div class="fc">
+                            短信:<input type="radio" name='warning_type' class='warning_type' value="1"/>&nbsp;
+                            邮件:<input type="radio" name='warning_type' class='warning_type' value="2"/>&nbsp;
+                            短信+邮件:<input type="radio" name='warning_type' class='warning_type' value="3"/>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li class="monitorTarget" style="display:none;">
+                        <span class="label">预警对象组：</span>
+                        <div class="fc">
+                            <select id="gid"  name="gid">
+                                <option value="0"  >- 请选择 -</option>
+                                <?php  foreach ($user_group as $key=>$val){?>
+                                    <option value="<?php echo $val['id'];?>" ><?php echo $val['group_name'];?> </option>
+                                <?php  }?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">执行脚本：</span>
+                        <div class="fc">
+                            <select id="script_id"  name="script_id">
+                                <option value="0"  >- 请选择 -</option>
+                                <?php  foreach ($scripts as $key=>$val){?>
+                                    <option value="<?php echo $key;?>" ><?php echo $val;?> </option>
+                                <?php  }?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li class="jingdu" style="display:none;">
+                        <span class="label">预警精度：</span>
+                        <div class="fc">
+                            <select id="period"  name="period">
+                                <option value="0">- 请选择 -</option>
+                                <option value="3600">小时</option>
+                                <option value="86400">天</option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="hidden" value="<?php echo $data['id'];?>" name="id" id="id">
+                            <input type="" value="保存" class="submit"  onclick="confirmSubmit()"/>
+                            <input class="submit" id="addUser" href="javascript:;" value="新增用户">
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $('#monitor_type').bind('change',function(){
+            var type = $(this).val();
+            if(type == 'ecpm'){
+                $('.app').css('display','block');
+                $('.channel').css('display','none');
+                $('.posKey').css('display','none');
+                $('.adType').css('display','block');
+                $('.ads').css('display','none');
+                $('.jingdu').css('display','none');
+                $('.ecpm').css('display','block');
+                $('.dayRange').css('display','none');
+                $('.monitorType').css('display','block');
+                $('.monitorTarget').css('display','block');
+            }else if(type == 'doublecheck'){
+                $('.app').css('display','none');
+                $('.channel').css('display','none');
+                $('.posKey').css('display','none');
+                $('.adType').css('display','none');
+                $('.ads').css('display','block');
+                $('.jingdu').css('display','none');
+                $('.dayRange').css('display','block');
+                $('.ecpm').css('display','none');
+                $('.monitorType').css('display','none');
+                $('.monitorTarget').css('display','none');
+            }else if(type == 'dau'){
+                $('.app').css('display','block');
+                $('.channel').css('display','block');
+                $('.posKey').css('display','none');
+                $('.adType').css('display','none');
+                $('.ads').css('display','none');
+                $('.jingdu').css('display','block');
+                $('.dayRange').css('display','none');
+                $('.ecpm').css('display','none');
+                $('.monitorType').css('display','block');
+                $('.monitorTarget').css('display','block');
+            }else{
+                $('.app').css('display','block');
+                $('.channel').css('display','none');
+                $('.posKey').css('display','block');
+                $('.adType').css('display','none');
+                $('.ads').css('display','none');
+                $('.jingdu').css('display','block');
+                $('.dayRange').css('display','none');
+                $('.ecpm').css('display','none');
+                $('.monitorType').css('display','block');
+                $('.monitorTarget').css('display','block');
+            }
+        });
+
+        $('#addUser').bind('click',function(){
+            layer.open({
+                type: 2,
+                title: '新增监控用户',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['600px', '500px'],
+                content: '<?php echo $AddUserUrl;?>',
+            });
+        })
+    })
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

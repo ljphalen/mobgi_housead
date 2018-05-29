@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title><?php echo $titlepre;?>磨基广告管理系统后台</title>
+		<link rel="shortcut icon" href="<?php echo $staticPath;?>/img/favicon.ico" />
+		<script src="<?php echo $staticPath;?>/js/common/jquery.js?v=<?php echo $version;?>"></script>
+    <link href="<?php echo $staticPath?>/css/mobile.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css" />
+    <script>
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 6.4 + 'px';
+    </script>
+</head>
+
+<body>
+    <div class="home-wrap">
+        <!-- head begin -->
+        <div class="home-head">
+            <a class="logo">
+                <img src="<?php echo $staticPath?>/img/logo.png" alt="mobgi" />
+            </a>
+            <div class="menu">
+                <img id="menu" src="<?php echo $staticPath?>/img/menu.png" alt="menu" />
+            </div>
+        </div>
+        <!-- head end  -->
+
+        <!-- main begin -->
+        <div class="home-main">
+            <div class="home-userinfo">
+                <div class="userinfo-title">当前用户</div>
+                <ul class="userinfo-items">
+                    <li>
+                        <i>
+                            <img src="<?php echo $staticPath?>/img/id.png" />
+                        </i>
+                        <p>UID：<?php echo $user_id ?></p>
+                    </li>
+                    <li>
+                        <i>
+                            <img src="<?php echo $staticPath?>/img/mail.png" />
+                        </i>
+                        <p>邮箱：<?php echo $email ?></p>
+                    </li>
+                    <li>
+                        <i>
+                            <img src="<?php echo $staticPath?>/img/user.png" />
+                        </i>
+                        <p>用户名：<?php echo $user_name ?> </p>
+                    </li>
+                </ul>
+            </div>
+            <!-- footer begin -->
+            <div class="home-footer">
+                <img src="<?php echo $staticPath?>/img/home_bg.png" alt="" />
+            </div>
+            <!-- footer end  -->
+        </div>
+				<!-- main end  -->
+				
+				<!-- iframe begin -->
+        <div class="home-iframe-wrap">
+            <div class="home-iframe">
+                <iframe id="home-iframe" src="" scrolling="auto" frameborder="0" width="100%" height="100%;"></iframe>
+						</div>
+						<!-- <div class="home-iframe-footer"></div> -->
+        </div>
+        <!-- iframe end  -->
+
+
+        <!-- 菜单 begin -->
+        <div class="home-menu">
+            <div class="menu-mask"></div>
+            <div class="home-menu-items">
+                <div class="home-menu-remove">
+                    <img id="home-menu-close" src="<?php echo $staticPath?>/img/delete.png" />
+                </div>
+                <ul id="home-menu-items">
+								<?php foreach($mainmenu as $key=>$value){  
+									if($value['id'] && $value['items']){
+									?>
+									<li data-id="<?php echo $value['id'];?>" data-href="#<?php echo $value['id'];?>"><?php echo $value['name'];?></li>
+									<?php }?>
+								<?php }?>
+                </ul>
+            </div>
+            <div class="home-submenu-items">
+                <div class="left-wrap">
+                    <p class="submenu-remove">
+                        <img id="submenu-close" src="<?php echo $staticPath?>/img/delete.png" />
+                    </p>
+								</div>
+								<?php foreach($mainmenu as $key=>$value){  ?>
+								<?php if($value['items']){  ?>
+									<div class="submenu-wrap" data-id="<?php echo $value['id']; ?>">	
+											<div class="submenu-title">基础信息</div>
+											<div class="submenu-content">		
+													<ul>
+															<?php foreach($value['items'] as $second=>$items){  ?> 
+															<?php if($items['items']){  ?>
+															<li>
+																	<p class="submenu-iteme-name" data-id="<?php echo $items['id']; ?>" ><?php echo $items['name']; ?> </p>
+																	<?php if($items['items']){  ?>
+																	<ul class="submenu-iteme-list">
+																			<?php foreach($items['items'] as $thirdly=>$subset){  ?> 
+																			<li data-id="<?php echo $subset['id']; ?>" data-href="<?php echo $subset['url']; ?>"><?php echo $subset['name']; ?></li>
+																			<?php }?>
+																	</ul>
+																	<?php }?>
+															</li>
+															<?php }?>
+															<?php }?>
+													</ul>
+											</div>
+									</div>
+									<?php }?>
+									<?php }?>
+            </div>
+        </div>
+        <!-- 菜单 end  -->
+    </div>
+</body>
+<script>
+    $("#menu").click(function(){
+			  $(".home-menu").show();
+		});
+
+		$("#home-menu-close").click(function(){
+			$(".home-menu").hide();
+		});
+
+		$("#home-menu-items li").click(function(){
+			 	var name = $(this).html();
+				var dataId = $(this).attr("data-id");
+				$(".home-submenu-items").show();
+				$(".submenu-wrap").hide();
+				$(".submenu-wrap").each(function(){
+						if(dataId==$(this).attr("data-id")){
+							$(this).find(".submenu-title").html(name);
+							$(this).show();
+							return ;
+						}
+				});
+		});
+
+		$("#submenu-close").click(function(){
+				$(".home-submenu-items").hide();
+				$(".submenu-wrap").hide();
+		});
+
+		$(".submenu-iteme-list li").click(function(){
+				$(".home-main").hide();
+				$(".home-iframe-wrap").show();
+				$(".home-menu").hide();
+				$(".submenu-active").removeClass("submenu-active");
+				$(this).addClass("submenu-active");
+				var href = $(this).attr("data-href");
+				$("#home-iframe").attr("src",href);
+		});
+
+	
+
+</script>
+</html>

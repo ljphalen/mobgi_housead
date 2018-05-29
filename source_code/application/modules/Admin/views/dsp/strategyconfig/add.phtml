@@ -1,0 +1,325 @@
+<?php echo $this->render("layout/header.phtml");?>
+
+<div class="nav">
+	<ul class="cc">
+        <li><a href="<?php echo $listUrl;?>">配置列表</a></li>
+		<li class="current"><a href="<?php echo $addUrl;?>">添加配置</a></li>
+	</ul>
+</div>
+
+<form method="post" action="<?php echo $saveConfigUrl;?>" id="addFrom">
+    <input name="token" value="<?php echo $token;?>" type="hidden" />
+    <div class="table_full">
+    
+    <table width="100%">
+        <tr class="tr">
+            <th class="th">配置名称</th>
+            <td class="td"><input type="text" maxlength="30" name="name" class="input" value="<?php  echo $config['name'] ?>"></td>
+            <input type="hidden"  name="id" value="<?php  echo $config['id'] ?>">
+        </tr>
+    </table>
+
+    <div class="h_a">视频配置</div>
+    <div class="table_full">
+        <table width="100%">
+            <tr class="tr">
+                <th class="th">播放时展示关闭按钮</th>
+                <td class="td">
+                    <label class="mr20"><input name="show_close_button"  value="1" <?php echo $config['config'][1]['show_close_button'] == '1'?'checked':''; ?>  type="radio">是</label>
+                    <label class="mr20"><input name="show_close_button"  value="0"  <?php echo $config['config'][1]['show_close_button'] == '0'?'checked':''; ?>  type="radio">否</label>
+                </td>
+            </tr>
+            <tr class="tr">
+                <th class="th">播放时展示静音按钮</th>
+                <td class="td">
+                    <label class="mr20"><input name="show_mute_button"  value="1"  type="radio" <?php echo $config['config'][1]['show_mute_button'] == '1'?'checked':''; ?> >是</label>
+                    <label class="mr20"><input name="show_mute_button"  value="0"  type="radio" <?php echo $config['config'][1]['show_mute_button'] == '0'?'checked':''; ?> >否</label>
+                </td>
+            </tr>
+            <tr class="tr">
+                <th class="th">播放时展示下载按钮</th>
+                <td class="td">
+                    <label class="mr20"><input name="show_download_button"  value="1"  type="radio" <?php echo $config['config'][1]['show_download_button'] == '1'?'checked':''; ?>  >是</label>
+                    <label class="mr20"><input name="show_download_button"  value="0"  type="radio" <?php echo $config['config'][1]['show_download_button'] == '0'?'checked':''; ?> >否</label>
+                </td>
+            </tr>
+            <tr class="tr">
+                <th class="th">播放时展示进度按钮</th>
+                <td class="td">
+                    <label class="mr20"><input name="show_progress_button"  value="1"  type="radio" <?php echo $config['config'][1]['show_progress_button'] == '1'?'checked':''; ?> >是</label>
+                    <label class="mr20"><input name="show_progress_button"  value="0"  type="radio"  <?php echo $config['config'][1]['show_progress_button'] == '0'?'checked':''; ?>>否</label>
+                </td>
+            </tr>
+
+            <tr class="tr">
+               <th class="th">点击后的动作</th>
+               <td class="td">
+                   <select name="video_jump_type" id="click_type"> 
+                       <option value=""  <?php echo ($config['config'][1]['jump_type']=='')?'selected':'';   ?> >请选择</option>
+                        <option value="0"  <?php echo ($config['config'][1]['jump_type']=='0')?'selected':'';   ?>>静默下载</option>
+                        <option value="1" <?php echo ($config['config'][1]['jump_type']=='1')?'selected':'';   ?>>跳转市场应用</option>
+                        <option value="2" <?php echo ($config['config'][1]['jump_type']=='2')?'selected':'';   ?>>跳转系统默认浏览器</option>
+                        <option value="3" <?php echo ($config['config'][1]['jump_type']=='3')?'selected':'';   ?>>跳转自建浏览器</option>
+                        <option value="4" <?php echo ($config['config'][1]['jump_type']=='4')?'selected':'';   ?>>打开列表广告</option>
+                        <option value="5" <?php echo ($config['config'][1]['jump_type']=='5')?'selected':'';   ?>>自定义动作</option>
+                        <option value="6"<?php echo ($config['config'][1]['jump_type']=='6')?'selected':'';   ?>>无动作</option>
+                        <option value="7"<?php echo ($config['config'][1]['jump_type']=='7')?'selected':'';   ?>>正常下载</option>
+                        <option value="8"<?php echo ($config['config'][1]['jump_type']=='8')?'selected':'';   ?>>商店内页打开</option>
+                    </select>
+               </td>
+           </tr>
+        </table>
+    </div>
+
+    <div class="h_a">插页配置</div>
+    <div class="table_full">
+        <table width="100%">
+            <tr class="tr">
+                    <th class="th">关闭按钮延迟出现</th>
+                    <td class="td">
+                        <label class="mr20"><input name="close_button_delay_show"  value="1"  type="radio"  <?php echo $config['config'][2]['close_button_delay_show'] == '1'?'checked':''; ?> onclick="showDiv('close_button_delay_show_time', 'show');">是</label>
+                        <label class="mr20"><input name="close_button_delay_show"  value="0"  type="radio"  <?php echo $config['config'][2]['close_button_delay_show'] == '0'?'checked':''; ?> onclick="showDiv('close_button_delay_show_time', 'hide');">否</label>
+                    </td>
+            </tr>
+
+            <tr class="tr"  style="<?php echo $config['config'][2]['close_button_delay_show'] == '1'?'':'display:none'; ?>" id="close_button_delay_show_time">
+                    <th class="th">关闭按钮延迟时间(单位秒)</th>
+                    <td class="td">
+                       <input name="close_button_delay_show_time"  value="<?php echo $config['config'][2]['close_button_delay_show_time'] ; ?>"  type="text"  >
+                    </td>
+            </tr>
+
+            <tr class="tr">
+                <th class="th">边框</th>
+                <td class="td">
+                    <label class="mr20"><input name="border_type"  value="0"  type="radio"  <?php echo $config['config'][2]['border_type'] == '0'?'checked':''; ?> class="border_type_radio">纯色</label>
+                    <label class="mr20"><input name="border_type"  value="1"  type="radio"  <?php echo $config['config'][2]['border_type'] == '1'?'checked':''; ?> class="border_type_radio">图片</label>
+                </td>
+            </tr>
+
+           <tr class="tr" id="border_type_color">
+                <th class="th">请输入色值</th>
+                <td class="td">
+                    <input id="border_color" name="border_color"  value="<?php if($config['config'][2]['border_type'] == '0')echo $config['config'][2]['border'] ; ?>"  type="text"  >
+                </td>
+           </tr>
+
+           <tr class="tr" id="border_type_pic">
+                <th class="th">上传图片</th>
+                <td class="td">
+                    <div id="originality_type2" >
+                        <span class="label">横屏图片</span>   	
+                        <div id="crossImg"  style="margin:20px;">
+                            <img src="<?php if(($config['config'][2]['border_type'] == '1')&&$config['config'][2]['border_cross_img']) echo $attachPath.$config['config'][2]['border_cross_img']; else echo $staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"  id="add_img"  />
+                            <input type="hidden" name="border_cross_img" id="border_cross_img" value="<?php echo $config['config'][2]['border_cross_img'];?>">
+                        </div>
+                        <div class="fc"  >
+                            <p style="clear:both;">
+                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=crossImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                             </iframe>
+                            </p>
+                        </div>
+                        
+                        <span class="label">竖屏图片</span>   	
+                        <div id="verticalImg"  style="margin:20px;">
+                            <img src="<?php if(($config['config'][2]['border_type'] == '1')&&$config['config'][2]['border_vertical_img']) echo $attachPath.$config['config'][2]['border_vertical_img']; else echo $staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"  id="add_img"  />
+                            <input type="hidden" name="border_vertical_img" id="border_vertical_img" value="<?php echo $config['config'][2]['border_vertical_img'];?>">
+                        </div>
+                        <div class="fc"  >
+                            <p style="clear:both;">
+                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=verticalImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                             </iframe>
+                            </p>
+                        </div> 
+                    </div>
+                </td>
+           </tr>
+
+           <tr class="tr">
+                <th class="th">点击后的动作</th>
+                <td class="td">
+                    <select name="pic_jump_type" id="click_type"> 
+                        <option value=""  <?php echo ($config['config'][2]['jump_type']=='')?'selected':'';   ?> >请选择</option>
+                         <option value="0"  <?php echo ($config['config'][2]['jump_type']=='0')?'selected':'';   ?>>静默下载</option>
+                         <option value="1" <?php echo ($config['config'][2]['jump_type']=='1')?'selected':'';   ?>>跳转市场应用</option>
+                         <option value="2" <?php echo ($config['config'][2]['jump_type']=='2')?'selected':'';   ?>>跳转系统默认浏览器</option>
+                         <option value="3" <?php echo ($config['config'][2]['jump_type']=='3')?'selected':'';   ?>>跳转自建浏览器</option>
+                         <option value="4" <?php echo ($config['config'][2]['jump_type']=='4')?'selected':'';   ?>>打开列表广告</option>
+                         <option value="5" <?php echo ($config['config'][2]['jump_type']=='5')?'selected':'';   ?>>自定义动作</option>
+                         <option value="6"<?php echo ($config['config'][2]['jump_type']=='6')?'selected':'';   ?>>无动作</option>
+                         <option value="7"<?php echo ($config['config'][2]['jump_type']=='7')?'selected':'';   ?>>正常下载</option>
+                         <option value="8"<?php echo ($config['config'][2]['jump_type']=='8')?'selected':'';   ?>>商店内页打开</option>
+                     </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="h_a">交叉推广配置xx</div>
+    <div class="table_full">
+        <table width="100%">
+
+           <tr class="tr" id="border_type_custom">
+                <th class="th">边框图片</th>
+                <td class="td">
+                    <div id="originality_type3" >
+                        <span class="label">横屏边框</span>
+                        <div id="crossImgCustom"  style="margin:20px;">
+                            <img src="<?php if($config['config'][3]['custom_border_cross_img']) echo $attachPath.$config['config'][3]['custom_border_cross_img']; else echo $staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"  id="add_img"  />
+                            <input type="hidden" name="custom_border_cross_img" id="custom_border_cross_img" value="<?php echo $config['config'][3]['custom_border_cross_img'];?>">
+                        </div>
+                        <div class="fc"  >
+                            <p style="clear:both;">
+                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=crossImgCustom';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                             </iframe>
+                            </p>
+                        </div>
+                        
+                        <span class="label">竖屏边框</span>   	
+                        <div id="verticalImgCustom"  style="margin:20px;">
+                            <img src="<?php if($config['config'][3]['custom_border_vertical_img']) echo $attachPath.$config['config'][3]['custom_border_vertical_img']; else echo $staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"  id="add_img"  />
+                            <input type="hidden" name="custom_border_vertical_img" id="custom_border_vertical_img" value="<?php echo $config['config'][3]['custom_border_vertical_img'];?>">
+                        </div>
+                        <div class="fc"  >
+                            <p style="clear:both;">
+                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=verticalImgCustom';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                             </iframe>
+                            </p>
+                        </div> 
+                    </div>
+                </td>
+           </tr>
+           
+           <tr class="tr" id="border_type_custom">
+                <th class="th">关闭按钮</th>
+                <td class="td">
+                    <div id="originality_type3" >
+                        <span class="label">关闭图片</span>   	
+                        <div id="closeImgCustom"  style="margin:20px;">
+                            <img src="<?php if($config['config'][3]['custom_close_button_url']) echo $attachPath.$config['config'][3]['custom_close_button_url']; else echo $staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"  id="add_img"  />
+                            <input type="hidden" name="custom_close_button_url" id="custom_close_button_url" value="<?php echo $config['config'][3]['custom_close_button_url'];?>">
+                        </div>
+                        <div class="fc"  >
+                            <p style="clear:both;">
+                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=closeImgCustom';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                             </iframe>
+                            </p>
+                        </div>
+                    </div>
+                </td>
+           </tr>
+           
+           <tr>
+               <th class="th">精品标签图片</th>
+               <td class="td">
+                   <div id="originality_type3" >
+                        <span class="label">精品标签图片</span>   	
+                        <div id="boutiqueLabelImgCustom"  style="margin:20px;">
+                            <img src="<?php if($config['config'][3]['custom_boutique_label_url']) echo $attachPath.$config['config'][3]['custom_boutique_label_url']; else echo $staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"  id="add_img"  />
+                            <input type="hidden" name="custom_boutique_label_url" id="custom_boutique_label_url" value="<?php echo $config['config'][3]['custom_boutique_label_url'];?>">
+                        </div>
+                        <div class="fc"  >
+                            <p style="clear:both;">
+                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=boutiqueLabelImgCustom';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                             </iframe>
+                            </p>
+                        </div>
+                    </div>
+               </td>
+           </tr>
+           
+           <tr class="tr" id="">
+                <th class="th">轮播间隔(单位：秒)</th>
+                <td class="td">
+                    <input id="custom_play_interval " name="custom_play_interval"  value="<?php echo $config['config'][3]['custom_play_interval'] ; ?>"  type="text"  >
+                </td>
+           </tr>
+           
+           <tr class="tr">
+                <th class="th">原生banner动效</th>
+                <td class="td">
+                    <select name="custom_animation_effect" class="select wa">
+                        <option  value="">请选择动画效果</option>
+                        <?php foreach ($customAnimationEffect as $key =>$val){?>
+                        <option  value="<?php echo $key; ?>" <?php echo  $key == $config['config'][3]['custom_animation_effect']?'selected=selected':''?> ><?php echo $val; ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+           </tr>
+          
+        </table>
+    </div>
+    
+    <div class="h_a">开屏配置</div>
+    <div class="table_full">
+        <table width="100%">
+            
+            <tr class="tr">
+                <th class="th">播放时展示跳过按钮</th>
+                <td class="td">
+                    <label class="mr20"><input name="show_skip_button"  value="1" <?php echo $config['config'][4]['show_skip_button'] == '1'?'checked':''; ?>  type="radio">是</label>
+                    <label class="mr20"><input name="show_skip_button"  value="0"  <?php echo $config['config'][4]['show_skip_button'] == '0'?'checked':''; ?>  type="radio">否</label>
+                </td>
+            </tr>
+           
+            <tr class="tr">
+                <th class="th">播放时展示倒计时</th>
+                <td class="td">
+                    <label class="mr20"><input name="show_countdown"  value="1" <?php echo $config['config'][4]['show_countdown'] == '1'?'checked':''; ?>  type="radio">是</label>
+                    <label class="mr20"><input name="show_countdown"  value="0"  <?php echo $config['config'][4]['show_countdown'] == '0'?'checked':''; ?>  type="radio">否</label>
+                </td>
+            </tr>
+           
+            <tr class="tr">
+                <th class="th">DSP等待时长(单位：秒)</th>
+                <td class="td">
+                    <input id="dsp_waiting_time" name="dsp_waiting_time"  value="<?php echo $config['config'][4]['dsp_waiting_time'] ; ?>"  type="text"  >
+                </td>
+            </tr>
+           
+            <tr class="tr">
+                <th class="th">开屏展示时长(单位：秒)</th>
+                <td class="td">
+                    <input id="display_time" name="display_time"  value="<?php echo $config['config'][4]['display_time'] ; ?>"  type="text"  >
+                </td>
+            </tr>
+          
+        </table>
+    </div>
+
+    <div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit">保存</button></span></span></div>
+</form>
+
+<script type="text/javascript">
+//广告表单数据提交
+$(document).ready(function(){
+	ajaxForm('addFrom',function(ret){
+		ajaxRedirect(ret, baseurl+'<?php echo $listUrl; ?>');
+	});
+    border_type = '<?php echo intval($config['config'][2]['border_type'])?>'
+    
+    $("input[name=border_type]").click(function(){
+        border_type = $(this).val()
+        if(border_type == 0){
+            $("#border_type_color").show()
+            $("#border_type_pic").hide()
+        }else{
+            $("#border_type_color").hide()
+            $("#border_type_pic").show()
+        }
+    });
+    $("input[name=border_type][value="+border_type+"]").click()
+});
+
+function showDiv(id, type){
+	if(type == 'show'){
+		$('#'+id).show();
+	}else{
+		$('#'+id).hide();
+	}
+}
+
+
+
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

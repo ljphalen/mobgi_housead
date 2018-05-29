@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<link href="<?php echo $staticPath?>/js/admin/lay/css/layui.css" rel="stylesheet" type="text/css"/>
+<script src="<?php echo $staticPath?>/js/admin/lay/layui.js"></script>
+<script src="<?php echo $staticPath?>/js/common/jquery.js"></script>
+<style>
+    *{ margin: 0; padding: 0;}
+    ul,li{ list-style: none; }
+    html,body{ 
+        font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        font-size: 14px; 
+        background: #e5e6eb;
+    }
+    .wrapper{  padding:20px 20px 30px 20px; box-sizing:border-box; }
+    .bg-white{ background: #fff; }
+    .space{ margin-top:20px; }
+    .wrapper .title{ font-size: 16px; color:#555; display: inline-block; width: 100%; padding-bottom: 10px; border-bottom: 1px solid #eee;   }
+    .wrapper .nav-items{ width: 100%; overflow: hidden; margin-top: 20px;   }
+    .wrapper .nav-items li{ float: left; width:250px; margin-right: 29px; padding-left: 29px; margin-bottom: 20px;   }
+    .wrapper .nav-items li i{ display: inline-block; }
+    .wrapper .nav-items li i img{ width: 100%;}
+    .wrapper .nav-items li span{ display: inline-block; width: 100%; text-align: center; color:#555; font-size: 16px; }
+    .wrapper .nav-wrap{ width: 100%;  }
+    .wrapper .nav-form-wrap{ width: 100%; padding: 10px 0;}
+    .wrapper .main{ width: 100%; padding: 20px 0; overflow: hidden; }
+    .wrapper .main .main-sidebar{ float:left; width: 302px;  }
+    .wrapper .main .items{ width: 100%; height: 500px; padding-right: 5px; overflow-x:hidden; overflow-y:auto; box-sizing: border-box;  }
+    .wrapper .main .items li{ width: 100%; box-sizing: border-box; cursor: pointer; display: inline-block;  padding: 10px 0 10px 0; margin:0 0 10px 0; background: #f2f2f2; border-radius: 6px; }
+    .wrapper .main .items li:hover{ background: #009688;  }  
+    .wrapper .main .items li .items-main{ width: 100%; overflow: hidden; }   
+    .wrapper .main .items li .items-main .items-app{ float:left; width:96px; padding:0 10px 0 10px; display: inline-block;  }
+    .wrapper .main .items li .items-main .items-app i{ display: inline-block; width: 100%;}
+    .wrapper .main .items li .items-main .items-app i img{ display: inline-block; width: 100%;}
+    .wrapper .main .items li .items-main .items-app span{ display: inline-block; width: 100%; line-height: 25px; color:#555; font-size: 14px; text-align: center; }
+    .wrapper .main .items li .items-main .items-app-info{ height: 80px; margin: 10px 0 0 116px; padding-left: 10px; box-sizing: border-box; border-left:1px solid #d9d9d9; }
+    .wrapper .main .items li .items-main .items-app-info p{ width: 100%;  color:#555; font-size: 14px; }
+    .wrapper .main .items li .items-main .items-app-info p:nth-of-type(2){  margin-top: 10px }
+    .wrapper .main .items .active{ background: #009688; box-shadow: 2px 2px 2px #999;}
+    .wrapper .main .items .active .items-main .items-app-info p{ color: #fff; }
+    .wrapper .main .items li:hover .items-main .items-app-info p{ color: #fff; }
+
+    
+    .ad-link{ cursor: pointer; color:#009688; text-decoration: underline;  }
+    .ad-link:hover{  color:#009688; }
+
+    .wrapper .main .main-content{ margin-left: 320px; min-height: 500px; box-sizing: border-box; padding: 10px 20px 30px 20px; border:1px solid #eee;     }
+    .wrapper .main .main-content h2{ border-left:4px solid #009688; background: #f2f2f2;  color:#555; padding: 10px 15px; box-sizing: border-box; font-size: 16px; }
+    .wrapper .main .main-content .ad-type{ width: 100%; margin-top: 10px; overflow: hidden; }
+    .wrapper .main .main-content .ad-type li{ display: inline-block; float:left; margin: 0 10px 10px 0; }
+    .wrapper .main .main-content .ad-status{ width: 100%; overflow: hidden; padding: 10px 0 20px 0;   }
+    .wrapper .main .main-content .ad-status li{ float: left; display: inline-block; margin-right: 30px;color:#555; }
+    .wrapper .main .main-content .ad-status li i{ float:left; display: inline-block; width: 20px; height: 20px; background:#eee; }
+    .wrapper .main .main-content .ad-status li span{ float:left; display: inline-block;  padding-left:20px; font-size: 14px;  }
+    .wrapper .main .main-content .ad-status .all i{ background: #FF5722; }
+    .wrapper .main .main-content .ad-status .section i{ background: #FFB800; }
+    .wrapper .main .main-content .ad-status .close i{ background: #ccc; }
+   
+    .wrapper .main .main-content .ad-details{ width: 100%; box-sizing: border-box; }
+    .wrapper .main .main-content .ad-details .list-title{ width: 100%; padding:0 0 10px 0; color:#555; }
+    .wrapper .main .main-content .ad-details .ad-details-list{ max-width: 870px; overflow:hidden;  }
+    .wrapper .main .main-content .ad-details .ad-details-list li{ position: relative; z-index: 1; float:left; margin:0 5px 5px 0; cursor: pointer; width: 120px;  box-sizing: border-box; background: #eee; color:#555; display: inline-block; text-align: center; line-height: 40px; }
+    .wrapper .main .main-content .ad-details .ad-details-list .all{ background:#FF5722; color:#fff; }
+    .wrapper .main .main-content .ad-details .ad-details-list .section{ background:#FFB800; color:#fff;}
+    .wrapper .main .main-content .ad-details .ad-details-list .close{ background:#ccc; color:#fff;}
+
+    .wrapper .main .main-content .ad-details .ad-details-list li span{ position: relative; z-index: 1; display: block; padding: 0 10px; box-sizing: border-box; } 
+    .wrapper .main .main-content .ad-details .ad-details-list li i{ position: absolute; z-index: 2; left:0; top:0; display: block; background: #fff; width: 100%; height: 100%; filter:alpha(Opacity=40);-moz-opacity:0.4; -khtml-opacity: 0.4; -webkit-opacity: 0.4; opacity: 0.4;  display: none;  } 
+    .wrapper .main .main-content .ad-details .ad-details-list li:hover i{ display: block; }
+    .wrapper .main .main-content .ad-details .ad-details-list li:hover{ box-shadow: 2px 2px 2px #999;}
+
+    .area-wrap{ width:100%; padding:10px 0; display:none;  }
+
+ 
+    .layui-btn .layui-badge, .layui-btn .layui-badge-dot{ margin-left: 10px; }
+    .layui-badge-dot{ width: 12px; height: 12px; }
+    .layui-bg-default{ color:#eee!important; background: #eee;}
+    .layui-bg-close{ color:#999!important; background: #bbb;}
+    
+/* 分页 */
+.wrapper .tc{ width: 100%; }
+.wrapper .pages{ width:100%; padding: 10px 0;  }
+.wrapper .pages a{ border:1px solid #C9C9C9; color:#555; padding: 5px 10px; display: inline-block; background: #fff; margin: 0 2px;  }
+.wrapper .pages b{ border:1px solid #C9C9C9; color:#fff; padding: 5px 10px; display: inline-block; background:#1E9FFF; }
+.wrapper .pages .pages_next{ margin-right: 60px;}
+.wrapper .pages div{ display: inline-block; line-height: 35px; color:#555; padding:0 5px; }
+</style>
+<body>
+    <div class="wrapper">
+        <!-- top begin -->
+        <div class="bg-white wrapper">
+            <div class="title"><span>项目情况</span></div>
+            <div class="layui-fluid">
+                <ul class="nav-items">
+                    <li>
+                        <i><img src="<?php echo $staticPath?>/img/common/logo.png" /></i>
+                        <span>MobGi广告</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- top end  -->
+        <!-- main begin -->
+        <div class="bg-white wrapper space">
+            <div class="title">
+                <span>项目具体配置情况</span>
+            </div>
+    
+            <div class="main">
+                <!--  main left  begin -->
+                <div class="main-sidebar">
+                    <form  class="layui-form" action="<?php echo $configsUrl;?>" method="GET"  id="searchForm">  
+                    <input type="hidden" name="platform" value="<?php echo $search['platform'] ;?>">   
+                    <div class="nav-wrap">
+                        <div class="layui-btn-group">
+                            <a href="javascript:;" class="layui-btn <?php echo ($search['platform'] == '')?'':'layui-btn-primary';?>" data-platform="">所有游戏</a>
+                            <a href="javascript:;" class="layui-btn <?php echo ($search['platform'] == '1')?'':'layui-btn-primary';?>" data-platform="1">Android平台</a>
+                            <a href="javascript:;" class="layui-btn <?php echo ($search['platform'] == '2')?'':'layui-btn-primary';?>" data-platform="2">iOS平台</a> 
+                        </div>
+                        <div class="nav-form-wrap">
+                            <div class="layui-input-inline">
+                                <input class="layui-input" value="<?php echo $search['app_name'] ;?>" type="text" name="app_name"  placeholder="请应用名或AppKey搜索" >
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="submit" class="layui-btn">查询</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form> 
+                    <ul class="items">
+                        <?php foreach($appList as $k1=>$v1){ ?>
+                        <li  data-app-key="<?php echo $v1['app_key']; ?>" >  
+                            <div class="items-main">
+                                <div class="items-app">
+                                    <i><img src="<?php echo $v1['icon'];?>" /></i>
+                                </div>
+                                <div class="items-app-info" data-platform="<?php echo $v1['platform_name'];?>">
+                                    <p><?php echo $v1['app_name']; ?></p>
+                                    <p>平台：<?php echo $v1['platform_name'];?> </p>
+                                </div>
+                            </div>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                    <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+                </div>
+                <!--  main left end -->
+                <!--  main content begin -->
+                <div class="main-content">
+                    <h2>应用 - 配置详情</h2>
+                    <ul class="ad-type">
+                        <li>
+                            <button data-platform="<?php echo $appInfo['platform'];?>" data-type="1" type="button" class="layui-btn layui-btn-primary">视频广告<span class="layui-badge-dot layui-bg-default"></span></button>
+                        </li>
+                        <li>
+                            <button data-platform="<?php echo $appInfo['platform'];?>" data-type="2" type="button" class="layui-btn layui-btn-primary">插页广告<span class="layui-badge-dot layui-bg-default"></span></button>
+                        </li>
+                        <li>
+                            <button data-platform="<?php echo $appInfo['platform'];?>" data-type="3" type="button" class="layui-btn layui-btn-primary">交叉广告<span class="layui-badge-dot layui-bg-default"></span></button>
+                        </li>
+                        <li>
+                            <button data-platform="<?php echo $appInfo['platform'];?>" data-type="4" type="button" class="layui-btn layui-btn-primary">开屏广告<span class="layui-badge-dot layui-bg-default"></span></button>
+                        </li>
+                        <li>
+                            <button data-platform="<?php echo $appInfo['platform'];?>" data-type="5" type="button" class="layui-btn layui-btn-primary">原生广告<span class="layui-badge-dot layui-bg-default"></span></button>
+                        </li>
+                    </ul>
+                    <!--  状态 说明  begin -->
+                    <ul class="ad-status">
+                        <li class="all">
+                            <i></i>
+                            <span>全部开启</span>
+                        </li>
+                        <li class="section">
+                            <i></i>
+                            <span>部分开启</span>
+                        </li> 
+                        <li class="close">
+                            <i></i>
+                            <span>全部关闭</span>
+                        </li> 
+                        <li>
+                            <i></i>
+                            <span>暂未查询</span>
+                        </li>
+                    </ul>
+                    <!--  状态 说明  end  -->
+                    <!--  广告渠道配置 详细  begin -->
+                    <div class="ad-details">
+                        <p id="channellist-title" class="list-title">渠道(视频广告)：</p>
+                        <ul id="channellist" class="ad-details-list">
+                    
+                        <?php if($appInfo['platform']=="1"){?>
+                            <?php foreach($groupChannels as $k1=>$v1): ?>
+                            <li data-items="" data-use-channel-name="<?php echo $v1['use_channel_name'];?>" data-use-channel-id="<?php echo $v1['use_channel_id'];?>" data-channel-id="<?php echo $v1['channel_id'];?>" data-channel-name="<?php echo $v1['channel_name'];?>">
+                                <span><?php echo $v1['channel_name'];?></span>
+                                <i></i>
+                            </li>
+                            <?php endforeach; ?> 
+                        <?php }else{ ?> 
+                            <li data-items="" data-use-channel-name="" data-use-channel-id="" data-channel-id="" data-channel-name="">
+                                <span>iOS</span>
+                                <i></i>
+                            </li>
+                        <?php } ?> 
+                        </ul>
+                        <div class="area-wrap">
+                            <p id="areaList-title" class="list-title">地区(视频广告)：</p>
+                            <ul id="areaList" class="ad-details-list">
+                                
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <!--  广告渠道配置 详细  end   -->
+                </div>
+                <!--  main content end -->
+            </div>
+        </div>
+        <!-- main end  -->
+    </div>
+</body>
+
+<script>
+var token = "<?php echo $token;?>";
+var baseurl = "<?php echo $adminroot; ?>";
+
+// 查询
+function getQueryString(name) { 
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+    var r = window.location.search.substr(1).match(reg); 
+    if (r != null) return unescape(r[2]); return null; 
+} 
+
+;(function(){
+     var app_key;
+     // 初始化界面
+     function initPage(layer){
+        app_key = getQueryString('app_key');
+        var appName = '';
+        if(!app_key){
+            var app =  $($(".main-sidebar .items li").get(0));
+            app.addClass("active"); 
+            app_key = app.attr("data-app-key");
+            appName = $(app.find(".items-app-info p").get(0)).html();
+        }else{
+            $(".main-sidebar .items li").removeClass("active"); 
+            var applist = $(".main-sidebar .items li");
+            applist.each(function(){
+                var appKey = $(this).attr("data-app-key");
+                if(appKey==app_key){
+                    $(this).addClass("active"); 
+                    appName = $($(this).find(".items-app-info p").get(0)).html();  
+                }
+            });
+        }
+        $($(".main-content h2").get(0)).html(appName+" - 配置详情");
+       // return layer.load(0,{ shade :0.1});
+     }
+     
+     // 平台切换
+     $(".main-sidebar .layui-btn-group .layui-btn").click(function () {
+		$(".main-sidebar .layui-btn-group .layui-btn").removeClass("layui-btn-primary");
+		$(this).addClass("layui-btn-primary");
+	    var platform = $(this).attr('data-platform');
+	    $("input[name='platform']").val(platform);
+	    $("#searchForm").submit()
+    });
+    
+    //  app  列表点击
+    $(".main-sidebar .items li").click(function(){
+        var href = window.location.href;
+        var param = '';
+        var app_key = $(this).attr("data-app-key");
+        if(href.split("?").length>1){
+            var platform = getQueryString('platform');
+            var app_name = $("input[name='app_name']").val();
+            var page = getQueryString('page');
+            if(platform){
+                param = param + '&platform='+platform;
+            }
+            if(app_name){
+                param = param + '&app_name='+app_name;
+            }
+            if(page){
+                param = param + '&page='+page;
+            }
+        }
+      
+        window.location.href = href.split("?")[0] + '?app_key='+app_key + param;
+    });
+    
+    
+
+    // 渲染渠道列表
+    function setChannelList(list,adType,index){
+        var current = false;  // 默认全部关闭
+        var state = '';
+        $($("#channellist li").get(index)).attr("data-items",JSON.stringify(list));  
+        for(var i in list){  
+            //判断当前是否开启
+            //console.log("code",list[i]['code'])
+            if(list[i]['code']==null || list[i]['code']==0){
+                current = true; 
+            }else{
+                // 判断上一个是否开启 
+                if(current){
+                    $($("#channellist li").get(index)).addClass("section");
+                    state = "部分开启"
+                    break;
+                }
+            }
+        }
+        if(current && state==""){
+            //全部开启
+            $($("#channellist li").get(index)).addClass("all");
+        }else if(!current && state==""){
+            // 全部关闭
+            $($("#channellist li").get(index)).addClass("close");
+        }
+        
+
+        if(index==$("#channellist li").length-1){
+            if(state==""){
+                var channellist = $("#channellist li");
+                var isAll = false;
+                var isSetion = false;
+                channellist.each(function(i,el){
+                    if($(this).hasClass("all")){
+                        isAll = true; 
+                    }else{
+                        if(isAll){
+                            isSetion = true;
+                            $($(".ad-type li").get(adType-1)).find(".layui-badge-dot").removeClass("layui-bg-default");
+                            $($(".ad-type li").get(adType-1)).find(".layui-badge-dot").addClass("layui-bg-orange"); 
+                            return ;
+                        }
+                    }
+                }); 
+                if(!isSetion && isAll){
+                    $($(".ad-type li").get(adType-1)).find(".layui-badge-dot").removeClass("layui-bg-default");
+                }else if(!isSetion && !isAll){
+                    $($(".ad-type li").get(adType-1)).find(".layui-badge-dot").addClass("all");
+                    $($(".ad-type li").get(adType-1)).find(".layui-badge-dot").removeClass("layui-bg-default");
+                    $($(".ad-type li").get(adType-1)).find(".layui-badge-dot").addClass("layui-bg-close");
+                }
+            }
+        }   
+    }
+
+
+
+    // 请求渲染 渠道
+    function getChannelList(appkey,adType,platform){
+        var len = $("#channellist li").length;
+        getStateRequest(appkey,adType,platform,0,len);
+    }
+
+    // 递归请求
+    function getStateRequest(appkey,adType,platform,i,len){
+        var use_channel_id =  $($("#channellist li").get(i)).attr("data-use-channel-id");
+        var url = baseurl + "/Admin/systemtool_Checkconfig/getState?app_key="+appkey+"&adType="+adType+"&platform="+platform+"&use_channel_id="+use_channel_id;
+        $.ajax({
+            url : url ,
+            async: true,
+            data : '',
+            type : 'get',
+            dataType : 'json',
+            jsonp : 'callback',
+            timeout : 10000,
+            success:function(data){  
+                if(i<len-1){
+                    setTimeout(function() {
+                        getStateRequest(appkey,adType,platform,i+1,len);
+                    }, 100);    
+                }else{
+                    layer.closeAll('loading');
+                } 
+                if(data.success){
+                    var list = data.data; 
+                    setChannelList(list,adType,i);
+                }
+            },
+            error :function(xhr,msg,e){
+                if(i<len-1){
+                    setTimeout(function() {
+                        getStateRequest(appkey,adType,platform,i+1,len);
+                    }, 100);    
+                }else{
+                    layer.closeAll('loading');
+                } 
+            }
+        });
+    }
+    
+    // 切换广告类型
+    $(".main-content .ad-type li button").click(function(){
+         $(".main-content .ad-type li button").addClass("layui-btn-primary");
+         $(this).removeClass("layui-btn-primary");
+         var type = $(this).attr("data-type");
+         $("#channellist li").removeClass("all");
+         $("#channellist li").removeClass("section");
+         $("#channellist li").removeClass("close");
+         var platform = $(this).attr("data-platform");
+         layui.use(['element','layer'], function(){
+            var element = layui.element,layer = layui.layer;
+            layer.load(0,{ shade :0.1});
+            getChannelList(app_key,type,platform);
+         });
+         $("#areaList").html("");
+         $(".area-wrap").hide();
+    });
+
+    //  查询特定渠道的地区
+    $("#channellist li").click(function(){
+        var name = $(this).find("span").html();
+        $(".area-wrap .list-title").html(name+"-地区：");
+        var items = $(this).attr("data-items");
+        if(items){
+            var list = JSON.parse(items);
+            var li = '',css="";
+            for(var k in list){
+                if(list[k]['code']==0 || list[k]['code']==null){
+                     css= "all";
+                }else{
+                     css= "close";
+                }
+                li = li + '<li class="'+css+'"><span>'+ k +'</span><i></i></li>';              
+            }
+            $("#areaList").html(li);
+            $(".area-wrap").show();
+        }
+    });
+
+
+    //  页面初始化 绑定
+    layui.use(['element','layer'], function(){
+        var element = layui.element,layer = layui.layer;
+        initPage(layer);// 初始化界面
+    });
+     
+})();
+
+
+
+</script>
+</html>

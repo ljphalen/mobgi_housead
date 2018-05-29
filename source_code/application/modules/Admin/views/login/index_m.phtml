@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>管理中心 Management center</title>
+	<link rel="shortcut icon" href="<?php echo $staticPath?>/favicon.ico?v=<?php echo $version;?>" />
+	<link href="<?php echo $staticPath?>/css/login.css?v=<?php echo $version;?>" rel="stylesheet" />
+	<script>if (parent.window.location.href != location.href) parent.window.location.href = location.href;</script>
+</head>
+<body>
+	<div class="login-wrap">
+		<div class="bg-top"></div>
+		<div class="bg-bottom"></div>
+		<div class="login">
+			<a class="login-logo"><img src="<?php echo $staticPath?>/img/login/logo.png?v=<?php echo $version;?>" /></a>
+			<div class="signin-wrap">
+				<div class="title">SIGN IN</div>
+				<form method="post" name="login" action=" <?php echo $loginUrl;?>">
+					<ul class="form-in">
+						<li>
+							<i><img src="<?php echo $staticPath?>/img/login/user.png?v=<?php echo $version;?>" /></i>
+							<input type="text" value=""  name="email" placeholder="Username" />
+						</li>
+						<li>
+						<i><img src="<?php echo $staticPath?>/img/login/pwd.png?v=<?php echo $version;?>" /></i>
+							<input type="password" value="" name="password" placeholder="Password" />
+						</li>
+					</ul>
+					<button name="submit" class="form-submit" type="submit">Login</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+

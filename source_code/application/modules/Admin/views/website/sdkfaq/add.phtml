@@ -1,0 +1,81 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain">
+   <div class="nav">
+		<ul class="cc">
+			 <li ><a href="<?php echo $listUrl;?>">常见问题列表</a></li>
+			<li class="current"><a href="<?php echo $addUrl;?>"><?php echo $navTitle; ?>常见问题</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+              <form action="<?php echo $addPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id"  id="id" value='<?php echo $info['id']; ?>' />
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">   
+                            <li>
+                        <span class="label">选择卡类型：</span>
+                        <div class="fc">
+                            <select id="tab_type"  name="tab_type">
+                        		<option value="1" <?php if( $info['tab_type']==1 ): ?> selected <?php endif; ?> >常见问题</option>
+                             	<option value="2" <?php if( $info['tab_type']==2 ): ?> selected <?php endif; ?>>接入流程</option>	
+                            </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                     <li>
+                        <span class="label">sdk类型：</span>
+                        <div class="fc">
+                            <select id="sdk_type"  name="sdk_type">
+                          <?php foreach($sdkType as $k1=>$v1){ ?>
+                            <option value="<?php echo $k1; ?>"  <?php if( $info['sdk_type']==$k1 ): ?> selected <?php endif; ?>><?php echo $v1; ?> </option>
+                        <?php } ?>
+                            </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                
+                  
+                    <li>
+                        <span class="label">SDK更新日志：</span>
+                        <div class="fc">
+                        <textarea  style="width:600px; height:300px" name="update_log"  id="update_log" ><?php echo $info['update_log']; ?></textarea>
+                        </div>
+                    </li>
+                
+                
+                
+					<li>
+                        <div class="fc">
+                            <input type="submit"  value="保存" class="submit"  />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl;?>' " />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="<?php echo $staticPath; ?>/js/admin/kindeditor/kindeditor.js?v=<?=$version?>"></script>
+<script>
+var editor;
+KindEditor.ready(function(K) {
+	K.token = '<?php echo $token;?>';
+	editor = K.create('textarea[name="update_log"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageUpload : true,
+        uploadJson : '<?php echo $uploadImgUrl;?>',
+        items : EDITOR_ITEMS
+    });
+});
+$(document).ready(function(){
+	ajaxForm('addForm',function(ret){ 
+	        ajaxRedirect(ret, baseurl+'<?php echo $listUrl;?>');
+	 },function(){
+		 editor.sync();
+		 return true;
+	});
+	$('.datepicker').datepicker({});
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

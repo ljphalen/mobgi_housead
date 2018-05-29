@@ -1,0 +1,123 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<style>
+    .checkbox_ul li>a {
+        color: red;
+        cursor: pointer;
+        padding: 3px 3px;
+        display: inline-block;
+    }
+    .checkbox_ul li>a.dim_remove {
+        transform: rotate(45deg);
+        text-decoration: none;
+    }
+    ul>li .is_choose{pointer-events: none;}
+</style>
+<div class="colMain" style="min-height: 173px;">
+    <div class="nav">
+		<ul class="cc">
+            <li><a href="<?php echo $customConfigUrl;?>">定制配置列表</a></li>
+            <li class="current"><a href="<?php echo $addCustomConfigUrl;?>">添加定制配置</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+            <form action="<?php echo $addCustomConfigPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id" value="<?php echo $channelInfo['id'];?>">
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">
+                    <li>
+                        <span class="label">应用搜索：</span>
+                        <div class="fc">
+                            <select class="app-select" size="1" id="app-select">
+                                <option value="-1" > 请选择应用 </option>
+                                <?php foreach ($applist as $key=>$val){?>
+                                    <option value="<?php echo $key;?>" > <?php echo $val;?> </option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">应用列表：</span>
+                        <div class="fc">
+                            <ul class="checkbox_ul">
+                                <?php foreach($idslist as $key => $value){ if(trim($value)!=''){?>
+                                    <li class="fl" style="width:200px;">
+                                        <label class="is_choose"><input name="app_key[]" type="checkbox"  class="app_key" value="<?php echo $value; ?>" checked="checked" > <?php echo $applist[$value]?> </label>
+                                        <a href="javascript:void(0);" class="dels dim_remove">⊕</a>
+                                    </li>
+                                <?php }}?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">广告商利益分成比例：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="ads_division_rate"  style="width:40px;" value="<?php echo $configInfo['ads_division_rate']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">自投利益分成比例：</span>
+                        <div class="fc">
+                            <input type="text" id="name" class="iText required" name="own_division_rate" required style="width:40px;" value="<?php echo $configInfo['own_division_rate']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">备注：</span>
+                        <div class="fc">
+                            <input type="text" id="name" class="iText" name="notice" style="width:220px;" value="<?php echo $configInfo['notice']; ?>" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="submit" value="确定" class="submit">
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl?>'">
+                        </div>
+                    </li>
+                </ul>
+               
+            </form>
+           
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link  type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script>
+$(function(){
+    ajaxForm('addForm',function(ret){
+        ajaxRedirect(ret, baseurl+'<?php echo $customConfigUrl; ?>');
+      });
+    //删除
+    var $del = $(".dels");
+    $del.live('click', function(){
+        $(this).parent('li').remove();
+    });
+    $('#app-select').chosen();
+    $("#app-select").change(function() {
+        var app_key = $(this).val();
+        var app_name = $(this).find("option:selected").text();
+        var flag = false;
+        if(app_key == '-1'){
+            alert('请选择应用');
+            return false;
+        }
+        $("input[type='checkbox']:checked").each(function(i,e){
+            if($(e).val() == app_key){
+                alert('应用'+app_name+'已经选中');
+                flag = true;
+                return false;
+            }
+        })
+        if(flag){
+            return false;
+        }
+        var newli = '<li class="fl" style="width:200px;">';
+        newli +='<label class="is_choose"><input name="app_key[]" type="checkbox"  class="app_key" value="'+app_key+'" checked="checked" > '+app_name+'</label>';
+        newli +='<a href="javascript:void(0);" class="dels dim_remove">⊕</a></li>';
+        $(".checkbox_ul").append(newli);
+    });
+})   
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

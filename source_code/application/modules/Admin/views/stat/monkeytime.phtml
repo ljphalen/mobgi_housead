@@ -1,0 +1,30 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+
+	<div class="h_a"><?php echo $name .'=>' .$date;?></div>
+
+	<div class="h_a">处理时间为200毫秒以内占比: 
+		<?php echo round(($quickRspCount/$num)*100, 1) . '%'?>
+	</div>
+
+	<div class="table_list">
+		<table cellspacing="0" cellpadding="0" width="100%">
+			<tbody>
+			<tr class="ct">
+				<td class="td2">消耗时间</td>
+				<td class="td2">次数</td>
+				<td class="td2">占比</td>
+			</tr>
+			<?php
+			foreach ($list as $d => $n) {
+				?>
+				<tr class="ct">
+					<td class="td2"><?php echo $d; ?></td>
+					<td class="td2"><?php echo $n; ?></td>
+					<td class="td2"><?php echo round(($n/$num)*100, 1) . '%'; ?></td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
+	</div>
+
+<?php echo $this->render("layout/footer.phtml"); ?>

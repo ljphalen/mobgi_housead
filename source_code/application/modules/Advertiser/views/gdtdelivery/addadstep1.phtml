@@ -1,0 +1,178 @@
+<?php echo $this->render("layout/header.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl"><?php if($result['oid'] && !$result['clone']){echo '编辑';}else{echo '创建';} ?>广告参数</p>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="<?php echo $addAdStep1PostUrl; ?>" method="POST"  id="addFrom" >
+                	<input name="token" value="<?php echo $token;?>" type="hidden" />
+                    <input type="hidden" name="oid"   id=""  value='<?php echo $result['oid']; ?>' />
+                    <input type="hidden" name="clone"   id=""  value='<?php echo $result['clone']; ?>' />
+                    <input type="hidden" name="action"   id=""  value='<?php echo $result['action']; ?>' />
+                    <ul class="form">
+                        <li> 
+                            <span class="label">推广计划(id)：</span>
+                            <div class="fc">
+                                <select id="campaign_id" name="campaign_id"  <?php if($result['oid'] && !$result['clone'])echo 'disabled="disabled"' ?>>
+                                    <option value="" selected="">请选择</option>
+                                    <?php foreach ($campaign_data as $key=>$val){?>
+                                    <option  value="<?php echo $val['campaign_id']; ?>"   <?php echo  $result['campaign_id'] == $val['campaign_id']?'selected=selected':''?>> <?php echo $val['campaign_name'] ?></option>
+                                    <?php }?>
+                                </select>
+    <!--                            <span>--><?php //echo $gdtconfig['plan_name']."(".$gdtconfig['plan_id'].")";?><!--</span>-->
+                            </div>
+                        </li>
+
+                        <li> 
+                            <span class="label">广告名称：</span>
+                            <div class="fc">
+                                <input name="adgroup_name" id="adgroup_name" type="text" value="<?php echo $result['adgroup_name']; ?>" class="iText " >
+                            </div>
+                         </li>
+
+                         <li>
+                        <span class="label">设置投放日期：</span>
+                        <div class="fc">
+                            <input class="iText " type="text" style="width:143px;" id="begin_date" name="begin_date" value="<?php echo $result['begin_date'];?>" readonly="readonly" /> 
+                            至 <input class="iText" type="text" style="width:143px;" id="end_date" name="end_date" value="<?php echo $result['end_date'];?>" readonly="readonly"  />
+                         </div>
+                        </li>
+                         <li>
+                            <span class="label">设置投放时段：</span>
+                            <div class="fc">
+                                    <p><input type="radio" value="0" name="hour_type" class="radio" <?php echo  $result['hour_type'] == 0?'checked=checked':''?> id="hour_type0"><label for="hour_type0">全部时段</label></p>
+                                    <p>
+                                    <input type="radio" value="1" name="hour_type" class="radio" <?php echo  $result['hour_type'] == 1?'checked=checked':''?> id="hour_type1"><label for="hour_type1">指定时段</label>
+                                    <span  style="padding-left:60px;">
+                                    <input type="hidden" name="hour_set_type"  id="hour_set_type"  value='<?php echo $result['hour_set_type']; ?>' />
+                                    <a href="javascript:void(0)"onclick="return false" class="_quickSel" style="<?php echo  $result['hour_set_type'] == 0?'display:none':''?>;">快速设置模式</a>
+                                    <a href="javascript:void(0)"onclick="return false" class="_advanceSel" style="<?php echo  $result['hour_set_type'] == 1?'display:none':''?>;">高级设置模式</a>
+                                    </p>
+                                </div>
+                            <div class="fc" style="<?php echo  $result['hour_type'] == 0?'display:none':''?>;" id="time_range">
+                                <div class="_quickSelForm" style="<?php echo  $result['hour_set_type'] == 1?'display:none':''?>;">
+                                    <select id="start_hour" name="start_hour">
+                                        <?php for($i=0;$i<=24;$i++){?>
+                                            <option value="<?php echo $i; ?>"    <?php echo  $result['start_hour'] == $i?'selected=selected':''?>><?php echo $i.":00"; ?></option>
+                                        <?php } ?>
+                                   </select>
+                                    至
+                                    <select id="end_hour" name="end_hour">
+                                        <?php for($i=24;$i>=0;$i--){?>
+                                            <option value="<?php echo $i; ?>"  <?php echo  $result['end_hour'] == $i?'selected=selected':''?>><?php echo $i.":00"; ?></option>
+                                        <?php } ?>
+                                   </select>
+                               </div>
+                            <div id="timesetAdvanceWrap" class="_advanceSelForm" style="<?php echo  $result['hour_set_type'] == 0?'display:none':''?>;">
+                                <div class="put-time-tips">
+                                    <input type="hidden" name="time_series"  id="timeset"  value='<?php echo $result['time_series']; ?>' />
+                                    <p>单击方格【可选中/取消时间点】&nbsp;&nbsp;单击拖动方格【可选中/取消某一连续时间段】
+                                    <ul>
+                                    <li><span class="bgcol-c"></span>选中态</li><li><span class="bgcol-b"></span>点击态</li><li><span class="bgcol-a"></span>未选中</li>
+                                    </ul>
+                                    </p>
+                                </div>
+                                <div class="time-choose">
+                                    <object id="timesetHandlerId" name="timesetHandlerId" type="application/x-shockwave-flash" data="<?php echo $staticPath.'/img/daterange.swf';?>" height="285" width="720">
+                                        <param name="allowScriptAccess" value="always" />
+                                        <param name="allowFullScreen" value="false" />
+                                        <param name="movie" value="<?php echo $staticPath.'/img/daterange.swf';?>" />
+                                        <param name="wmode" value="transparent" />
+                                        <param name="quality" value="high" />
+                                        <param name="bgcolor" value="#ffffff" />
+                                    </object>
+                                </div>
+                                <div class="time-show">
+                                    <p class="detail-item">已选时间：</p>
+                                    <ol class="_timesetSelected" style="">-</ol>
+                                    <a href="javascript:;" onclick="return false" class="ButtonBg5 revoke _reset" opt="alltimereset">撤销所有选择</a>
+                                </div>
+                             </div>
+                            </div>
+                        </li>
+                        <li> 
+                            <span class="label">广告目标：</span>
+                            <div class="fc">
+                                <span>
+                                    <?php foreach ($gdt_product_type as $key=>$val){?>
+                                        <label><input type="radio" value="<?php echo $key;?>" name="product_type" class="radio" <?php echo  $result['product_type'] == $key?'checked=checked':''; ?> id='<?php echo $key;?>'  <?php if($result['oid'] && !$result['clone'])echo 'disabled="disabled"' ?> >
+                                        <?php echo $val;?>
+                                        </label>
+                                    <?php }?>
+                                </span>
+                            </div>
+                            <div class="fc"  >
+                                <!--<input type="text" class="iText"  value="<?php echo  $result['destination_url']; ?>"  name="destination_url" id="destination_url" placeholder="输入链接地址" style="width:600px;">-->
+                                <input style="width:600px; <?php if($result['product_type'] != 'PRODUCT_TYPE_APP_IOS'){echo 'display:none;';} ?>" type="text" class="iText"  value="<?php echo  $result['destination_appstoreid']; ?>"  name="destination_appstoreid" id="destination_appstoreid" placeholder="输入appstoreid"  <?php if($result['oid'] && !$result['clone'])echo 'disabled="disabled"' ?> >
+                                <input style="width:600px; <?php if($result['product_type'] != 'PRODUCT_TYPE_APP_ANDROID_OPEN_PLATFORM'){echo 'display:none;';} ?>" type="text" class="iText"  value="<?php echo  $result['destination_android_yybid']; ?>"  name="destination_android_yybid" id="destination_android_yybid" placeholder="输入应用宝id"  <?php if($result['oid'] && !$result['clone'])echo 'disabled="disabled"' ?> >
+                                <a href="javascript:void(0)" id="preview" style="color:#016db5; margin-left:10px;cursor:pointer;<?php if(!$result['destination_appstoreid']) echo 'display:none;'; ?>" onclick="OpenUrl()">预览</a>
+    <!--                            <span id="preview" style="color:#016db5; margin-left:10px;cursor:pointer;">预览</span>-->
+                            </div>
+                            <?php if($result['oid'] && !$result['clone']){ ?>
+                                <input type="hidden" name="campaign_id_e"   value='<?php echo $result['campaign_id']; ?>' />
+                                <input type="hidden" name="product_type_e"   value='<?php echo $result['product_type']; ?>' />
+                                <input type="hidden" name="destination_appstoreid_e"   value='<?php echo $result['destination_appstoreid']; ?>' />
+                                <input type="hidden" name="destination_android_yybid_e"   value='<?php echo $result['destination_android_yybid']; ?>' />
+                            <?php } ?>
+                        </li>
+                        <li>
+                            <div class="fc">
+                                <input type="submit"   value="下一步" class="submit btn">      
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="<?php echo $staticPath;?>/css/gdt_daterange.css" rel="stylesheet" />
+<script src="<?php echo $staticPath;?>/js/advertiser/gdt_daterange.js"></script>
+<script type="text/javascript">
+var oid = '<?php echo $result['oid']; ?>';
+var clone = '<?php echo $result['clone']; ?>';
+var nextUrl = '<?php echo $addAdStep2Url; ?>';
+if(oid){
+	nextUrl +='?oid='+oid;
+}
+if(clone){
+	nextUrl +='&clone='+clone;
+}
+//广告表单数据提交
+$(document).ready(function(){
+	 $('#begin_date').datepicker();
+     $('#end_date').datepicker();
+     
+       $("input[name='hour_type']").click(function(){
+		 if($(this).val() == 1){
+			 $("#time_range").show();
+		 }else{
+			 $("#time_range").hide();
+		}
+        });
+	ajaxForm('addFrom',function(ret){
+		ajaxRedirect(ret, baseurl+nextUrl);
+	});
+    $("#PRODUCT_TYPE_APP_IOS").click(function(){
+        $("#destination_appstoreid").show();
+        $("#preview").show();
+        $("#destination_android_yybid").hide();
+    });
+    $("#PRODUCT_TYPE_APP_ANDROID_OPEN_PLATFORM").click(function(){
+        $("#destination_appstoreid").hide();
+        $("#preview").hide();
+        $("#destination_android_yybid").show();
+    });
+})
+function OpenUrl(){
+    var appstore_id = $("#destination_appstoreid").val();
+    if(appstore_id == ""){
+        showError('', "请输入appstoreid");
+    }else{
+        var url = "https://itunes.apple.com/cn/app/id"+appstore_id+"?mt=8";
+        window.open(url);
+    }
+}
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

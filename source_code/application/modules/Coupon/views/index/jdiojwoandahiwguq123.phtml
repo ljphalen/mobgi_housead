@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="<?php echo $staticPath;?>/css/monitor/css/index.css" rel="stylesheet" type="text/css">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .m-table {
+            min-width: 800px;
+            width: 100%;
+            border-collapse: collapse;
+            outline: none;
+            border-right: 1px solid #e2e2e2;
+            border-bottom: 1px solid #e2e2e2;
+            box-sizing: border-box;
+            font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        }
+
+        .m-table tbody {
+            display: block;
+            overflow-y: scroll;
+        }
+
+        .m-table thead,
+        tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .m-table thead {
+            width: calc( 100% - 1em);
+        }
+
+        .m-table thead th {
+            background: #f2f2f2;
+            border-top: 1px solid #e2e2e2;
+            border-left: 1px solid #e2e2e2;
+            height: 38px;
+            line-height: 38px;
+            color: #333;
+            font-size: 14;
+            text-align: left;
+            padding-left: 12px;
+            font-weight: normal;
+        }
+
+        .m-table tbody td {
+            background: #fff;
+            border-top: 1px solid #e2e2e2;
+            border-left: 1px solid #e2e2e2;
+            height: 38px;
+            line-height: 38px;
+            color: #333;
+            font-size: 14;
+            text-align: left;
+            padding-left: 12px;
+            font-weight: normal;
+        }
+        .mtable-search{
+            width: 100%; padding: 10px 0;
+        }
+
+        .mtable-search input[type='text']{ padding: 0 10px; width:200px; outline: none; border:1px solid #e2e2e2; height: 30px; line-height: 30px; margin: 0 10px;   }
+        .mtable-search a{ cursor: pointer; display: inline-block; height: 30px; line-height: 30px; text-decoration: none; background: #333; color:#fff; font-size: 14px; padding: 0 20px; }
+        .mtable-search a:hover{ text-decoration: none; }
+    </style>
+</head>
+
+<body>
+<div class="search">
+    <form style="height: 50px;" action="jdiojwoandahiwguq123" method="get">
+       <span style="line-height:50px; padding: 0 10px ">搜索：</span>
+        <input type="text" name="code" style="padding:0 15px; outline: none; border: 1px solid #555; height: 35px; line-height: 35px; background: #fff; ">
+        <button style="outline: none; border: none; background: #00a0e9; height:35px; line-height: 35px; color:#fff; text-align: center; padding: 0 30px;  " type="submit" >搜索</button>
+    </form>
+</div>
+<table class="m-table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>类别</th>
+        <th>兑换码</th>
+        <th>状态</th>
+        <th>更新时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    if(!empty($codelist)){
+    foreach($codelist as $key=>$value){ ?>
+        <tr>
+            <td><?php echo $value['id'];?></td>
+            <td><?php echo $value['typeName'];?></td>
+            <td><?php echo $value['code'];?></td>
+            <td><?php echo $value['checkMsg'];?></td>
+            <td><?php echo $value['updatetime'];?></td>
+            <td>
+                <?php if($value['status'] != 2){ ?><a class="t-handle delete" data="<?php echo $value['id'];?>" href="javascript:;" />校核</a><?php }?>
+            </td>
+        </tr>
+    <?php }}?>
+    </tbody>
+    <script src="<?php echo $staticPath;?>/js/common/jquery.js?v=<?php echo $version;?>" type="text/javascript"></script>
+    <script src="<?php echo $staticPath;?>/js/admin/layer.js"></script>
+    <script>
+        $(function () {
+            $('.delete').bind('click',function () {
+                var id = $(this).attr('data');
+                layer.confirm('确认要进行校核？', {
+                    btn: ['确认','算了'] //按钮
+                }, function(){
+                    $.get("Coupon/Index/changgeijjdiisdw", {id:id}, function(result){
+                        if (result== 1){
+                            layer.msg('校核成功!',{'icon':1});
+                            location.reload();
+                        }else{
+                            layer.msg('校核失败!',{'icon':2});
+                        }
+                    },'json');
+                }, function(){
+
+                });
+            })
+        })
+    </script>
+</table>
+</body>
+</html>

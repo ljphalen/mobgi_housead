@@ -1,0 +1,96 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <style>
+        .sb{
+            background-color: rgb(175,79,57);
+            color: #fff;
+            border-radius: 2px;
+            line-height: 29px;
+            padding: 0 20px;
+            border: 0;
+            margin-right: 15px;
+        }
+        .progress div{
+            position: absolute;
+            background-color: rgba(0, 255, 255, 0.30);
+            height: 35px;
+            left: 5px;
+            top: 2px;
+        }
+        .progress{
+            position: relative;
+        }
+    </style>
+    <div class="colMain">
+        <div class="nav">
+            <ul class="cc">
+                <ul class="cc">
+                    <li ><a href="/Admin/Data_ThirdApi/adjust">广告商收益变更</a></li>
+                    <li class="current"><a href="/Admin/Data_ThirdApi/adjustLog">变更日志</a></li>
+                </ul>
+            </ul>
+        </div>
+        <div class="main">
+            <div class="toolbar">
+                <div class="search fl">
+                    <form action="#" method="GET">
+                            <select class="chosen-plugin" id="ads_id" name="ads_id">
+                                <option value="-1"  <?php if($data['ads_id'] == "-1") echo "selected"?>>所有广告商</option>
+                                <?php foreach($adslist as $keys=>$val){?>
+                                    <option value="<?php echo $val;?>" <?php if($val == $params['ads_id']){echo "selected";}?>><?php echo $val;?></option>
+                                <?php }?>
+                        </select>
+                        <input type="button" id="sb" class="fr sb" value="提交">
+                        <div id="date_range" class="fr" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="grid">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>广告商</th>
+                            <th>收益加减</th>
+                            <th>货币</th>
+                            <th>备注</th>
+                            <th>操作</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach($list as $key=>$value){
+                            echo "<tr>";
+                            echo "<td class='blue'>".$value['date']."</td>";
+                            echo "<td>".$value['ads_id']."</td>";
+                            echo "<td>".$value['amount']."</td>";
+                            echo "<td>".$currency_type[$value['currency']]."</td>";
+                            echo "<td>".$value['remark']."</td>";
+                            echo "<td><a href='/Admin/Data_ThirdApi/adjust?id=".$value['id']."'/>修改</a></td>";
+                            echo "</tr>";
+                        }
+                        ?>
+
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+            </div>
+        </div>
+    </div>
+    <script src="<?php echo $staticPath;?>/js/common/mgchart.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath;?>/js/common/jquery.loadmask.min.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js?v=<?php echo $version;?>"></script>
+    <script>
+        $(function(){
+            $('#sb').bind('click',function(){
+                var ads_id= $('#ads_id').val();
+                window.location='/Admin/Data_ThirdApi/adjustLog'+'?ads_id='+ads_id;
+            })
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

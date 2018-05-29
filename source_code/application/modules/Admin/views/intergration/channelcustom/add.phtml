@@ -1,0 +1,179 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain">
+   <div class="nav">
+		<ul class="cc">
+	    	<li ><a href="<?php echo $listUrl;?>">渠道定制列表</a></li>
+			<li class="current"><a href="<?php echo $addUrl;?>"><?php echo $navTitle; ?>渠道定制</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+              <form action="<?php echo $addPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id"  id="id" value='<?php echo $info['id']; ?>' />
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">   
+                <li>
+                        <span class="label">聚合广告商的名称：</span>
+                        <div class="fc">                                                      
+                            <select id="name"  name="name" <?php if( $info['id'] ){ ?> disabled ="disabled" <?php } ?>>
+                                 <?php foreach($adsList as $k1=>$v1){ ?>
+                                	<option value="<?php echo $k1; ?>"  <?php if( $info['name']==$k1 ){ ?> selected <?php } ?> ><?php echo $v1; ?></option>
+                                <?php } ?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">平台类型：</span>
+                        <div class="fc">
+                            <select id="platform"  name="platform" onchange="javascript:autoPlatform();"   <?php if( $info['id'] ){ ?> disabled ="disabled" <?php } ?>>
+                                <option value="1" <?php if( $info['platform']==1 ){ ?> selected <?php } ?>>Android</option>
+                                <option value="2" <?php if( $info['platform']==2 ){ ?> selected <?php } ?>>IOS</option>
+                            </select>
+                        </div>
+                    </li>
+                      <li>
+                        <span class="label">密钥：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="secret_key" class="iText" name="secret_key"  style="width:220px;" value="<?php echo $info['secret_key']; ?>" />
+                        </div>
+                    </li> 
+                     <li>
+                        <span class="label">第三方appkey：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="third_party_appkey" class="iText required" name="third_party_appkey" required style="width:220px;" value="<?php echo $info['third_party_appkey']; ?>" />
+                        	 <span class="red">*</span>
+                        </div>
+                    </li> 
+                    <li>
+                        <span class="label">描述：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="conf_desc" class="iText" name="conf_desc"  style="width:220px;" value="<?php echo $info['conf_desc']; ?>" />
+                        </div>
+                    </li>   
+                    <li>
+                       <span class="label">应用：</span>
+                         <div class="fc">
+                         <select id="app_key"  name="app_key" onchange="add_pos(this.value)"  <?php if( $info['id'] ){ ?> disabled ="disabled" <?php } ?>>
+                         <?php foreach($appList as $k1=>$v1){ ?>
+                           <option value="<?php echo $v1['app_key']; ?>"  <?php if( $info['app_key']==$v1['app_key'] ){ ?> selected <?php } ?> ><?php echo $v1['app_name']; ?></option>
+                         <?php } ?>
+                        </select>
+                        </div>
+                    </li>
+                     <li>
+                        <span class="label">广告位：</span>
+                        <div class="fc">
+                            <table width="80%" id="pos_tb_box" boder='1'>
+                                <tr><td>广告位</td><td>广告位名称</td><td>广告位状态</td><td>广告显示概率</td><td>第三方bolck_id</td></tr>
+                                <?php if($info['pos']){ ?>
+                                <?php foreach($info['pos'] as $k1=>$v1){ ?>
+                                <tr id="<?php echo $v1['id']; ?>" >
+                                    <td><?php echo $v1['dever_pos_key']; ?>    
+                                    </td>
+                                    <td><?php echo $v1['dever_pos_name']; ?></td>                         
+                                    <td>
+                                        <input type="radio" name="pos_state_<?php echo $v1['id']; ?>[]"  <?php if( $v1['state'] == 1  ){ ?>checked<?php } ?> value="1"><label>开</label>
+                                        <input type="radio" name="pos_state_<?php echo $v1['id']; ?>[]"  <?php if( $v1['state'] == 0 ){ ?>checked<?php } ?> value="0"><label>关</label>
+                                    </td>                               
+                                    <td><input type="text" class="iText" style="width:20%" name="rate[]" value="<?php echo $v1['rate']; ?>"></td>                                    
+                                    <td>
+                                    	<input type="text" class="iText" style="width:100%" name="other_block_id[]" value="<?php echo $v1['other_block_id']; ?>">
+                                        <input type="hidden" name="pos_name[]" value="<?php echo $v1['dever_pos_name']; ?>">
+                                        <input type="hidden" name="pos_key_type[]" value="<?php echo $v1['pos_key']; ?>">
+                                        <input type="hidden" name="pos_key[]" value="<?php echo $v1['dever_pos_key']; ?>">
+                                        <input type="hidden" name="pos_id[]" value="<?php echo $v1['id']; ?>">
+                                    </td>       
+                                </tr>
+                                <?php } ?>
+                                 <?php } ?>
+                            </table>
+                        </div>
+                    </li>   
+					<li>
+                        <div class="fc">
+                            <input type="submit" onclick="confirmSubmit();" value="保存" class="submit"  id="save_fiter_conf" />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl;?>' " />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="<?php echo $staticPath; ?>/css/zTreeStyle.css" type="text/css">
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/jquery.tablednd.0.8.min.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath;?>/js/common/Categorywidget_sdk.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+
+<script>
+$(function(){
+	ajaxForm('addForm',function(ret){ 
+          ajaxRedirect(ret, baseurl+'<?php echo $listUrl; ?>');
+   },function(){
+		$("#name").attr("disabled",false);
+    	$("#app_key").attr("disabled",false);
+    	$("#platform").attr("disabled",false);
+ });
+
+    $('#app_key').chosen();
+
+    
+});
+
+
+function autoPlatform(appKey) {
+    ajaxPOST("<?php echo $getAppListUrl?>", {"platform": $("#platform").val(),"token":token}, function(ret) {
+        var length = ret.data.length;
+        str = '';   
+        for (i=0; i<length; i++)
+        {           
+        	 if_selecte ='';
+        	 if(appKey == ret.data[i].app_key){
+                 if_selecte =  'selected="selected"';
+             }
+            str += '<option value="'+ret.data[i].app_key+'" '+ if_selecte +'>'+ret.data[i].app_name+'</option>'
+        }
+        $("#app_key").html(str);          
+        //重新绑定select的选择组件
+        $("#app_key").removeClass("chzn-done");
+        $("#app_key_chzn").remove();
+        $("#app_key").chosen({});  
+    });
+}
+
+function add_pos(appKey){
+	 $.getJSON("<?php echo $getPosInfoUrl;?>?appKey="+appKey,function(ret){
+		 $("#pos_tb_box").empty();
+		 var html = ' <tr><td>广告位</td><td>广告位名称</td><td>广告位状态</td><td>广告显示概率</td><td>第三方bolck_id</td></tr>';
+		 $.each(ret.data,function(key,value){   
+		     html +='<tr id="'+value['id']+'">';
+		     html +='<td>'+value['dever_pos_key'];    		
+		     html +='</td>';
+		     html +='<td>'+value['dever_pos_name']+'</td>';                         
+		     html +='<td>';
+			 if(value['state'] ==  '1'){
+			     html +='<input type="radio" name="pos_state_'+value['id']+'[]"  value="1" checked ><label>开</label>';
+  		     html +='<input type="radio" name="pos_state_'+value['id']+'[]"  value="0"  ><label>关</label>';
+			 }else{
+				 html +='<input type="radio" name="pos_state_'+value['id']+'[]"  value="1" ><label>开</label>';
+    		     html +='<input type="radio" name="pos_state_'+value['id']+'[]"  value="0" checked ><label>关</label>';
+			 }
+		     html +='</td>';                               
+		     html +='<td><input type="text" class="iText" style="width:20%" name="rate[]" value="'+value['rate']+'"></td>'; 
+		     html +='<td>';
+		     html +='<input type="text" class="iText" style="width:100%" name="other_block_id[]" value="">'
+		     html +='<input type="hidden" name="pos_name[]" value="'+value['dever_pos_name']+'">';
+		     html +='<input type="hidden" name="pos_key[]" value="'+value['dever_pos_key']+'">';
+		     html +='<input type="hidden" name="pos_id[]" value="'+value['id']+'">';
+		     html +='</td>';       
+		     html +='</tr> '; 
+		}); 
+		 $("#pos_tb_box").append(html);
+	});   
+}
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

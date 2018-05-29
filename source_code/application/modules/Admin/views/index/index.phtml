@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title><?php echo $titlepre;?>磨基广告管理系统后台</title>
+	<link rel="shortcut icon" href="<?php echo $staticPath;?>/img/favicon.ico" />
+	<link href="<?php echo $staticPath?>/js/admin/lay/css/layui.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css"/>
+	<link href="<?php echo $staticPath?>/css/page_layout.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css"/>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <!-- 头部区域 begin  --> 
+  <div class="layui-header">
+    <div class="layui-logo"><a href="/Admin/Home/index" class="logo"><img src="<?php echo $staticPath?>/img/logo.png" /></div>
+		<ul class="layui-nav layui-layout-left">
+
+				<li class="layui-nav-item">
+					<a href="javascript:;">ADMIN MOBGI</a>
+					<dl class="layui-nav-child">
+						<?php foreach($module as $val){ if($val['name'] != 'Admin'){?>
+						<dd><a href="<?php echo $val['url']; ?>"><?php echo $val['name'];?></a></dd>
+						<?php }} ?>
+					</dl>
+				</li>
+		</ul>
+	  <!-- 头部导航 begin -->
+    <ul id="top-side" class="layui-nav layui-layout-left" style="left:360px;">
+		<?php foreach($mainmenu as $key=>$value){  
+			if($value['id'] && $value['items']){
+		?>
+			<li data-id="<?php echo $value['id'];?>" class="layui-nav-item"><a href="#<?php echo $value['id'];?>"><?php echo $value['name'];?></a></li>
+		<?php }?>
+		<?php }?>
+    </ul>
+		<!-- 头部导航 end  -->
+		
+		<!-- 手机头部导航 begin -->
+		<ul class="layui-nav layui-layout-left min-nav">
+      <li class="layui-nav-item">
+        <a href="javascript:;">菜单</a>
+        <dl id="min-top-side" class="layui-nav-child">
+					<?php foreach($mainmenu as $key=>$value){  
+						if($value['id'] && $value['items']){
+					?>
+						<dd data-id="<?php echo $value['id'];?>" ><a href="#<?php echo $value['id'];?>" ><?php echo $value['name'];?></a></dd>
+					<?php }?>
+					<?php }?>
+          
+        </dl>
+      </li>
+    </ul>
+		<!-- 手机头部导航 end   -->
+
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">管理员：<?php echo $user_name;?></a>
+        <dl class="layui-nav-child">
+          <dd><a id="admin-user-pw"  data-id="_Admin_User_Passwd" data-parentId="_Admin_User_Module" data-href="<?php echo $passwdUrl;?>">修改密码</a></dd>
+        </dl>
+      </li>
+			<li class="layui-nav-item"><a href="<?php echo $logout;?>">[注销]</a></li>
+    </ul>
+  </div>
+  <!-- 头部区域 end  -->
+  <!-- 左侧导航区域  begin -->
+  <div class="layui-side layui-bg-black">
+      <div id="left-side" class="layui-side-scroll">
+			<?php foreach($mainmenu as $key=>$value){  ?>
+				<?php if($value['items']){  ?>
+					<ul data-id="<?php echo $value['id']; ?>" class="layui-nav layui-nav-tree" lay-filter="test">
+						<?php foreach($value['items'] as $second=>$items){  ?> 
+							<?php if($items['items']){  ?>
+								<li class="layui-nav-item "><a data-id="<?php echo $items['id']; ?>" class="" href="javascript:;"><?php echo $items['name']; ?></a>
+									<?php if($items['items']){  ?>
+										<dl class="layui-nav-child">
+											<?php foreach($items['items'] as $thirdly=>$subset){  ?> 
+											<dd>
+												<a data-id="<?php echo $subset['id']; ?>" data-href="<?php echo $subset['url']; ?>"><?php echo $subset['name']; ?></a>
+											</dd>
+										<?php }?>
+									</dl>
+									<?php }?>
+								</li>
+							<?php }?>
+						<?php }?>  
+					</ul>
+				<?php }?>
+			<?php }?>						 
+    </div>
+        </div>
+  <!-- 左侧导航区域  end  -->
+
+  <!-- 内容主体区域  begin -->
+  <div class="layui-body">  
+	    <p id="frameRefresh"><img src="<?php echo $staticPath?>/img/refresh.png" /></p> 
+			<div id="iframe-tab" class="layui-tab" lay-allowClose="true">
+				<ul class="layui-tab-title">
+						<li class="layui-this">后台首页</li>
+				</ul>
+				<div id="iframe-tab-content"  class="layui-tab-content">
+						<div class="layui-tab-item layui-show"><iframe id="default" scrolling="auto" frameborder="0" width="100%" height="100%;" src="<?php echo $default;?>" ></iframe></div>
+				</div>
+			</div>
+  </div>
+  <!-- 内容主体区域  end  -->
+
+	<!-- 底部固定区域  begin -->
+  <div class="layui-footer">
+	@Copyright©2009-2017 深圳市创梦天地科技股份有限公司 版权所有 粤ICP备 13029562号
+  </div>
+	<!-- 底部固定区域  end  -->
+</div>
+<script src="<?php echo $staticPath?>/js/admin/lay/layui.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath?>/js/common/jquery.js?v=<?php echo $version;?>"></script>
+<script>
+
+(function(){
+	var url = window.location.href; //layui-this
+	var url_id = '_Admin_Baseinfo_Module'; // 基础信息 
+	if(url.indexOf('#')!=-1){
+		url_id = url.substr(url.indexOf('#') + 1);
+	}
+	
+	// 初始化菜单
+	function initSideTree(id){
+		// 顶端菜单
+		$("#top-side").find("li").each(function(){	
+			if($(this).attr('data-id')==id){
+				$(this).addClass("layui-this");
+			}else{
+				$(this).removeClass("layui-this");
+			}
+		});
+
+		// 顶端菜单
+		$("#min-top-side").find("dd").each(function(){	
+			if($(this).attr('data-id')==id){
+				$(this).addClass("layui-this");
+			}else{
+				$(this).removeClass("layui-this");
+			}
+		});
+
+		// 左侧菜单 
+		$("#left-side").find("ul").each(function(index,el){
+			if($(this).attr('data-id')==id){
+				$(this).show();
+				$($(this).find('li').get(0)).addClass("layui-nav-itemed");
+			}else{
+				$(this).hide();
+			}
+		});	
+		//隐藏 第一个菜单关闭按钮
+		$($("#iframe-tab .layui-tab-title li").get(0)).find(".layui-tab-close").hide();
+	}
+	// 切换 顶部对应的左边菜单
+	$("#top-side").find("li").click(function(){
+		var id = $(this).attr("data-id");
+		initSideTree(id);
+	});
+	$("#min-top-side").find("dd").click(function(){
+		var id = $(this).attr("data-id");
+		initSideTree(id);
+	 $(".min-nav").click();
+	});
+
+	
+	// 左边菜单点击事件
+	$("#left-side ul li .layui-nav-child a").click(function(){
+		var href = $(this).attr("data-href");
+		var id = $(this).attr("data-id");
+		var parentId = $(this).parent().parent().parent().parent().attr("data-id");
+		if(href){
+				var name = $(this).html();
+				insertTabIframe(id,name,href,parentId);  //插入 iframe 
+		}
+	});
+
+	// 修改密码
+	$("#admin-user-pw").click(function(){
+		var name = $(this).html();
+		var id = $(this).attr('data-id');
+		var href = $(this).attr('data-href');
+		var parentId = $(this).attr('data-parentId');
+		
+	  $("#left-side").find("ul").each(function(){
+			  if($(this).attr("data-id")==parentId){
+					var ul = $(this);
+					$(this).find("a").each(function(){
+						  if($(this).attr("data-id")==id){
+								ul.find(".layui-nav-item").removeClass("layui-nav-itemed");
+								ul.find(".layui-nav-item dd").removeClass("layui-this");
+								$(this).parent().parent().parent().addClass("layui-nav-itemed")
+							  $(this).parent().addClass("layui-this");
+								return;
+							}
+					});	 
+					return ;
+				}
+		});
+		insertTabIframe(id,name,href,parentId);
+
+		$("#iframe-tab .layui-tab-title li").each(function(){
+        if($(this).attr("data-id")==id){
+						$(this).click();
+						return ;
+				}
+		});
+    
+	});
+
+	// 插入 iframe 
+	function insertTabIframe(id,name,href,parentId){
+		var isTrue = true;
+		$("#iframe-tab .layui-tab-title li").each(function(){
+			if($(this).attr("data-id")==id){
+				isTrue = false;
+				$(this).click();
+				return;
+			} 
+		});
+		if(isTrue){
+			$("#iframe-tab .layui-tab-title li").removeClass('layui-this');
+			$("#iframe-tab-content .layui-tab-item").removeClass('layui-show');
+			var tabTitle = '<li data-id="'+id+'" data-parentId="'+parentId+'" class="layui-this">'+name+'</li>';
+			var tabContent = '<div class="layui-tab-item layui-show"><iframe id="'+id+'" data-parentId="'+parentId+'" scrolling="auto" frameborder="0" width="100%" height="100%;" src="'+href+'" ></iframe></div>';
+			$("#iframe-tab-content").append(tabContent);
+			$("#iframe-tab .layui-tab-title").append(tabTitle);
+		}
+		renderLayuiFormAndTab();
+		$($("#iframe-tab .layui-tab-title li").get(0)).find(".layui-tab-close").hide();
+	}
+
+	// 刷新 当前的 iframe
+	$("#frameRefresh").click(function(){
+		 var id = $("#iframe-tab-content").find(".layui-show iframe").attr("id");
+		 document.getElementById(id).contentWindow.location.reload();
+	});
+
+	// Tab 点击 切换顶部 导航
+	$("#iframe-tab").delegate(".layui-tab-title li",'click',function(){
+			var parentId = $(this).attr("data-parentId");
+			var id = $(this).attr("data-id");
+			if(parentId){
+				  $("#top-side li").each(function(){
+						  if(parentId==$(this).attr("data-id")){
+                $(this).click();
+								return ;
+							}
+					});
+
+					$("#min-top-side dd").each(function(){
+						  if(parentId==$(this).attr("data-id")){
+                $(this).click();
+								return ;
+							}
+					});
+			}
+			// 选中左边菜单-- 子菜单项 
+			if(id && parentId){
+        $("#left-side").find("ul").each(function(){
+					 if(parentId==$(this).attr('data-id')){
+						  var ul = $(this);
+              $(this).find('li a').each(function(){
+                  if(id==$(this).attr("data-id")){
+										ul.find(".layui-this").removeClass("layui-this");
+										$(this).parent().addClass("layui-this");
+										return;
+									}
+							});
+							return; 
+					 }
+				});
+			}
+
+	});	
+    // 初始化菜单
+	initSideTree(url_id);
+})();
+
+
+//JavaScript代码区域
+layui.use('element', function(){
+  var element = layui.element;
+});
+//重新渲染
+function renderLayuiFormAndTab(){
+	layui.use(['element','form'], function(){
+		layui.element.init(); 
+		layui.form.render();
+	});
+}
+
+
+function IsPC(){    
+     var userAgentInfo = navigator.userAgent;  
+     var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");    
+     var flag = true;    
+     for (var v = 0; v < Agents.length; v++) {    
+         if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }    
+     }    
+     return flag;    
+  } 
+
+
+	if(IsPC()){
+			$(".min-nav").hide();
+			$("#top-side").show();
+	}else{
+			$(".min-nav").show();
+			$("#top-side").hide();
+	}
+
+
+</script>
+</body>
+</html>
+      

@@ -1,0 +1,152 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li><a href="<?php echo $listUrl;?>">用户列表</a></li>
+    <li class="current"><a href="javascript:;"><?php echo $navTitle?>用户</a></li>
+	</ul>
+</div>
+<div class="h_a"><?php echo $navTitle?>用户</div>
+<form method="post" action="<?php echo $editPostUrl;?>" id="editUserFrom">
+    <input name="user_id" value="<?php echo $userInfo['user_id'];?>" type="hidden"/>
+    <input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+	<table width="100%">
+		<tr class="tr">
+			<th class="th">用户Email</th>
+			<td class="td"><input type="text" maxlength="30" name="email" class="input input_wa"  value="<?php echo $userInfo['email'];?>"></td>
+		</tr>
+		<tr class="tr">
+			<th class="th">用户密码</th>
+			<td class="td"><input type="password" maxlength="20" name="password" class="input">
+			   <span class=""><?php echo $userInfo['user_id']?'如果不想修改密码,请留空':'密码长度不小于６位';?></span>
+			</td>
+		</tr>
+		<tr class="tr">
+			<th class="th">用户名</th>
+			<td class="td"><input type="text" class="input" name="user_name" maxlength="30" value="<?php echo $userInfo['user_name'];?>"  ></td>
+		</tr>
+		<tr class="tr">
+			<th class="th">是否锁定</th>
+			<td class="td">
+				<select name="is_lock"   <?php echo ($userInfo['user_type'] == 1 && $userInfo['group_id'] == 0)?'disabled="disabled"':'';?>>
+                    <option <?php echo ($userInfo['is_lock'] == 0) ? 'selected="selected"' : '';?> value="0"> 未锁定</option>
+                    <option <?php echo ($userInfo['is_lock'] == 1) ? 'selected="selected"' : '';?> value="1"> 锁定</option>
+	            </select>       
+            </td>
+		</tr>
+		<tr class="tr">
+			<th class="th">用户类型</th>
+			<td class="td">
+				<select name="user_type"   id="user_type" <?php echo $userInfo['user_id']?'disabled="disabled"':'';?> >
+				<?php foreach($userType as $key => $value) {?>
+				                <option <?php echo $userInfo['user_type'] == $key ? 'selected="selected"' : '';?> value="<?php echo $key;?>"><?php echo $value;?></option>
+				<?php }?>
+	            </select>       
+            </td>
+		</tr>
+		<tr class="tr" style="<?php echo ($userInfo['user_type'] == 3)?'display:none':''; ?>">
+			<th class="th">用户组</th>
+			<td class="td">
+			<?php if ($userInfo['user_id'] && $userInfo['group_id'] == 0) { echo '超级管理员';} else {	?> 
+				<select name="group_id">
+				<?php foreach($groups as $key => $value) {?>
+				                <option <?php echo $userInfo['group_id'] == $value['group_id'] ? 'selected="selected"' : '';?> value="<?php echo $value['group_id'];?>"><?php echo $value['name'];?></option>
+				<?php }?>
+	            </select>
+			<?php }?>            
+            </td>
+		</tr>
+		<tr class="tr tr_is_admin" <?php echo ($userInfo['user_type'] != 1)?'display:none':''; ?>>
+			<th class="th">应用权限</th>
+			<td class="td">
+				<select name="is_admin"  id="is_admin"  <?php echo ($userInfo['user_type'] == 1 && $userInfo['group_id'] == 0)?'disabled="disabled"':'';?>>
+						 <option <?php echo ($userInfo['is_admin'] == 0) ? 'selected' : '';?> value="0"> 自定义</option>
+						 <option <?php echo ($userInfo['is_admin'] == 1) ? 'selected' : '';?> value="1"> 全部应用</option>
+	            </select>       
+            </td>
+		</tr>
+	    <tr class="tr tr_app_key"  style="<?php echo ($userInfo['user_type'] == 2 || ($userInfo['user_id'] && $userInfo['is_admin'] == 1) )?'display:none':''; ?>" >
+			<th class="th">应用</th>
+			<td class="td">
+			     <div>
+			      <label><input name="check_all" class="check_all" type="checkbox"  value=""  > 全选</label>
+			      <label><input name="" type="checkbox"  value=""  onclick="checkAll('.app_key')" > 反选</label>
+			     </div>
+			    <ul>
+			    	<?php foreach($appInfo as $key => $value) {?>
+			   			 <li class="fl" style="width:200px;">
+	                       	     <label><input name="app_key[]" type="checkbox"  class="app_key" value="<?php echo $value['app_key'];?>" <?php echo $this->userRelAppList[$value['app_key']]?'CHECKED=CHECKED':''; ?> > <?php echo $value['app_name'];?></label>
+	                      </li>
+	                <?php }?>      
+			    </ul>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit">保存</button></span></span>
+<span class="btn"><span><button type="button" onclick="window.location.href='<?php echo $listUrl;?>'" >返回</button></span></span>
+</div>
+</form>
+<script type="text/javascript">
+//用户表单数据提交
+$(document).ready(function(){
+	ajaxForm('editUserFrom',function(ret){ 
+	    ajaxRedirect(ret, baseurl+'/Admin/User/index');
+	  }, function(){
+			$("#user_type").attr('disabled', false);
+			$("#is_admin").attr('disabled', false);
+	 });
+	initIsAdmin();
+	initAppKeyList();
+	$('#user_type').change(function(){
+		 initIsAdmin();
+		 initAppKeyList();
+	 });
+	 $('#is_admin').change(function(){
+		 initAppKeyList();
+	 })
+
+	$(".check_all").click(function(){   
+		if($(this).attr("checked")){
+			$('.app_key').each(function(){
+				 $(this).attr("checked",'true');
+			});
+		}else{
+			$('.app_key').each(function(){
+				$(this).removeAttr("checked");
+			});
+		}
+	});
+	 
+
+});
+
+
+function initAppKeyList(){
+	userType = $('#user_type').val();
+	if(userType == 2){
+		$('.tr_app_key').hide();
+	}else if(userType == 3){
+		$('.tr_app_key').show();
+	}else if(userType == 1 || userType == 5){
+		isAdmin = $('#is_admin').val();
+		if(isAdmin == 1){
+			$('.tr_app_key').hide();
+		}else{
+			$('.tr_app_key').show();
+		}
+	}
+}
+
+function initIsAdmin(){
+	userType = $('#user_type').val();
+	if(userType == 1 || userType == 5){
+		$('.tr_is_admin').show();
+	}else{
+		$('.tr_is_admin').hide();
+	}
+
+}
+
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

@@ -1,0 +1,72 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link media="screen" href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath;?>/css/jquery.datetimepicker.css" >
+<script type="text/javascript" src="<?php echo $staticPath;?>/js/admin/jquery.datetimepicker.full.min.js"></script>
+ <script>
+     $(function(){
+         $.datetimepicker.setLocale('ch');
+         $( "#datetimepicker" ).datepicker({dateFormat: "yy-mm-dd",maxDate :new Date()});
+
+     })
+ </script>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+        <li ><a href="<?php echo $IndexUrl;?>">操作</a></li>
+        <li ><a href="<?php echo $AppSynUrl;?>">应用</a></li>
+        <li ><a href="<?php echo $AdPosSynUrl;?>">广告位</a></li>
+        <li class="current"><a href="<?php echo $AdsAppSynUrl;?>">第三方APPID</a></li>
+        <li ><a href="<?php echo $ThirdPosSynUrl;?>">第三方广告位</a></li>
+        <li ><a href="<?php echo $ChannelSynUrl;?>">渠道</a></li>
+
+        <li ><a href="<?php echo $SynLogUrl;?>">同步日志</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="<?php echo $AdsAppIdSynUrl;?>" method="GET">
+                <span>
+                    <label class="ig_label">搜索：</label>
+                   <input type="text" class="iText" name='app_name'  value='<?php echo $search['app_name'] ;?>' placeholder="应用名称" />
+                    <input type="text" class="iText" name='app_key'  value='<?php echo $search['app_key'] ;?>' placeholder="app_key" />
+                </span>
+                    <span>
+
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th field='identifier' width='200px'>应用名称</th>
+                            <th field='last_time'>APPKEY</th>
+                            <th field='status'>第三方广告商名称</th>
+                            <th field='msg'>第三方关联appId</th>
+                            <th field='time_limit'>广告类型</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($List as $k1=>$value){
+                                echo "<tr>";
+                                echo "<td class='blue'>".$value['app_name']."</td>";
+                                echo "<td>".$value['app_key']."</td>";
+                                echo "<td>".$value['ads_id']."</td>";
+                                echo "<td>".$value['report_id']."</td>";
+                                echo "<td>".$value['ad_type']."</td>";
+                                echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+  </div>
+<?php echo $this->render("layout/footer1.phtml");?>

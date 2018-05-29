@@ -1,0 +1,10 @@
+2017-12-07 10:45:44 INFO run error:'MlManage' object has no attribute 'mlConfig'
+2017-12-07 10:46:53 INFO run error:cannot concatenate 'str' and 'long' objects
+2017-12-07 10:48:04 INFO run error:cannot concatenate 'str' and 'long' objects
+2017-12-07 10:53:23 INFO run error:cannot concatenate 'str' and 'long' objects
+2017-12-07 10:55:51 INFO run error:[Errno 2] No such file or directory: '/log/ml11512615351'
+2017-12-07 10:59:50 INFO run error:[Errno 2] No such file or directory: '/log/ml11512615590.csv'
+2017-12-07 14:03:31 INFO run error:"['user_dau'] not in index"
+2017-12-07 14:04:38 INFO run error:'str' object has no attribute 'fit'
+2017-12-07 14:06:52 INFO run error:Expected n_neighbors <= n_samples,  but n_samples = 2, n_neighbors = 5
+2017-12-07 16:14:02 INFO run error:arrays must all be same length

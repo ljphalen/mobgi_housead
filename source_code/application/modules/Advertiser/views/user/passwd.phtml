@@ -1,0 +1,40 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="h_a">修改密码</div>
+<form method="post" action="<?php echo $passwdPostUrl;?>" id="editUserFrom">
+<input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+    <table width="100%">
+        <tr class="tr">
+            <th class="th">当前密码</th>
+            <td class="td"><input type="password" maxlength="20" name="current_password" class="input"></td>
+        </tr>
+        <tr class="tr">
+            <th class="th">新密码</th>
+            <td class="td"><input type="password" maxlength="20" name="password" class="input"></td>
+        </tr>
+        <tr class="tr">
+            <th class="th">重复密码</th>
+            <td class="td"><input type="password" maxlength="20" name="r_password" class="input"></td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit">保存</button></span></span></div>
+</form>
+<script type="text/javascript">
+//用户表单数据提交
+$(document).ready(function(){
+    ajaxForm('editUserFrom',function(ret){
+    	if (ret) {
+    		if (ret.success) {
+    			showMsg('', ret.msg);
+    			setTimeout(function() {
+    						logout(baseurl+'/Admin/Index/index');
+    					}, 500);
+    		} else {
+    			showError('', ret.msg);
+    		}
+    	}
+    });
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

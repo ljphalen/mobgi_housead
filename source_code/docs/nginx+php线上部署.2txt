@@ -1,0 +1,356 @@
+php 5.7.10 + nginx1.2.9以上+mysql5.5以上+redis3.0以上
+
+php扩展安装
+
+tar zxvf redis-3.0.0.tgz 
+cd redis-3.0.0
+ /usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make && make install
+
+tar -zxvf yaf-3.0.4.tgz
+cd yaf-3.0.4
+ /usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make 
+sudo make install
+
+
+cd /data/www/soft
+tar jxvf php-7.0.10.tar.bz2
+cd php-7.0.10
+
+./configure --prefix=/usr/local/php7 \
+--with-config-file-path=/usr/local/php7/etc \
+--with-mcrypt \
+--with-mysqli=mysqlnd \
+--with-pdo-mysql=mysqlnd \
+ --with-mhash \
+--with-gd \
+--with-iconv \
+--with-zlib \
+--enable-xml \
+--enable-bcmath \
+--enable-shmop \
+--enable-sysvsem \
+--enable-inline-optimization \
+--enable-mbregex \
+--enable-fpm \
+--enable-mbstring \
+--enable-ftp \
+--enable-gd-native-ttf \
+--with-openssl \
+--enable-pcntl \
+--enable-sockets \
+--with-xmlrpc \
+--enable-zip \
+--enable-soap \
+--without-pear \
+--with-gettext \
+--enable-session \
+--with-curl \
+--with-jpeg-dir \
+--with-freetype-dir \
+--enable-opcache
+make clean && make ZEND_EXTRA_LIBS='-liconv' 
+sudo make install
+
+编译undefined reference to `libiconv 错误
+vi Makefile
+找到下面这行：
+EXTRA_LIBS = -lcrypt ...
+在最后添加-liconv
+
+
+sudo cp  php.ini-production  /usr/local/php7/etc/php.ini 
+cd /usr/local/php7/etc
+sudo cp php-fpm.conf.default  php-fpm.conf 
+sudo cp php-fpm.d/www.conf.default  php-fpm.d/www.conf
+cd php-fpm.d
+sudo vim www.conf 
+ 把user 和 group 都改为www-data
+ 
+ vim /etc/init.d/php7
+ # Short-Description: starts php-fpm
+# Description:       starts the PHP FastCGI Process Manager daemon
+### END INIT INFO
+
+prefix=/usr/local/php7
+exec_prefix=${prefix}
+
+php_fpm_BIN=${exec_prefix}/sbin/php-fpm
+php_fpm_CONF=${prefix}/etc/php-fpm.conf
+php_fpm_PID=${prefix}/var/run/php-fpm.pid
+php_opts="--fpm-config $php_fpm_CONF --pid $php_fpm_PID"
+wait_for_pid () {
+        try=0
+
+        while test $try -lt 35 ; do
+
+                case "$1" in
+                        'created')
+                        if [ -f "$2" ] ; then
+                                try=''
+                                break
+                        fi
+                        ;;
+
+                        'removed')
+                        if [ ! -f "$2" ] ; then
+                                try=''
+                                break
+                        fi
+                        ;;
+                esac
+
+                echo -n .
+                try=`expr $try + 1`
+                sleep 1
+
+        done
+
+}
+
+case "$1" in
+ 	 start)
+                echo -n "Starting php-fpm "
+
+                $php_fpm_BIN --daemonize $php_opts
+
+                if [ "$?" != 0 ] ; then
+                        echo " failed"
+                        exit 1
+                fi
+
+                wait_for_pid created $php_fpm_PID
+
+                if [ -n "$try" ] ; then
+                        echo " failed"
+                        exit 1
+                else
+                        echo " done"
+                fi
+        ;;
+
+        stop)
+                echo -n "Gracefully shutting down php-fpm "
+
+                if [ ! -r $php_fpm_PID ] ; then
+                        echo "warning, no pid file found - php-fpm is not running ?"
+                        exit 1
+                fi
+
+                kill -QUIT `cat $php_fpm_PID`
+
+                wait_for_pid removed $php_fpm_PID
+
+                if [ -n "$try" ] ; then
+                        echo " failed. Use force-quit"
+                        exit 1
+                else
+                        echo " done"
+                fi
+        ;;
+ 
+ 		status)
+                if [ ! -r $php_fpm_PID ] ; then
+                        echo "php-fpm is stopped"
+                        exit 0
+                fi
+
+                PID=`cat $php_fpm_PID`
+                if ps -p $PID | grep -q $PID; then
+                        echo "php-fpm (pid $PID) is running..."
+                else
+                        echo "php-fpm dead but pid file exists"
+                fi
+        ;;
+
+        force-quit)
+                echo -n "Terminating php-fpm "
+
+                if [ ! -r $php_fpm_PID ] ; then
+                        echo "warning, no pid file found - php-fpm is not running ?"
+                        exit 1
+                fi
+
+                kill -TERM `cat $php_fpm_PID`
+
+                wait_for_pid removed $php_fpm_PID
+
+                if [ -n "$try" ] ; then
+                        echo " failed"
+                        exit 1
+                else
+                        echo " done"
+                fi
+        ;;
+
+ 		restart)
+                $0 stop
+                $0 start
+        ;;
+
+        reload)
+
+                echo -n "Reload service php-fpm "
+
+                if [ ! -r $php_fpm_PID ] ; then
+                        echo "warning, no pid file found - php-fpm is not running ?"
+                        exit 1
+                fi
+
+                kill -USR2 `cat $php_fpm_PID`
+
+                echo " done"
+        ;;
+
+        *)
+                echo "Usage: $0 {start|stop|force-quit|restart|reload|status}"
+                exit 1
+        ;;
+
+esac
+
+
+php扩展安装
+
+tar zxvf redis-3.0.0.tgz 
+cd redis-3.0.0
+ /usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make 
+sudo make install
+
+tar -zxvf yaf-3.0.4.tgz
+cd yaf-3.0.4
+ /usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make 
+sudo make install
+
+
+
+
+nginx配置如下：
+server {
+    listen 80 ;
+
+        root /data/www/test/public/game;
+        index index.php index.html index.htm;
+        server_name  test.localhost.com;
+        location ~ \.php$ {
+                fastcgi_pass 127.0.0.1:9000;
+                fastcgi_index index.php;
+                include fastcgi.conf;
+        }
+         location /
+        {
+             index index.php;
+              if (!-f $request_filename){
+                 rewrite (.*) /index.php;
+              }
+              try_files $uri $uri/ /index.html;
+         }
+         location /attachs/ {
+            proxy_pass http://127.0.0.1:8090/;
+          }
+          location /static/ {
+            proxy_pass http://127.0.0.1:8092/;
+          }
+}
+
+server
+{
+   server_name  a.test.localhost.com;
+   index  index.php index.html index.htm;
+   root  /data/www/test/public/admin/;
+
+   location ~ .*\.(php|php5)?$
+   {
+     fastcgi_pass  127.0.0.1:9000;
+     fastcgi_index index.php;
+     include fastcgi.conf;
+   }
+
+	   location /
+	   {
+	       index index.php;
+	       if (!-f $request_filename){
+	           rewrite (.*) /index.php;
+	        }
+	        try_files $uri $uri/ /index.html;
+	   }
+
+	   location /attachs/game/ {
+	       proxy_pass http://127.0.0.1:8091/;
+	   }
+	   location /static/ {
+	       proxy_pass http://127.0.0.1:8092/;
+	   }
+	  location ~ .*\.(js|css)?$
+	    {
+	        expires      1d;
+	        access_log off;
+	    }
+}
+
+server
+{
+  listen   8091;
+  server_name  127.0.0.1;
+  index  index.php index.html index.htm;
+  root /data/www/trunk/attachs/game/attachs/;
+
+  expires    modified +24h;
+ location ~ .*\.(jpg|jpeg)$
+  {
+       
+       #if (-f $request_filename.webp) { set $webp "exist"; }
+       #if ($http_accept ~* "webp") { set $webp "${webp}-rwebp"; }
+      # if ($http_user_agent ~ (Android\s4|Chrome|Opera)) { set $webp "${webp}-allow"; }
+       #if ($webp ~ (exist-rwebp|exist-allow|exist-rwebp-allow)) {rewrite (.*) $1.webp break;}
+  }
+
+}
+
+
+server
+  {
+    listen 8092;
+    server_name 127.0.0.1;
+    #server_name  assets.test.localhost.com;
+    index  index.php index.html index.htm;
+    root /data/www/test/public/static/;
+
+
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+    {
+      expires 30d;
+    }
+
+    location ~ .*\.(js|css)$
+    {
+       expires 30d;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

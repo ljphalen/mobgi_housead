@@ -1,0 +1,261 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link media="screen" href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath;?>/css/jquery.datetimepicker.css" >
+<script type="text/javascript" src="<?php echo $staticPath;?>/js/admin/jquery.datetimepicker.full.min.js"></script>
+ <script>
+        $(function(){
+            $.datetimepicker.setLocale('ch');
+            $('.datetimepicker').datetimepicker({
+                dayOfWeekStart : 0,
+                format:'Y-m-d H:i',
+                defaultTime:'10:00',
+            });
+        })
+ </script>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $adsListUrl;?>">API广告商列表</a></li>
+        <li ><a href="<?php echo $manageLog;?>">操作记录</a></li>
+        <li ><a href="<?php echo $informUrl;?>">公告管理</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="<?php echo $listUrl;?>" method="GET">
+                <span>
+                    <label class="ig_label">搜索：</label>
+                     <input type="text" class="iText" name='ads_id'  value='<?php echo $search['ads_id'] ;?>' placeholder="可输入广告商查询" />
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+       
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>广告商名称</th>
+                            <th>是否国外广告商</th>
+                            <th>是否允许重导</th>
+                            <th>备注</th>
+                            <th>限制重导时间</th>
+                            <th>脚本运行周期</th>
+                            <th>脚本开关</th>
+                            <th>下次运行时间<span style="color:red">(下次运行时间是指能跑出数据的日期)</span> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($adsList as $k1=>$value){
+                                echo "<tr><td class='blue'>".$value['identifier']."</td>";
+                                echo "<td id='ads-".$value['identifier']."'>".(empty($value['is_foreign'])?"否":"是")."</td>";
+                                if($value['is_reload']){
+                                echo "<td><a href='#' class='is_reload' data='1|".$value['identifier']."' style='color:red;'>是</a>";
+                                    echo "<a href='#' class='is_reload' data='0|".$value['identifier']."'  style='margin-left:20px;'>否</a></td>";
+                                }else{
+                                echo "<td><a href='#' class='is_reload' data='1|".$value['identifier']."' >是</a>";
+                                    echo "<a href='#' class='is_reload' data='0|".$value['identifier']."' style='color:red; margin-left: 20px;'>否</a></td>";
+                                }
+                                echo "<td><a class='detail' data='".$value['identifier']."' detail='".$value['remark']."'>点击查看</a></td>";
+                                echo "<td><a href='#' class='time_limit' data='".$value['identifier']."'>".$value['time_limit']."</a></td>";
+                                echo "<td><a href='#' class='period' data='".$value['identifier']."'>".$value['period']."</a></td>";
+                                if($value['status']){
+                                    echo "<td><a href='#' class='status' data='1|".$value['identifier']."' style='color:red;'>开</a>";
+                                    echo "<a href='#' class='status' data='0|".$value['identifier']."'  style='margin-left:20px;'>关</a></td>";
+                                }else{
+                                    echo "<td><a href='#' class='status' data='1|".$value['identifier']."' >开</a>";
+                                    echo "<a href='#' class='status' data='0|".$value['identifier']."' style='color:red; margin-left: 20px;'>关</a></td>";
+                                }
+                                echo "<td><input type='text' class='datetimepicker' data='".$value['identifier']."' name='next_time' value='".$value['next_time']."'>
+                                    <button class='ta_btn change_next_time' data='".$value['identifier']."' style='visibility:hidden;'>重设</button>
+                                    <button class='ta_btn change_next_time_del' data='".$value['identifier']."' style='visibility:hidden;'>清除数据并重设</button>
+                                </td>";
+                                echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+  </div>
+    <script>
+        $(function(){
+            $('.reload').bind('click',function(){
+                var _this = $(this);
+                var _all = _this.parent().prevAll();
+                $(_all).each(function(e){
+                    if($(this).attr('class')){
+                        var temp_text = $(this).val();
+                        var temp_name = $(this).attr('class');
+                        $(this).text('');
+                        $("<input type='text' name='"+temp_name+"' value='"+temp_text+"' style='width:65px;border:1px solid #b3b3b3;border-radius: 5px;'>").appendTo($(this));
+                    }
+                })
+                _this.val('设置完毕');
+                _this.addClass('check').removeClass('reload');
+            });
+            $('.datetimepicker').bind('click',function () {
+                $(this).nextAll().css('visibility','visible');
+            })
+
+            //确认修改时间
+            $('.change_next_time').bind('click',function(){
+                params = {
+                    identifier:$(this).attr('data'),
+                    nexttime :$(this).prev().val(),
+                    type:'changenexttime',
+                }
+                $.get("/Admin/Data_ThirdApi/update_reload", params, function(result){
+                    if (result.errorCode == 1){
+                        location.reload();
+                    }else{
+                        alert(result.msg);
+                    }
+                },'json');
+            })
+
+            //修改重导时间并清除数据
+            $('.change_next_time_del').bind('click',function(){
+                params = {
+                    identifier:$(this).attr('data'),
+                    nexttime :$(this).prev().prev().val(),
+                    type:'changenexttimedel',
+                }
+                $.get("/Admin/Data_ThirdApi/update_reload", params, function(result){
+                    if (result.errorCode == 1){
+                        location.reload();
+                    }else{
+                        alert(result.msg);
+                    }
+                },'json');
+            })
+
+            //备注
+            $(".detail").live("click",function(){
+                var identifier = $(this).attr("data");
+                layer.prompt({
+                    formType: 2,
+                    title: '备注详情',
+                    value:$(this).attr("detail"),
+                }, function(val){
+                    if(val !== ''){
+                        var params = {
+                            identifier : identifier,
+                            remark : val,
+                            type:'msg',
+                        };
+                        $.get("/Admin/Data_ThirdApi/update_reload", params, function(result){
+                            if (result.errorCode == 1){
+                                alert("更新成功");
+                                layer.closeAll();
+                                window.location.reload();
+                            }else{
+                                alert("更新失败");
+                                layer.closeAll();
+                            }
+                        },'json');
+                    }
+                });
+            });
+
+            //允许重导开关
+            $('.is_reload').bind('click',function(){
+                var _this = $(this);
+                var _data = _this.attr('data');
+                params = {
+                    data : _data,
+                    type:'reload',
+                }
+                $.get("/Admin/Data_ThirdApi/update_reload", params, function(result){
+                    if (result.errorCode == 1){
+                        _this.removeClass("red");
+                        location.reload();
+                    }else{
+                        alert("更新失败");
+                    }
+                },'json');
+            })
+
+            //修改脚本状态
+            $('.status').bind('click',function(){
+                var _this = $(this);
+                var _data = _this.attr('data');
+                params = {
+                    data : _data,
+                    type:'status',
+                }
+                $.get("/Admin/Data_ThirdApi/update_reload", params, function(result){
+                    if (result.errorCode == 1){
+                        _this.removeClass("red");
+                        location.reload();
+                    }else{
+                        alert("更新失败");
+                    }
+                },'json');
+            })
+
+            //修改限制时间
+            $('.time_limit').bind('click',function(){
+                var identifier = $(this).attr("data");
+                var detail = $(this).text();
+                layer.prompt({
+                    type: 5,
+                    title: '设置限制天数',
+                    value:detail,
+                }, function(val){
+                    if(val !== ''){
+                        var params = {
+                            identifier : identifier,
+                            time_limit : val,
+                            type:'time',
+                        };
+                        $.get("/Admin/Data_ThirdApi/update_reload", params, function(result){
+                            if (result.errorCode == 1){
+                                alert("更新成功");
+                                layer.closeAll();
+                                window.location.reload();
+                            }else{
+                                alert("更新失败");
+                                layer.closeAll();
+                            }
+                        },'json');
+                    }
+                });
+            })
+
+            //修改周期
+            $('.period').bind('click',function(){
+                var identifier = $(this).attr("data");
+                var detail = $(this).text();
+                layer.prompt({
+                    type: 5,
+                    title: '设置脚本运行周期',
+                    value:detail,
+                }, function(val){
+                    if(val !== ''){
+                        var params = {
+                            identifier : identifier,
+                            period : val,
+                            type:'period',
+                        };
+                        $.get("/Admin/Data_ThirdApi/update_reload", params, function(result){
+                            if (result.errorCode == 1){
+                                alert("更新成功");
+                                layer.closeAll();
+                                window.location.reload();
+                            }else{
+                                alert("更新失败");
+                                layer.closeAll();
+                            }
+                        },'json');
+                    }
+                });
+            })
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

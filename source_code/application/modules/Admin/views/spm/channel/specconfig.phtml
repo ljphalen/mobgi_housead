@@ -1,0 +1,293 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<style>
+    .layui-tab-content{
+        position:static;
+    }
+    .layui-table{
+        width: 75%;
+    }
+</style>
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>素材规格配置</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <form class="layui-form">
+                    <!-- 基本信息 begin -->
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>基本信息:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">渠道组名称</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="group_id" id="group_id" value="<?php echo $channelGroup['id']; ?>" />
+                                <input type="text" readonly name="name" placeholder="" value="<?php echo $channelGroup['name']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>支持创意规格:</p></div>
+                    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                        <ul class="layui-tab-title">
+                            <li lay-id="1" class="layui-this">视频</li>
+                            <li lay-id="2">图片</li>
+                            <li lay-id="3">文字</li>
+                        </ul>
+                        <div class="layui-tab-content " id="lists">
+                            <div class="layui-tab-item layui-show">
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="150">
+                                        <col width="200">
+                                        <col>
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>序列</th>
+                                        <th>宽度(px)</th>
+                                        <th>高度(px)</th>
+                                        <th>最小时长(s)</th>
+                                        <th>最大时长(s)</th>
+                                        <th>视频大小限制(mb)</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if(!empty($configs[1])){
+                                    foreach ($configs[1] as $key=>$val){?>
+                                    <tr>
+                                        <td><input class="layui-input" type="text" name="id-1[]" readonly value="<?php echo $val['id'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="width-1[]" value="<?php echo $val['width'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="height-1[]" value="<?php echo $val['height'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="min_time-1[]" value="<?php echo $val['min_time'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="max_time-1[]" value="<?php echo $val['max_time'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="size-1[]" value="<?php echo $val['size'];?>"></td>
+                                        <td><a class="layui-btn delete" data-id="<?php echo $val['id'];?>"><i class="layui-icon"></i></a></td>
+                                    </tr>
+                                    <?php }}?>
+                                    </tbody>
+                                </table>
+                                <a class="layui-btn add" data-type = '1'><i class="layui-icon"></i>添加</a>
+                            </div>
+                            <div class="layui-tab-item">
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="150">
+                                        <col width="200">
+                                        <col>
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>序列</th>
+                                        <th>宽度(px)</th>
+                                        <th>高度(px)</th>
+                                        <th>图片大小限制(mb)</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if(!empty($configs[2])){
+                                    foreach ($configs[2] as $key=>$val){?>
+                                    <tr>
+                                        <td><input class="layui-input" type="text" name="id-2[]" readonly value="<?php echo $val['id'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="width-2[]" value="<?php echo $val['width'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="height-2[]" value="<?php echo $val['height'];?>"></td>
+                                        <td><input class="layui-input" type="text" name="size-2[]" value="<?php echo $val['size'];?>"></td>
+                                        <td><a class="layui-btn delete" data-id="<?php echo $val['id'];?>"><i class="layui-icon"></i></a></td>
+                                    </tr>
+                                    <?php }}?>
+                                    </tbody>
+                                </table>
+                                <a class="layui-btn add" data-type = '2'><i class="layui-icon"></i>添加</a>
+                            </div>
+                            <div class="layui-tab-item">
+                                <table class="layui-table">
+                                    <colgroup>
+                                        <col width="150">
+                                        <col width="200">
+                                        <col>
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>序列</th>
+                                        <th>最小字数</th>
+                                        <th>最大字数</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                    if(!empty($configs[3])){
+                                        foreach ($configs[3] as $key=>$val){?>
+                                            <tr>
+                                                <td><input class="layui-input" type="text" name="id-3[]" readonly value="<?php echo $val['id'];?>"></td>
+                                                <td><input class="layui-input" type="text" name="max-3[]" value="<?php echo $val['max'];?>"></td>
+                                                <td><input class="layui-input" type="text" name="min-3[]" value="<?php echo $val['min'];?>"></td>
+                                                <td><a class="layui-btn delete" data-id="<?php echo $val['id'];?>"><i class="layui-icon"></i></a></td>
+                                            </tr>
+                                        <?php }}?>
+                                    </tbody>
+                                </table>
+                                <a class="layui-btn add" data-type = '3'><i class="layui-icon"></i>添加</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                            <button id="cancel" type="reset" class="layui-btn ayui-btn-normal">返回</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end  -->
+          
+
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接 */
+var addChannelGroupPostUrl = baseurl + '<?php echo $addChannelGroupPostUrl; ?>'; // 提交表单
+var callbackUrl = baseurl + '<?php echo $groupUrl; ?>'; // 列表页面
+var getChannelByGroupIdUrl = baseurl + '<?php echo $getChannelByGroupIdUrl; ?>'; // 渠道列表
+
+/* 页面参数 */
+var channelGroupId = '<?php echo $channelGroup['id']; ?>';
+
+//JavaScript代码区域
+layui.use(['element','form','table'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+
+
+
+
+    //表单提交
+    form.on('submit(submit_form)', function(data){
+        data.field.token = token;
+//        console.log(data.field);
+//        return false;
+        $.ajax({
+            url : 'addSpec',
+            async: false,
+            data : data.field,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.msg(data.msg);
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.reload();
+                    },500);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+        return false;
+    });
+
+    // 取消
+    $("#cancel").click(function(){
+        window.location.href = callbackUrl;
+    });
+
+    $('.delete').click(function () {
+        var id = $(this).attr('data-id');
+        layer.confirm('是否确认删除', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : 'delSpec',
+                async: false,
+                data : {id:id},
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    window.location.reload();
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+        })
+    });
+
+    $('.add').click(function(){
+        var type = $(this).attr('data-type');
+        var gid = $('#group_id').val();
+        initCommonTable($(this),type);
+        //window.location = 'addSpec?type='+type+'&group_id='+gid
+    });
+
+    $('#lists').delegate('.delete-line','click',function () {
+        $(this).parent().parent().remove();
+    });
+
+    function initCommonTable(that,type){
+        var t = that.parent().find(".layui-table tbody");
+        var temp = '',tr='';
+        if(type==1){
+            tr = `<td><input class="layui-input" readonly type="text" name="id-1[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="width-1[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="height-1[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="min_time-1[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="max_time-1[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="size-1[]" value="0"  /></td>`;
+        }else if(type==2){
+            tr = `<td><input class="layui-input" readonly type="text" name="id-2[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="width-2[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="height-2[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="size-2[]" value="0"  /></td>`;
+        }else if(type==3){
+            tr = `<td><input class="layui-input" readonly type="text" name="id-3[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="max-3[]" value="0"  /></td>
+            <td><input class="layui-input" type="text" name="min-3[]" value="0"  /></td>`;
+        }
+        var content = `<tr>
+            `+tr+`
+                        <td>
+                            <a class="layui-btn delete-line" >删除</a>
+                        </td>
+                    </tr>`
+        t.append(content);
+       // renderLayuiForm(); // 重新渲染form
+    }
+
+
+    //重新渲染form
+    function renderLayuiForm(){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+});
+
+</script>
+</body>
+</html>
+      

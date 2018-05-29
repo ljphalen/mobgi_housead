@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>《梦幻花园》手游</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="shortcut icon" href="images/icon.png">
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script>
+          var oMeta = document.createElement('meta');
+          oMeta.name = 'viewport';
+          var scale = window.screen.width/640;
+          //console.log(scale)
+          oMeta.content = 'width=device-width, initial-scale='+scale+',maximum-scale='+scale+',minimum-scale='+scale;
+          document.getElementsByTagName('head')[0].appendChild(oMeta);
+    </script>
+    <style>
+
+        /*设置IOS页面长按不可复制粘贴，但是IOS上出现input、textarea不能输入，因此将使用-webkit-user-select:auto;*/
+        *{
+            -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+            -webkit-user-select:none; /*webkit浏览器*/
+            -khtml-user-select:none; /*早期浏览器*/
+            -moz-user-select:none;/*火狐*/
+            -ms-user-select:none; /*IE10*/
+            user-select:none;
+        }
+        input,textarea {
+            -webkit-user-select:auto; /*webkit浏览器*/
+            margin: 0px;
+            padding: 0px;
+            outline: none;
+        }
+        img{ vertical-align: top;}
+        a,input,button{ -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-appearance : none ;  border-radius: none;   }
+        html,body{ position: relative; width: 100%; height: 100%;  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;  }
+        html,body{ overflow-x: hidden;}
+        .wrap{ position: relative;  width: 640px; height: 100%; overflow: hidden;  }
+        .header{ position:absolute; z-index: 99; height: 117px; width:640px;  }
+        .header i{ position: relative; z-index: 100; float:left; display: inline-block; width: 96px; height:96px; margin: 12px 11px 0 16px;    }
+        .header i img{ width: 96px; height:96px; }
+        .head-info{ position: relative; z-index: 100; float:left; height:100%; }
+        .head-title{ color:#fff; font-size: 22px; margin: 24px 0 6px 0;}
+        .head-description{ color:#fff; font-size: 16px; height: 30px; line-height: 30px; }
+        .head-grade{ overflow: hidden;  }
+        .head-grade span{ float:left; color:#fff; font-size: 16px;}
+        .head-grade ul{ float:left; padding: 2px 5px 0 0 ;} 
+        .head-grade ul li{ float:left; margin:0 0 0 5px; }
+        .mask-head{ position: absolute; z-index: 99; width: 100%; height: 100%;  background: #043a4d; filter:alpha(opacity=31); -moz-opacity:0.3; -khtml-opacity:0.3; -webkit-opacity:0.3; opacity:0.3;  }
+        .all-star{ width: 17px; height: 16px; background:url('images/star.png') no-repeat; background-size:17px 16px; }
+        .half-star{ width: 17px; height: 16px; background:url('images/half-star.png') no-repeat; background-size:17px 16px;}
+        .head-download{ position: relative; z-index: 100; float:right; display: inline-block; margin:23px 16px 0 0; cursor: pointer; }
+        .head-download img{  width: 162px; height: 64px; }
+        .main{ height: 100%; overflow-x: hidden; overflow-y: auto;   }
+        .pic-wrap{  position: relative; z-index: 2; width: 100%; }
+        .pic-wrap img{ width: 100%; }
+        .slider-wrap{ position: relative; z-index: 2; width: 100%; }
+
+        .swiper-container {
+            position:absolute; z-index: 3;
+            left:0; top:190px;
+            width: 640px;
+            padding-bottom: 50px;
+            
+        }
+        .swiper-slide {
+            background-position: center center;
+            background-size: cover;
+            width: 320px;
+            height: 571px;
+        }
+        .swiper-pagination-bullet{
+            width: 12px; height: 12px; background: #6892af; 
+        }
+        .swiper-pagination-bullet-active{  background: #fff;  }
+
+        .down-banner{ position: relative; z-index: 2; width: 100%; }
+        .banner-download{ display: inline-block; position: absolute; z-index: 3; left:50%; bottom:155px; width: 313px; height: 112px; margin-left:-156.5px;  }
+        .banner-download img{  width: 313px; height: 112px; }
+        .copyright{ position: absolute; z-index:3; left:0; bottom:40px; width: 100%; color:#fff; text-align: center; font-size: 18px; line-height:22px;   }
+        .footer_icon{ position: absolute; z-index:3; left:0; bottom:0;  }
+        .video_el{ position: absolute; z-index: 4; left:50%; top:115px; margin-left:-287px;  }
+        .d2{ position: absolute; z-index:5; display: block; left:50%; bottom:120px; width: 275px; height:123px; margin-left:-137.5px;   }
+        .d2 img{  }
+
+
+        .content-text{ position: absolute; z-index: 5; width: 100%; left:0; top:480px;    }
+        .ct-wrap{ box-sizing: border-box; padding: 0 27px; width: 100%; margin-bottom: 30px;   }
+        .ct-title{ width: 100%; font-size: 24px; color:#003850; font-weight: bold; line-height: 40px;   }
+        .ct-description{ box-sizing: border-box; padding: 0 10px; width: 100%; font-size:24px; color:#003850; line-height: 40px;  }
+        .ct-content{ box-sizing: border-box; padding: 0 10px;  width: 100%; font-size:20px; color:#003850; line-height: 36px;}
+        .ct-ps{ box-sizing: border-box; padding: 0 37px;  width: 100%; font-size:20px; color:#003850;  }
+
+    </style>
+</head>
+<body>
+      <div id="wrap" class="wrap">
+           <header class="header">
+                <div class="mask-head"></div>
+                <i><img src="images/icon.png" /></i>  
+                <div class="head-info">
+                     <p class="head-title">梦幻花园</p>
+                     
+                     <div class="head-grade">
+                         <span>推荐指数:</span>
+                         <ul>
+                             <li class="all-star"></li>
+                             <li class="all-star"></li>
+                             <li class="all-star"></li>
+                             <li class="all-star"></li>
+                             <li class="half-star"></li>
+                         </ul>
+                         <span>4.9分</span>
+                     </div>
+                     <p class="head-description">下载人数：185万下载</p>
+                </div>
+                <a class="head-download download" href=""><img src="images/d1.png" /></a>    
+           </header>
+           <div class="main">
+               <section class="pic-wrap"><img src="images/bg1.jpg" /> </section>
+               <!--  slider begin  -->
+               <div class="slider-wrap">
+                    <section class="pic-wrap"><img src="images/bg2.jpg" /> </section>
+                    <video class="video_el" width="574" height="325" poster="images/video.jpg"  preload="none" controls="controls"> 
+                        <source src="https://dl2.gxpan.cn/ad/delivery/201709/59b24a651638e.mp4" />
+                    </video>
+
+                    <div class="content-text">
+                         <div class="ct-wrap">
+                                <p class="ct-title">【活动内容】</p>
+                                <p class="ct-description">体验游戏到10级即可参与抽奖</p>
+                         </div>
+                         <div class="ct-wrap">
+                                <p class="ct-title">【活动奖品】</p>
+                                <p class="ct-content">一等奖：酷派M7手机*1</p>
+                                <p class="ct-content">二等奖：500元京东卡*2</p>
+                                <p class="ct-content">三等奖：50元京东卡*10</p>
+                                <p class="ct-content">三等奖：50元京东卡*10</p>
+                                <p class="ct-content">四等奖：游戏周边*10</p>
+                         </div>
+                         <p class="ct-ps">PS：具体活动内容请到酷派应用商店/游戏中心查看。</p>
+                    </div>
+                     
+
+                    <a class="d2 download" href=""><img src="images/d2.png" alt="" /></a>
+                    <p class="copyright">
+                            Copyright©2009-2017 深圳市创梦天地科技股份有限公司版权所有 <br>
+                            粤ICP备11018438号 粤网文【2016】6781-1632号
+                    </p>
+                    <img class="footer_icon" src="images/footer_icon.png" alt="" />
+               </div>
+               <!--  slider end   -->  
+            </div>
+            
+      </div>
+</body>
+</html>
+<script>
+    (function(){
+        // 判断是否为pc
+        var os = function() {  
+            var ua = navigator.userAgent,  
+            isWindowsPhone = /(?:Windows Phone)/.test(ua),  
+            isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,   
+            isAndroid = /(?:Android)/.test(ua),   
+            isFireFox = /(?:Firefox)/.test(ua),   
+            isChrome = /(?:Chrome|CriOS)/.test(ua),  
+            isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),  
+            isPhone = /(?:iPhone)/.test(ua) && !isTablet,  
+            isPc = !isPhone && !isAndroid && !isSymbian;  
+            return {  
+                isTablet: isTablet,  
+                isPhone: isPhone,  
+                isAndroid : isAndroid,  
+                isPc : isPc  
+            };  
+        }(); 
+        
+
+        if(os.isPc && !os.isTablet){
+            document.getElementById("wrap").style.margin = 'auto';
+        };
+
+        function getQueryString(name) { 
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+            var r = window.location.search.substr(1).match(reg); 
+            if (r != null) return unescape(r[2]); return null; 
+        } 
+        
+        var id = getQueryString('id');
+        $.ajax({
+            url :'http://hunterdev.admin.mobgi.com/api/Landingpage/getTemplateData?id='+id,
+            async:false,
+            data : '',
+            type : 'post',
+            dataType : 'jsonp',
+            jsonp : 'callback',
+            success:function(data){
+                $('.download').attr('href',data.url);
+            },
+            error :function(xhr,msg,e){
+                console.log(xhr+", "+msg+", "+e);
+            }
+        });
+
+    })();
+
+</script>

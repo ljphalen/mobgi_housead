@@ -1,0 +1,17 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2014-9-16, 12:35:28
+    Author     : hunter.fang
+*/
+
+.onfbk{background:url("img/btn_bk.png") no-repeat;font-size:12px;width:72px;height:20px;margin:0 auto;line-height: 20px;}
+.onfbk div{display:inline-block;*display:inline;*zoom:1;}
+.onfbk .aon,.onfbk .aoff{width:36px;text-align:center;display:inline-block;padding:0}
+.onfbk .aon{float:left}
+.onfbk .aoff{float:right}
+.onfbk .cur{background:url("img/choose_bk.png") no-repeat 0 1px;}
+.onfbk a{color:#ffffff;text-decoration:none;overflow:hide}

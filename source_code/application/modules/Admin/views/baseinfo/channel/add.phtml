@@ -1,0 +1,104 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+<div class="layui-tab layui-tab-brief">
+        <ul class="layui-tab-title">
+            <li ><a href="<?php echo $listUrl;?>">渠道列表</a></li>
+            <li class="layui-this"><a href="<?php echo $addUrl;?>">添加渠道列表</a></li>
+        </ul>
+    </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap"  style="width:1000px;">
+        <form class="layui-form" >
+            <input type="hidden" name="id" value="<?php echo $channelInfo['id'];?>">
+            <input type="hidden" name="token" value="<?php echo $token;?>">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:120px;">渠道分组</label>
+                <div class="layui-input-inline">
+                    <select id="group_id"  name="group_id" >
+                        <?php foreach($channelGroupList as $k1=>$v1){?>
+                        <option value="<?php echo $k1; ?>"  <?php if( $channelInfo['group_id']==$k1 ){ ?> selected <?php } ?> ><?php echo $v1['channel_name']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:120px;">渠道号</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $channelInfo['channel_id']; ?>" name="channel_id" placeholder="" autocomplete="off" class="layui-input" lay-verify="required" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:120px;">渠道名</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $channelInfo['channel_name']; ?>" name="channel_name" placeholder="" autocomplete="off" class="layui-input" lay-verify="required" >
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:120px;">是否定制渠道</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="is_custom" value="1" title="是" <?php if($channelInfo['is_custom'] == 1){?> checked <?php }?>>
+                    <input type="radio" name="is_custom" value="0" title="否" <?php if($channelInfo['is_custom'] == 0){?> checked <?php }?>>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:120px;" >是否配置验证渠道</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="is_check_config" value="1" title="是" <?php if($channelInfo['is_check_config'] == 1){?> checked <?php }?>>
+                    <input type="radio" name="is_check_config" value="0" title="否" <?php if($channelInfo['is_check_config'] == 0){?> checked <?php }?>>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" lay-submit lay-filter="submit_save">确定</button>
+                    <button type="reset" class="layui-btn layui-btn-primary goback" >取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+var listUrl = baseurl + '<?php echo $listUrl;?>'; // 渠道列表
+var addPostUrl = baseurl + '<?php echo $addPostUrl; ?>'; //  编辑提交
+
+var group_id = getQueryString('group_id');
+var channel_id = getQueryString('channel_id');
+var channel_name = getQueryString('channel_name');
+var page = getQueryString('page');
+
+layui.use(['form','element'], function(){
+    var element = layui.element;
+    var form = layui.form;
+
+    // 确定 ：表单提交   
+    form.on('submit(submit_save)', function(data){
+        var index = layer.load(1);
+        $.ajax({
+            url : addPostUrl,
+            async: false,
+            data : data.field,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.close(index);
+                layer.msg(data.msg); 
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.href = listUrl +"?group_id=" + group_id + "&channel_id="+channel_id+"&channel_name="+channel_name+"&page="+page;
+                    },500);
+                }  
+            },
+            error:function(xhr,msg,e){
+                layer.close(index);
+                layer.msg(msg); 
+            }
+        }); 
+        return false;
+    });
+});
+
+// 返回
+$(".goback").click(function(){
+    window.location.href = listUrl + "?group_id=" + group_id + "&channel_id="+channel_id+"&channel_name="+channel_name+"&page="+page;
+});
+</script>

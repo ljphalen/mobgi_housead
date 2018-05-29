@@ -1,0 +1,718 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml"); ?>
+    <div class="colMain">
+        <div class="title">
+            <p class="fl">
+                新建广告活动: <span class="solid_circle">基本信息</span>－－－－－ <span class="solid_circle">上传创意</span>－－－－－ <span
+                        class="hollow_circle">选择定向</span>－－－－－ <span class="hollow_circle_gray">预览并提交</span>
+            </p>
+        </div>
+        <div class="main">
+            <div class="fr app-detail ml20 p20 mb20">
+                <p class="mb20">预计覆盖用户数</p>
+                <p class="mb20">50,000,000人</p>
+                <p class="mb20">预计日最大曝光量</p>
+                <p class="mb20">50,000,000人</p>
+                <p class="mb20">
+                    <a onclick="showDiv('saveDirectConfig', 'show')">保存当前定向条件</a>
+                </p>
+                <div class="mb20" id="saveDirectConfig" style="display: none;">
+                    <span>定向名称</span> <span class="fc"> <input name="direct_name" type="text" value="" class="iText ">
+                </span> <span class="fc"> <input name="saveButton" type="button" value="保存"
+                                                 onclick="javascript:saveDirectConfig();" class="btn">
+                </span>
+                    <ul id="saveDirectContent">
+                    </ul>
+                </div>
+                <div class="mb20">
+                    <span>使用已有定向</span> <span class="fc"> <select id="directSelect" name="directSelect" class="select">
+                        <option value="" selected="">请选择</option>
+							<?php foreach ($direcList as $key => $val) { ?>
+                                <option value="<?php echo $key; ?>"><?php echo $val['direct_name']; ?></option>
+							<?php } ?>
+                                       </select>
+                </span> <span class="fc"> <input name="saveButton" type="button" value="应用"
+                                                 onclick="javascript:getDirectConfig();" class="btn2">
+                </span>
+                </div>
+            </div>
+            <div class="app-detail">
+                <form action="<?php echo $addAdStep3PostUrl; ?>" method="POST" id="addFrom">
+                    <input name="token" value="<?php echo $token; ?>" type="hidden"/>
+                    <input type="hidden" name="id" value='<?php echo $result['id']; ?>'/>
+                    <input type="hidden" name="direct_id" value='<?php echo $result['direct_id']; ?>'/>
+                    <ul class="form" id="directContent">
+
+                        <li><span class="label">区域定向：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="area_type" class="radio"
+                                                    onclick="showDiv('area_range', 'hide');" <?php echo $result['area_type'] == 0 ? 'checked=checked' : ''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="area_type" class="radio"
+                                                    onclick="showDiv('area_range', 'show');" <?php echo $result['area_type'] == 1 ? 'checked=checked' : ''; ?>>定向</label></span>
+                            </div>
+                            <div style="width:960px; <?php echo $result['area_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="area_range">
+                                <div style="margin-left: 180px;" id="Areabox" class="treecheckbox">选择渠道</div>
+                                <div class="box_selected" data-name="area_range">
+									<?php if ($result['area_type']) { ?>
+										<?php foreach ($result['area_range'] as $val) { ?>
+                                            <input type="hidden" value="<?php echo $val['id'] ?>"
+                                                   data-level="<?php echo $val['level'] ?>" />
+										<?php } ?>
+									<?php } ?>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li><span class="label">年龄：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="age_direct_type" class="radio"
+                                             onclick="showDiv('age_direct_range', 'hide');" <?php echo $result['age_direct_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="age_direct_type0"> </span> <label for="age_direct_type0">不限</label>
+                                <span><input type="radio" value="1" name="age_direct_type" class="radio"
+                                             onclick="showDiv('age_direct_range', 'show');" <?php echo $result['age_direct_type'] == 1 ? 'checked=checked' : ''; ?>
+                                             id="age_direct_type1"></span><label for="age_direct_type1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['age_direct_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="age_direct_range">
+								<?php foreach ($ageDirectList as $key => $val) { ?>
+                                    <label><p style="float: left; width: 100px; height: 30px;">
+                                            <input name="age_direct_range[]" type="checkbox"
+                                                   value="<?php echo $key; ?>" <?php echo ($result['age_direct_range'] && in_array($key, $result['age_direct_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                        </p></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">性别：</span>
+                            <div class="fc">
+								<?php foreach ($sexTypeList as $key => $val) { ?>
+                                    <span><input type="radio" value="<?php echo $key; ?>" name="sex_direct_type"
+                                                 class="radio" <?php echo $result['sex_direct_type'] == $key ? 'checked=checked' : ''; ?>
+                                                 id="sex_direct_type<?php echo $key; ?>"></span><label
+                                            for="sex_direct_type<?php echo $key; ?>"><?php echo $val; ?></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">操作系统：</span>
+                            <div class="fc">
+								<?php foreach ($osTypeList as $key => $val) { ?>
+                                    <span><input type="radio" value="<?php echo $key; ?>" name="os_direct_type"
+                                                 class="radio" <?php echo $result['os_direct_type'] == $key ? 'checked=checked' : ''; ?>
+                                                 id="os_direct_type<?php echo $key; ?>"></span><label
+                                            for="os_direct_type<?php echo $key; ?>"><?php echo $val; ?></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">网络环境：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="network_direct_type" class="radio"
+                                             onclick="showDiv('network_direct_range', 'hide');" <?php echo $result['network_direct_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="network_direct_type0"> </span> <label
+                                        for="network_direct_type0">不限</label> <span><input type="radio" value="1"
+                                                                                           name="network_direct_type"
+                                                                                           class="radio"
+                                                                                           onclick="showDiv('network_direct_range', 'show');" <?php echo $result['network_direct_type'] == 1 ? 'checked=checked' : ''; ?>
+                                                                                           id="network_direct_type1"> </span>
+                                <label for="network_direct_type1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['network_direct_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="network_direct_range">
+								<?php foreach ($netWorkList as $key => $val) { ?>
+                                    <label><p style="float: left; width: 100px; height: 30px;">
+                                            <input name="network_direct_range[]" type="checkbox"
+                                                   value="<?php echo $key; ?>" <?php echo ($result['network_direct_range'] && in_array($key, $result['network_direct_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                        </p></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">运营商：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="operator_direct_type" class="radio"
+                                             onclick="showDiv('operator_direct_range', 'hide');" <?php echo $result['operator_direct_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="operator_direct_type0"> </span> <label
+                                        for="operator_direct_type0">不限</label> <span><input type="radio" value="1"
+                                                                                            name="operator_direct_type"
+                                                                                            class="radio"
+                                                                                            onclick="showDiv('operator_direct_range', 'show');" <?php echo $result['operator_direct_type'] == 1 ? 'checked=checked' : ''; ?>
+                                                                                            id="operator_direct_type1"> </span>
+                                <label for="operator_direct_type1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['operator_direct_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="operator_direct_range">
+								<?php foreach ($operatorList as $key => $val) { ?>
+                                    <label><p style="float: left; width: 100px; height: 30px;">
+                                            <input name="operator_direct_range[]" type="checkbox"
+                                                   value="<?php echo $key; ?>" <?php echo ($result['operator_direct_range'] && in_array($key, $result['operator_direct_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                        </p></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">手机品牌：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="brand_direct_type" class="radio"
+                                             onclick="showDiv('brand_direct_range', 'hide');" <?php echo $result['brand_direct_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="brand_direct_type0"> </span> <label for="brand_direct_type0">不限</label>
+                                <span><input type="radio" value="1" name="brand_direct_type" class="radio"
+                                             onclick="showDiv('brand_direct_range', 'show');" <?php echo $result['brand_direct_type'] == 1 ? 'checked=checked' : ''; ?>
+                                             id="brand_direct_type1"> </span> <label for="brand_direct_type1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['brand_direct_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="brand_direct_range">
+								<?php foreach ($ostypeBrandList as $ostype => $brandListItem) { ?>
+									<?php foreach ($brandListItem as $key => $val) { ?>
+                                        <label><p style="float: left; width: 100px; height: 30px;"
+                                                  ostype="<?php echo $ostype ?>">
+                                                <input name="brand_direct_range[]" type="checkbox"
+                                                       value="<?php echo $key; ?>" <?php echo ($result['brand_direct_range'] && in_array($key, $result['brand_direct_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                            </p></label>
+									<?php } ?>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li class="line"></li>
+                        <li><span class="label">屏幕大小：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="screen_direct_type" class="radio"
+                                             onclick="showDiv('screen_direct_range', 'hide');" <?php echo $result['screen_direct_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="screen_direct_type0"> </span> <label
+                                        for="screen_direct_type0">不限</label> <span><input type="radio" value="1"
+                                                                                          name="screen_direct_type"
+                                                                                          class="radio"
+                                                                                          onclick="showDiv('screen_direct_range', 'show');" <?php echo $result['screen_direct_type'] == 1 ? 'checked=checked' : ''; ?>
+                                                                                          id="screen_direct_typ1"> </span>
+                                <label for="screen_direct_typ1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['screen_direct_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="screen_direct_range">
+								<?php foreach ($screenList as $key => $val) { ?>
+                                    <label><p style="float: left; width: 100px; height: 30px;">
+                                            <input name="screen_direct_range[]" type="checkbox"
+                                                   value="<?php echo $key; ?>" <?php echo ($result['screen_direct_range'] && in_array($key, $result['screen_direct_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                        </p></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">游戏兴趣：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="interest_direct_type" class="radio"
+                                             onclick="showDiv('interest_direct_range', 'hide');" <?php echo $result['interest_direct_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="interest_direct_typ0"> </span> <label
+                                        for="interest_direct_typ0">不限</label> <span><input type="radio" value="1"
+                                                                                           name="interest_direct_type"
+                                                                                           class="radio"
+                                                                                           onclick="showDiv('interest_direct_range', 'show');" <?php echo $result['interest_direct_type'] == 1 ? 'checked=checked' : ''; ?>
+                                                                                           id="interest_direct_typ1"> </span>
+                                <label for="interest_direct_typ1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['interest_direct_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="interest_direct_range">
+								<?php foreach ($interestList as $key => $val) { ?>
+                                    <label><p style="float: left; width: 100px; height: 30px;">
+                                            <input name="interest_direct_range[]" type="checkbox"
+                                                   value="<?php echo $key; ?>" <?php echo ($result['interest_direct_range'] && in_array($key, $result['interest_direct_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                        </p></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">付费能力：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="pay_ability_type" class="radio"
+                                             onclick="showDiv('pay_ability_range', 'hide');" <?php echo $result['pay_ability_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="pay_ability_type0"> </span> <label for="pay_ability_type0">不限</label>
+                                <span><input type="radio" value="1" name="pay_ability_type" class="radio"
+                                             onclick="showDiv('pay_ability_range', 'show');" <?php echo $result['pay_ability_type'] == 1 ? 'checked=checked' : ''; ?>
+                                             id="pay_ability_type1"> </span> <label for="pay_ability_type1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['pay_ability_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="pay_ability_range">
+								<?php foreach ($payAbilityList as $key => $val) { ?>
+                                    <label><p style="float: left; width: 100px; height: 30px;">
+                                            <input name="pay_ability_range[]" type="checkbox"
+                                                   value="<?php echo $key; ?>" <?php echo ($result['pay_ability_range'] && in_array($key, $result['pay_ability_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                        </p></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">游戏频率：</span>
+                            <div class="fc">
+                                <span><input type="radio" value="0" name="game_frequency_type" class="radio"
+                                             onclick="showDiv('game_frequency_range', 'hide');" <?php echo $result['game_frequency_type'] == 0 ? 'checked=checked' : ''; ?>
+                                             id="game_frequency_type0"> </span> <label
+                                        for="game_frequency_type0">不限</label> <span><input type="radio" value="1"
+                                                                                           name="game_frequency_type"
+                                                                                           class="radio"
+                                                                                           onclick="showDiv('game_frequency_range', 'show');" <?php echo $result['game_frequency_type'] == 1 ? 'checked=checked' : ''; ?>
+                                                                                           id="game_frequency_type1"> </span>
+                                <label for="game_frequency_type1">定向</label>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['game_frequency_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="game_frequency_range">
+								<?php foreach ($gameFrequencyList as $key => $val) { ?>
+                                    <label><p style="float: left; width: 100px; height: 30px;">
+                                            <input name="game_frequency_range[]" type="checkbox"
+                                                   value="<?php echo $key; ?>" <?php echo ($result['game_frequency_range'] && in_array($key, $result['game_frequency_range'])) ? 'checked=checked' : ''; ?>><?php echo $val; ?>
+                                        </p></label>
+								<?php } ?>
+                            </div>
+                        </li>
+                        <li><span class="label">媒体定向：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="app_behavior_type" class="radio"
+                                                    onclick="showDiv('app_behavior_range', 'hide');" <?php echo $result['app_behavior_type'] == 0 ? 'checked=checked' : ''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="app_behavior_type" class="radio"
+                                                    onclick="showDiv('app_behavior_range', 'show');" <?php echo $result['app_behavior_type'] == 1 ? 'checked=checked' : ''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo $result['app_behavior_type'] != 1 ? 'display:none' : ''; ?>"
+                                 id="app_behavior_range">
+                                <div class="detail-line2" id="appActionWrap">
+                                    <div id="appaction_object_idItemsWrap">
+                                        <div id="appCateSelector">
+                                            <div class="qz_areaselector_box clearfix" id="_MT_0">
+                                                <div class="qz_areaselector" style='width: 400px;'>
+                                                    <h4>分类</h4>
+                                                    <div class="qz_as_choose_list qz_as_list">
+                                                        <ul class="qz_as_list_detail">
+															<?php foreach ($appCategoryList as $key => $itemlv1) { ?>
+                                                                <li>
+																	<?php if ($itemlv1['childs']) { ?>
+                                                                        <a href="javascript:;" opt="item,toggle"
+                                                                           id="<?php echo '_MT_0_1_' . $itemlv1['id'] ?>"
+                                                                           realid="<?php echo $itemlv1['id'] ?>"
+                                                                           onclick="return false"> <span
+                                                                                    class="qz_as_open_list"
+                                                                                    opt="toggle">+</span><strong><?php echo $itemlv1['name'] ?></strong></a>
+                                                                        <ul class="" style="display: none;">
+																			<?php foreach ($itemlv1['childs'] as $itemlv2) { ?>
+                                                                                <li>
+																					<?php if ($itemlv2['childs']) { ?>
+                                                                                        <a href="javascript:;"
+                                                                                           opt="item,toggle"
+                                                                                           id="<?php echo '_MT_0_2_' . $itemlv2['id'] ?>"
+                                                                                           realid="<?php echo $itemlv2['id'] ?>"
+                                                                                           onclick="return false"> <span
+                                                                                                    class="qz_as_open_list"
+                                                                                                    opt="toggle">+</span><strong><?php echo $itemlv2['name'] ?></strong></a>
+                                                                                        <ul class=""
+                                                                                            style="display: none;">
+																							<?php foreach ($itemlv2['childs'] as $itemlv3) { ?>
+                                                                                                <li>
+                                                                                                    <a href="javascript:;"
+                                                                                                       opt="item,toggle"
+                                                                                                       id="<?php echo '_MT_0_3_' . $itemlv3['id'] ?>"
+                                                                                                       realid="<?php echo $itemlv3['id'] ?>"
+                                                                                                       onclick="return false"
+                                                                                                       class=""><?php echo $itemlv2['name'] ?>
+                                                                                                        -<?php echo $itemlv3['name'] ?></a>
+                                                                                                </li>
+																							<?php } ?>
+                                                                                        </ul>
+																					<?php } else { ?>
+                                                                                        <a href="javascript:;"
+                                                                                           opt="item,toggle"
+                                                                                           id="<?php echo '_MT_0_2_' . $itemlv2['id'] ?>"
+                                                                                           realid="<?php echo $itemlv2['id'] ?>"
+                                                                                           onclick="return false"
+                                                                                           class=""><?php echo $itemlv2['name'] ?></a>
+																					<?php } ?>
+                                                                                </li>
+																			<?php } ?>
+                                                                        </ul>
+																	<?php } else { ?>
+                                                                        <a href="javascript:;" opt="item,toggle"
+                                                                           id="<?php echo '_MT_0_1_' . $itemlv1['id'] ?>"
+                                                                           realid="<?php echo $itemlv1['id'] ?>"
+                                                                           onclick="return false"
+                                                                           class=""><?php echo $itemlv1['name'] ?></a>
+																	<?php } ?>
+                                                                </li>
+															<?php } ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="qz_areaselector_addop">
+                                                    <i class="qz_as_icon_add"></i>
+                                                    <button type="button" class="qz_as_add" opt="add">添加</button>
+                                                </div>
+                                                <div class="qz_areaselector qz_areaselector_del" style='width: 400px;'>
+                                                    <h4>
+                                                        已选择<strong id="_MT_0_SELECTEDWRAP_APP_MT_0_SELECTED">0</strong>个
+                                                        <!--,还剩<span id="_MT_0_SELECTEDWRAP_APP_MT_0_REMAINED">10</span>个可选-->
+                                                    </h4>
+                                                    <div class="qz_as_list" id="_MT_0_SELECTEDWRAP_APP">
+                                                        <ul class="qz_as_list_detail clearfix" style="height: 280px">
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li class="line"></li>
+                        <li><span class="label">计费类型：</span>
+                            <div class="fc">
+                                <select name="charge_type" id="charge_type">
+                                    <option value="">请选择</option>
+									<?php foreach ($chargeTypeList as $key => $val) { ?>
+                                        <option value="<?php echo $key; ?>" <?php echo $result['charge_type'] == $key ? 'selected=selected' : ''; ?>><?php echo $val; ?></option>
+									<?php } ?>
+                                </select>
+                            </div>
+                        </li>
+                        <li><span class="label">出价：</span>
+                            <div class="fc">
+                                <input name="price" type="text" value="<?php echo $result['price'] ?>"
+                                       class="iText "><span id="priceWayCn" style='margin-left: 10px;'></span>
+                            </div>
+                        </li>
+                        <li class="line"></li>
+                        <li>
+                            <div class="fc cc">
+                                <input type="button"
+                                       onclick="javascript:forwardToPrePage('<?php echo $addAdStep2Url; ?>');"
+                                       value="上一步" class="submit btn"> <input type="submit" value="下一步"
+                                                                              class="submit btn">
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <link href="<?php echo $staticPath; ?>/css/gdt-target.css" rel="stylesheet"/>
+    <link href="<?php echo $staticPath; ?>/css/qz_select.css?v=<?php echo $version; ?>" rel="stylesheet"/>
+    <link href="<?php echo $staticPath ?>/css/treecheckbox.css?v=<?php echo $version; ?>" rel="stylesheet"/>
+    <script src="<?php echo $staticPath; ?>/js/common/jquery-ui-timepicker.js"></script>
+    <script src="<?php echo $staticPath ?>/js/common/treecheckbox.js"></script>
+    <script type="text/javascript">
+        //// 渠道
+        //$("#Channelbox").treecheckbox({
+        //    data:[
+        //        {"id":1 , "parent_id":0 , "name":"123" ,"level": 1 , "item": [ { "id":3 ,"name":"1-1111" ,"level":2 , "parent_id": 1 ,item:[]  } ]  }
+        //        {"id":2 , "parent_id":0 , "name":"222222" ,"level": 1 , "item": [ { "id":4 ,"name":"2-1111" ,"level":2 , "parent_id": 2 ,item:[]  } ]  }
+        //    ],
+        //    name:'channel_id[]',
+        //    selected: []
+        // });
+
+        function requestAjax(options, callbackObj) {
+            var defaults = {
+                url: null,
+                async: false,
+                data: null,
+                type: 'get',
+                dataType: 'json',
+            }
+            var empty = {};
+            var settings = $.extend(empty, defaults, options);
+            $.ajax({
+                url: settings.url,
+                async: settings.async,
+                data: settings.data,
+                type: settings.type,
+                dataType: settings.dataType,
+                jsonp: 'callback',
+                success: function (data) {
+                    callbackObj.success(data);
+                },
+                error: function (xhr, msg, e) {
+                    callbackObj.error(xhr, msg, e);
+                }
+            });
+        }
+
+        ;(function () {
+            var areaURL = baseurl + '/Advertiser/Delivery/getAreaList'; //  区域
+            //  区域 数据回调函数
+            var areaCallback = {
+                success: function (data) {
+                    var inputs = $("#Areabox").parent().find(".box_selected").find("input");
+                    var selecteds = [];
+                    inputs.each(function () {
+                        var obj = new Object();
+                        obj.id = $(this).val();
+                        obj.level = $(this).attr("data-level");
+                        selecteds.push(obj);
+                    });
+                    $("#Areabox").treecheckbox({data: data, name: 'area_range[]', selected: selecteds});
+                }, error: function (xhr, msg, e) {
+
+                }
+            };
+
+            requestAjax({url: areaURL, dataType: 'jsonp'}, areaCallback);
+        })();
+
+        var id = '<?php echo $result['id']; ?>';
+        var nextUrl = '<?php echo $addAdStep4Url; ?>';
+        if (id) {
+            nextUrl += '?id=' + id;
+        }
+        //广告表单数据提交
+        $(document).ready(function () {
+            $("input[name='originality_type']").click(function () {
+                id = $(this).val();
+                $("#originality_type" + id).show().siblings().hide();
+            });
+            $("#os_direct_type0").click(function () {
+                $("#brand_direct_range p input").removeAttr('checked');
+                $("#brand_direct_range p").show()
+            });
+            $("#os_direct_type1").click(function () {
+                $("#brand_direct_range p input").removeAttr('checked');
+                $("#brand_direct_range label p[ostype=2]").hide()
+                $("#brand_direct_range label p[ostype=1]").show()
+            });
+            $("#os_direct_type2").click(function () {
+                $("#brand_direct_range p input").removeAttr('checked');
+                $("#brand_direct_range label p[ostype=2]").show()
+                $("#brand_direct_range label p[ostype=1]").hide()
+            });
+
+            $("#charge_type").change(function () {
+                if ($(this).val() == 1) {
+                    $("#priceWayCn").html('元/千次曝光')
+                } else if ($(this).val() == 2) {
+                    $("#priceWayCn").html('元/点击')
+                } else {
+                    $("#priceWayCn").html('')
+                }
+            })
+
+            //广点通应用分类定向
+            $("#appCateSelector .qz_as_list_detail a").click(function () {
+                if ($(this).children("span").length == 0) {
+                    if (!$(this).hasClass('qz_as_disabled')) {
+                        if ($(this).hasClass('qz_as_bg_blue')) {
+                            $(this).removeClass('qz_as_bg_blue')
+                        } else {
+//                    if($("#_MT_0_SELECTEDWRAP_APP ul li").length + $("#appCateSelector .qz_as_list_detail a.qz_as_bg_blue").length<10){
+                            $(this).addClass('qz_as_bg_blue')
+//                    }
+//                    else{
+//                        alert('已经超过能选择的最大个数限制')
+//                    }
+                        }
+                    }
+                } else {
+                    $(this).siblings('ul').toggle();
+                }
+            })
+
+            $("#appCateSelector .qz_as_add").click(function () {
+                $("#appCateSelector .qz_as_list_detail a.qz_as_bg_blue").each(function () {
+//            if($("#_MT_0_SELECTEDWRAP_APP ul li").length >=10){
+//                return
+//            }
+                    realid = $(this).attr('realid');
+                    rightid = $(this).attr('id').replace("_MT", "_MT_DEL");
+                    curname = $(this).text();
+                    checkboxstr = '<input name="app_behavior_range[]"  type="checkbox" value="' + realid + '" style="display:none;" checked="checked">'
+                    newli = '<li class="clearfix">'
+                    newli += '<a href="javascript:;" onclick="return false"> <span class="qz_as_where" style="width:300px;">' + curname + '</span></a><a href="javascript:;" class="qz_as_close" opt="del" id="' + rightid + '" onclick="return false">×</a>'
+                    newli += checkboxstr
+                    newli += '</li>'
+
+                    $("#_MT_0_SELECTEDWRAP_APP ul").append(newli)
+                    $(this).removeClass("qz_as_bg_blue").addClass('qz_as_disabled')
+                });
+                updateCurNum('_MT_0_SELECTEDWRAP_APP', 10)
+            })
+
+            $("#appCateSelector .qz_as_close").live("click", function () {
+                leftid = $(this).attr('id').replace("_MT_DEL", "_MT")
+                $(this).parent('li').remove()
+                $("#" + leftid).removeClass("qz_as_disabled")
+                updateCurNum('_MT_0_SELECTEDWRAP_APP', 10)
+            })
+
+            function updateCurNum(idStr, num) {
+                selectedlength = $("#" + idStr + " ul li").length
+//        ramainedlength = num - selectedlength
+                $("#" + idStr + "_MT_0_SELECTED").html(selectedlength)
+//        $("#"+idStr+"_MT_0_REMAINED").html(ramainedlength)
+            }
+
+            ajaxForm('addFrom', function (ret) {
+                ajaxRedirect(ret, baseurl + nextUrl);
+            });
+
+			<?php  if($result['app_behavior_type']){?>
+            $('input[name=gdt_app_behavior_type][value=1]').click()
+			<?php foreach($result['app_behavior_range'] as $object_id){ ?>
+            $("#appCateSelector a[realid=<?php echo $object_id ?>]").click();
+            $("#appCateSelector .qz_as_add").click();
+			<?php } ?>
+			<?php } ?>
+
+			<?php if($result['id']){ ?>
+            $("#charge_type").change();
+			<?php } ?>
+
+        });
+
+        function saveDirectConfig() {
+
+            direct_name = $.trim($("input[name='direct_name']").val());
+            area_type = $("input[name='area_type']:checked").val();
+            var area_range = [];
+            $("input[name='area_range[]']:checked").each(function () {
+                area_range.push($(this).val());
+            });
+            age_direct_type = $("input[name='age_direct_type']:checked").val();
+            var age_direct_range = [];
+            $("input[name='age_direct_range[]']:checked").each(function () {
+                age_direct_range.push($(this).val());
+            });
+
+            sex_direct_type = $("input[name='sex_direct_type']:checked").val();
+            os_direct_type = $("input[name='os_direct_type']:checked").val();
+            network_direct_type = $("input[name='network_direct_type']:checked").val();
+            var network_direct_range = [];
+            $("input[name='network_direct_range[]']:checked").each(function () {
+                network_direct_range.push($(this).val());
+            });
+
+            operator_direct_type = $("input[name='operator_direct_type']:checked").val();
+            var operator_direct_range = [];
+            $("input[name='operator_direct_range[]']:checked").each(function () {
+                operator_direct_range.push($(this).val());
+            });
+            brand_direct_type = $("input[name='brand_direct_type']:checked").val();
+            var brand_direct_range = [];
+            $("input[name='brand_direct_range[]']:checked").each(function () {
+                brand_direct_range.push($(this).val());
+            });
+
+            screen_direct_type = $("input[name='screen_direct_type']:checked").val();
+            var screen_direct_range = [];
+            $("input[name='screen_direct_range[]']:checked").each(function () {
+                screen_direct_range.push($(this).val());
+            });
+            interest_direct_type = $("input[name='interest_direct_type']:checked").val();
+            var interest_direct_range = [];
+            $("input[name='interest_direct_range[]']:checked").each(function () {
+                interest_direct_range.push($(this).val());
+            });
+            pay_ability_type = $("input[name='pay_ability_type']:checked").val();
+            var pay_ability_range = [];
+            $("input[name='pay_ability_range[]']:checked").each(function () {
+                pay_ability_range.push($(this).val());
+            });
+            game_frequency_type = $("input[name='game_frequency_type']:checked").val();
+            var game_frequency_range = [];
+            $("input[name='game_frequency_range[]']:checked").each(function () {
+                game_frequency_range.push($(this).val());
+            });
+            app_behavior_type = $("input[name='app_behavior_type']:checked").val();
+            var app_behavior_range = [];
+            $("input[name='app_behavior_range[]']:checked").each(function () {
+                app_behavior_range.push($(this).val());
+            });
+
+            charge_type = $("#charge_type").val();
+            price = $.trim($("input[name='price']").val());
+
+
+            $.ajax({
+                url: baseurl + '<?php echo $saveDirecConfigPostUrl; ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'token': token, 'direct_name': direct_name, 'area_type': area_type, 'area_range': area_range,
+                    'age_direct_type': age_direct_type, 'age_direct_range': age_direct_range,
+                    'sex_direct_type': sex_direct_type, 'os_direct_type': os_direct_type,
+                    'network_direct_type': network_direct_type, 'network_direct_range': network_direct_range,
+                    'operator_direct_type': operator_direct_type, 'operator_direct_range': operator_direct_range,
+                    'brand_direct_type': brand_direct_type, 'brand_direct_range': brand_direct_range,
+                    'screen_direct_type': screen_direct_type, 'screen_direct_range': screen_direct_range,
+                    'interest_direct_type': interest_direct_type, 'interest_direct_range': interest_direct_range,
+                    'pay_ability_type': pay_ability_type, 'pay_ability_range': pay_ability_range,
+                    'game_frequency_type': game_frequency_type, 'game_frequency_range': game_frequency_range,
+                    'app_behavior_type': app_behavior_type, 'app_behavior_range': app_behavior_range,
+                    'charge_type': charge_type, 'price': price
+                },
+                success: function (ret) {
+                    if (ret.success) {
+                        $("#directSelect").append("<option selected value='" + ret.data.id + "'>" + ret.data.direct_name + "</option>");
+                        $("input[name='direct_id']").val(ret.data.id);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                }
+            });
+        }
+
+        function getDirectConfig() {
+
+            var directSelect = $("#directSelect").val();
+            if (directSelect == '') {
+                alert('请选择使用已有定向下拉表');
+                return false;
+            }
+            $.ajax({
+                url: baseurl + '<?php echo $getDirecConfigUrl; ?>',
+                type: 'POST',
+                dataType: 'json',
+                data: {'token': token, 'id': directSelect},
+                success: function (ret) {
+                    if (ret.success) {
+                        $("input[name='direct_id']").val(directSelect);
+                        fillDirectConfig('area_type', 'area_range', 'area_range', ret.data.area_type, ret.data.area_range);
+                        fillDirectConfig('age_direct_type', 'age_direct_range', 'age_direct_range', ret.data.age_direct_type, ret.data.age_direct_range);
+                        fillDirectRadio('sex_direct_type', ret.data.sex_direct_type);
+                        fillDirectRadio('os_direct_type', ret.data.os_direct_type);
+                        fillDirectConfig('network_direct_type', 'network_direct_range', 'network_direct_range', ret.data.network_direct_type, ret.data.network_direct_range);
+                        fillDirectConfig('operator_direct_type', 'operator_direct_range', 'operator_direct_range', ret.data.operator_direct_type, ret.data.operator_direct_range);
+                        fillDirectConfig('brand_direct_type', 'brand_direct_range', 'brand_direct_range', ret.data.brand_direct_type, ret.data.brand_direct_range);
+                        fillDirectConfig('interest_direct_type', 'interest_direct_range', 'interest_direct_range', ret.data.interest_direct_type, ret.data.interest_direct_range);
+                        fillDirectConfig('pay_ability_type', 'pay_ability_range', 'pay_ability_range', ret.data.pay_ability_type, ret.data.pay_ability_range);
+                        fillDirectConfig('game_frequency_type', 'game_frequency_range', 'game_frequency_range', ret.data.game_frequency_type, ret.data.game_frequency_range);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                }
+            });
+        }
+
+        function fillDirectRadio(radioName, radioData) {
+            $("input[name='" + radioName + "']").each(function () {
+                if (radioData == $(this).val()) {
+                    $(this).attr('checked', true);
+                }
+            });
+        }
+
+        function fillDirectConfig(radioName, checkBoxName, showDivId, radioData, checkBoxData) {
+            $("input[name='" + radioName + "']").each(function () {
+                if (radioData == $(this).val()) {
+                    $(this).attr('checked', true);
+                }
+            });
+            if (radioData == 1) {
+                showDiv(showDivId, 'show');
+                $("input[name='" + checkBoxName + "[]']").each(function () {
+                    var tmp = $(this);
+                    $.each(checkBoxData, function (name, value) {
+                        if (tmp.val() == value) {
+                            tmp.attr('checked', true);
+                        }
+                    });
+                });
+            } else {
+                showDiv(showDivId, 'hide');
+            }
+        }
+
+        function showDiv(id, type) {
+            if (type == 'show') {
+                $('#' + id).show();
+            } else {
+                $('#' + id).hide();
+            }
+        }
+    </script>
+<?php echo $this->render("../../Admin/views/layout/footer.phtml"); ?>

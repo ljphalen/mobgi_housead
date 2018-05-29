@@ -1,0 +1,218 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>投放渠道管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="channel_name" placeholder="请输入渠道名称 或 编号" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                            <button id="addChannel" type="button" class="right layui-btn layui-btn-normal">新建投放渠道</button>
+
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+            
+                </table>
+                
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> 
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+
+
+                <script type="text/html" id="barstatus">   
+                {{#   if(d.status =='ON'){     }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" checked>
+                {{#  } else { }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" >
+                {{#  } }}     
+                </script>
+                <script type="text/html" id="barstatus1">
+                {{#   if(d.shortlink_status =='ON'){     }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus1" lay-skin="switch" lay-text="开启|关闭" checked>
+                {{#  } else { }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus1" lay-skin="switch" lay-text="开启|关闭" >
+                {{#  } }}
+                </script>
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" > 
+
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接  */
+var addChannelUrl = baseurl + '<?php echo $addChannelUrl; ?>'; // 新建，编辑 渠道
+var channelViewUrl = baseurl + '<?php echo $channelViewUrl; ?>'; // 查看 渠道
+var channelListUrl = baseurl + "<?php echo $channelListUrl; ?>"; // 列表 
+var changeChannelStatusUrl = baseurl +  '<?php echo $changeChannelStatusUrl; ?>';  // 更改合作状态
+var changeChannelShortLinkStatusUrl = baseurl +  '<?php echo $changeChannelShortLinkStatusUrl; ?>';  // 更改短链回调状态
+
+// 渲染表格参数
+var layuiTable = layui.table;
+var table_id = "#activity_table";
+var page = true;
+var where = { token: token, channel_name: '', channel_no: '' }; // 缓存搜索条件,查询数据
+var cols = [[ //表头
+    {field: 'channel_no', title: '渠道编号',  sort: true  , }
+    ,{field: 'channel_name', title: '渠道名称',  sort: true }
+    ,{field: 'track_type', title: '对接方式',  sort: true }
+    ,{field: 'status', title: '合作状态',  sort: true , toolbar: '#barstatus' }
+    ,{field: 'shortlink_status', title: '短链回调状态',  sort: true , toolbar: '#barstatus1' }
+    ,{field: '', title: '操作', align:'center', toolbar: '#barDemo'}
+]];
+
+// 判断本地缓存是否 有渲染表格参数
+if(localStorage.searchData){
+    if(window.location.href == JSON.parse(localStorage.searchData).url){
+        page = JSON.parse(localStorage.searchData).page;
+        where = JSON.parse(localStorage.searchData).where;
+        // 初始化搜索条件
+        var channel_name = where.channel_name;
+        $("input[name='channel_name']").val(channel_name);
+       // var channel_no = where.channel_no;
+      //  $("input[name='channel_no']").val(channel_no);
+    }
+}
+
+//JavaScript代码区域
+layui.use(['element','form','laydate','table'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    //初始化表格 
+    var initTable = {
+        elem: table_id,
+        where: where,
+        url : channelListUrl ,
+        cols: cols ,
+        page : page
+    };
+    renderTable(table,initTable,null);
+    //监听搜索按钮
+    form.on('submit(search)', function(data){
+        var field = data.field;
+        field.token = token;
+        where = field;
+        var params = {
+            elem: table_id,
+            url : channelListUrl,
+            where: field,
+            cols: cols,
+            page : page 
+        }
+        renderTable(table,params,null);
+        return false; 
+    });
+    
+    //监听单元格事件  -- 查看 ， 编辑
+    table.on('tool(activity_table)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'detail'){  // 查看    
+            window.location.href = channelViewUrl + "?id="+data.id;
+        }else if(obj.event === 'edit'){  // 编辑 
+            window.location.href = addChannelUrl + "?id="+data.id;
+        } 
+    });
+
+    // 更改合作状态
+    form.on('switch(switchStatus)', function(data){
+        var obj = new Object();
+        if(data.elem.checked){
+            obj.status = 'ON';
+        }else{
+            obj.status = 'OFF';
+        }
+        obj.token = token;
+        obj.id = $(data.elem).attr("data-id");
+        $.ajax({
+            url : changeChannelStatusUrl ,
+            async: false,
+            data : obj,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){    
+                if(data.success){
+                    layer.msg("操作成功"); 
+                }else{
+                    layer.msg(data.msg); 
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg); 
+            }
+        }); 
+
+    });
+
+    // 更改短链回调状态
+    form.on('switch(switchStatus1)', function(data){
+        var obj = new Object();
+        if(data.elem.checked){
+            obj.shortlink_status = 'ON';
+        }else{
+            obj.shortlink_status = 'OFF';
+        }
+        obj.token = token;
+        obj.id = $(data.elem).attr("data-id");
+        $.ajax({
+            url : changeChannelShortLinkStatusUrl ,
+            async: false,
+            data : obj,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                if(data.success){
+                    layer.msg("操作成功");
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+
+    });
+
+    // 新建渠道  
+    $("#addChannel").click(function(){
+        window.location.href = addChannelUrl;
+    });
+});
+
+</script>
+</body>
+</html>
+      

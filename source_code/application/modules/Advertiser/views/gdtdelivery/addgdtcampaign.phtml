@@ -1,0 +1,68 @@
+<link href="<?php echo $staticPath;?>/css/reset.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/style.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/layout.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/jquery-ui.css?v=<?php echo $version;?>" rel="stylesheet"  />
+<link href="<?php echo $staticPath;?>/css/star/star.source.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/advertiser.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticPath;?>/js/common/jquery.js??v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery.form.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/common.js?v=<?php echo $version;?>"></script>
+<div class="colMain0">
+        <div class="main">
+            <div class="app-toplist" style="height:auto;margin:12px 10px;background: #fff;border: 1px solid #bbb;padding: 20px 0;">
+                <form action="<?php echo $saveGdtCampaignPostUrl; ?>" method="POST"  id="addFrom" >
+                	<input name="token" value="<?php echo $token;?>" type="hidden" />
+                    <input type="hidden" name="action"   id=""  value='<?php echo $result['action']; ?>' />
+                    <ul class="form">
+                    <li> 
+                        <span class="label">推广计划名称：</span>
+                        <div class="fc">
+						 	<input name="campaign_name" id="campaign_name" type="text" value="" class="iText " style="width:250px;" >
+                        </div>
+                    </li>
+                    
+                    <li> 
+                    	<span class="label">设定投放限额：</span>
+						<div class="fc">
+						 	<input name="daily_budget" id="daily_budget" type="text" value="" class="iText " style="width:250px;" >&nbsp;&nbsp;分/天
+	                    </div>
+					 </li>
+
+                     <li>
+                    <span class="label">设置投放方式：</span>
+                      	<div class="fc">
+                            <span>
+                            <?php foreach ($gdt_campaign_speed_mode_type as $key=>$val){?>
+                                <label><input type="radio" value="<?php echo $key;?>" name="speed_mode" class="radio"  >
+                                    <?php echo $val;?>
+                                </label>
+                            <?php }?>
+                            </span>
+                        </div>
+    				</li>
+
+    				<li>
+                        <div class="fc">
+                            <input type="submit"  value="创建" class=" btn" id="save">
+                            <input type="cancel"  value="取消" class=" btn" id="cancel">
+                        </div>
+                    </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+</div>
+<script type="text/javascript">
+//推广计划表单数据提交
+$(document).ready(function(){
+    ajaxForm('addFrom',function(ret){
+        if (ret.success) {
+            showMsg('', '创建成功');
+            $('#cancel').trigger('click');
+        } else {
+            showError('', ret.msg);
+        }
+    });
+})
+</script>

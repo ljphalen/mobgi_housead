@@ -1,0 +1,84 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $documentListUrl;?>">文档列表</a></li>
+		<li><a href="<?php echo $addDocumentUrl;?>"><?php echo $navTitle;?></a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar" style="overflow:visible;">
+            <div class="search">
+                <form action="<?php echo $documentListUrl;?>" method="GET">
+                <span>
+                    <select name="menu_parent_id" id="menu_parent_id" >
+                        <option value="">一级菜单</option>
+                        <?php foreach($menu1Map as $k1=>$v1){ ?>
+                            <option value="<?php echo $v1['id']; ?>"  <?php if( $search['menu_parent_id']==$v1['id'] ){ ?> selected <?php } ?> ><?php echo $v1['name']; ?></option>
+                        <?php } ?>
+                    </select>
+                    <select name="menu_id" id="menu_id" >
+                        <option value="">二级菜单</option>
+                        <?php foreach($menu2Map as $k1=>$v1){ ?>
+                            <option value="<?php echo $v1['id']; ?>"  <?php if( $search['menu_id']==$v1['id'] ){ ?> selected <?php } ?> ><?php echo $v1['name']; ?></option>
+                        <?php } ?>
+                    </select>
+                    <input type="text" class="iText" name='title'  value='<?php echo $search['title'] ;?>' placeholder="可输入标题查询" />
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+        <div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>一级菜单</th>
+                            <th>二级菜单</th>
+                            <th>标题</th>
+                            <th>更新时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                       <tbody>
+                        <?php foreach($list as $k1=>$v1){?>
+                        <tr>
+                        	<td><?php echo $menu1Map[$v1['menu_parent_id']]['name']; ?></td>
+                        	<td><?php echo $menu2Map[$v1['menu_id']]['name']; ?></td>
+                    		<td><?php echo $v1['title']; ?></td>
+                            <td><?php echo date('Y-m-d H:i:s',$v1['update_time']); ?></td>
+                            <td>
+                                <?php if($v1['status']){  ?>
+                                    <span class="green">正常</span>
+                                <?php }else{  ?>
+                                    <span class="red">已下线</span>
+                                <?php }  ?>
+                            </td>
+                            <td>
+                                <a href="<?php echo$addDocumentUrl;?>/?id=<?php echo $v1['id'];?>" class="mr10">编辑</a>
+                                <?php if($v1['status']){  ?>
+                                    <a href="javascript:" onclick="changeStatus('<?php echo $changeDocumentStatusUrl;?>/?id=<?php echo $v1['id'];?>&status=0', '确认下线该条信息？', event);"　class="mr10">下线</a>
+                                <?php }else{  ?>
+                                    <a href="javascript:" onclick="changeStatus('<?php echo $changeDocumentStatusUrl;?>/?id=<?php echo $v1['id'];?>&status=1', '确认上线该条信息？', event);"　class="mr10">上线</a>
+                                <?php }  ?>
+                            </td>
+                        </tr> 
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript">
+$(function(){
+    $('#menu_parent_id').chosen();
+    $('#menu_id').chosen();
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

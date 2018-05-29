@@ -1,0 +1,56 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain" style="min-height: 173px;">
+    <div class="nav">
+		<ul class="cc">
+				<li><a href="<?php echo $globalConfigUrl;?>">全局配置列表</a></li>
+				<li class="current"><a href="<?php echo $addGlobalConfigUrl;?>"><?php echo $navTitle; ?>全局配置</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+            <form action="<?php echo $addGlobalConfigPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id" value="<?php echo $channelInfo['id'];?>">
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">
+                    <li>
+                        <span class="label">广告商利益分成比例：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="ads_division_rate"  style="width:40px;" value="<?php echo $configInfo['ads_division_rate']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">自投利益分成比例：</span>
+                        <div class="fc">
+                            <input type="text" id="name" class="iText required" name="own_division_rate" required style="width:40px;" value="<?php echo $configInfo['own_division_rate']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">备注：</span>
+                        <div class="fc">
+                            <input type="text" id="name" class="iText" name="notice" style="width:220px;" value="<?php echo $configInfo['notice']; ?>" />
+<!--                            <span class="red">*</span>-->
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="submit" value="确定" class="submit">
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl?>'">
+                        </div>
+                    </li>
+                </ul>
+
+            </form>
+           
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        ajaxForm('addForm',function(ret){ 
+            ajaxRedirect(ret, baseurl+'<?php echo $globalConfigUrl; ?>');
+          });
+})   
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

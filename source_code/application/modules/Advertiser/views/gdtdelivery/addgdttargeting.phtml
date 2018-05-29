@@ -1,0 +1,1080 @@
+<?php echo $this->render("layout/header.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl">新建广告定向</p>
+        </div>
+        <div class="main">
+            <form action="<?php echo $saveTargetingPostUrl; ?>" method="POST"  id="addFrom" >
+                <div class="app-detail">
+                	<input name="token" value="<?php echo $token;?>" type="hidden" />
+                     <input type="hidden" name="targeting_id"   id="targeting_id" value='<?php echo $targeting_id ?>' />
+                    <ul class="form">
+                        <li> 
+                            <span class="label">定向名称：</span>
+                            <div class="fc">
+                                <input type="text"  id="targeting_name" name="targeting_name" value="" class="iText" style="width:20%;" onkeyup="changeLength(this,15)"> &nbsp;
+                                <span class="somets c-tx3"><strong class=""><?php echo  mb_strlen($gdt_targeting_info['targeting_name']); ?></strong>/<span>15</span></span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">定向描述：</span>
+                            <div class="fc">
+                                <input type="text"  id="description" name="description" value="" class="iText" style="width:20%;" onkeyup="changeLength(this,32)"> &nbsp;
+                                <span class="somets c-tx3"><strong class=""><?php echo  mb_strlen($gdt_targeting_info['description']); ?></strong>/<span>32</span></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="app-detail">
+                    <ul class="form">
+                        <li>
+                            <span class="label">投放地区：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="gdt_region_type" class="radio" onclick="showDiv('gdt_region_range', 'hide');" <?php echo  $result['region_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="gdt_region_type" class="radio" onclick="showDiv('gdt_region_range', 'show');" <?php echo  $result['region_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['gdt_app_behavior_type'] != 1?'display:none':''; ?>" id="gdt_region_range">
+                                <div class="detail-line2" id="appActionWrap">
+                                    <div id="regionaction_object_idItemsWrap">
+                                        <div id="regionCateSelector">
+                                            <div class="qz_areaselector_box clearfix" id="_MT_0">
+                                                <div class="qz_areaselector">
+                                                    <ul class="tab clearfix">
+                                                        <li style="z-index:1">
+                                                            <a href="javascript:;" opt="tab" data-value="inside" class="region_type inside">国内</a>
+                                                        </li>
+                                                        <li style="z-index:1">
+                                                            <a href="javascript:;" opt="tab" data-value="overseas" class="region_type overseas">国外</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="qz_as_choose_list qz_as_list data_inside" style="display: block;">
+                                                        <ul class="qz_as_list_detail">
+                                                            <?php foreach ($region['inside'] as $key=>$itemlv1){?>
+                                                                <li>
+                                                                    <?php if($itemlv1['childs']){?>
+                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false">
+                                                                            <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv1['name'] ?></strong>
+                                                                        </a>
+                                                                        <ul class="" style="display: none;">
+                                                                            <?php foreach($itemlv1['childs'] as $itemlv2){ ?>
+                                                                                <li>
+                                                                                    <?php if($itemlv2['childs']){?>
+                                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false">
+                                                                                            <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv2['name'] ?></strong>
+                                                                                        </a>
+                                                                                        <ul class="" style="display: none;">
+                                                                                            <?php foreach($itemlv2['childs'] as $itemlv3){ ?>
+                                                                                                <li><a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_3_'.$itemlv3['id'] ?>" realid="<?php echo $itemlv3['id'] ?>"  onclick="return false" class=""><?php echo $itemlv3['name'] ?></a></li>
+                                                                                            <?php } ?>
+                                                                                        </ul>
+                                                                                    <?php }else { ?>
+                                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false" class=""><?php echo $itemlv2['name'] ?></a>
+                                                                                    <?php } ?>
+                                                                                </li>
+                                                                            <?php } ?>
+                                                                        </ul>
+                                                                    <?php }else{ ?>
+                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false" class=""><?php echo $itemlv1['name'] ?></a>
+                                                                    <?php } ?>
+                                                                </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="qz_as_choose_list qz_as_list data_overseas" style="display: none;">
+                                                        <ul class="qz_as_list_detail">
+                                                            <?php foreach ($region['overseas'] as $key=>$itemlv1){?>
+                                                                <li>
+                                                                    <?php if($itemlv1['childs']){?>
+                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false">
+                                                                            <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv1['name'] ?></strong>
+                                                                        </a>
+                                                                        <ul class="" style="display: none;">
+                                                                            <?php foreach($itemlv1['childs'] as $itemlv2){ ?>
+                                                                                <li>
+                                                                                    <?php if($itemlv2['childs']){?>
+                                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false">
+                                                                                            <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv2['name'] ?></strong>
+                                                                                        </a>
+                                                                                        <ul class="" style="display: none;">
+                                                                                            <?php foreach($itemlv2['childs'] as $itemlv3){ ?>
+                                                                                                <li><a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_3_'.$itemlv3['id'] ?>" realid="<?php echo $itemlv3['id'] ?>"  onclick="return false" class=""><?php echo $itemlv3['name'] ?></a></li>
+                                                                                            <?php } ?>
+                                                                                        </ul>
+                                                                                    <?php }else { ?>
+                                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false" class=""><?php echo $itemlv2['name'] ?></a>
+                                                                                    <?php } ?>
+                                                                                </li>
+                                                                            <?php } ?>
+                                                                        </ul>
+                                                                    <?php }else{ ?>
+                                                                        <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false" class=""><?php echo $itemlv1['name'] ?></a>
+                                                                    <?php } ?>
+                                                                </li>
+                                                            <?php } ?>
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+                                                <div class="qz_areaselector_addop">
+                                                    <i class="qz_as_icon_add"></i>
+                                                    <button type="button" class="qz_as_add" opt="add">添加</button>
+                                                </div>
+                                                <div class="qz_areaselector qz_areaselector_del">
+                                                    <h4>
+                                                        已选择<strong id="_MT_0_SELECTEDWRAP_REGION_MT_0_SELECTED">0</strong>个,还剩<span id="_MT_0_SELECTEDWRAP_REGION_MT_0_REMAINED">200</span>个可选
+                                                    </h4>
+                                                    <div class="qz_as_list" id="_MT_0_SELECTEDWRAP_REGION">
+                                                        <ul class="qz_as_list_detail clearfix" style="height:280px">
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="prompt"><input id="regionaction_object_id"
+                                                                    name="regionaction_object_id" value="" type="hidden"></span>
+                                    </div>
+<!--                                    <div class="detail-line2">暂不支持-->
+<!--                                        <span><label><input type="radio" value="0" name="gdt_area_targeting_type" class="radio"  --><?php //echo  $result['area_targeting_type'] == 0?'checked=checked':''; ?><!--正在这里的人</label></span>-->
+<!--                                        <span><label><input type="radio" value="1" name="gdt_area_targeting_type" class="radio"  --><?php //echo  $result['area_targeting_type'] == 1?'checked=checked':''; ?><!--居住在这里的人</label></span>-->
+<!--                                        <span><label><input type="radio" value="2" name="gdt_area_targeting_type" class="radio"  --><?php //echo  $result['area_targeting_type'] == 2?'checked=checked':''; ?><!--旅行到这里的人</label></span>-->
+<!--                                    </div>-->
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="app-detail">
+                    <div class="_toggle arrow">
+                        <span class="toggle_tile">基本信息</span>
+                    </div>
+                    <div>
+                        <ul class="form">
+                            <li>
+                                <span class="label">用户年龄：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_age_type" class="radio" onclick="showDiv('gdt_age_range', 'hide');" <?php echo  $result['age_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_age_type" class="radio" onclick="showDiv('gdt_age_range', 'show');" <?php echo  $result['age_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_age_type'] != 1?'display:none':''; ?>" id="gdt_age_range">
+                                    <input type="text"  id="gdt_age" name="gdt_age" value="" class="iText">
+                                    <span class="tips">(格式：5~60)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">性别：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_gender_type" class="radio"  <?php echo  $result['gender_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="MALE" name="gdt_gender_type" class="radio"  <?php echo  $result['gender_type'] == 'MALE'?'checked=checked':''; ?>>男</label></span>
+                                    <span><label><input type="radio" value="FEMALE" name="gdt_gender_type" class="radio"  <?php echo  $result['gender_type'] == 'FEMALE'?'checked=checked':''; ?>>女</label></span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">上网场景：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_online_scenario_type" class="radio" onclick="showDiv('gdt_online_scenario_range', 'hide');" <?php echo  $result['online_scenario_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_online_scenario_type" class="radio" onclick="showDiv('gdt_online_scenario_range', 'show');" <?php echo  $result['online_scenario_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_online_scenario_type'] != 1?'display:none':''; ?>" id="gdt_online_scenario_range">
+                                    <?php foreach ($gdt_online_scenario as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_online_scenario_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['online_scenario_range'] &&  in_array($key, $result['online_scenario_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="app-detail">
+                    <div class="_toggle arrow">
+                        <span class="toggle_tile">用户情况</span>
+                    </div>
+                    <div>
+                        <ul class="form">
+                            <li>
+                                <span class="label">用户学历：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_education_type" class="radio" onclick="showDiv('gdt_education_range', 'hide');" <?php echo  $result['education_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_education_type" class="radio" onclick="showDiv('gdt_education_range', 'show');" <?php echo  $result['education_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_education_type'] != 1?'display:none':''; ?>" id="gdt_education_range">
+                                    <?php foreach ($gdt_education as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_education_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['education_range'] &&  in_array($key, $result['education_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">婚恋状态：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_relationship_status_type" class="radio" onclick="showDiv('gdt_relationship_status_range', 'hide');" <?php echo  $result['relationship_status_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_relationship_status_type" class="radio" onclick="showDiv('gdt_relationship_status_range', 'show');" <?php echo  $result['relationship_status_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_relationship_status_type'] != 1?'display:none':''; ?>" id="gdt_relationship_status_range">
+                                    <?php foreach ($gdt_relationship_status as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_relationship_status_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['relationship_status_type'] &&  in_array($key, $result['relationship_status_type']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">工作状态：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_living_status_type" class="radio" onclick="showDiv('gdt_living_status_range', 'hide');" <?php echo  $result['living_status_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_living_status_type" class="radio" onclick="showDiv('gdt_living_status_range', 'show');" <?php echo  $result['living_status_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_living_status_type'] != 1?'display:none':''; ?>" id="gdt_living_status_range">
+                                    <?php foreach ($gdt_living_status as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_living_status_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['living_status_range'] &&  in_array($key, $result['living_status_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">商业兴趣定向：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_business_interest_type" class="radio" onclick="showDiv('gdt_business_interest_range', 'hide');" <?php echo  $result['business_interest_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_business_interest_type" class="radio" onclick="showDiv('gdt_business_interest_range', 'show');" <?php echo  $result['business_interest_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_business_interest_type'] != 1?'display:none':''; ?>" id="gdt_business_interest_range">
+                                    <div class="detail-line2" id="appActionWrap">
+                                        <div id="appaction_object_idItemsWrap">
+                                            <div id="businessCateSelector">
+                                                <div class="qz_areaselector_box clearfix" id="_MT_0">
+                                                    <div class="qz_areaselector">
+                                                        <h4>商业兴趣</h4>
+                                                        <div class="qz_as_choose_list qz_as_list">
+                                                            <ul class="qz_as_list_detail">
+                                                                <?php foreach ($business_interest as $key=>$itemlv1){?>
+                                                                    <li>
+                                                                        <?php if($itemlv1['childs']){?>
+                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false">
+                                                                                <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv1['name'] ?></strong>
+                                                                            </a>
+                                                                            <ul class="" style="display: none;">
+                                                                                <?php foreach($itemlv1['childs'] as $itemlv2){ ?>
+                                                                                    <li>
+                                                                                        <?php if($itemlv2['childs']){?>
+                                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false">
+                                                                                                <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv2['name'] ?></strong>
+                                                                                            </a>
+                                                                                            <ul class="" style="display: none;">
+                                                                                                <?php foreach($itemlv2['childs'] as $itemlv3){ ?>
+                                                                                                    <li><a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_3_'.$itemlv3['id'] ?>" realid="<?php echo $itemlv3['id'] ?>"  onclick="return false" class=""><?php echo $itemlv3['name'] ?></a></li>
+                                                                                                <?php } ?>
+                                                                                            </ul>
+                                                                                        <?php }else { ?>
+                                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false" class=""><?php echo $itemlv2['name'] ?></a>
+                                                                                        <?php } ?>
+                                                                                    </li>
+                                                                                <?php } ?>
+                                                                            </ul>
+                                                                        <?php }else{ ?>
+                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false" class=""><?php echo $itemlv1['name'] ?></a>
+                                                                        <?php } ?>
+                                                                    </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="qz_areaselector_addop">
+                                                        <i class="qz_as_icon_add"></i>
+                                                        <button type="button" class="qz_as_add" opt="add">添加</button>
+                                                    </div>
+                                                    <div class="qz_areaselector qz_areaselector_del">
+                                                        <h4>
+                                                            已选择<strong id="_MT_0_SELECTEDWRAP_BUSINESS_MT_0_SELECTED">0</strong>个,还剩<span id="_MT_0_SELECTEDWRAP_BUSINESS_MT_0_REMAINED">200</span>个可选
+                                                        </h4>
+                                                        <div class="qz_as_list" id="_MT_0_SELECTEDWRAP_BUSINESS">
+                                                            <ul class="qz_as_list_detail clearfix" style="height:280px">
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <span class="prompt"><input id="businessaction_object_id"
+                                                                    name="businessaction_object_id" value="" type="hidden"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">关键词：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_keyword_type" class="radio" onclick="showDiv('gdt_keyword_range', 'hide');" <?php echo  $result['keyword_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_keyword_type" class="radio" onclick="showDiv('gdt_keyword_range', 'show');" <?php echo  $result['keyword_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_keyword_type'] != 1?'display:none':''; ?>" id="gdt_keyword_range">
+                                    <input type="text"  id="gdt_keyword" name="gdt_keyword" value="<?php echo $gdt_targeting['keyword']?>" class="iText" style="width:30%;">
+                                    <i class="icon ico-tips"><i></i></i><span class="c-tx3">不同关键词用英文逗号','隔开，每个关键词最长 30 个字节，最多允许设置 500 个关键词</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="app-detail">
+                    <div class="_toggle arrow">
+                        <span class="toggle_tile">用户行为</span>
+                        <i class="icon ico-tips"><i></i></i><span class="c-tx3">对投放非APP商品的广告，请勿使用“应用用户”定向</span>
+                    </div>
+                    <div>
+                        <ul class="form">
+                            <li>
+                                <span class="label">付费用户：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_paying_user_type_type" class="radio" onclick="showDiv('gdt_paying_user_type_range', 'hide');" <?php echo  $result['paying_user_type_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_paying_user_type_type" class="radio" onclick="showDiv('gdt_paying_user_type_range', 'show');" <?php echo  $result['paying_user_type_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_paying_user_type_type'] != 1?'display:none':''; ?>" id="gdt_paying_user_type_range">
+                                    <?php foreach ($gdt_paying_user_type as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_paying_user_type_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['paying_user_type_range'] &&  in_array($key, $result['paying_user_type_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">APP行为定向：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_app_behavior_type" class="radio" onclick="showDiv('gdt_app_behavior_range', 'hide');" <?php echo  $result['app_behavior_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_app_behavior_type" class="radio" onclick="showDiv('gdt_app_behavior_range', 'show');" <?php echo  $result['app_behavior_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_app_behavior_type'] != 1?'display:none':''; ?>" id="gdt_app_behavior_range">
+                                    <div class="detail-line2" id="appActionWrap">
+                                        <div id="appaction_object_idItemsWrap">
+                                            <div id="appCateSelector">
+                                                <div class="qz_areaselector_box clearfix" id="_MT_0">
+                                                    <div class="qz_areaselector">
+                                                        <h4>分类</h4>
+
+                                                        <div class="qz_as_choose_list qz_as_list">
+                                                            <ul class="qz_as_list_detail">
+                                                                <?php foreach ($apps as $key=>$itemlv1){?>
+                                                                    <li>
+                                                                        <?php if($itemlv1['childs']){?>
+                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false">
+                                                                                <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv1['name'] ?></strong>
+                                                                            </a>
+                                                                            <ul class="" style="display: none;">
+                                                                                <?php foreach($itemlv1['childs'] as $itemlv2){ ?>
+                                                                                    <li>
+                                                                                        <?php if($itemlv2['childs']){?>
+                                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false">
+                                                                                                <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv2['name'] ?></strong>
+                                                                                            </a>
+                                                                                            <ul class="" style="display: none;">
+                                                                                                <?php foreach($itemlv2['childs'] as $itemlv3){ ?>
+                                                                                                    <li><a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_3_'.$itemlv3['id'] ?>" realid="<?php echo $itemlv3['id'] ?>"  onclick="return false" class=""><?php echo $itemlv3['name'] ?></a></li>
+                                                                                                <?php } ?>
+                                                                                            </ul>
+                                                                                        <?php }else { ?>
+                                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false" class=""><?php echo $itemlv2['name'] ?></a>
+                                                                                        <?php } ?>
+                                                                                    </li>
+                                                                                <?php } ?>
+                                                                            </ul>
+                                                                        <?php }else{ ?>
+                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MT_0_1_'.$itemlv1['id'] ?>"  realid="<?php echo $itemlv1['id'] ?>" onclick="return false" class=""><?php echo $itemlv1['name'] ?></a>
+                                                                        <?php } ?>
+                                                                    </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="qz_areaselector_addop">
+                                                        <i class="qz_as_icon_add"></i>
+                                                        <button type="button" class="qz_as_add" opt="add">添加</button>
+                                                    </div>
+                                                    <div class="qz_areaselector qz_areaselector_del">
+                                                        <h4>
+                                                            已选择<strong id="_MT_0_SELECTEDWRAP_APP_MT_0_SELECTED">0</strong>个,还剩<span id="_MT_0_SELECTEDWRAP_APP_MT_0_REMAINED">10</span>个可选
+                                                        </h4>
+                                                        <div class="qz_as_list" id="_MT_0_SELECTEDWRAP_APP">
+                                                            <ul class="qz_as_list_detail clearfix" style="height:280px">
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <span class="prompt"><input id="appaction_object_id"
+                                                                    name="appaction_object_id" value="" type="hidden"></span>
+                                        </div>
+                                        <div class="detail-line2">
+                                            用户行为：
+                                            <div id="appaction_operatorItemsWrap" style="display: inline">
+                                                <label class="mg-r35">
+                                                <span class="prompt">
+                                                    <input class="checkbox mg-r35" id="appaction_operator0" name="gdt_act_id_list[]" value="ACTIVE" opt="appaction_operator100000" type="checkbox" checked="checked">
+                                                </span>活跃
+                                                </label>
+                                                <label class="mg-r35">
+                                                <span class="prompt">
+                                                    <input class="checkbox mg-r35" id="appaction_operator1" name="gdt_act_id_list[]" value="PAID" opt="appaction_operator100001" type="checkbox" checked="checked">
+                                                </span>付费
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="detail-line2">
+                                            <div id="appaction_timeItemsWrap" style="display: inline">
+                                                <label>距今日 <span class="prompt"><input id="gdt_time_window" name="gdt_time_window" class="text" size="10" value="30" type="text"></span> 天以内
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">应用用户：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_app_install_status_type" class="radio"  <?php echo  $result['app_install_status'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_app_install_status_type" class="radio"  <?php echo  $result['app_install_status'] == 'NOT_INSTALLED'?'checked=checked':''; ?>>未安装该应用的用户</label></span>
+                                    <span><label><input type="radio" value="2" name="gdt_app_install_status_type" class="radio"  <?php echo  $result['app_install_status'] == 'INSTALLED'?'checked=checked':''; ?>>已安装该应用的用户</label></span>
+                                    <i class="icon ico-tips"><i></i></i><span class="c-tx3">ios商品请先接入转化激活数据后再使用</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="app-detail">
+                    <div class="_toggle arrow">
+                        <span class="toggle_tile">消费能力</span>
+                    </div>
+                    <div>
+                        <ul class="form">
+                            <li>
+                                <span class="label">居住社区价格(元/m²)：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_resident_community_price_type" class="radio" onclick="showDiv('gdt_resident_community_price_range', 'hide');" <?php echo  $result['resident_community_price_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_resident_community_price_type" class="radio" onclick="showDiv('gdt_resident_community_price_range', 'show');" <?php echo  $result['resident_community_price_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_resident_community_price_type'] != 1?'display:none':''; ?>" id="gdt_resident_community_price_range">
+                                    <input type="text"  id="gdt_resident_community_price" name="gdt_resident_community_price" value="" class="iText">
+                                    <span class="tips">(格式：1000~100000)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="app-detail">
+                    <div class="_toggle arrow">
+                        <span class="toggle_tile">天气定向</span>
+                    </div>
+                    <div>
+                        <ul class="form">
+                            <li>
+                                <span class="label">穿衣指数：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_dressing_index_type" class="radio" onclick="showDiv('gdt_dressing_index_range', 'hide');" <?php echo  $result['dressing_index_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_dressing_index_type" class="radio" onclick="showDiv('gdt_dressing_index_range', 'show');" <?php echo  $result['dressing_index_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_dressing_index_type'] != 1?'display:none':''; ?>" id="gdt_dressing_index_range">
+                                    <?php foreach ($gdt_dressing_index as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_dressing_index_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['dressing_index_range'] &&  in_array($key, $result['dressing_index_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">紫外线指数：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_uv_index_type" class="radio" onclick="showDiv('gdt_uv_index_range', 'hide');" <?php echo  $result['uv_index_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_uv_index_type" class="radio" onclick="showDiv('gdt_uv_index_range', 'show');" <?php echo  $result['uv_index_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_uv_index_type'] != 1?'display:none':''; ?>" id="gdt_uv_index_range">
+                                    <?php foreach ($gdt_uv_index as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_uv_index_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['uv_index_range'] &&  in_array($key, $result['uv_index_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">化妆指数：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_makeup_index_type" class="radio" onclick="showDiv('gdt_makeup_index_range', 'hide');" <?php echo  $result['makeup_index_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_makeup_index_type" class="radio" onclick="showDiv('gdt_makeup_index_range', 'show');" <?php echo  $result['makeup_index_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_makeup_index_type'] != 1?'display:none':''; ?>" id="gdt_makeup_index_range">
+                                    <?php foreach ($gdt_makeup_index as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_makeup_index_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['makeup_index_range'] &&  in_array($key, $result['makeup_index_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">天气气象：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_climate_type" class="radio" onclick="showDiv('gdt_climate_range', 'hide');" <?php echo  $result['climate_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_climate_type" class="radio" onclick="showDiv('gdt_climate_range', 'show');" <?php echo  $result['climate_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_climate_type'] != 1?'display:none':''; ?>" id="gdt_climate_range">
+                                    <?php foreach ($gdt_climate as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_climate_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['climate_range'] &&  in_array($key, $result['climate_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">温度(°C)：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_temperature_type" class="radio" onclick="showDiv('gdt_temperature_range', 'hide');" <?php echo  $result['temperature_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_temperature_type" class="radio" onclick="showDiv('gdt_temperature_range', 'show');" <?php echo  $result['temperature_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                    <i class="icon ico-tips"><i></i></i><span class="c-tx3">暂不支持该定向预估覆盖用户数和日曝光量</span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_temperature_type'] != 1?'display:none':''; ?>" id="gdt_temperature_range">
+                                    <input type="text"  id="gdt_temperature" name="gdt_temperature" value="" class="iText">
+                                    <span class="tips">(格式：-50~50)</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="app-detail">
+                    <div class="_toggle arrow">
+                        <span class="toggle_tile">移动定向</span>
+                        <i class="icon ico-tips"><i></i></i><span class="c-tx3">对投放到非移动平台上的广告，请勿使用“移动定向”</span>
+                    </div>
+                    <div>
+                        <ul class="form">
+                            <li>
+                                <span class="label">设备价格：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_device_price_type" class="radio" onclick="showDiv('gdt_device_price_range', 'hide');" <?php echo  $result['device_price_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_device_price_type" class="radio" onclick="showDiv('gdt_device_price_range', 'show');" <?php echo  $result['device_price_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                    <i class="icon ico-tips"><i></i></i><span class="c-tx3">仅对移动平台、消息流广告有效</span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_device_price_type'] != 1?'display:none':''; ?>" id="gdt_device_price_range">
+                                    <?php foreach ($gdt_device_price as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_device_price_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['device_price_range'] &&  in_array($key, $result['device_price_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">操作系统：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_user_os_type" class="radio" onclick="showDiv('gdt_user_os_range', 'hide');" <?php echo  $result['user_os_range'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_user_os_type" class="radio" onclick="showDiv('gdt_user_os_range', 'show');" <?php echo  $result['user_os_range'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_user_os_type'] != 1?'display:none':''; ?>" id="gdt_user_os_range">
+                                    <?php foreach ($gdt_user_os as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_user_os_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['user_os_range'] &&  in_array($key, $result['user_os_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">联网方式：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_network_type_type" class="radio" onclick="showDiv('gdt_network_type_range', 'hide');" <?php echo  $result['network_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_network_type_type" class="radio" onclick="showDiv('gdt_network_type_range', 'show');" <?php echo  $result['network_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                    <i class="icon ico-tips"><i></i></i><span class="c-tx3">若您投放wap文字链广告，请不要选择此定向，会导致没有曝光</span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_network_type_type'] != 1?'display:none':''; ?>" id="gdt_network_type_range">
+                                    <?php foreach ($gdt_network_type as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_network_type_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['network_type'] &&  in_array($key, $result['network_type']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">移动运营商：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_network_operator_type" class="radio" onclick="showDiv('gdt_network_operator_range', 'hide');" <?php echo  $result['network_operator'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_network_operator_type" class="radio" onclick="showDiv('gdt_network_operator_range', 'show');" <?php echo  $result['network_operator'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_network_operator_type'] != 1?'display:none':''; ?>" id="gdt_network_operator_range">
+                                    <?php foreach ($gdt_network_operator as $key=>$val){?>
+                                        <p style=" float: left;width:150px;height:30px;"><label><input name="gdt_network_operator_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['network_operator'] &&  in_array($key, $result['network_operator']))?'checked=checked':''; ?>><?php echo $val; ?></label></p>
+                                    <?php }?>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="label">移动媒体分类定向：</span>
+                                <div class="fc">
+                                    <span><label><input type="radio" value="0" name="gdt_union_media_category_type" class="radio" onclick="showDiv('gdt_union_media_category_range', 'hide');" <?php echo  $result['union_media_category'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                    <span><label><input type="radio" value="1" name="gdt_union_media_category_type" class="radio" onclick="showDiv('gdt_union_media_category_range', 'show');" <?php echo  $result['union_media_category'] == 1?'checked=checked':''; ?>>定向</label></span>
+                                    <i class="icon ico-tips"><i></i></i><span class="c-tx3">仅对移动外部媒体有效</span>
+                                </div>
+                                <div style="margin-left:180px;<?php echo  $result['gdt_union_media_category_type'] != 1?'display:none':''; ?>" id="gdt_union_media_category_range">
+                                    <div class="detail-line2" id="appActionWrap">
+                                        <div id="appaction_object_idItemsWrap">
+                                            <div id="mediaCateSelector">
+                                                <div class="qz_areaselector_box clearfix" id="_MC_0">
+                                                    <div class="qz_areaselector">
+                                                        <h4>分类</h4>
+
+                                                        <div class="qz_as_choose_list qz_as_list">
+                                                            <ul class="qz_as_list_detail">
+                                                                <?php foreach ($medias as $key=>$itemlv1){?>
+                                                                    <li>
+                                                                        <?php if($itemlv1['childs']){?>
+                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MC_0_1_'.$itemlv1['id'] ?>" realid="<?php echo $itemlv1['id'] ?>" onclick="return false">
+                                                                                <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv1['name'] ?></strong>
+                                                                            </a>
+                                                                            <ul class="" style="display: none;">
+                                                                                <?php foreach($itemlv1['childs'] as $itemlv2){ ?>
+                                                                                    <li>
+                                                                                        <?php if($itemlv2['childs']){?>
+                                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MC_0_2_'.$itemlv2['id'] ?>" realid="<?php echo $itemlv2['id'] ?>" onclick="return false">
+                                                                                                <span class="qz_as_open_list" opt="toggle">+</span><strong><?php echo $itemlv2['name'] ?></strong>
+                                                                                            </a>
+                                                                                            <ul class="" style="display: none;">
+                                                                                                <?php foreach($itemlv2['childs'] as $itemlv3){ ?>
+                                                                                                    <li><a href="javascript:;" opt="item,toggle" id="<?php echo '_MC_0_3_'.$itemlv3['id'] ?>" realid="<?php echo $itemlv3['id'] ?>"  onclick="return false" class=""><?php echo $itemlv3['name'] ?></a></li>
+                                                                                                <?php } ?>
+                                                                                            </ul>
+                                                                                        <?php }else { ?>
+                                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MC_0_2_'.$itemlv2['id'] ?>"  realid="<?php echo $itemlv2['id'] ?>" onclick="return false" class=""><?php echo $itemlv2['name'] ?></a>
+                                                                                        <?php } ?>
+                                                                                    </li>
+                                                                                <?php } ?>
+                                                                            </ul>
+                                                                        <?php }else{ ?>
+                                                                            <a href="javascript:;" opt="item,toggle" id="<?php echo '_MC_0_1_'.$itemlv1['id'] ?>" realid="<?php echo $itemlv1['id'] ?>"  onclick="return false" class=""><?php echo $itemlv1['name'] ?></a>
+                                                                        <?php } ?>
+                                                                    </li>
+                                                                <?php } ?>
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="qz_areaselector_addop">
+                                                        <i class="qz_as_icon_add"></i>
+                                                        <button type="button" class="qz_as_add" opt="add">添加</button>
+                                                    </div>
+                                                    <div class="qz_areaselector qz_areaselector_del">
+                                                        <h4>
+                                                            已选择<strong id="_MC_0_SELECTED">0</strong>个
+                                                        </h4>
+                                                        <div class="qz_as_list" id="_MC_0_SELECTEDWRAP_MEDIA">
+                                                            <ul class="qz_as_list_detail clearfix" style="height:280px">
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <span class="prompt"><input id="appaction_object_id" name="appaction_object_id" value="" type="hidden"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="app-detail">
+                    <div>
+                        <ul class="form">
+                            <li>
+                                <div class="fc">
+                                    <input type="submit"  value="保存" class=" btn" id="save" onclick="confirmSubmit();return false;">
+                                    <input type="cancel"  value="取消" class=" btn" id="cancel_add">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<style>
+.app-detail{
+    padding: 15px 0 0;margin-bottom: 6px;
+}
+.form li {
+     margin-bottom: 20px;margin-top: 10px;
+ }
+</style>
+<link href="<?php echo $staticPath;?>/css/gdt-target.css" rel="stylesheet" />
+<script type="text/javascript">
+var nextUrl = '<?php echo $addAdStep4Url; ?>';
+//广告表单数据提交
+$(document).ready(function(){
+	ajaxForm('addFrom',function(ret){
+		ajaxRedirect(ret, "<?php echo $gdtTargetingListUrl ?> ");
+	});
+    
+    $("#cancel_add").click(function(){
+        history.back();
+    });
+})
+//验证textarea的长度
+function changeLength(obj,lg){
+    var len = $(obj).val();
+    $(obj).next().find("strong").text(len.length);
+    if(len.length>=lg){
+        $(obj).next().find("strong").text(lg);
+        $(obj).val(len.substring(0,lg));
+    }
+}
+function showDiv(id, type){
+	if(type == 'show'){
+		$('#'+id).show();
+	}else{
+		$('#'+id).hide();
+	}
+}
+
+function confirmSubmit(){
+        //todo 提交表单前前端校验
+        
+        $('form').submit()
+    }
+
+</script>
+<?php if($gdtconfig){ ?>
+<link href="<?php echo $staticPath;?>/css/qz_select.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script type="text/javascript">
+$(document).ready(function(){
+    $("._toggle").click(function(){
+        $(this).toggleClass('arrow').next("div").slideToggle();
+    })
+    //广点通应用分类定向
+    $("#appCateSelector .qz_as_list_detail a").click(function(){
+        if($(this).children("span").length==0){
+            if(!$(this).hasClass('qz_as_disabled')){
+                if($(this).hasClass('qz_as_bg_blue')){
+                    $(this).removeClass('qz_as_bg_blue')
+                }else{
+                    if($("#_MT_0_SELECTEDWRAP_APP ul li").length + $("#appCateSelector .qz_as_list_detail a.qz_as_bg_blue").length<10){
+                        $(this).addClass('qz_as_bg_blue')
+                    }else{
+                        alert('已经超过能选择的最大个数限制')
+                    }
+                }
+            }
+        }else{
+            $(this).siblings('ul').toggle();
+        }
+    })
+    $(".region_type").click(function(){
+        var region_type = $(this).attr("data-value");
+        if(region_type == 'inside'){
+            $(".data_inside").show();
+            $(".data_overseas").hide();
+        }else{
+            $(".data_inside").hide();
+            $(".data_overseas").show();
+        }
+    })
+    //广点通投放地区分类定向打开
+    $("#regionCateSelector .qz_as_list_detail .qz_as_open_list").bind("click",function(event){
+        $(this).parent('a').siblings('ul').toggle();
+        event.stopPropagation();    //  阻止事件冒泡
+    })
+    //广点通投放地区分类定向
+    $("#regionCateSelector .qz_as_list_detail a").click(function(){
+            if(!$(this).hasClass('qz_as_disabled')){
+                if($(this).hasClass('qz_as_bg_blue')){
+                    $(this).removeClass('qz_as_bg_blue')
+                }else{
+                    if($("#_MT_0_SELECTEDWRAP_REGION ul li").length + $("#regionCateSelector .qz_as_list_detail a.qz_as_bg_blue").length<200){
+                        $(this).addClass('qz_as_bg_blue')
+                    }else{
+                        alert('已经超过能选择的最大个数限制')
+                    }
+                }
+            }
+    })
+    //广点通商业兴趣分类定向打开
+    $("#businessCateSelector .qz_as_list_detail .qz_as_open_list").bind("click",function(event){
+        $(this).parent('a').siblings('ul').toggle();
+        event.stopPropagation();    //  阻止事件冒泡
+    })
+    //广点通商业兴趣分类定向
+    $("#businessCateSelector .qz_as_list_detail a").click(function(){
+            if(!$(this).hasClass('qz_as_disabled')){
+                if($(this).hasClass('qz_as_bg_blue')){
+                    $(this).removeClass('qz_as_bg_blue')
+                }else{
+                    if($("#_MT_0_SELECTEDWRAP_BUSINESS ul li").length + $("#businessCateSelector .qz_as_list_detail a.qz_as_bg_blue").length<200){
+                        $(this).addClass('qz_as_bg_blue')
+                    }else{
+                        alert('已经超过能选择的最大个数限制')
+                    }
+                }
+            }
+    })
+    
+    $("#appCateSelector .qz_as_add").click(function(){
+        $("#appCateSelector .qz_as_list_detail a.qz_as_bg_blue").each(function(){
+            if($("#_MT_0_SELECTEDWRAP_APP ul li").length >=10){
+                return
+            }
+            realid=$(this).attr('realid')
+            rightid = $(this).attr('id').replace("_MT", "_MT_DEL")
+            curname = $(this).text()
+            checkboxstr = '<input name="gdt_app_behavior_range[]"  type="checkbox" value="'+realid+'" style="display:none;" checked="checked">'
+            newli = '<li class="clearfix">'
+            newli +='<a href="javascript:;" onclick="return false"> <span class="qz_as_where">'+curname+'</span></a><a href="javascript:;" class="qz_as_close" opt="del" id="'+rightid+'" onclick="return false">×</a>'
+            newli +=checkboxstr
+            newli +='</li>'
+            
+            $("#_MT_0_SELECTEDWRAP_APP ul").append(newli)
+            $(this).removeClass("qz_as_bg_blue").addClass('qz_as_disabled')
+        });
+        updateCurNum('_MT_0_SELECTEDWRAP_APP',10)
+    })
+
+    $("#regionCateSelector .qz_as_add").click(function(){
+        $("#regionCateSelector .qz_as_list_detail a.qz_as_bg_blue").each(function(){
+            if($("#_MT_0_SELECTEDWRAP_REGION ul li").length >=200){
+                return
+            }
+            realid=$(this).attr('realid')
+            rightid = $(this).attr('id').replace("_MT", "_MT_DEL")
+            curname = $(this).text()
+            curname = curname.replace("+", "")
+            checkboxstr = '<input name="gdt_region_range[]"  type="checkbox" value="'+realid+'" style="display:none;" checked="checked">'
+            newli = '<li class="clearfix">'
+            newli +='<a href="javascript:;" onclick="return false"> <span class="qz_as_where">'+curname+'</span></a><a href="javascript:;" class="qz_as_close" opt="del" id="'+rightid+'" onclick="return false">×</a>'
+            newli +=checkboxstr
+            newli +='</li>'
+
+            $("#_MT_0_SELECTEDWRAP_REGION ul").append(newli)
+            $(this).removeClass("qz_as_bg_blue").addClass('qz_as_disabled')
+        });
+        updateCurNum('_MT_0_SELECTEDWRAP_REGION',200)
+    })
+    $("#businessCateSelector .qz_as_add").click(function(){
+        $("#businessCateSelector .qz_as_list_detail a.qz_as_bg_blue").each(function(){
+            if($("#_MT_0_SELECTEDWRAP_BUSINESS ul li").length >=200){
+                return
+            }
+            realid=$(this).attr('realid')
+            rightid = $(this).attr('id').replace("_MT", "_MT_DEL")
+            curname = $(this).text()
+            curname = curname.replace("+", "")
+            checkboxstr = '<input name="gdt_business_interest_range[]"  type="checkbox" value="'+realid+'" style="display:none;" checked="checked">'
+            newli = '<li class="clearfix">'
+            newli +='<a href="javascript:;" onclick="return false"> <span class="qz_as_where">'+curname+'</span></a><a href="javascript:;" class="qz_as_close" opt="del" id="'+rightid+'" onclick="return false">×</a>'
+            newli +=checkboxstr
+            newli +='</li>'
+
+            $("#_MT_0_SELECTEDWRAP_BUSINESS ul").append(newli)
+            $(this).removeClass("qz_as_bg_blue").addClass('qz_as_disabled')
+        });
+        updateCurNum('_MT_0_SELECTEDWRAP_BUSINESS',200)
+    })
+    
+    $("#appCateSelector .qz_as_close").live("click", function(){
+        leftid = $(this).attr('id').replace("_MT_DEL", "_MT")
+        $(this).parent('li').remove()
+        $("#" + leftid).removeClass("qz_as_disabled")
+        updateCurNum('_MT_0_SELECTEDWRAP_APP',10)
+    })
+
+    $("#regionCateSelector .qz_as_close").live("click", function(){
+        leftid = $(this).attr('id').replace("_MT_DEL", "_MT")
+        $(this).parent('li').remove()
+        $("#" + leftid).removeClass("qz_as_disabled")
+        updateCurNum('_MT_0_SELECTEDWRAP_REGION',200)
+    })
+
+    $("#businessCateSelector .qz_as_close").live("click", function(){
+        leftid = $(this).attr('id').replace("_MT_DEL", "_MT")
+        $(this).parent('li').remove()
+        $("#" + leftid).removeClass("qz_as_disabled")
+        updateCurNum('_MT_0_SELECTEDWRAP_BUSINESS',200)
+    })
+    
+    function updateCurNum(idStr,num){
+        selectedlength = $("#"+idStr+" ul li").length
+        ramainedlength = num - selectedlength
+        $("#"+idStr+"_MT_0_SELECTED").html(selectedlength)
+        $("#"+idStr+"_MT_0_REMAINED").html(ramainedlength)
+    }
+    
+    //广点通移动媒体分类定向
+    $("#mediaCateSelector .qz_as_list_detail a").click(function(){
+        if($(this).children("span").length==0){
+            if(!$(this).hasClass('qz_as_disabled')){
+                if($(this).hasClass('qz_as_bg_blue')){
+                    $(this).removeClass('qz_as_bg_blue')
+                }else{
+                    $(this).addClass('qz_as_bg_blue')
+                }
+            }
+        }else{
+            $(this).siblings('ul').toggle();
+        }
+    })
+    
+    $("#mediaCateSelector .qz_as_add").click(function(){
+        $("#mediaCateSelector .qz_as_list_detail a.qz_as_bg_blue").each(function(){
+            realid=$(this).attr('realid')
+            rightid = $(this).attr('id').replace("_MC", "_MC_DEL")
+            curname = $(this).text()
+            checkboxstr = '<input name="gdt_union_media_category_range[]"  type="checkbox" value="'+realid+'" style="display:none;" checked="checked">'
+            newli = '<li class="clearfix">'
+            newli +='<a href="javascript:;" onclick="return false"> <span class="qz_as_where">'+curname+'</span></a><a href="javascript:;" class="qz_as_close" opt="del" id="'+rightid+'" onclick="return false">×</a>'
+            newli +=checkboxstr
+            newli +='</li>'
+            $("#_MC_0_SELECTEDWRAP_MEDIA ul").append(newli)
+            $(this).removeClass("qz_as_bg_blue").addClass('qz_as_disabled')
+        });
+        updateMediaCurNum()
+    })
+    
+    $("#mediaCateSelector .qz_as_close").live("click", function(){
+        leftid = $(this).attr('id').replace("_MC_DEL", "_MC")
+        $(this).parent('li').remove()
+        $("#" + leftid).removeClass("qz_as_disabled")
+        updateMediaCurNum()
+    })
+    
+    function updateMediaCurNum(){
+        selectedlength = $("#_MC_0_SELECTEDWRAP_MEDIA ul li").length
+        $("#_MC_0_SELECTED").html(selectedlength)
+    }
+    
+    <?php if($gdt_targeting_info){?>
+        //定向名称
+        <?php  if($gdt_targeting_info['targeting_name']){?>
+            $("#targeting_name").val("<?php echo $gdt_targeting_info['targeting_name'] ?>");
+        <?php } ?>
+        //定向名称
+        <?php  if($gdt_targeting_info['description']){?>
+        $("#description").val("<?php echo $gdt_targeting_info['description'] ?>");
+        <?php } ?>
+        //年龄
+        <?php  if($gdt_targeting_info['targeting_setting']['age'][0]){?>
+            $('input[name=gdt_age_type][value=1]').click()
+            $("#gdt_age").val("<?php echo $gdt_targeting_info['targeting_setting']['age'][0] ?>");
+        <?php } ?>
+        //年龄
+        <?php  if($gdt_targeting_info['targeting_setting']['temperature'][0]){?>
+            $('input[name=gdt_temperature_type][value=1]').click()
+            <?php
+                $temperature_arr = explode('~', $gdt_targeting_info['targeting_setting']['temperature'][0]);
+                $temperature_arr[0] -= 273;
+                $temperature_arr[1] -= 273;
+            ?>
+            $("#gdt_temperature").val("<?php echo $temperature_arr[0]."~".$temperature_arr[1]; ?>");
+        <?php } ?>
+        //性别
+        <?php  if($gdt_targeting_info['targeting_setting']['gender'][0]){?>
+            $('input[name=gdt_gender_type][value="<?php echo $gdt_targeting_info['targeting_setting']['gender'][0] ?>"]').click();
+        <?php } ?>
+        //上网场景
+        <?php if($gdt_targeting_info['targeting_setting']['online_scenario']){?>
+            $("input[name=gdt_online_scenario_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['online_scenario'] as $online_scenario){ ?>
+            $("input[name=gdt_online_scenario_range\[\]][value=<?php echo $online_scenario ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //用户学历
+        <?php if($gdt_targeting_info['targeting_setting']['education']){?>
+            $("input[name=gdt_education_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['education'] as $education){ ?>
+            $("input[name=gdt_education_range\[\]][value=<?php echo $education ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //工作状态
+        <?php if($gdt_targeting_info['targeting_setting']['living_status']){?>
+            $("input[name=gdt_living_status_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['living_status'] as $living_status){ ?>
+            $("input[name=gdt_living_status_range\[\]][value=<?php echo $living_status ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //穿衣指数
+        <?php if($gdt_targeting_info['targeting_setting']['dressing_index']){?>
+            $("input[name=gdt_dressing_index_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['dressing_index'] as $dressing_index){ ?>
+            $("input[name=gdt_dressing_index_range\[\]][value=<?php echo $dressing_index ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //紫外线指数
+        <?php if($gdt_targeting_info['targeting_setting']['uv_index']){?>
+            $("input[name=gdt_uv_index_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['uv_index'] as $uv_index){ ?>
+            $("input[name=gdt_uv_index_range\[\]][value=<?php echo $uv_index ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //化妆指数
+        <?php if($gdt_targeting_info['targeting_setting']['makeup_index']){?>
+            $("input[name=gdt_makeup_index_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['makeup_index'] as $makeup_index){ ?>
+            $("input[name=gdt_makeup_index_range\[\]][value=<?php echo $makeup_index ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //天气气象
+        <?php if($gdt_targeting_info['targeting_setting']['climate']){?>
+            $("input[name=gdt_climate_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['climate'] as $climate){ ?>
+            $("input[name=gdt_climate_range\[\]][value=<?php echo $climate ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //付费用户
+        <?php if($gdt_targeting_info['targeting_setting']['paying_user_type']){?>
+            $("input[name=gdt_paying_user_type_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['paying_user_type'] as $paying_user_type){ ?>
+            $("input[name=gdt_paying_user_type_range\[\]][value=<?php echo $paying_user_type ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //关键词
+        <?php  if($gdt_targeting_info['targeting_setting']['keyword']['words']){?>
+            $("input[name=gdt_keyword_type][value=1]").click()
+            $("#gdt_keyword").val("<?php echo implode(',', $gdt_targeting_info['targeting_setting']['keyword']['words']) ?>");
+        <?php } ?>
+        //app行为定向
+        <?php  if($gdt_targeting_info['targeting_setting']['app_behavior']){?>
+            $('input[name=gdt_app_behavior_type][value=1]').click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['app_behavior']['object_id_list'] as $object_id){ ?>
+                $("#appCateSelector a[realid=<?php echo $object_id ?>]").click()
+                $("#appCateSelector .qz_as_add").click()
+            <?php } ?>
+            <?php foreach($gdt_targeting_info['targeting_setting']['app_behavior']['act_id_list'] as $act){ ?>
+                $("input[name=gdt_act_id_list\[\]][value=<?php echo $act ?>]").attr("checked", "checked")
+            <?php } ?>
+            <?php if($gdt_targeting_info['targeting_setting']['app_behavior']['time_window']){?>
+                $("#gdt_time_window").val("<?php echo $gdt_targeting_info['targeting_setting']['app_behavior']['time_window'] ?>")
+            <?php }?>
+        <?php } ?>
+        //商业兴趣
+        <?php  if($gdt_targeting_info['targeting_setting']['business_interest']){?>
+            $('input[name=gdt_business_interest_type][value=1]').click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['business_interest'] as $object_id){ ?>
+                $("#businessCateSelector a[realid=<?php echo $object_id ?>]").click()
+                $("#businessCateSelector .qz_as_add").click()
+            <?php } ?>
+        <?php } ?>
+        //投放地区
+        <?php  if($gdt_targeting_info['targeting_setting']['region']){?>
+            $('input[name=gdt_region_type][value=1]').click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['region'] as $object_id){ ?>
+                $("#regionCateSelector a[realid=<?php echo $object_id ?>]").click()
+                $("#regionCateSelector .qz_as_add").click()
+            <?php } ?>
+        <?php } ?>
+        //设备价格
+        <?php if($gdt_targeting_info['targeting_setting']['device_price']){?>
+            $("input[name=gdt_device_price_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['device_price'] as $price){ ?>
+                $("input[name=gdt_device_price_range\[\]][value=<?php echo $price ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //操作系统
+        <?php if($gdt_targeting_info['targeting_setting']['user_os']){?>
+            $("input[name=gdt_user_os_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['user_os'] as $os){ ?>
+                $("input[name=gdt_user_os_range\[\]][value=<?php echo $os ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //联网方式
+        <?php if($gdt_targeting_info['targeting_setting']['network_type']){?>
+            $("input[name=gdt_network_type_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['network_type'] as $network){ ?>
+                $("input[name=gdt_network_type_range\[\]][value=<?php echo $network ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //移动运营商
+        <?php if($gdt_targeting_info['targeting_setting']['network_operator']){?>
+            $("input[name=gdt_network_operator_type][value=1]").click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['network_operator'] as $operator){ ?>
+                $("input[name=gdt_network_operator_range\[\]][value=<?php echo $operator ?>]").attr("checked", "checked")
+            <?php } ?>
+        <?php }?>
+        //移动媒体分类
+        <?php  if($gdt_targeting_info['targeting_setting']['media_category_union']){?>
+            $('input[name=gdt_union_media_category_type][value=1]').click()
+            <?php foreach($gdt_targeting_info['targeting_setting']['media_category_union'] as $object_id){ ?>
+                $("#mediaCateSelector a[realid=<?php echo $object_id ?>]").click()
+                $("#mediaCateSelector .qz_as_add").click()
+            <?php } ?>
+        <?php } ?>
+    <?php } ?>
+})
+</script>
+<?php } ?>
+
+<?php echo $this->render("layout/footer.phtml");?>

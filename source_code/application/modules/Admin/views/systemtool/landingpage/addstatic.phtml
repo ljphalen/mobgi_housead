@@ -1,0 +1,94 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="items-main-title">
+        <p><?php echo $result['id']!=''?"编辑":"新建"; ?>落地页--编辑模板内容</p>  
+    </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap">
+        <form class="layui-form" >
+            <input name="token" value="<?php echo $token;?>" type="hidden" />
+            <input type="hidden" name="id"   id="id"  value='<?php echo $result['id']; ?>' />
+            <input type="hidden" name="action"   id="action"  value='<?php echo $result['action']; ?>' />
+            <input type="hidden" name="template_data"   id="template_data"  value='<?php echo $result['template_data']; ?>' />
+            <?php if($result['template_type']==2){ ?>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">页面标题</label>
+                    <div class="layui-input-inline" >
+                        <input lay-verify="required" type="text" name="title" placeholder="" value="<?php echo $result['title']; ?>" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">链接地址</label>
+                    <div class="layui-input-inline" style="width:500px;">
+                        <input lay-verify="url" type="text" name="url" placeholder="" value="<?php echo $result['url']; ?>" class="layui-input">
+                    </div>
+                </div>
+            <?php }else{ ?>
+                <iframe name="template_iframe" id="template_iframe" 
+                        data-host="<?php echo $webRoot; ?>" 
+                        api-host="<?php echo $apiRoot;?>" 
+                        src="<?php echo $attachUrl.'/landingpage/common/'.$result['create_name'].'/new.html';?>" 
+                        token="<?php echo $token; ?>"
+                        template_id ="<?php echo intval($result['id']); ?>"
+                        style="width:100%;height:2100px;" frameborder="0" scrolling="no">                                         
+                </iframe>
+            <?php } ?>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button"  id="goback" type="reset" class="layui-btn layui-btn-primary">上一步</button>
+                    <button type="button" class="layui-btn" lay-submit lay-filter="submit_form">立即提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+var addUrl = baseurl + '<?php echo $addUrl; ?>'; // 上一页
+var listUrl = baseurl + '<?php echo $listUrl; ?>'; // 列表页面
+var addStaticPostUrl = baseurl + '<?php echo $addStaticPostUrl; ?>'; // 表单提交
+
+var screatedate = getQueryString('screatedate');
+var ecreatedate = getQueryString('ecreatedate');
+var page = getQueryString('page');
+var app_id = getQueryString('app_id');
+var title = getQueryString('title');
+var id = getQueryString('id');
+
+layui.use(['form','element'], function(){
+    var element = layui.element;
+    var form = layui.form;
+
+    // 提交表单
+    form.on('submit(submit_form)', function(data){
+        $.ajax({
+            url : addStaticPostUrl,
+            async: false,
+            data : data.field,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.msg(data.msg); 
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.href = listUrl + "?screatedate="+screatedate+"&ecreatedate="+ecreatedate+"&page="+page+"&app_id="+app_id+"&title="+title;
+                    },500); 
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg); 
+            }
+        });
+        return false; 
+    });
+
+    // 返回上一页
+    $("#goback").click(function(){
+        var id = getQueryString('id');
+        window.location.href = addUrl + "?id="+id+"&screatedate="+screatedate+"&ecreatedate="+ecreatedate+"&page="+page+"&app_id="+app_id+"&title="+title;
+    });
+
+});
+
+
+</script>

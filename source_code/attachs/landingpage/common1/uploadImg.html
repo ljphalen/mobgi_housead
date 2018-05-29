@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <style>
+          .uploadimg-wrap{ position: fixed; z-index: 99; zoom: 1; width: 700px; top:50px; left:50%; margin:0 0 0 -350px; border:1px solid #f1f1f1;  box-shadow: 1px 3px 3px #ddd;     }
+          .uploadimg-tabs{ width: 100%;  overflow: hidden; color:#333; background: #fff; }
+          .uploadimg-tabs li{ cursor: pointer; float:left; width: 50%; height: 40px; line-height: 40px; text-align: center; font-size: 14px; border-bottom: 1px solid #f1f1f1;  }
+          .u-tabs-active{ background: #1eb3ed; color:#fff; }   
+           
+          .uploadimg-locality{ width: 100%; min-height: 400px; }
+          .uploadimg-upload{   padding: 10px; border-bottom:1px solid #f1f1f1; overflow: hidden; }
+          .u-upload-unit{ float:left; margin-right: 10px; display: inline-block; text-align: center; width: 200px; height: 30px; line-height: 30px; color:#fff; background: #1eb3ed;   }
+          .u-upload-unit input{ 
+             width: 100%; height: 30px;  
+            /* older safari/Chrome browsers */  
+            -webkit-opacity: 0;  
+            /* Netscape and Older than Firefox 0.9 */  
+            -moz-opacity: 0;  
+            /* Safari 1.x (pre WebKit!) 老式khtml内核的Safari浏览器*/  
+            -khtml-opacity: 0;  
+            /* IE9 + etc...modern browsers */  
+            opacity:0;  
+            /* IE 4-9 */  
+            filter:alpha(opacity=0);  
+            /*This works in IE 8 & 9 too*/  
+            -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";  
+            /*IE4-IE9*/  
+            filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0); 
+           }
+          .u-upload-batch{  float:left; text-align: center; width: 200px; height: 30px; line-height: 30px; color:#fff; background: #1eb3ed; }
+          .uploadimg-submit{ float:right; width:80px; height: 30px; line-height: 30px; text-align: center;  background: #1eb3ed; color:#fff; box-shadow: 1px 2px 2px #ddd; cursor: pointer;   }
+          .uploadimg-imglists{ margin:10px 0 0 20px; height: 465px; overflow-x: hidden; overflow-y: auto;   }
+          .uploadimg-imglists li{ margin:0 20px 20px 0; width: 116px; float:left;    }
+          .uploadimg-preview{ width: 116px; height:180px; vertical-align: top;  }
+          .u-img-state{ display: block; width: 100%; height: 30px; line-height: 30px; color:#999; text-align: center;      }
+          .uploadimg-reminder{ padding-left: 20px; height: 40px; line-height: 40px; font-size: 12px; color:#999;}
+          
+          .uploadimg-library{ width: 100%; height: 400px; display: none; }
+          .uploadimg-select{ outline: none; border:1px solid #f1f1f1; background:#fff; width: 160px; height: 30px; font-size: 14px; color:#333;   }
+          .u-library-left{ float: left; width:499px; overflow-x: hidden; overflow-y: auto; }
+          .u-library-right{ float:right; width: 200px; min-height: 400px; border-left:1px solid #f1f1f1;  }
+          .uploadimg-sort{ width: 100%; overflow: hidden; }
+          .uploadimg-sort li{ cursor: pointer; text-align: center; border-right: 1px solid #f1f1f1; float:left; width: 65.6px;  height: 30px; line-height: 30px; border-bottom: 1px solid #f1f1f1; border-top: 1px solid #f1f1f1; color:#666; font-size: 12px;  }
+          .uploadimg-sortimg{ width: 100%; margin-top: 10px; height: 318px;  overflow-x: hidden; overflow-y: auto; }
+          .uploadimg-sortimg li{ width: 100%; overflow: hidden; margin-bottom: 5px; text-align: center; }
+          .uploadimg-sortimg li span{ float:left; width: 30px; text-align: center; display:inline-block; color:#333; font-size: 12px; line-height: 30px; }
+          .uploadimg-sortimg li img{ width: 58px; height: 90px; }
+
+</style>
+</head>
+<body>
+    <div class="uploadimg-wrap">
+         <ul class="uploadimg-tabs">
+             <li class="u-tabs-active">本地上传</l>
+             <li>素材库</li>
+         </ul>
+         <!-- 本地上传 begin -->
+         <div class="uploadimg-locality">
+            <div class="uploadimg-upload"> 
+                <div class="u-upload-unit">
+                     选择上传本地图片
+                     <input type='file' value="" />
+                </div>
+                <div class="u-upload-batch">选择批量上传</div>
+                <p class="uploadimg-submit">确认</p>
+            </div>
+            <ul class="uploadimg-imglists">
+                <li>
+                    <img class="uploadimg-preview" src=""/>
+                    <span class="u-img-state">上传成功！</span>
+                </li>
+                <li>
+                    <img class="uploadimg-preview" src=""/>
+                    <span class="u-img-state">正在上传(80%)</span>
+                </li>
+                <li>
+                    <img class="uploadimg-preview" src=""/>
+                    <span class="u-img-state">上传成功！</span>
+                </li>
+                <li>
+                    <img class="uploadimg-preview" src=""/>
+                    <span class="u-img-state">正在上传(80%)</span>
+                </li>
+                <li>
+                    <img class="uploadimg-preview" src=""/>
+                    <span class="u-img-state">上传成功！</span>
+                </li>
+                <li>
+                    <img class="uploadimg-preview" src=""/>
+                    <span class="u-img-state">正在上传(80%)</span>
+                </li>
+            </ul>
+            <div class="uploadimg-reminder">已上传1张，最多上传6张。</div>
+         </div>
+         <!-- 本地上传 end  -->
+         
+         <!-- 素材库 begin  -->
+         <div class="uploadimg-library">
+              <div class="uploadimg-upload"> 
+                  <select class="uploadimg-select">
+                       <option>icon</option>
+                       <option>banner</option>
+                       <option>轮播图</option>
+                  </select>
+                  <select class="uploadimg-select">
+                       <option>五行天</option>
+                       <option>我们的少年时代</option>
+                       <option>苍穹变</option>
+                  </select>
+                  <p class="uploadimg-submit">确认</p>
+              </div>
+              <!-- left begin -->
+              <div class="u-library-left">
+                    <ul class="uploadimg-imglists">
+                        <li>
+                            <img class="uploadimg-preview" src=""/>
+                            <span class="u-img-state">ID:123</span>
+                        </li>
+                      
+                    </ul>
+              </div>
+              <!-- left end  -->
+              <!-- right begin  -->
+              <div class="u-library-right">
+                   <div class="uploadimg-reminder">已上传1张，最多上传6张。</div>
+                   <ul class="uploadimg-sort">
+                       <li>上移</li>
+                       <li>下移</li>
+                       <li>删除</li>
+                   </ul>
+                   <ul class="uploadimg-sortimg">
+                       <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                       <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                       <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                      <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                         <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                       <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                       <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                      <li>
+                           <span>1</span>
+                           <img src='' />
+                       </li>
+                   </ul>
+              </div>
+              <!-- right end  -->
+         </div>
+         <!-- 素材库 end    -->
+    </div>
+</body>
+</html>

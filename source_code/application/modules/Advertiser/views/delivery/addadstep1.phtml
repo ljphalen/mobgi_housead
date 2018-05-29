@@ -1,0 +1,197 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+    <div class="colMain">
+        <div class="title">
+            <p class="fl">新建广告活动: 
+                <span class="hollow_circle">基本信息</span>－－－－－
+                <span class="hollow_circle_gray">上传创意</span>－－－－－
+                <span class="hollow_circle_gray">选择定向</span>－－－－－
+                <span class="hollow_circle_gray">预览并提交</span>
+            </p>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="<?php echo $addAdStep1PostUrl; ?>" method="POST"  id="addFrom" >
+                	<input name="token" value="<?php echo $token;?>" type="hidden" />
+                    <input type="hidden" name="id"   id=""  value='<?php echo $result['id']; ?>' />
+                    <input type="hidden" name="action"   id=""  value='<?php echo $result['action']; ?>' />
+                    <ul class="form">
+                        <li>
+                            <span class="label">广告计划：</span>
+                            <div class="fc">
+                                    <select id="unit_id" name="unit_id">
+                                     <option value="" selected="">请选择</option>
+                                     <?php foreach ($adUnitList as $key=>$val){?>
+                                     <option value="<?php echo $val['id']; ?>"    <?php echo  $result['unit_id'] == $val['id']?'selected=selected':''?>><?php echo $val['name']; ?></option>
+                                     <?php }?>
+                                    </select>
+                                    <span><input type="button"  onclick="javascript:showUnitDiv('新建投放单元', '0', '0');" value="新建广告计划" class="submit btn" style="width:100px;margin-top:-20px;"></span>
+                              </div>
+                        </li>
+                        <li>
+                            <span class="label">广告名称：</span>
+                            <div class="fc">
+                                <input name="ad_name" type="text" value=" <?php echo $result['ad_name']; ?>" class="iText " >            
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">设置投放日期：</span>
+                            <div class="fc">
+                                <input class="iText " type="text" style="width:143px;" id="start_date" name="start_date" value="<?php echo $result['start_date'];?>" readonly="readonly" /> 
+                                至 <input class="iText" type="text" style="width:143px;" id="end_date" name="end_date" value="<?php echo $result['end_date'];?>" readonly="readonly"  />
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">广告限额：</span>
+                            <div class="fc">
+                                <label><p><input type="radio" value="0" name="ad_limit_type" class="radio" <?php echo  $result['ad_limit_type'] == 0?'checked=checked':''?> />无限</p></label>
+                                <label><p><input type="radio" value="1" name="ad_limit_type" class="radio" <?php echo  $result['ad_limit_type'] == 1?'checked=checked':''?>/>每日限额</label>
+                                <label><input name="ad_limit_amount"  type="text" value="<?php echo $result['ad_limit_amount']?$result['ad_limit_amount']:''; ?>" class="iText" > </label> </p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">设置投放时段：</span>
+                            <div class="fc">
+                                <p><input type="radio" value="0" name="time_type" class="radio" <?php echo  $result['time_type'] == 0?'checked=checked':''?> id="time_type0"><label for="time_type0">全部时段</label></p>
+                                <p><input type="radio" value="1" name="time_type" class="radio" <?php echo  $result['time_type'] == 1?'checked=checked':''?> id="time_type1"><label for="time_type1">指定时段</label>
+                                    <span  style="padding-left:60px;">
+                                        <input type="hidden" name="hour_set_type"  id="hour_set_type"  value='<?php echo $result['hour_set_type']; ?>' />
+                                        <a href="javascript:void(0)"onclick="return false" class="_quickSel" style="<?php echo  $result['hour_set_type'] == 0?'display:none':''?>;">快速设置模式</a>
+                                        <a href="javascript:void(0)"onclick="return false" class="_advanceSel" style="<?php echo  $result['hour_set_type'] == 1?'display:none':''?>;">高级设置模式</a>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="fc" style="<?php echo  $result['time_type'] == 0?'display:none':''?>;" id="time_range">
+                                <div class="_quickSelForm" style="<?php echo  $result['hour_set_type'] == 1?'display:none':''?>;">
+                                    <select id="start_time" name="start_time">
+                                        <?php for($i=0;$i<=24;$i++){?>
+                                            <option value="<?php echo str_pad($i, 2, "0", STR_PAD_LEFT).":00"; ?>"    <?php echo  $result['start_time'] == str_pad($i, 2, "0", STR_PAD_LEFT).":00"?'selected=selected':''?>><?php echo str_pad($i, 2, "0", STR_PAD_LEFT).":00"; ?></option>
+                                        <?php } ?>
+                                   </select>
+                                    至
+                                    <select id="end_time" name="end_time">
+                                        <?php for($i=24;$i>=0;$i--){?>
+                                            <option value="<?php echo str_pad($i, 2, "0", STR_PAD_LEFT).":00"; ?>"  <?php echo  $result['end_time'] == str_pad($i, 2, "0", STR_PAD_LEFT).":00"?'selected=selected':''?>><?php echo str_pad($i, 2, "0", STR_PAD_LEFT).":00"; ?></option>
+                                        <?php } ?>
+                                   </select>
+                                </div>
+                                <div id="timesetAdvanceWrap" class="_advanceSelForm" style="<?php echo  $result['hour_set_type'] == 0?'display:none':''?>;">
+                                    <div class="put-time-tips">
+                                        <input type="hidden" name="time_series"  id="timeset"  value='<?php echo $result['time_series']; ?>' />
+                                        <p>单击方格【可选中/取消时间点】&nbsp;&nbsp;单击拖动方格【可选中/取消某一连续时间段】
+                                        <ul>
+                                        <li><span class="bgcol-c"></span>选中态</li><li><span class="bgcol-b"></span>点击态</li><li><span class="bgcol-a"></span>未选中</li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                    <div class="time-choose">
+                                        <object id="timesetHandlerId" name="timesetHandlerId" type="application/x-shockwave-flash" data="<?php echo $staticPath.'/img/daterange.swf';?>" height="285" width="720">
+                                            <param name="allowScriptAccess" value="always" />
+                                            <param name="allowFullScreen" value="false" />
+                                            <param name="movie" value="<?php echo $staticPath.'/img/daterange.swf';?>" />
+                                            <param name="wmode" value="transparent" />
+                                            <param name="quality" value="high" />
+                                            <param name="bgcolor" value="#ffffff" />
+                                        </object>
+                                    </div>
+                                    <div class="time-show">
+                                        <p class="detail-item">已选时间：</p>
+                                        <ol class="_timesetSelected" style="">-</ol>
+                                        <a href="javascript:;" onclick="return false" class="ButtonBg5 revoke _reset" opt="alltimereset">撤销所有选择</a>
+                                    </div>
+                                 </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">频次控制：</span>
+                            <div class="fc">
+                                <select id='frequency_type' name="frequency_type">
+                                    <option value='' <?php echo  $result['frequency_type'] == ''?'selected=selected':''?> >请选择</option>
+                                    <option value='ad' <?php echo  $result['frequency_type'] == 'ad'?'selected=selected':''?>>广告</option>
+                                    <option value='originality'  <?php echo  $result['frequency_type'] == 'originality'?'selected=selected':''?>>创意</option>
+                                </select>
+                                <input name="frequency" id="frequency" type="text" value="<?php echo $result['frequency']; ?>" class="iText " > 次/天
+                            </div>
+                        </li>
+                        <li>
+                            <div class="fc">
+                                <input type="submit"   value="下一步" class="submit btn"  onclick="confirmSubmit();return false;">      
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="showDeliveryDiv" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+    <ul class="form">
+        <li> 
+            <span class="label">投放单元名称：</span>
+            <div class="fc">
+                <label><input name="unit_name" type="text" value="" class="iText " > </label> 
+            </div>
+        </li>
+        <li>
+            <span class="label">投放限额：</span>
+            <div class="fc">
+                <p><label><input type="radio" value="0" name="limit_type" class="radio">无限</label></p>
+                <p><label><input type="radio" value="1" name="limit_type" class="radio">每日限额</label>
+                <label><input name="limit_range" type="text" value="" class="iText " > </label> </p>
+            </div>
+        </li>
+        <li>
+            <span class="label">投放方式：</span>
+            <div class="fc">
+                <p><label><input type="radio" value="1" name="mode_type" class="radio">匀速</label></p>
+                <p><label><input type="radio" value="2" name="mode_type" class="radio">普通</label></p>
+            </div>
+        </li>
+        <li> 
+			<span class="label">是否内部订单：</span>
+			<div class="fc">
+                <label><p><input type="radio" value="1" name="unit_type" class="radio">否</p></label>
+                <label><p><input type="radio" value="2" name="unit_type" class="radio">是</p></label>
+            </div>
+		 </li>
+	</ul>
+</div>
+<link href="<?php echo $staticPath;?>/css/gdt_daterange.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticPath;?>/js/advertiser/gdt_daterange.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/chosen.jquery.js?v=<?php echo $version;?>"></script>
+<link   href="<?php echo $staticPath; ?>/css/chosen.css?v=<?php echo $version;?>" rel="stylesheet" >
+<script type="text/javascript">
+var id = '<?php echo $result['id']; ?>';
+var nextUrl = '<?php echo $addAdStep2Url; ?>';
+if(id){
+	nextUrl +='?id='+id;
+}
+
+//广告表单数据提交
+$(document).ready(function(){
+    $("#unit_id").chosen();
+    
+	 $('#start_date').datepicker();
+     $('#end_date').datepicker();
+//	 $('#start_time').timepicker({});
+//     $('#end_time').timepicker({});
+     
+       $("input[name='time_type']").click(function(){
+		 if($(this).val() == 1){
+			 $("#time_range").show();
+		 }else{
+			 $("#time_range").hide();
+		}
+        });
+       
+	ajaxForm('addFrom',function(ret){
+		ajaxRedirect(ret, baseurl+nextUrl);
+	});
+})
+function confirmSubmit(){
+    //todo 提交表单前前端校验
+    $('form').submit();
+}
+</script>
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>

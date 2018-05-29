@@ -1,0 +1,160 @@
+<?php echo $this->render("layout/header.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl">资金流水</p>
+        </div>
+        <div class="main">
+            <div class="toolbar">
+                <div class="search fl">
+                    <!--<form action="" method="GET">-->
+                        <span>
+                            <select name="operator" id="operator">
+                                <option value="" >请选择操作者</option>
+                                <?php foreach($Advertiser_operate_log_config as $key=>$value){ ?>
+                                <option value="<?php echo $key ?>" ><?php echo $Advertiser_operate_log_name_config[$key] ?></option>
+                                <?php }?>
+                            </select>
+                            <select name="module" id="module">
+                                <option value="" >请选择操作模块</option>
+                                
+                                <?php foreach($Advertiser_operate_log_config as $key=>$modules){ ?>
+                                    <?php foreach($modules as $key2=>$value2){ ?>
+                                    <option value="<?php echo $key2 ?>" operator='<?php echo $key ?>'><?php echo $Advertiser_operate_log_name_config[$key2] ?></option>
+                                    <?php }?>
+                                <?php }?>
+                                
+                                
+                            </select>
+                            <select name="sub_module" id="sub_module">
+                                <option value="" >请选择内容</option>
+                                <?php foreach($Advertiser_operate_log_config as $key=>$modules){ ?>
+                                    <?php foreach($modules as $key2=>$sub_modules){ ?>
+                                        <?php foreach($sub_modules as $key3=>$value){ ?>
+                                        <option value="<?php echo $value ?>" operator='<?php echo $key ?>' module='<?php echo $key2 ?>'><?php echo $Advertiser_operate_log_name_config[$value] ?></option>
+                                        <?php }?>
+                                    <?php }?>
+                                <?php }?>
+                            </select>
+                            <input type="hidden" name="screatedate"  id="screatedate" value="<?php echo $_GET['screatedate'];?>">
+                            <input type="hidden" name="ecreatedate" id="ecreatedate" value="<?php echo $_GET['ecreatedate'];?>">
+                            <div style="float:right;margin-left:20px;">
+                                <span class="mui-filter-group" id="date_range" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>" csdate="" cedate=""></span>
+                            <input type="submit" class="submit" value="" id='submitForm' />
+                            <span class="sign"></span>
+                            </div>
+                        </span>
+                    <!--</form>-->
+                </div>
+            </div>
+            
+            <div style="margin:10px 0" class="app-detail">
+                <div class="main">
+                    <div class="content">
+                        <div class="grid">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th width="15%">时间</th>
+                                        <th width="15%">操作者</th>
+                                        <th width="15%">操作模块</th>
+                                        <th width="15%">内容</th>
+                                        <th width="40%">详情</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($loglist as $log){ ?>
+                                    <tr>
+                                        <td><?php echo $log['create_time_str']?></td>
+                                        <td><?php echo $log['uid_name']?></td>
+                                        <td><?php echo $Advertiser_operate_log_name_config[$log['module']]?></td>
+                                        <td><?php echo $Advertiser_operate_log_name_config[$log['sub_module']]?></td>
+                                        <td><?php echo $log['content']?></td>
+                                    </tr>
+                                    <?php }?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <?php echo $pager;?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js??v=<?php echo $version;?>"></script>
+<link href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script type="text/javascript">
+$(function(){
+    $("#operator").val("<?php echo $operator ?>")
+    $("#module").val("<?php echo $module ?>")
+    $("#sub_module").val("<?php echo $sub_module ?>")
+    var dateRange = new pickerDateRange("date_range",'date', {
+        theme : 'ta', // 日期选择器TA主题
+        isTodayValid : 1,
+        startDate : "<?php echo $sdate;?>",
+        endDate : "<?php echo $edate;?>",
+        minValidDate : 1379174400,
+        needCompare : 0,
+        success : function (dateObj){
+            $("#date_range").attr("sdate", dateObj.startDate);
+            $("#date_range").attr("edate", dateObj.endDate);
+            $("#date_range").attr("csdate", "");
+            $("#date_range").attr("cedate", "");
+        }
+    });
+    
+    $("#operator").change(function(){
+        $("#module").val('')
+        $("#sub_module").val('')
+        operator  = $(this).val()
+        if(operator == ''){
+           $("#module option").show();
+           $("#sub_module option").show();
+        }else{
+            $("#module option").hide();
+            $("#module option:first").show();
+            $("#module option[operator='"+operator+"']").show(); 
+            $("#sub_module option").hide();
+            $("#sub_module option:first").hide();
+            $("#sub_module option[operator='"+operator+"']").show(); 
+        }
+    })
+    
+    $("#module").change(function(){
+        $("#sub_module").val('')
+        module = $(this).val()
+        operator=$("#module").find("option:selected").attr('operator')
+        if(module == ''){
+           selectoperator = $("#operator").val()
+           if(selectoperator=='' ||selectoperator=='undefined' || typeof selectoperator == 'undefined'){
+               $("#sub_module option:first").show();
+                $("#sub_module option").show();
+            }else{
+                $("#sub_module option[operator='"+operator+"']").show();
+            }
+        }else{
+            $("#sub_module option").hide();
+            $("#sub_module option:first").show();
+            $("#sub_module option[operator='"+operator+"'][module='"+module+"']").show();
+        }
+    })
+    
+    function submitForm(){
+        sdate = $("#date_range").attr("sdate")
+        edate = $("#date_range").attr("edate")
+        operator = $("#operator").val()
+        module = $("#module").val()
+        sub_module = $("#sub_module").val()
+        window.location.href='/Advertiser/management/operatelog/?sdate=' + sdate + "&edate=" + edate + "&operator="+ operator + "&module="+ module+ "&sub_module="+ sub_module;
+    }
+    
+    $("#submitForm").click(submitForm);
+    
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

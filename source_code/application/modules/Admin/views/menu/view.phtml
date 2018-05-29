@@ -1,0 +1,36 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+       <li ><a href="<?php echo $listUrl;?>">菜单配置列表</a></li>
+		<li class="current"><a href="<?php echo $addUrl;?>">查看菜单配置</a></li>
+	</ul>
+</div>
+<div class="h_a">查看菜单配置</div>
+<div class="table_full">
+    <table width="100%">
+        <tr class="tr">
+            <th class="th">菜单id</th>
+            <td class="td"><input type="text" maxlength="30" name="menu_id" class="input"  value="<?php echo $info['menu_id'];?>"></td>
+        </tr>
+         <tr class="tr">
+            <th class="th">模块</th>
+            <td class="td"><input type="text" maxlength="30" name="module" class="input" value="<?php echo $info['module'];?>" ></td>
+        </tr>
+         <tr class="tr">
+            <th class="th">控制器</th>
+            <td class="td"><input type="text" maxlength="30" name="controler" class="input" value="<?php echo $info['controler'];?>" ></td>
+        </tr>
+           <tr class="tr">
+            <th class="th">action</th>
+            <td class="td"><input type="text" maxlength="30" name="action" class="input" value="<?php echo $info['action'];?>" ></td>
+        </tr>
+           <tr class="tr">
+            <th class="th">名称</th>
+            <td class="td"><input type="text" maxlength="30" name="name" class="input" value="<?php echo $info['name'];?>" ></td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac">
+<span class="btn"><span><button type="button" onclick="window.location.href='<?php echo $listUrl;?>'" >返回</button></span></span>
+</div>
+<?php echo $this->render("layout/footer.phtml");?>

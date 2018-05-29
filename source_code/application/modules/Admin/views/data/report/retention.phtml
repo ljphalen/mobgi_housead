@@ -1,0 +1,119 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<style>
+    .sb{
+        background-color: rgb(175,79,57);
+        color: #fff;
+        border-radius: 2px;
+        line-height: 29px;
+        padding: 0 20px;
+        border: 0;
+        margin-right: 15px;
+    }
+    .progress div{
+        position: absolute;
+        background-color: rgba(0, 255, 255, 0.30);
+        height: 35px;
+        left: 5px;
+        top: 2px;
+    }
+    .progress{
+        position: relative;
+    }
+</style>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $retentionList;?>">用户留存数据</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="#" method="GET">
+                        <select class="chosen-plugin" id="app_key" name="app_key">
+                            <option value="-1"  <?php if($data['app_key'] == "-1") echo "selected"?>>所有应用</option>
+                            <?php foreach($applist as $keys=>$vals){?>
+                                <option value="<?php echo $keys;?>" <?php if($keys == $params['app_key']){echo "selected";}?>><?php echo $vals;?></option>
+                            <?php }?>
+                        </select>
+                    <input type="button" id="sb" class="fr sb" value="提交">
+                    <div id="date_range" class="fr" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>应用</th>
+                            <th>日期</th>
+                            <th>活跃</th>
+                            <th>新增</th>
+                            <th>第一天</th>
+                            <th>第二天</th>
+                            <th>第三天</th>
+                            <th>第四天</th>
+                            <th>第五天</th>
+                            <th>第六天</th>
+                            <th>第七天</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($list as $key=>$value){
+                        echo "<tr>";
+                        echo "<td class='blue'>".$value['app_name']."</td>";
+                        echo "<td>".$value['days']."</td>";
+                        echo "<td>".$value['dau']."</td>";
+                        echo "<td>".$value['newuser']."</td>";
+                        echo "<td class='progress'><div style='width:".$value['r1']."'></div>".$value['r1']."</td>";
+                        echo "<td class='progress'><div style='width:".$value['r2']."'></div>".$value['r2']."</td>";
+                        echo "<td class='progress'><div style='width:".$value['r3']."'></div>".$value['r3']."</td>";
+                        echo "<td class='progress'><div style='width:".$value['r4']."'></div>".$value['r4']."</td>";
+                        echo "<td class='progress'><div style='width:".$value['r5']."'></div>".$value['r5']."</td>";
+                        echo "<td class='progress'><div style='width:".$value['r6']."'></div>".$value['r6']."</td>";
+                        echo "<td class='progress'><div style='width:".$value['r7']."'></div>".$value['r7']."</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                    
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+    </div>
+    <script src="<?php echo $staticPath;?>/js/common/mgchart.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath;?>/js/common/jquery.loadmask.min.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js?v=<?php echo $version;?>"></script>
+    <script>
+        $(function(){
+            var dateRange = new pickerDateRange("date_range",'date', {
+                theme : 'ta',
+                isTodayValid : 1,
+                startDate : "<?php echo $sdate;?>",
+                endDate : "<?php echo $edate;?>",
+                minValidDate : 1379174400,
+                needCompare : 0,
+                success : function (dateObj){
+                    $("#date_range").attr("sdate", dateObj.startDate);
+                    $("#date_range").attr("edate", dateObj.endDate);
+                    $("#date_range").attr("csdate", "");
+                    $("#date_range").attr("cedate", "");
+                    report.doAction();
+                }
+            });
+            $('#sb').bind('click',function(){
+                var sdate = $("#date_range").attr("sdate");
+                var edate = $('#date_range').attr("edate");
+                var appkey = $('#app_key').val();
+                window.location='<?php echo $retentionList;?>'+'?sdate='+sdate+'&edate='+edate+'&appkey='+appkey;
+            })
+
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

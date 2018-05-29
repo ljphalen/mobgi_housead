@@ -1,0 +1,21 @@
+<?php
+if (!defined('BASE_PATH')) exit('Access Denied!');
+
+
+class Util_EventType {
+	//事件类型
+	//点击事件
+	const CLICE_EVENT_TYPE = 6;
+	const IMPRESSIONS_EVENT_TYPE = 5;
+	const VIDEO_PAGE_CLOSE_EVENT_TYPE =7;
+	const VIDEO_FINISH_EVENT_TYPE = 8;
+	const REQUEST_CONFIG_EVENT_TYPE = 1;
+	const REQUEST_OK_EVENT_TYPE = 2;
+
+
+	const ACTIVITY_IMPRESSION_EVENT_TYPE =1;
+	const ACTIVITY_DRAW_EVENT_TYPE =2;
+	const ACTIVITY_PRIZE_EVENT_TYPE =3;
+	const ACITVITY_EXCHANGE_EVENT_TYPE =4;
+
+}

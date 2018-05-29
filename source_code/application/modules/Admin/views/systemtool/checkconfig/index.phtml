@@ -1,0 +1,376 @@
+<?php echo $this->render("layout/header_layui.phtml"); ?>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space30">
+        <div class="items-wrap wrap-bg space-top mian-h">
+            <!-- search begin -->
+            <div class="temp-search-wrap">
+                <form class="layui-form" action="<?php echo $listUrl; ?>" method="POST">
+                    <input name="act" type="hidden" value="search"/> <input name="token" type="hidden"
+                                                                            value="<?php echo $token; ?>"/>
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <select name="interface_type" id="interface_type" lay-verify="" lay-search>
+                                <option value="">接口类型</option>
+								<?php foreach ($interfaceType as $key => $val) { ?>
+                                    <option value="<?php echo $key; ?>" <?php echo ($search['interface_type'] == $key) ? "selected" : ''; ?>><?php echo $val['name']; ?></option>
+								<?php } ?>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="app_key" id="app_key" lay-filter="app_key" lay-verify="" lay-search>
+                                <option value="">请选择应用</option>
+								<?php foreach ($appList as $key => $val) { ?>
+                                    <option data-platform="<?php echo $val['platform']; ?>"
+                                            value="<?php echo $val['app_key']; ?>" <?php echo ($search['app_key'] == $val['app_key']) ? "selected" : ''; ?>><?php echo $val['app_name'] . (($val['platform'] == 1) ? '(Andriond)' : '(Ios)'); ?></option>
+								<?php } ?>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="ad_type" id="ad_type" lay-filter="ad_type" lay-verify="" lay-search>
+                                <option value="">广告类型</option>
+								<?php foreach (Common_Service_Const::$mAdSubType as $key => $val) { ?>
+                                    <option value="<?php echo $key; ?>" <?php echo ($search['ad_type'] == $key) ? "selected" : ''; ?>><?php echo $val; ?></option>
+								<?php } ?>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="channel_group" id="channel_group" lay-filter="channel_group" lay-verify=""
+                                    lay-search>
+                                <option value="">渠道组</option>
+								<?php foreach ($channelGroups as $key => $val) { ?>
+                                    <option value="<?php echo $val['channel_id']; ?>" <?php echo ($search['channel_group'] == $val['channel_id']) ? "selected" : ''; ?>><?php echo $val['channel_name']; ?></option>
+								<?php } ?>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="channel_id" id="channel_id" lay-filter="channel_id" lay-verify="" lay-search>
+                                <option value="">渠道</option>
+								<?php foreach ($channels as $key => $val) { ?>
+                                    <option value="<?php echo $val['channel_id']; ?>" <?php echo ($search['channel_id'] == $val['channel_id']) ? "selected" : ''; ?>><?php echo $val['channel_name']; ?></option>
+								<?php } ?>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <select name="ip" lay-search>
+                                <option value="">地区</option>
+								<?php foreach ($ipArea as $key => $val) { ?>
+                                    <option value="<?php echo $val; ?>" <?php echo ($search['ip'] == $val) ? "selected" : ''; ?>><?php echo $key; ?></option>
+								<?php } ?>
+                            </select>
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" name="game_version" placeholder="请输入游戏版本" class="layui-input"
+                                   value="<?php echo $search['game_version']; ?>">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input type="text" name="device_id" placeholder="请输入imei/idfa" class="layui-input"
+                                   value="<?php echo $search['device_id']; ?>">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <input type="text" id="pos_key" name="pos_key" placeholder="请输入广告位ID" class="layui-input"
+                                   value="<?php echo $search['pos_key']; ?>">
+                        </div>
+                        <div class="layui-input-inline">
+                            <button id="buildData" class="layui-btn  layui-btn-big layui-btn-normal" lay-submit=""
+                                    lay-filter="buildData" 　>生成请求数据
+                            </button>
+                        </div>
+                        <div class="layui-input-inline">
+                            <button id="searchForm" class="layui-btn layui-btn-big layui-btn-normal" lay-submit=""
+                                    lay-filter="searchForm">立即提交
+                            </button>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">请求的数据</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="请求的数据" class="layui-textarea" id="request_data"
+                                          name="request_data"
+                                          lay-verify=""><?php echo $search['request_data']; ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- search  end  -->
+            <div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">应用</label>
+                    <div class="layui-form-mid ">
+						<?php echo $appList[$search['app_key']]['app_name']; ?>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">平台</label>
+                    <div class="layui-form-mid ">
+						<?php echo $appList[$search['app_key']]['platform'] == Common_Service_Const::ANDRIOD_PLATFORM ? 'Andriod' : 'Ios'; ?>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">广告状态</label>
+                    <div class="layui-form-mid  <?php echo ($info['status'] == 1) ? "green" : 'red'; ?> ">
+						<?php echo ($info['status'] == 1) ? "开启" : '关闭'; ?>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">视频网路环境策略</label>
+                    <div class="layui-form-mid   ">
+						<?php echo ($info['supportNetworkType'] == 1) ? "全网" : 'wifi'; ?>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">视频生命周期(秒)</label>
+                    <div class="layui-form-mid">
+						<?php echo $info['lifeCycle']; ?>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">关键字</label>
+                    <div class="layui-input-block">
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>广告位ID</th>
+                                <th>广告位名称</th>
+                                <th>概率</th>
+                                <th>次数限制</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+							<?php if ($info['blockList']) { ?>
+								<?php foreach ($info['blockList'] as $k1 => $v1) { ?>
+                                    <tr>
+                                        <td> <?php echo $v1['blockId']; ?> </td>
+                                        <td> <?php echo $v1['blockIdName']; ?> </td>
+                                        <td> <?php echo $v1['rate']; ?> </td>
+                                        <td> <?php echo $v1['showLimit'] == 0 ? '无限' : $v1['showLimit']; ?></td>
+                                        <td><a class="link-set">查看</a> <input class="generalConfig" type="hidden"
+                                                                              value=<?php echo $v1['generalConfig']; ?>>
+                                            <input class="prioritConfig" type="hidden"
+                                                   value=<?php echo $v1['prioritConfig']; ?>></td>
+                                    </tr>
+								<?php }; ?>
+							<?php }; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请求地址：</label>
+                    <div class="">
+                        <a href="<?php echo $url; ?>" target="_blank"><?php echo $url; ?></a>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">请求的结果</label>
+                    <div class="layui-input-block">
+                        <pre id="json-renderer"></pre>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="<?php echo $staticPath ?>/js/admin/jquery.json-viewer/jquery.json-viewer.js?v=<?php echo $version; ?>"></script>
+<link href="<?php echo $staticPath ?>/js/admin/jquery.json-viewer/jquery.json-viewer.css?v=<?php echo $version; ?>"
+      rel="stylesheet" type="text/css"/>
+
+<script>
+    ;(function () {
+        var act = '<?php echo $info['act']; ?>';
+        if (act == 'search') {
+            //jsonData = JSON.parse();
+            $('#json-renderer').jsonViewer(<?php echo $info['list']; ?>);
+        }
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('select(channel_group)', function (data) {
+                if (data.value) {
+                    $.ajax({
+                        url: baseurl + '<?php echo $getChannelListUrl;?>' + '?group_id=' + data.value,
+                        async: false,
+                        data: '',
+                        type: 'get',
+                        dataType: 'json',
+                        jsonp: 'callback',
+                        success: function (ret) {
+                            if (ret.success) {
+                                $("#channel_id").empty();
+                                $("#channel_id").append('<option value="">渠道</option>');
+                                $.each(ret.data, function (key, val) {
+                                    $("#channel_id").append("<option value='" + val['channel_id'] + "'>" + val['channel_name'] + "</option>");
+                                });
+                                renderLayuiForm();
+                            }
+                        },
+                        error: function (xhr, msg, e) {
+                            layer.msg(msg);
+                        }
+                    });
+                }
+            });
+            //监听提交
+            form.on('submit(searchForm)', function (data) {
+                if (!checkSearchParams()) {
+                    return false;
+                }
+
+            });
+            form.on('submit(buildData)', function (data) {
+                if (!checkRequestDataParams()) {
+                    return false;
+                }
+                jsonData = data.field;
+                platform = $('#app_key').find("option:selected").attr("data-platform")
+                jsonData['platform'] = platform;
+                console.log(data.field);
+                $.ajax({
+                    url: baseurl + '<?php echo $getRequestDataUrl;?>',
+                    async: false,
+                    data: jsonData,
+                    type: 'POST',
+                    dataType: 'json',
+                    jsonp: 'callback',
+                    success: function (ret) {
+                        if (ret.success) {
+                            $('#request_data').val(ret.data.content);
+                        }
+                    },
+                    error: function (xhr, msg, e) {
+                        layer.msg(msg);
+                    }
+                });
+                return false;
+            });
+
+            $(".layui-table").delegate('.link-set', 'click', function () {
+                btnObject = $(this);
+                var content = '';
+                var generalConfig = btnObject.parent().find(".generalConfig").val();
+                var prioritConfig = btnObject.parent().find(".prioritConfig").val();
+                tmp = getAdsConfig(1, generalConfig);
+                content = content + tmp
+                tmp = getAdsConfig(2, prioritConfig);
+                content = content + tmp
+                layer.open({
+                    type: 1,
+                    area: ['900px', '400px'],
+                    shadeClose: true, //点击遮罩关闭
+                    title: '广告商信息',
+                    content: content,
+                });
+            });
+
+
+        });
+
+        function getAdsConfig(type, config) {
+            if (type == 1) {
+                name = '一般广告商';
+                title = '概率';
+            } else {
+                name = '优先广告商';
+                title = '顺序';
+            }
+            var body = '';
+            if (typeof config == 'string' && config) {
+                config = JSON.parse(config);
+            }
+            console.log(config);
+            for (var k in config) {
+                var showNumber;
+                if (parseInt(config[k]['showNumber'])) {
+                    showNumber = config[k]['showNumber'];
+                } else {
+                    showNumber = '无限';
+                }
+                if (type == 1) {
+                    var value = config[k]['rate'];
+                } else {
+                    var value = config[k]['index'];
+                }
+                body = body + `<tr><td>` + config[k]['thirdPartyName'] + `</td>
+            <td>` + value + `</td>
+            <td>` + showNumber + `</td>
+            <td>` + config[k]['thirdPartyAppkey'] + `</td>
+            <td>` + config[k]['thirdPartyAppsecret'] + `</td>
+            <td>` + config[k]['thirdPartyBlockId'] + `</td>
+            </tr>`;
+            }
+            var temp = `<div class="layui-form-item">
+        <label class="layui-form-label">` + name + `</label><div class="setting-table-wrap" >
+        <table class="layui-table" >
+        <thead>
+        <tr>
+        <th>名称</th><th>` + title + `</th><th>次数限制</th><th>第三方appKey</th><th>第三方密钥</th><th>第三方blockId</th>
+        </tr>
+        </thead>
+        <tbody>
+        ` + body + `
+        </tbody>
+        </table>
+        </div></div>`;
+            return temp;
+        }
+
+        function checkRequestDataParams() {
+            if ($("#interface_type").val() == '') {
+                layer.msg('接口类型没有选择');
+                return false;
+            }
+            if ($("#app_key").val() == '') {
+                layer.msg('应用没有选择');
+                return false;
+            }
+            if ($("#ad_type").val() == '') {
+                layer.msg('广告类型没有选择');
+                return false;
+            }
+            platform = $('#app_key').find("option:selected").attr("data-platform")
+            if (platform == 1) {
+                if ($("#channel_group").val() == '') {
+                    layer.msg('渠道组没有选择');
+                    return false;
+                }
+                if ($("#channel_id").val() == '') {
+                    layer.msg('渠道ID没有选择');
+                    return false;
+                }
+            }
+            if ($("#ad_type").val() == '5' && $.trim($("#pos_key").val()) == '') {
+                layer.msg('广告位没有填写');
+                return false;
+            }
+            if ($("#ad_type").val() == '4' && $.trim($("#pos_key").val()) == '') {
+                layer.msg('广告位没有填写');
+                return false;
+            }
+            if ($("#ad_type").val() == '3' && $.trim($("#pos_key").val()) == '') {
+                layer.msg('广告位没有填写');
+                return false;
+            }
+            return true;
+        }
+
+        function checkSearchParams() {
+            if ($("#interface_type").val() == '') {
+                layer.msg('接口类型没有选择');
+                return false;
+            }
+            if ($("#request_data").val() == '') {
+                layer.msg('请求的数据不能为空');
+                return false;
+            }
+
+            return true;
+        }
+    })();
+</script>

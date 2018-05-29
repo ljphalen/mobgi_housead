@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="<?php echo $staticPath;?>/css/monitor/css/index.css" rel="stylesheet" type="text/css">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .m-table {
+            min-width: 800px;
+            width: 100%;
+            border-collapse: collapse;
+            outline: none;
+            border-right: 1px solid #e2e2e2;
+            border-bottom: 1px solid #e2e2e2;
+            box-sizing: border-box;
+            font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        }
+
+        .m-table tbody {
+            display: block;
+            overflow-y: scroll;
+        }
+
+        .m-table thead,
+        tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .m-table thead {
+            width: calc( 100% - 1em);
+        }
+
+        .m-table thead th {
+            background: #f2f2f2;
+            border-top: 1px solid #e2e2e2;
+            border-left: 1px solid #e2e2e2;
+            height: 38px;
+            line-height: 38px;
+            color: #333;
+            font-size: 14;
+            text-align: left;
+            padding-left: 12px;
+            font-weight: normal;
+        }
+
+        .m-table tbody td {
+            background: #fff;
+            border-top: 1px solid #e2e2e2;
+            border-left: 1px solid #e2e2e2;
+            height: 38px;
+            line-height: 38px;
+            color: #333;
+            font-size: 14;
+            text-align: left;
+            padding-left: 12px;
+            font-weight: normal;
+        }
+        .mtable-search{
+            width: 100%; padding: 10px 0;
+        }
+        .mtable-search input[type='text']{ padding: 0 10px; width:200px; outline: none; border:1px solid #e2e2e2; height: 30px; line-height: 30px; margin: 0 10px;   }
+        .mtable-search a{ cursor: pointer; display: inline-block; height: 30px; line-height: 30px; text-decoration: none; background: #333; color:#fff; font-size: 14px; padding: 0 20px; }
+        .mtable-search a:hover{ text-decoration: none; }
+    </style>
+</head>
+
+<body>
+<table class="m-table">
+    <thead>
+    <tr>
+        <th>用户昵称</th>
+        <th>手机</th>
+        <th>邮箱</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php foreach($userlist as $key=>$value){ ?>
+    <tr>
+        <td><?php echo $value['user_name'];?></td>
+        <td><?php echo $value['tel'];?></td>
+        <td><?php echo $value['email'];?></td>
+        <td>
+            <a class="t-handle delete" data="<?php echo $value['id'];?>" href="javascript:;" />删除</a>
+        </td>
+    </tr>
+    <?php }?>
+    </tbody>
+    <script src="<?php echo $staticPath;?>/js/common/jquery.js?v=<?php echo $version;?>" type="text/javascript"></script>
+    <script src="<?php echo $staticPath;?>/js/admin/layer.js"></script>
+    <script>
+        $(function () {
+            $('.delete').bind('click',function () {
+                var id = $(this).attr('data');
+                $.get("<?php echo $DeleteUser;?>", {id:id}, function(result){
+                    if (result== 1){
+                        //layer.msg('删除成功!',{'icon':1});
+                        location.reload();
+                    }else{
+                        layer.msg('删除失败!',{'icon':1});
+                    }
+                },'json');
+            })
+        })
+    </script>
+</table>
+</body>
+</html>

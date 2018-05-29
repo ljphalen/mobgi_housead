@@ -1,0 +1,902 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/material.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath?>/css/spm/powerFloat.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath?>/css/spm/groupDropdown.css?v=<?php echo $version;?>" rel="stylesheet" />
+<style>
+    .layui-elem-quote{
+        margin-bottom: 10px;
+        padding: 8px;
+    }
+</style>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+        <style>
+            .test{
+                display: inline-block;
+                vertical-align: middle;
+            }
+        </style>
+        <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>素材库</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form" method="post" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="date" class="layui-input" placeholder="请选择日期" id="date">
+                                <input type="hidden" name="sdate" class="layui-input" value="">
+                                <input type="hidden" name="edate" class="layui-input" value="">
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="type" lay-verify="" lay-search>
+                                    <option value="" >所有类别</option>
+                                    <?php foreach ($materialType as $key=>$val){?>
+                                        <option value="<?php echo $key;?>" <?php if($params['type'] == $key) echo 'selected';?>><?php echo $val;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="mk_operator" lay-verify="" lay-search>
+                                    <option value="" selected>所有创意</option>
+                                    <?php foreach ($userList as $key=>$val){?>
+                                        <option value="<?php echo $val['user_id'];?>" <?php if($params['mk_operator'] == $val['user_id']) echo 'selected';?>><?php echo $val['user_name'];?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="label" lay-verify="" lay-search>
+                                    <option value="" selected>所有标签</option>
+                                    <?php foreach ($level2Label as $id=>$name){?>
+                                        <option value="<?php echo $id;?>" <?php if($params['label'] == $id) echo 'selected';?>><?php echo $name;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="gid" lay-verify="" lay-search>
+                                    <option value="" selected>所有素材组</option>
+                                    <?php foreach ($materialGroups as $id=>$name){?>
+                                        <option value="<?php echo $id;?>" <?php if($params['gid'] == $id) echo 'selected';?>><?php echo $name;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="name" lay-verify="" lay-search>
+                                    <option value="" selected>所有素材名称</option>
+                                    <?php foreach ($materialNames as $id=>$name){?>
+                                        <option value="<?php echo $id;?>" <?php if($params['name'] == $id) echo 'selected';?>><?php echo $name;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline" style="width: 350px;">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">查询</button>
+                                <button type="button" class="layui-btn layui-btn-normal batch" >批量操作</button>
+                            </div>
+                            <a class="right layui-btn layui-btn-normal" href="/Admin/Spm_Material/addMaterial">上传素材</a>
+                        </div>
+
+                        <blockquote class="layui-elem-quote layui-quote-nm">
+                            渠道:&nbsp;<input type="checkbox" value="-1" <?php if(is_array($params['channelGid'])&&in_array(-1,$params['channelGid'])){ echo "checked";}?> name="channelGid[]" title="全部">
+                            <i class="layui-icon" style="font-size: 15px; color: #1E9FFF;">&#xe671;</i>
+                            <?php foreach ($channels as $group_id=>$val){?>
+                                <input type="checkbox" value="<?php echo $group_id;?>" <?php if(is_array($params['channelGid'])&&in_array($group_id,$params['channelGid'])){ echo "checked";}?> name="channelGid[]" title="<?php echo $val['name'];?>">
+                            <?php }?>
+                        </blockquote>
+
+                        <blockquote class="layui-elem-quote layui-quote-nm">
+                            标签:&nbsp;<input type="checkbox" name="selectLabels[]" value="-1" <?php if(is_array($params['selectLabels'])&&in_array(-1,$params['selectLabels'])){ echo "checked";}?>  title="全部">
+                            <i class="layui-icon" style="font-size: 15px; color: #1E9FFF;">&#xe671;</i>
+                            <input type="hidden" name="selectLabels[]" id="selectlabels" value="<?php echo $params['selectLabels'][1];?>">
+                            <div class="test">
+                            </div>
+                            <!--<a class="layui-btn layui-btn-primary layui-btn-sm"  id="classOneLabel"  href="javascript:void(0);">标签选择<i class="layui-icon" style="font-size: 15px; color: #1E9FFF;">&#xe61a;</i></a>-->
+                        </blockquote>
+
+                        <blockquote class="layui-elem-quote layui-quote-nm">
+                            高级选项:&nbsp;
+                            <i class="layui-icon" style="font-size: 15px; color: #1E9FFF;">&#xe671;</i>
+                            尺寸:&nbsp;<div class="layui-input-inline" style="width: 100px;">
+                                <input type="text" name="width" placeholder="宽(px)" value="<?php echo $params['width'];?>" autocomplete="off" class="layui-input">
+                             </div>
+                                -
+                                <div class="layui-input-inline" style="width: 100px;">
+                                    <input type="text" name="height" placeholder="高(px)" value="<?php echo $params['height'];?>" autocomplete="off" class="layui-input">
+                                </div>
+                            <i class="layui-icon" style="font-size: 15px; color: #1E9FFF;">&#xe671;</i>
+                            文件大小:&nbsp;<div class="layui-input-inline" style="width: 100px;">
+                                <input type="text" name="file_size_min" placeholder="最小值(mb)" value="<?php echo $params['file_size_min'];?>" autocomplete="off" class="layui-input">
+                            </div>
+                            -
+                            <div class="layui-input-inline" style="width: 100px;">
+                                <input type="text" name="file_size_max" placeholder="最大值(mb)" value="<?php echo $params['file_size_max'];?>" autocomplete="off" class="layui-input">
+                            </div>
+                            <i class="layui-icon" style="font-size: 15px; color: #1E9FFF;">&#xe671;</i>
+                            视频时长:&nbsp;<div class="layui-input-inline" style="width: 100px;">
+                                <input type="text" name="video_min" placeholder="最小值(s)" value="<?php echo $params['video_min'];?>" autocomplete="off" class="layui-input">
+                            </div>
+                            -
+                            <div class="layui-input-inline" style="width: 100px;">
+                                <input type="text" name="video_max" placeholder="最大值(s)" value="<?php echo $params['video_max'];?>" autocomplete="off" class="layui-input">
+                            </div>
+                           </blockquote>
+                    </form>
+                </div>
+                    <div class="layui-btn-group batchAll" style="display: none;">
+                        <button class="layui-btn layui-btn-normal" onclick="chooseMaterialList('all')">全选</button>
+                        <button class="layui-btn layui-btn-normal" onclick="chooseMaterialList('inverse')">反选</button>
+
+                        <!-- <button class="layui-btn layui-btn-normal">删除选中</button> -->
+                        <button class="layui-btn layui-btn-normal" onclick="downloadUrl()">下载选中</button>
+                        <button class="layui-btn layui-btn-warm right" onclick="deleteUrl()">批量删除</button>
+                    </div>
+
+                <!-- <div id="choose" class="right">已选中了0个文件</div>-->
+                <!-- 查询条件 end  -->
+                <!-- 素材列表 begin-->
+                <div class="material-wrap">
+                    <div class="material-group-list">
+                        <?php foreach ($list as $groupId=>$items){?>
+                         <div class="material-group-collection" data-gid="<?php echo $groupId;?>">
+                            <div class="material-group-top">
+                                    <p class="group-title"><?php echo $items['groupName'];?></p>
+                                    <div class="group-edit">
+                                        <a class="view-group" data-clipboard-text="<?php echo $ftpPath.$items['groupName'];?>"><img src="<?php echo $staticPath?>/css/spm/images/g-link.png" /></a>
+                                        <a onclick="downloadGroup(<?php echo $groupId;?>,event)"><img src="<?php echo $staticPath?>/css/spm/images/g-download.png" /></a>
+                                        <a onclick="editGroup(<?php echo $groupId;?>,event)"><img src="<?php echo $staticPath?>/css/spm/images/g-edit.png" /></a>
+                                        <a onclick="deleteGroup(<?php echo $groupId;?>,event)"><img src="<?php echo $staticPath?>/css/spm/images/g-del.png" /></a>
+                                    </div>
+                            </div>
+                            <ul class="material-group-views">
+                                <?php foreach ($items['items'] as $index=>$item){ ?>
+                                <li><img src="<?php if(!empty($item['thumb'])){ echo $attachs.$item['thumb']; }else{ echo $attachs.$item['file_url'];}?>" /></li>
+                                <?php if($index >=4){ echo "<li><img src=".$staticPath."/css/spm/images/more.png /></li>"; break;}}?>
+                            </ul>
+                            <div class="material-group-info">
+                                <div class="group-msg">
+                                    <a title="" class="operator">制作人：<?php echo $items['mkOperator'];?></a>
+                                    <a class="date">更新日期：<?php echo $items['lastUpdate'];?></a>
+                                </div>
+                                <div class="group-total">
+                                        本组一共包含<span><?php echo $items['count'];?></span>素材
+                                </div>
+                            </div>
+                            <p class="details-connect"></p>
+                         </div>
+                        <?php }?>
+                    </div>              
+   
+                    <div class="material-group-details-wrap">
+                        <div class="mask-connect"></div>
+                        <div class="material-group-details">
+                            <ul class="material-list">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 素材列表 end-->
+                <div id="page" style="padding-left: 40%;"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+</html>
+<script src="<?php echo $staticPath?>/js/common/clipboard.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath?>/js/common/groupDropdown.js?v=<?php echo $version;?>"></script>
+<script>
+    var delAllUrl = baseurl + '/Admin/Spm_Material/delAllMaterial'; // 批量删除
+    var delGroupMaterialUrl = baseurl +'/Admin/Spm_Material/delGroupMaterial'; // 批量删除组
+    var downAllUrl = baseurl + '/Admin/Spm_Material/download'; // 批量下载
+    var downGroupMaterialUrl = baseurl + '/Admin/Spm_Material/downloadMaterialGroup'; // 批量下载组
+    var delUrl = baseurl + '/Admin/Spm_Material/delMaterial'; // 单个删除
+    var searchUrl = baseurl + '/Admin/Spm_Material/index';
+    var getMaterials = baseurl +'/Admin/Spm_Material/getGroupMaterials';
+    var editGroupUrl = baseurl+'/Admin/Spm_Material/editGroupMaterial'
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'laydate', 'table', 'upload','laypage'], function () {
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var upload = layui.upload;
+        var laypage = layui.laypage;
+
+        // 初始化 日期 date 插件
+        laydate.render({
+            elem: '#date' //指定元素
+            ,value: '<?php echo $params['sdate'];?>'+' - '+'<?php echo $params['edate'];?>'
+            ,range: true,
+            done: function (value, date, endDate) {
+                var begin = '',
+                    end = '';
+                if (value) {
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+
+        //监听提交
+        form.on('submit(search)', function(data){
+            var date = data.field.date.split(' - ');
+            data.field.sdate = date[0];
+            data.field.edate = date[1];
+            delete data.field.date;
+            window.location = searchUrl+'?'+urlEncode(data.field);
+            //return false;
+        });
+
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'page' //注意，这里的 test1 是 ID，不用加 # 号
+            ,count: <?php echo $total;?> //数据总数，从服务端得到
+            ,curr:<?php echo $page;?>
+            ,limit:15
+            ,jump: function(obj, first){
+            //obj包含了当前分页的所有参数，比如：
+//            console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+//            console.log(obj.limit); //得到每页显示的条数
+//            console.log(obj.count);
+            //首次不执行
+            if(first){
+                
+            }else{
+                window.location = '<?php echo $pager;?>'+'page='+obj.curr;
+            }
+        }
+        });
+    });
+
+    //多选插件
+    var data =JSON.parse('<?php echo $labelList;?>');
+    $(".test").groupDropdown({
+        data: data, // 所有数据
+        selected: [<?php echo $params['selectLabels'][1]?>], // 选中值
+        selectedShow: true, // 是否显示侧边栏
+        // 选中值 回调函数
+        onSelect(arr){
+            $("input[name='selectLabels[]']").val(arr);
+        }
+    });
+
+
+    var urlEncode = function (param, key, encode) {
+        if(param==null) return '';
+        var paramStr = '';
+        var t = typeof (param);
+        if (t == 'string' || t == 'number' || t == 'boolean') {
+            paramStr += '&' + key + '=' + ((encode==null||encode) ? encodeURIComponent(param) : param);
+        } else {
+            for (var i in param) {
+                var k = key == null ? i : key + (param instanceof Array ? '[' + i + ']' : '.' + i);
+                paramStr += urlEncode(param[i], k, encode);
+            }
+        }
+        return paramStr;
+    };
+    //链接复制
+
+    var clipboard = new ClipboardJS('.view-link');
+    clipboard.on('success', function(e) {
+        //console.log(e);
+        layer.msg("已经成功复制!");
+    });
+    clipboard.on('error', function(e) {
+        layer.msg("复制失败!");
+    });
+
+    var clipboard = new ClipboardJS('.view-group');
+    clipboard.on('success', function(e) {
+        layer.msg("已经成功复制!");
+        // 阻止冒泡
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    });
+    clipboard.on('error', function(e) {
+        layer.msg("复制失败!");
+        // 阻止冒泡
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    });
+
+    var clipboard = new ClipboardJS('.minfo-title');
+    clipboard.on('success', function(e) {
+        //console.log(e);
+        layer.msg("已经成功复制!");
+    });
+    clipboard.on('error', function(e) {
+        layer.msg("复制失败!");
+    });
+
+
+    // 删除记录
+    $(".material-group-details-wrap").delegate(".view-delete","click",function(e){
+        var oLi = $(this).parent().parent().parent();
+        var id = $(this).attr('data-id');
+        layer.confirm('是否确认删除', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : delUrl,
+                async: false,
+                data : {id:id},
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    if(data.success){
+                        setTimeout(function(){
+                            window.location.href = 'index';
+                        },500);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+//            oLi.remove();
+//            layer.close(index);
+        });
+       //
+        // 阻止冒泡
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    });
+
+    //显示/关闭批量操作按钮
+    $(".batch").click(function(e){
+        if($(".batchAll").css('display') == 'block'){
+            $(".batchAll").css('display','none');
+        }else{
+            $(".batchAll").css('display','block');
+        }
+    });
+
+
+    $(".material-group-details-wrap").delegate(".view-edt","click",function(e){     
+        var href = $(this).attr('data-href');
+        window.location.href = href;
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    });
+
+    // 查看视频
+    $(".material-group-details-wrap").delegate(".view-play","click",function(){
+        var src = $(this).attr("data-src");
+        var info ={
+           width: $(this).attr("data-width"),
+           height: $(this).attr("data-height")
+        }
+        magnifyingMask(src,'video',info)
+    });
+
+    // 查看大图
+    $(".material-wrap").delegate(".operation-img","click",function(){
+        var img = $(this).parent().find('.magnifying img');
+        var src = img.attr("src");
+        var image = new Image();
+        image.src = src;
+        image.onload = function(){
+            var info = {
+                width: image.width,
+                height: image.height,
+            }
+            magnifyingMask(src,'img',info)
+        }
+    });
+
+    //
+    function magnifyingMask(src,type,info){
+        var content = '<div style="text-align:center;" >';
+        var proportion = 960/640;
+        var scale = info.width/info.height;
+        if(type=='video'){
+            if(scale > proportion){
+                content = content + `<video width='940px' height='' src="`+src+`" controls="controls" autoplay="autoplay">您的浏览器不支持 video 标签。</video></div>`;
+            }else{
+                content = content + `<video width='`+640*scale+`px' height='640px' src="`+src+`" controls="controls" autoplay="autoplay">您的浏览器不支持 video 标签。</video></div>`;
+            }   
+        }else{
+            if(scale > proportion){
+                content = content + `<img width="100%"  src="`+src+`" /></div>`;
+            }else{
+                content = content + `<img width='`+640*scale+`px' height="640px"  src="`+src+`" /></div>`;
+            }
+        }
+
+        layer.open({
+            type: 1
+            ,offset: 'auto'
+            ,area: ['960px','690px']
+            ,shadeClose: true
+            ,id: 'reminder' //防止重复弹出
+            ,content: content
+            ,btnAlign: 'r'
+            ,shade: 0.5 //不显示遮罩
+            ,yes: function(){
+                layer.closeAll();
+            }
+            ,cancel: function(){
+                console.log('cancel')
+            }
+        });
+    }
+
+    /**
+     *  创建视频、canvas 标签 
+     */
+    function creatVideo(src,oLi){
+        var video = document.createElement('video');
+        var canvas = document.createElement('canvas');
+        document.body.appendChild(video);
+        document.body.appendChild(canvas);
+        video.style.display = 'none';
+        canvas.style.display = 'none';
+        //console.log(oLi);
+        //return false;
+        $(video).attr("src",src);
+        video.volume = 0;
+        video.play();
+        printSc($(video),$(canvas),oLi);
+    }
+    //  视频文件 获取 base64
+    function printSc(video,canvas,oLi){
+        setTimeout(function(){
+            //alert('video[0].videoHeight:'+video[0].videoHeight);
+            canvas.attr({
+                width:video[0].videoWidth,
+                height:video[0].videoHeight,
+            });
+//            console.log('canvas[0].width:',canvas[0].width);
+//            console.log('canvas[0].heigh:',canvas[0].height);
+            canvas[0].getContext('2d').drawImage(video[0], 0, 0, canvas[0].width, canvas[0].height);
+            var base64 = canvas[0].toDataURL("image/jpeg");
+            // console.log(base64)
+            video[0].pause();
+            video.remove();
+            canvas.remove();
+            if(oLi.find(".view-play").length >0 ){
+                oLi.find(".view-play").attr('data-width',video[0].videoWidth)
+                oLi.find(".view-play").attr('data-height',video[0].videoHeight)
+                oLi.find(".view-img").show();
+                oLi.find(".view-img img").attr("src",base64);
+            }else{
+                oLi.find("img").attr("src",base64);
+            }
+        },1000);
+    }
+
+    //批量删除单个
+    function deleteUrl(){
+        layer.confirm('是否确认删除', {icon: 3, title:'提示'}, function(index){
+            var arr = new Array();
+            $(".material-checkbox").each(function(){
+                var check = $(this).find("input[name='checkbox']").prop("checked");
+                if(check){
+                    var data_type = $(this).parent().parent().attr("data-type");
+                    if(data_type=='1' || data_type=='2' ){
+                        var id = $(this).parent().parent().attr("data-id")
+                        arr.push(id)
+                    }
+                }
+            })
+            if(arr.length == 0){
+                layer.closeAll('loading');
+                layer.msg('请选择素材!');
+                return false;
+            }
+            $.ajax({
+                url : delAllUrl,
+                async: false,
+                data : {ids:arr},
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    if(data.success){
+                        setTimeout(function(){
+                            window.location.href = 'index';
+                        },500);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+        })
+    }
+
+    //批量下载单个
+    function downloadUrl(){
+        var arr = new Array();
+        $(".material-checkbox").each(function(){
+            var check = $(this).find("input[name='checkbox']").prop("checked");
+            if(check){
+                var data_type = $(this).parent().parent().attr("data-type");
+                if(data_type=='1' || data_type=='2' ){
+                    var id = $(this).parent().parent().attr("data-id")
+                    arr.push(id)
+                }
+            }
+        })
+        if(arr.length == 0){
+            layer.closeAll('loading');
+            layer.msg('请选择素材!');
+            return false;
+        }
+        //批量下载处理
+        $.ajax({
+            url : downAllUrl,
+            async: false,
+            data : {ids:arr},
+            type : 'get',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                //layer.closeAll('loading');
+                console.log(data);
+                if(data.success){
+                    window.location = data.data;
+                    //console.log(data);
+                }
+            },
+            error:function(xhr,msg,e){
+                //layer.closeAll('loading');
+                layer.msg(msg);
+            }
+        });
+    }
+
+    //删除组
+    function deleteGroup(gid,e){
+        layer.confirm('是否确认删除', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : delGroupMaterialUrl,
+                async: false,
+                data : {gid:gid},
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    if(data.success){
+                        setTimeout(function(){
+                            window.location.href = 'index';
+                        },500);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+        })
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    }
+
+    //下载组
+    function downloadGroup(gid,e){
+        //批量下载处理
+        $.ajax({
+            url : downGroupMaterialUrl,
+            async: false,
+            data : {gid:gid},
+            type : 'get',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                //layer.closeAll('loading');
+                console.log(data);
+                if(data.success){
+                    window.location = data.data;
+                    //console.log(data);
+                }
+            },
+            error:function(xhr,msg,e){
+                //layer.closeAll('loading');
+                layer.msg(msg);
+            }
+        });
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    }
+
+    //编辑组
+    function editGroup(gid,e){
+        window.location = editGroupUrl+'?gid='+gid
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    }
+    // 
+    function chooseMaterialList(type){
+        if(type=='all'){
+            $(".material-checkbox").find("input[name='checkbox']").prop("checked",true);
+        }else if(type=='inverse'){
+            $(".material-checkbox").each(function(){
+                var is = $(this).find("input[name='checkbox']").prop("checked");
+                $(this).find("input[name='checkbox']").prop("checked",!is);
+            })
+           // $(".material-checkbox").find("input[name='checkbox']").prop("checked",false);
+        }else if(type=='deleteAll'){
+            $(".material-checkbox").find("input[name='checkbox']").prop("checked",false);
+        }
+       
+        renderLayuiForm()
+    }
+
+    //  查看素材信息
+    $(".material-group-details-wrap").delegate('.view-desc-more','click',function(){
+        var content = $(this).attr("data-content");
+        layer.tips(content, this);
+    });    
+
+    //重新渲染form
+    function renderLayuiForm(){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+    //////////////////////////////////////////////////////////
+    // 素材组 展开和缩放
+    $(".material-group-collection").click(function(e){
+        if($(this).hasClass("active")){
+            // 隐藏
+            $(".material-group-details-wrap").hide();
+            $(this).removeClass("active"); 
+            $(".material-group-list").css("padding-bottom","10px"); 
+            isScroll = false;
+        }else{
+            // 展开
+            $(".material-group-collection").removeClass("active");
+            $(this).addClass("active");  
+            var top =this.offsetTop + $(this).height() + 40;
+            var left = this.offsetLeft - 5;
+            $(".material-group-details-wrap").css("top",top + "px");
+            $(".mask-connect").css("left",left + "px");
+            $(".material-group-details-wrap").show();
+            $(".material-group-list").css("padding-bottom","650px");
+            
+            var gid = $(this).attr("data-gid");
+            $(".material-group-details-wrap .material-list").attr("data-gid",gid);
+            $(".material-group-details-wrap .material-list").attr("data-page",1);
+            getGroupMaterials(gid,1); //根据组id 查询数据
+            isScroll = true;
+            total = 20;
+        }
+        
+    });
+
+
+    var isScroll = false;
+    // 滚动加载更多
+    $(document).ready(function(){
+        var len = $(".material-list li").length;
+        $(".material-group-details").scroll(function() {
+            var top = $(this).scrollTop();  // 当前滚动距离
+            var all = $(".material-list").height(); // 总长度
+            var height = $(".material-group-details").height(); // 
+           // console.log((all-height) , top)
+            if((all-height)< top && isScroll){
+                isScroll = false;
+                var gid = $(".material-list").attr("data-gid");
+                var page = parseInt($(".material-list").attr("data-page")) + 1;
+                getGroupMaterials(gid,page);
+            }
+        });
+
+        // 渲染视频预览图
+        $(".material-group-views li").each(function(){
+            var src = $(this).find("img").attr("src");
+            var format = src.substring(src.length-3,src.length);
+            if(format == 'mp4'){
+                creatVideo(src,$(this));
+            }
+        });
+    });
+
+
+
+    /**
+     * 根据组id 查询数据
+     * @param id  组id
+     * @param page  页码
+     */
+    var total = 1;
+    function getGroupMaterials(gid,page){
+        if(page>total){
+            return false;
+        }
+        $(".material-list").attr("data-page",page);
+        var param = {
+            gid : gid,
+            token : token,
+            page : page,
+            params:'<?php echo json_encode($params);?>'
+        }
+        $.ajax({
+            url : getMaterials,
+            async: true,
+            data : param,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+               // console.log('getGroupMaterials:',data);               
+                if(data.success){
+                    isScroll = true;
+                    total = parseInt(data.data.total);
+                    if(parseInt(total/20) > 1){
+                        total = Math.ceil(total/20);
+                    }else{
+                        total = 1
+                    };  
+                    renderMaterial(data.data.list, page);  // 渲染 素材数据模板
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+    }
+
+
+
+
+    // 渲染 素材数据模板
+    function renderMaterial(data,page){
+        var jsonData = data , temp='' ;
+        if(typeof data == 'string'){  
+            jsonData = JSON.parse(data);
+        }
+        console.log("jsonData:",jsonData)
+        // 遍历数组
+        for(var key in jsonData){
+            var item = jsonData[key] , type = parseInt(item.type) , typeEditTemp='' ,fileInfoTemp ='' ;
+            // 判断是否有缓存 预览图 
+            var thumbURL = item.thumb ? '<?php echo $attachs;?>'+item.thumb : '<?php echo $attachs;?>'+item.file_url;
+            var fileURL = '<?php echo $attachs;?>'+item.file_url;
+            var text = '' , name = item.name;
+            // 判断是否有源文件下载
+            var fileDown = ``;
+            if(item.other_file_url){
+                fileDown = `
+                <a class="material-download" href="<?php echo $attachPath?>`+ item.other_file_url +`">
+                    <i class="material-d-icon">
+                        <img src="<?php echo $staticPath?>/css/spm/images/psd.png" />
+                    </i>
+                </a>`;
+            }  
+           
+            // 判断类型
+            if( type == 1 || type == 2){ // 图片 ,视频
+                typeEditTemp = ` <span class="minfo-type">
+                                    `+fileDown+`
+                                    <img src="<?php echo $staticPath?>/css/spm/images/material-p.png" />
+                                    <a class="view-link" data-clipboard-text="<?php echo $attachPath?>`+item.file_url+`">
+                                        <img src="<?php echo $staticPath?>/css/spm/images/link.png" />
+                                    </a>   
+                                </span>`;
+                var play = '';
+                if(type == 2){
+                    play = `<i class="view-play" data-src="`+ fileURL+ `">
+                                <img src="<?php echo $staticPath?>/css/spm/images/material-play.png">
+                            </i>`;
+                }  
+
+                fileInfoTemp = `<i class="view-img magnifying">
+                                    <img src="`+ thumbURL+ `" />
+                                </i>
+                                `+play+`
+                                <div class="view-desc-more" data-content="格式：`+ (item.file_url).split(".")[1] +`"></div>
+                                <div class="view-desc">
+                                    <u></u>
+                                    <span>大小：`+ item.size +`MB </span>
+                                    <span>尺寸：`+ item.width +`*`+ item.heigh +`</span>
+                                    <span>格式：`+ (item.file_url).split(".")[1] +`</span>
+                                </div>`;      
+            }else if(type == 3){ // 文本
+                typeEditTemp = ` <span class="minfo-type">
+                                    `+fileDown+`
+                                    <img src="<?php echo $staticPath?>/css/spm/images/material-t.png" />
+                                </span>`;
+                fileInfoTemp = ``; 
+                text = `<p>`+item.content+`</p>`
+                item.content.length>20 ? name = item.content.substring(0,17) + '...' : name = item.content 
+            }   
+            
+           
+            temp =  temp +  `
+            <li data-id="`+item.id+`" data-type="`+item.type+`">
+                <div class="material-info">
+                    <span class="material-checkbox" style="float:left;padding: 10px 5px 0 10px;"><input type="checkbox" name="checkbox" title="" lay-skin="primary"></span>
+                    <p class="minfo-title" data-clipboard-text="`+name+`" >素材名称:`+ name +`</p>
+                    `+ typeEditTemp +`
+                </div>
+                <div class="material-main">
+                    <div class="view-operation operation-img">
+                        `+text+`
+                        <p class="view-operation-mask"></p>
+                        <a class="view-delete" data-id="`+item.id+`"><img src="<?php echo $staticPath?>/css/spm/images/delete.png" /></a>
+                        <a class="view-edt" data-href="/Admin/Spm_Material/editMaterial?id=`+item.id+`" ><img src="<?php echo $staticPath?>/css/spm/images/edt.png" /></a>
+                    </div> 
+                    `+ fileInfoTemp +`
+                </div>
+                <div class="material-bottom">
+                    <div class="minfo-content">
+                        <span class="minfo-date">上传时间：`+item.create_time+`</span>
+                        <span class="minfo-user">创意：`+item.mk_operator+`</span>
+                    </div>
+                    <p class="material-label">标签：`+ item.labelName +`</p>
+                  
+                </div>
+            </li>`;
+        }
+        
+        if(page == 1){
+            $(".material-group-details .material-list").empty();
+        }
+        $(".material-group-details .material-list").append(temp);
+        $(".material-group-details .material-list li").each(function(){
+            var type = parseInt($(this).attr("data-type"));
+            var that = $(this);
+            if(type==2){
+                var src = that.find(".magnifying img").attr("src");
+                var format = src.substring(src.length-3,src.length);
+                //console.log(src);
+                if(format=='mp4'){
+                    creatVideo(src,that);
+                }
+            }
+        });
+        //renderLayuiForm();
+    }
+
+    //renderMaterial(testData);
+
+
+
+
+
+
+
+
+
+
+    //   topMenu 切换app 回调
+    var appIdSelectChange = {
+        callBack:function(id){
+           window.location.href = 'index';
+        }
+    };
+</script>

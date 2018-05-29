@@ -1,0 +1,209 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function confirmSubmit(){
+            var monitor_type = $("#monitor_type").val();
+            if(monitor_type == -1){
+                layer.msg("请选择监控事件!");
+                return false;
+            }else if(monitor_type == 'ecpm'){
+                var ad_type = $('#ad_type').val();
+                if(ad_type == -1){
+                    layer.msg("请选择广告类型!");
+                    return false;
+                }
+                var ecpm_min_val = $('#ecpm_min_val').val();
+                if(ecpm_min_val == ''){
+                    layer.msg("请输入最小ecpm!");
+                    return false;
+                }
+            }else if(monitor_type == 'doublecheck'){
+                var time_length = $('#time_length').val();
+                if(time_length == ''){
+                    layer.msg("请输入数据重跑天数!",{icon: 2});
+                    return false;
+                }
+                var ads_id = $('#ads_id').val();
+                if(ads_id == ''){
+                    layer.msg("请选择广告商!",{icon: 2});
+                    return false;
+                }
+            }else{
+                var limit_val = $('#limit_val').val();
+                if(limit_val == ''){
+                    layer.msg("请选择阀值!");
+                    return false;
+                }
+            }
+            var warning_type = $(".warning_type").val();
+            if(warning_type == ''){
+                layer.msg("请选择报警类型!");
+                return false;
+            }
+            var report_time = $("#report_time").val();
+            if(report_time == ''){
+                layer.msg("请输入报警时间！");
+                return false;
+            }
+            var gid = $("#gid").val();
+            if(gid == -1){
+                layer.msg("请选择预警对象组！");
+                return false;
+            }
+            var id = $('#id').val();
+            var title = $("#title").val();
+            var app_key = $("#app_key").val();
+            var url = '<?php echo $EditMonitorUrl;?>';
+            layer.load('正在处理....', 3);
+            var fd = new FormData();//h5上传
+            fd.append('title',title);
+            fd.append('app_key',app_key);
+            fd.append('monitor_type',monitor_type);
+            fd.append('ad_type',ad_type);
+            fd.append('ecpm_min_val',ecpm_min_val);
+            fd.append('limit_val',limit_val);
+            fd.append('warning_type',warning_type);
+            fd.append('report_time',report_time);
+            fd.append('ads_id',ads_id);
+            fd.append('time_length',time_length);
+            fd.append('gid',gid);
+            fd.append('id',id);
+            fd.append('token',token);
+            $.ajax({
+                url: url,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function(data) {
+                    if(data == 1){
+                        layer.msg('操作成功');
+                        window.parent.location.reload();
+                        parent.layer.close();
+                    }else{
+                        layer.msg('操作失败');
+                        //location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+    <style>
+        .importtable{
+            border-collapse: collapse;border-spacing:0;
+        }
+        .importtable thead{
+            border: 1px solid #e8e8e8; border-width: 1px;
+        }
+        .importtable thead tr th{
+            padding: 10px;
+        }
+        .importtable tbody tr td{
+            padding: 10px;
+        }
+    </style>
+    <div class="colMain">
+
+        <div class="main">
+            <div class="app-detail">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <ul class="form">
+                        <li class="double_check" style="display:<?php if($data['monitor_type'] == 'doublecheck') echo 'block';else echo 'none';?>"><span class="label">广告商：</span>
+                            <div class="fc">
+                                <select id="ads_id"  name="ads_id">
+                                    <option value="-1"  >- 请选择 -</option>
+                                    <?php foreach ($ads as $key=>$val){?>
+                                        <option value="<?php echo $key;?>" <?php if($data['ads_id'] == $key) echo "selected";?> ><?php echo $val;?> </option>
+                                    <?php  }?>
+                                </select>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li class="double_check" style="display:<?php if($data['monitor_type'] == 'doublecheck') echo 'block';else echo 'none';?>"><span class="label">监控时间跨度(天)：</span>
+                            <div class="fc">
+                                <input type="number" name='time_length' id='time_length' value="<?php echo $data['time_length'];?>"/> <span class="red">*系统自动重跑验证时间跨度</span>
+                            </div>
+                        </li>
+                        <li class="dau_show" style="display:<?php if($data['monitor_type'] != 'ecpm' && $data['monitor_type'] != 'doublecheck') echo 'block';else echo 'none';?>"><span class="label">监控阀值：</span>
+                            <div class="fc">
+                                <input type="number" name='limit_val' id='limit_val' value="<?php echo $data['limit_val'];?>"/> <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li class="ecpm_show" style="display:<?php if($data['monitor_type'] == 'ecpm') echo 'block';else echo 'none';?>"><span class="label">广告类型：</span>
+                            <div class="fc">
+                                <select id="ad_type"  name="ad_type">
+                                    <option value="-1"  >- 请选择 -</option>
+                                    <?php  foreach ($ad_type as $key=>$val){?>
+                                        <option value="<?php echo $key;?>"  <?php if($data['ad_type'] == $key) echo "selected";?>><?php echo $val;?> </option>
+                                    <?php  }?>
+                                </select>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li class="ecpm_show" style="display:<?php if($data['monitor_type'] == 'ecpm') echo 'block';else echo 'none';?>"><span class="label">最低ecpm值：</span>
+                            <div class="fc">
+                                <input type="number" name='ecpm_min_val' id='ecpm_min_val' value="<?php echo $data['ecpm_min_val'];?>"/> <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li><span class="label">报警方式：</span>
+                            <div class="fc">
+                                短信:<input type="radio" name='warning_type' class='warning_type' value="1" <?php if($data['warning_type'] == 1) echo "checked";?>/>&nbsp;
+                                邮件:<input type="radio" name='warning_type' class='warning_type' value="2" <?php if($data['warning_type'] == 2) echo "checked";?>/>&nbsp;
+                                短信+邮件:<input type="radio" name='warning_type' class='warning_type' value="3" <?php if($data['warning_type'] == 3) echo "checked";?>/>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">预警时间：</span>
+                            <div class="fc">
+                                <select name='report_time' id='report_time'>
+                                <?php for($i=0;$i<=24;$i++){
+                                    $key = date($i.':00');
+                                ?>
+                                    <option <?php if($data['report_time'] == $key) echo "selected = 'selected'"; ?>value="<?php echo $key;?>"><?php echo $key;?></option>
+                                <?php }?>
+                                </select>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">预警对象组：</span>
+                            <div class="fc">
+                                <select id="gid"  name="gid">
+                                    <option value="-1"  >- 请选择 -</option>
+                                    <?php  foreach ($user_group as $key=>$val){?>
+                                        <option value="<?php echo $val['id'];?>" <?php if($data['warming_target'] == $key) echo "selected";?>><?php echo $val['group_name'];?> </option>
+                                    <?php  }?>
+                                </select>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="fc">
+                                <input type="hidden" value="<?php echo $data['id'];?>" name="id" id="id">
+                                <input type="hidden" value="<?php echo $data['monitor_type'];?>" name="monitor_type" id="monitor_type">
+                                <input type="hidden" value="<?php echo $data['title'];?>" name="title" id="title">
+                                <input type="hidden" value="<?php echo $data['app_key'];?>" name="app_key" id="app_key">
+                                <input type=""  value="保存" class="submit"  onclick="confirmSubmit()"/>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            $('#monitor_type').bind('change',function(){
+                var type = $(this).val();
+                if(type == 'ecpm'){
+                    $('.ecpm_show').css('display','block');
+                    $('.dau_show').css('display','none');
+                }else{
+                    $('.dau_show').css('display','block');
+                    $('.ecpm_show').css('display','none');
+                }
+            })
+        })
+    </script>
+<?php echo $this->render("layout/footer1.phtml");?>

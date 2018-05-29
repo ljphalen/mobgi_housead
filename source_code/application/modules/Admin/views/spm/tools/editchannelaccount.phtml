@@ -1,0 +1,169 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/treeViewCheckbox.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css"/>
+<script src="<?php echo $staticPath?>/js/common/spm/treeViewCheckbox.js?v=<?php echo $version;?>"></script>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>编辑渠道账号</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <form class="layui-form">
+                    <!-- 基本信息 begin -->
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>基本信息:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">账号</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="user_id" value="<?php echo $userDetail['user_id']; ?>" />
+                                <input type="text" placeholder="" value="<?php echo $userDetail['email']; ?>" disabled class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">备注</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="text" name="check_msg" placeholder="" value="<?php echo $userDetail['check_msg']; ?>" class="layui-input" style="width:650px;">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>活动权限:</p></div>
+                    <div class="inputs-wrap">
+                        <div id="apps_" style="display:none; "><?php echo $apps; ?> </div>
+                        <div id="channels_"style="display:none; "><?php echo $channels; ?> </div>
+                        <div class="tree_search" id="activity_tree_search" style="width:1000px;"></div>
+                    </div>
+                    <div class="subtitle"><p>安卓渠道号权限:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="fc">
+                            <div id="android_channel_groups_" style="display:none; "><?php echo $androidChannelGroups; ?> </div>
+                            <div class="tree_search" id="android_channel_tree_search" style="width:1000px;"></div>
+                        </div>
+                    </div>
+
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                            <button id="cancel" type="reset" class="layui-btn layui-btn-primary">取消</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+    <script>
+
+        /* 请求链接 */
+        var getActivityListUrl = baseurl + '<?php echo $getActivityListUrl; ?>'; // 获取筛选活动
+        var getAndroidChannelListUrl = baseurl + '<?php echo $getAndroidChannelListUrl; ?>'; // 获取筛选渠道号
+        var editChannelAccountPostUrl = baseurl + '<?php echo $editChannelAccountPostUrl; ?>'; // 提交表单
+        var indexUrl = baseurl + '<?php echo $channelAccountUrl; ?>'; //  列表页面
+        var apps = JSON.parse($("#apps_").html());
+        var channels = JSON.parse($("#channels_").html());
+        var list = [], applist =[] ,channellist = [];
+        for(var index in apps){
+            applist[apps[index]['app_id']] = apps[index]['app_name']
+        }
+        list.push(applist);
+        for(var index in channels){
+            channellist[channels[index]['id']] = channels[index]['channel_name']
+        }
+        list.push(channellist);
+
+        var activityData = {
+            names : ['apps','channels'],
+            list : list,
+            title : ['应用选择','渠道选择'],
+            selected : [ <?php echo $advertiserDetail['relate_app'] ?>,<?php echo $advertiserDetail['relate_channel'] ?>],
+        };
+        $("#activity_tree_search").treeViewCheckbox({
+            data : activityData ,
+            selected :<?php echo $advertiserDetail['relate_activity'] ?>,
+            name :'relate_activity',
+            title : '请选择',
+            request : {
+            url : getActivityListUrl,
+            data : {token : token},
+            type : 'post'
+        },
+        });
+
+
+        var android_channel_groups = JSON.parse($("#android_channel_groups_").html());
+        var android_channel_grouplist = [];
+        for(var index in android_channel_groups){
+            android_channel_grouplist[android_channel_groups[index]['id']] = android_channel_groups[index]['name']
+        }
+        var androidChannelData = {
+            names : ['android_channel_groups'],
+            list : [android_channel_grouplist],
+            title : ['安卓渠道组选择'],
+            selected : [<?php echo $advertiserDetail['relate_android_channel_group'] ?>]
+
+        };
+        $("#android_channel_tree_search").treeViewCheckbox({
+            data : androidChannelData ,
+            selected :<?php echo $advertiserDetail['relate_android_channel'] ?>,
+            name :'relate_android_channel',
+            title : '请选择',
+            request : {
+            url : getAndroidChannelListUrl,
+            data : {token : token},
+            type : 'post'
+        },
+        });
+
+        //JavaScript代码区域
+        layui.use(['element','form'], function(){
+            var element = layui.element;
+            var form = layui.form;
+
+            //表单提交
+            form.on('submit(submit_form)', function(data){
+                data.field.token = token;
+                $.ajax({
+                    url : editChannelAccountPostUrl,
+                    async: false,
+                    data : data.field,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg);
+                        if(data.success){
+                            setTimeout(function(){
+                                window.location.href = indexUrl;
+                            },500);
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+                return false;
+            });
+            // 取消
+            $("#cancel").click(function(){
+                window.location.href = indexUrl;
+            });
+        });
+    </script>
+</body>
+</html>

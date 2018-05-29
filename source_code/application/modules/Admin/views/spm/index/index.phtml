@@ -1,0 +1,1141 @@
+<?php echo $this->render("./spm/layout/header.phtml"); ?>
+<style>
+    .highline {
+        color: #999;
+        font-size:14px;
+        text-decoration:solid;
+        cursor: pointer;
+    }
+    .highline:hover {
+        color: #1e9fff;
+        
+    }
+    .layui-tab {
+        clear: both;
+    }
+
+    .layui-tab-title {
+        margin-bottom: 10px;
+    }
+
+    .layui-tab.plan {
+        padding: 0;
+        margin: 0 10px 20px 0;
+        border: 1px solid #ccc;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .plan.odd {
+        margin: 0 0 20px 10px;
+    }
+
+    .plan .layui-tab-title {
+        margin: 0;
+        padding-left: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .plan .layui-table td,
+    .plan .layui-table th {
+        padding: 5px 15px;
+    }
+
+    .plan .layui-tab-title span {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 14px;
+
+        line-height: 30px;
+        padding-top: 5px;
+        text-align: center;
+        border-bottom: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .plan .layui-tab-title li {
+        min-width: 50px;
+    }
+
+    .layui-table td,
+    .layui-table th {
+        text-align: center;
+
+    }
+
+    .layui-tab-title .title::before {
+        content: "▌";
+        color: rgb(25, 158, 216);
+    }
+
+    .layui-tab-content {
+        position: inherit;
+        min-height: 10px;
+        clear: both;
+    }
+
+    .plan .layui-tab-content {
+        border: 0;
+
+    }
+
+
+    .plan .progress .progress-bar {
+        background-color: rgb(69, 176, 160);
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 28px;
+        line-height: 28px;
+        margin: 5px 0;
+        color: #fff;
+        text-align: right;
+    }
+
+    .plan .progress .progress-bar span {
+        background-color: inherit;
+    }
+
+    .plan .progress .progress-bar span::after {
+        content: "%";
+        margin-right: 5px;
+    }
+
+    .layui-tab-brief>.layui-tab-title .layui-this {
+        color: rgb(25, 158, 216);
+        border: 0;
+    }
+
+    .layui-table,
+    .layui-table-view {
+        margin: 0;
+    }
+
+    table.cart {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    table.cart td {
+        cursor: pointer;
+        border: 1px solid #ccc;
+        line-height: 2.5rem;
+        height: 5rem;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 0 1%;
+    }
+
+    table.cart td.cur,
+    table.cart td:hover {
+        background-color: #d9d9d9;
+        color: #000000
+    }
+
+    table.cart td span {
+
+        font-size: 1rem;
+        color: #515151;
+
+    }
+</style>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 begin  -->
+        <div class="layui-header">
+            <div class="layui-logo">
+                <a href="/Admin/Home/index" class="logo">
+                    <img src="<?php echo $staticPath ?>/img/logo.png" />
+                </a>
+            </div>
+            <ul class="layui-nav layui-layout-left" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">MONITOR</a>
+                    <dl class="layui-nav-child">
+                        <?php foreach ($module as $val) {
+                            if ($val['name'] != 'Monitor') { ?>
+                        <dd>
+                            <a href="<?php echo $val['url']; ?>">
+                                <?php echo $val['name']; ?>
+                            </a>
+                        </dd>
+                        <?php 
+                    }
+                } ?>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="adminUser"></a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a id="admin-user-pw" data-id="_Admin_User_Passwd" data-parentId="_Admin_User_Module" data-href="/Admin/User/passwd">修改密码</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/Admin/Login/logout">[注销]</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 头部区域 end   -->
+
+        <!-- content begin   -->
+        <div class="content-wrap" style="overflow-y: auto; overflow-x: hidden;">
+            <!-- table begin -->
+            <div class="page-table-wrap">
+
+                <a class="notice" href="/Admin/Spm_Tools/document" style="position:relative;float:right">公告：广告投放中心规章制度已上线，点击查看详情</a>
+                <div style="margin-bottom:10px;" class="layui-tab layui-tab-brief" lay-filter="general">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">投放概览</li>
+                        <li>总体概览</li>
+                        <li>数据总览>></li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item  layui-show">
+                            <div class="form-search">
+                                <form class="layui-form" action="" lay-filter="table_form">
+                                    <div class="layui-input-inline" style="margin-bottom:5px;">
+                                        <input type="text" name="app_name" placeholder="请输入应用名称查询" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-btn-group group-right">
+                                        <!-- <button data-name="all" type="button" class="table_btn layui-btn layui-btn-sm" >全部</button> -->
+                                        <button data-name="today" type="button" class="table_btn layui-btn layui-btn-sm">今日</button>
+                                        <button data-name="yesterday" type="button" class="table_btn layui-btn layui-btn-sm layui-btn-primary">昨日</button>
+                                        <button data-name="hebdomad" type="button" class="table_btn layui-btn layui-btn-sm layui-btn-primary">7日</button>
+                                        <button data-name="month" type="button" class="table_btn layui-btn layui-btn-sm layui-btn-primary">30日</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <table id="table_app" lay-filter="table_app"></table>
+                        </div>
+                        <div class="layui-tab-item" style="height:auto;">
+                            <div style="position: relative;">
+
+                                <div style="height:40px;">
+                                    <div id="date_range" sdate="2018-04-01" edate="2018-04-11" style="position: absolute;top:0;right:0;clear:both"></div>
+                                </div>
+                                <div>
+                                    <table cellspacing="0" cellpadding="0" border="0" class="cart">
+                                        <thead>
+                                            <tr>
+                                                <td class="cart-field" data-field="real_consumption">
+                                                    <div>投放费用</div>
+                                                    <span id="general_real_consumption"></span>
+                                                </td>
+                                                <td class="cart-field" data-field="registers">
+                                                    <div class="cart-field">新增用户</div>
+                                                    <span id="general_registers"></span>
+                                                </td>
+                                                <td class="cart-field" data-field="cost">
+                                                    <div>新增成本</div>
+                                                    <span id="general_cost"></span>
+                                                </td>
+                                                <td class="cart-field" data-field="registers_rate">
+                                                    <div>IOS新增占比</div>
+                                                    <span id="general_registers_rate"></span>
+                                                </td>
+                                                <td class="cart-field" data-field="kpi_rate">
+                                                    <div>整体新增KPI完成</div>
+                                                    <span id="general_kpi_rate"></span>
+                                                </td>
+                                                <td class="cart-field" data-field="cost_rate">
+                                                    <div>整体成本KPI完成</div>
+                                                    <span id="general_cost_rate"></span>
+                                                </td>
+                                                <td class="cart-field" data-field="total_amount">
+                                                    <div>累计收入(广告用户)</div>
+                                                    <span id="general_total_amount"></span>
+                                                </td>
+                                                <td class="cart-field" data-field="roi">
+                                                    <div>　ROI　</div>
+                                                    <span id="general_roi"></span>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="layui-btn-group btn-general">
+                                        <button id="btn_all" data-field='general' class="layui-btn layui-btn-sm">总览</button>
+                                        <button id="btn_app" data-field='app_id' class="layui-btn layui-btn-primary layui-btn-sm">分应用</button>
+                                        <button id="btn_chanenl" data-field='channel_gid' class="layui-btn layui-btn-primary layui-btn-sm">分渠道</button>
+                                    </div>
+                                    
+                                    <div id="chart_general" style="width: 100%;height:500px;"> </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-tab layui-tab-brief" lay-filter="top5" style="margin-top:10px;">
+                                <ul class="layui-tab-title ">
+                                    <li class="layui-this" lay-id="all">整体渠道Top5</li>
+                                    <li lay-id="ios">IOS渠道Top5</li>
+                                    <li lay-id="android">Andriod渠道Top5</li>
+                                </ul>
+                            </div>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+                                    <div class="layui-tab-content">
+                                        <div class="layui-tab-item layui-show">
+                                            <div class="layui-row">
+                                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                                    <div class="layui-tab plan layui-tab-brief">
+                                                        <ul class="layui-tab-title">
+                                                            <span class="title" style="margin-top: 5px;">新增 Top5</span>
+                                                        </ul>
+                                                        <table id="register" class="layui-table" lay-filter="register" lay-skin="nob"></table>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                                    <div class="layui-tab plan odd layui-tab-brief" lay-filter="roi">
+                                                        <ul class="layui-tab-title">
+                                                            <span class="title">ROI Top5</span>
+                                                            <li lay-id="roi1" class="layui-this">累计</li>
+                                                            <li lay-id="roi7">7日</li>
+                                                            <li lay-id="roi14">14日</li>
+                                                            <li lay-id="roi30">30日</li>
+                                                        </ul>
+                                                        <table id="roi" class="layui-table progress" lay-filter="roi" lay-even="" lay-skin="nob"></table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-row">
+                                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                                    <div class="layui-tab plan layui-tab-brief" lay-filter="retention">
+                                                        <ul class="layui-tab-title ">
+                                                            <span class="title">留存 Top5</span>
+                                                            <li lay-id="retention1" class="layui-this">次日</li>
+                                                            <li lay-id="retention7">7日</li>
+                                                            <li lay-id="retention14">14日</li>
+                                                            <li lay-id="retention30">30日</li>
+                                                        </ul>
+                                                        <table id="retention" class="layui-table progress" lay-filter="retention" lay-even lay-skin="nob"></table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="layui-col-xs6 layui-col-md6 layui-col-md4">
+                                                    <div class="layui-tab plan odd layui-tab-brief" lay-filter="ltv">
+                                                        <ul class="layui-tab-title">
+                                                            <span class="title">LTV Top5</span>
+                                                            <li lay-id="ltv1" class="layui-this">次日</li>
+                                                            <li lay-id="ltv7">ltv7</li>
+                                                            <li lay-id="ltv14">ltv14</li>
+                                                            <li lay-id="ltv30">ltv30</li>
+                                                        </ul>
+                                                        <table id="ltv" class="layui-table" lay-filter="ltv" lay-even="" lay-skin="nob"></table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a style="line-height:40px;height:40px;"  class="highline">
+                                整体计划完成进度：
+                                <span>只包括录入了KPI的产品，没有录入KPI的产品不展示.。默认按照产品计划新增量排序。>>></span>
+                            </a>
+                            <table cellspacing="0" cellpadding="0" border="0" class="layui-table" style="display:none">
+                                <colgroup>
+                                    <col width="10%">
+                                    <col width="9%">
+                                    <col width="9%">
+                                    <col width="10%">
+                                    <col width="9%">
+                                    <col width="9%">
+                                    <col width="10%">
+                                    <col width="12%">
+                                    <col width="12%">
+                                    <col width="12%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <td>产品</td>
+                                        <td colspan="3" style='text-align: center'>计划</td>
+                                        <td colspan="3" style='text-align: center'>实际</td>
+                                        <td colspan="3" style='text-align: center'>完成</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>新增</td>
+                                        <td>预算</td>
+                                        <td>广告成本</td>
+                                        <td>新增</td>
+                                        <td>消耗</td>
+                                        <td>广告成本</td>
+                                        <td>KPI完成率</td>
+                                        <td>预算使用率</td>
+                                        <td>成本变动率</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="plan_list"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <script type="text/html" id="table_cols_icon">
+                    <img style="width:32px; height:32px" src="{{d.icon}}" />
+                </script>
+                <script type="text/html" id="table_cols_edit">
+                    <a lay-event="detail" class="table_row_edit" title="查看数据" href="#">
+                        <i class="layui-icon" style="font-size: 20px; color:#999; cursor:pointer;">&#xe62c;</i>
+                    </a>
+                </script>
+                <!-- table end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+
+    <link href="<?php echo $staticPath; ?>/css/gri.controls.css?v=<?php echo $version; ?>" rel="stylesheet" />
+    <script src="<?php echo $staticPath; ?>/js/common/jquery.js?v=201712151100"></script>
+    <script src="<?php echo $staticPath; ?>/js/common/jquery.loadmask.min.js?v=<?php echo $version; ?>"></script>
+    <script src="<?php echo $staticPath; ?>/js/common/gri.dateRange.js?v=<?php echo $version; ?>"></script>
+    <script src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js?v=<?php echo $version; ?>"></script>
+    <script>
+        /* 请求链接 */
+        var activityUrl = '<?php echo $adminroot; ?>/Admin/Spm_Report/index';
+        var getAppList = baseurl + "/Admin/Spm_Index/getAppList";
+        // table 渲染参数
+        var table_id = "#table_app";
+        var layuiTable, myChart ;
+        var monthData={},monthMap={};
+        var generalMap={};
+        var kpi='real_consumption';
+        var dim='general';
+        var page = true;
+        var initSort = {};
+        var where = {
+            token: token,
+            sdate: '',
+            edate: '',
+            platform: '',
+            app_name: ''
+        };
+        var cols = [
+            [
+                { field: 'app_id', title: 'ID', sort: true, },
+                { field: 'icon', title: 'icon', toolbar: "#table_cols_icon" },
+                { field: 'app_name', title: '应用', sort: true, }, 
+                { field: 'platform', title: '平台', sort: true, }, 
+                { field: 'clicks', title: '点击数', sort: true, }, 
+                { field: 'effect_clicks', title: '去重点击', sort: true, }, 
+                { field: 'actives', title: '激活设备', sort: true, }, 
+                { field: 'registers', title: '<span id="tip1">新增用户数</span>', sort: true, },
+                { field: 'active_rate', title: '<span id="tip2">激活率(%)</span>', sort: true, },
+                { field: 'nature_actives', title: '<span id="tip3">自然激活</span>', sort: true, },
+                { field: 'nature_registers', title: '<span id="tip4">自然新增</span>', sort: true, }, 
+                { field: '', title: '操作', toolbar: "#table_cols_edit", align: 'center', }
+            ]
+        ];
+
+        // 判断本地缓存是否 有
+        if (localStorage.searchData) {
+            if (window.location.href == JSON.parse(localStorage.searchData).url) {
+                page = JSON.parse(localStorage.searchData).page;
+                where = JSON.parse(localStorage.searchData).where;
+                $("input[name='app_name']").val(where.app_name);
+                where.sdate = '';
+                where.edate = '';
+            }
+        }
+
+        function buildTip() {
+            $("#tip1").attr('title', '安卓渠道新增用户数');
+            $("#tip2").attr('title', '激活设备/点击数');
+            $("#tip3").attr('title', '无法归因的激活设备');
+            $("#tip4").attr('title', '无法归因的的新增用户数');
+        }
+
+        $( document ).ready(function() {
+            $('.highline').click(function(){
+                $(this).next().toggle()
+            })
+            // 获取管理员信息
+            $.ajax({
+                url: baseurl + '/Admin/Spm_Index/getAdminUser?token=' + token,
+                data: null,
+                type: 'get',
+                success: function (data) {
+                    if (data.success) {
+                        $("#adminUser").html("管理员：" + data.data.user_name);
+                    } else {
+                        $("#adminUser").html("管理员：" + data.data.msg);
+                    }
+                },
+                error: function (xhr, msg, error) {
+                    $("#adminUser").html("管理员：null");
+                }
+            });
+
+            // 获取总览月数据
+            getMonthPlan();
+
+            $(document).keypress(function(event){  
+                var keycode = (event.keyCode ? event.keyCode : event.which);  
+                if(keycode == '13'){  
+                    // alert('You pressed a "enter" key in somewhere');      
+                }  
+            });  
+            $('.btn-general>button').click(function(event){                
+                $(this).removeClass('layui-btn-primary').siblings().addClass('layui-btn-primary')
+                dim=$(this).data('field');
+                if(monthData[dim]){
+                    chart_render('chart_general',dim,kpi,filterData(monthData[dim],dim,kpi))
+                }
+            });
+            $('.cart-field').click(function(event){
+                $(this).addClass('cur')
+                if (!event.ctrlKey) {
+                    $(this).siblings().removeClass('cur')
+                }         
+                kpi=$(this).data('field');
+                if(!generalMap[kpi]){
+                    generalMap[kpi]=$(this).find('div').text();
+                }
+                if(monthData[dim]){
+                    chart_render('chart_general',dim,kpi,filterData(monthData[dim],dim,kpi))
+                }
+            })
+        });
+
+        function filterData(data,dim,kpi){
+            var res=[]
+            var total={},vals={}
+            var avg=0
+            if(data.length<=10 || ['real_consumption','registers','total_amount'].includes(kpi)) {
+                data.forEach(e => {
+                    if(e[kpi]>0){ res.push(e) }
+                })
+                return res 
+            }
+
+            data.forEach(e => {
+                if(!total[e.months]){
+                    total[e.months]=0
+                }
+                total[e.months]+=e.registers
+            })
+
+            data.forEach(e => {
+                avg=parseInt(total[e.months]/100)
+                if( e.registers>avg){
+                    vals[e[dim]]=1
+                }
+            });
+            data.forEach(e => {
+                if(e[kpi]>0 && vals[e[dim]]){
+                    res.push(e)
+                }
+            });
+            return res
+        }
+
+        function getMonthPlan(){
+            var urls={ 'general':'', 'app_id':'?dim=app_id', 'channel_gid':'?dim=channel_gid'}
+            for (const key in urls) {
+                $.ajax({
+                    url: baseurl +'/Admin/Spm_Index/getMonthGeneral'+ urls[key],
+                    type: 'get',
+                    success: function (res) {
+                        if (res.success) {
+                            monthData[key]=res.data
+                        }
+                    },
+                    error: function (xhr, msg, error) {
+                    }
+                });
+            }
+            var urls={'app_id':'getAppMap', 'channel_gid':'getChannelMap'}
+            for (const key in urls) {
+                $.ajax({
+                    url: baseurl +'/Admin/Spm_Index/'+ urls[key],
+                    type: 'get',
+                    success: function (res) {
+                        if (res.success) {
+                            monthMap[key]=res.data
+                        }
+                    },
+                    error: function (xhr, msg, error) {
+                    }
+                });
+            }
+
+            
+
+        }
+        function chart_render(elementId,dim,kpi,chartdata) {
+            var xdata=[];//x轴
+            var sdata={};
+            var series=[];
+            var legend=[];
+            var label='',i=0;
+            var type={
+                'real_consumption':'bar',
+                'registers':'bar',
+                'total_amount':'bar',
+            }
+            var sortdata={}
+            chartdata.forEach(el => {
+                if(!xdata.includes(el['months'])){
+                    xdata.push(el['months'])
+                    sortdata[el['months']]=[]
+                }
+            });
+            chartdata.forEach(el => {
+                dd=dim=='general'?'general':el[dim]
+                if(!sdata[dd]){
+                    sdata[dd]={'id':dd}
+                    xdata.forEach(x => {
+                        sdata[dd][x]=0
+                    })
+                }
+                if(el[kpi]){
+                    sdata[dd][el['months']]=parseFloat(el[kpi])
+                }
+            });
+            if(dim!='general'){
+                // 分应用，分渠道
+                sortId={}//排序ID
+                res=[]
+                for (const key in sdata) { res.push(sdata[key]) }
+                month=xdata[0]
+                res.sort(function(a,b){ return b[month]-a[month] })//排序
+                xdata.forEach(month => { 
+                    for (i=0;i<Math.min(10,res.length);i++) {
+                         sortId[res[i]['id']]=res[i]['id']
+                    }
+                })
+
+                if(type[kpi] ){
+                    sdata=[{ id:'0' }]
+                    xdata.forEach(month => { sdata[0][month]=0 })
+                }else{
+                    sdata=[]
+                }
+                // 是否有其他
+                var flag=type.hasOwnProperty(kpi)
+                res.forEach(item => {
+                    if(sortId[item['id']]){
+                        sdata.push(item)
+                    }else if(type.hasOwnProperty(kpi)){
+                        xdata.forEach(month => {
+                            if(item[month]>0) flag=false
+                             sdata[0][month]+=item[month]
+                        })
+                    }
+                })
+                if(flag){
+                    sdata.splice(0,1)
+                }
+            }else{
+                var res=[]
+                for (const key in sdata) { res.push(sdata[key]) }
+                sdata=res
+            }
+            sdata.forEach(item => {                
+                var temp=[]
+                xdata.forEach(month => { temp.push(item[month]) })
+                if(monthMap[dim] && monthMap[dim][item['id']]){
+                    label=monthMap[dim][item['id']]
+                }else{
+                    label=generalMap[kpi]
+                }
+                legend.push(label);                
+                sconf={
+                    data: temp,
+                    type: type[kpi]?type[kpi]:'line',
+                    name: label, 
+                }
+                if(sconf.type=="bar"){
+                    sconf['stack']= '总量'
+                }
+                if(dim=='general'){
+                    sconf['label']= {
+                        normal: {
+                            show: true,
+                            position: 'top',
+                            formatter:function(data){
+                                return data.data.toLocaleString('en-US')
+                            }
+                        }
+                    }
+                }
+                series.push(sconf)
+            })
+      
+            option = {
+                tooltip: { trigger: 'axis' },
+                xAxis: { type: 'category', data: xdata },
+                yAxis: { type: 'value' },
+                grid: { left: '10', right: '10', bottom: '10', containLabel: true },
+                series: series
+            };
+            if(dim!='general'){
+                option['legend']= { data:legend}
+            }
+            myChart = echarts.init(document.getElementById(elementId));
+            myChart.setOption(option,true);
+        }
+        
+     
+        function table_render(param) {
+            var fields = [];
+            var thead = '<thead><tr>';
+            var tbody = '<tbody>';
+            param.cols[0].forEach(element => {
+                fields.push(element.field)
+                thead += '<th data-field="' + element.field +
+                    '"><div class="layui-table-cell laytable-cell-custom-' + element.field + '"><span>' +
+                    element.title +
+                    '</span></div></th>'
+            });
+            thead += '</tr></thead>';
+            if(param.data){
+                param.data.forEach((element, index) => {
+                    tbody += '<tr data-index="' + index + '">'
+                    fields.forEach(field => {
+                        tbody += '<td data-field="' + field + '">'
+                        if (field == 'rate') {
+                            var progress_width = element[field] > 100 ? 100 : element[field]
+                            var progress_color = element[field] > 100 ? 100 : element[field]
+                            tbody += '<div class="progress-bar" style="width:' + progress_width +
+                                '%"><span>' + element[field] + '</span></div>'
+                        } else {
+                            tbody += '<div class="layui-table-cell laytable-cell-custom-' + field + '">'
+                            tbody += '<span>' + element[field] + '</span></div></td>'
+                        }
+
+                        tbody += '</td>'
+                    });
+                    tbody += '</tr>'
+                });
+            }else{
+                tbody += ''
+            }
+   
+
+
+            tbody += '</tbody>';
+            $(param.elem).html(thead + tbody)
+        }
+
+
+
+        //JavaScript代码区域
+        layui.use(['element', 'table', 'form'], function () {
+            var element = layui.element;
+            var table = layui.table;
+            var form = layui.form;
+            layuiTable = layui.table;
+            var today = getDatefromName("today");
+            where.sdate = today.sdate;
+            where.edate = today.edate;
+            //初始化表格 
+            var initTable = {
+                elem: table_id,
+                where: where,
+                url: getAppList,
+                initSort: initSort,
+                cols: cols
+            };
+            renderTable(table, initTable, null);
+            buildTip();
+            //日期选择
+            $(".table_btn").click(function () {
+                var name = $(this).attr("data-name");
+                var time = getDatefromName(name);
+                $(".table_btn").removeClass('activate');
+                $(".table_btn").addClass("layui-btn-primary");
+                $(this).removeClass("layui-btn-primary");
+                $(this).addClass("activate");
+                where.token = token;
+                where.sdate = time.sdate;
+                where.edate = time.edate;
+                where.app_name = time.app_name;
+                var data = {
+                    elem: table_id,
+                    where: where,
+                    url: getAppList,
+                    cols: cols,
+                    initSort: initSort,
+                    page: page
+                }
+                renderTable(table, data, null);
+                buildTip();
+            });
+
+
+            // 获取广告计划
+            function getPlan(data) {
+                $.ajax({
+                    url: baseurl + '/Admin/Spm_Index/getAdPlan',
+                    data: data,
+                    type: 'get',
+                    success: function (res) {
+                        if (res.success) {
+                            // console.log(data.data);
+                            var tbody = ''
+                            res.data.data.forEach(element => {
+                                tbody += `<tr><td>` + element['app_name'] +
+                                    `</td><td>` + element['daily_amount'] +
+                                    `</td><td>` + element['daily_consumption'] +
+                                    `</td><td>` + element['daily_cost'] +
+                                    `</td><td>` + element['registers'] +
+                                    `</td><td>` + element['real_consumption'] +
+                                    `</td><td>` + element['cost'] +
+                                    `</td><td>` + element['kpi_rate'] +
+                                    `</td><td>` + element['consumption_rate'] +
+                                    `</td><td>` + element['cost_rate'] +
+                                    `</td></tr>`
+                            });
+                            $("#plan_list").html(tbody);
+                            if (res.data.total) {                               
+                                $('#general_real_consumption').text(Math.round(res.data.total.real_consumption / 100) / 100 +'W'); //投放费用
+                                if(res.data.total.registers){
+                                    $('#general_registers').text(res.data.total.registers.toLocaleString('en-US')); //新增用户
+                                }
+                                $('#general_cost').text("￥" + res.data.total.cost); //新增成本
+                                $('#general_registers_rate').text(res.data.total.registers_rate +"%"); //整体新增占比
+                                $('#general_kpi_rate').text(res.data.total.kpi_rate + "%"); //整体新增KPI完成
+                                $('#general_cost_rate').text(res.data.total.cost_rate + "%"); //整体成本KPI完成
+                                $('#general_total_amount').text(Math.round(res.data.total.total_amount /100) /100 + "W"); //累计收入
+                                $('#general_roi').text(res.data.total.roi + "%"); //ROI
+                            }
+
+                        } else {
+                            layer.msg('获取广告计划失败');
+                        }
+                    },
+                    error: function (xhr, msg, error) {
+                        $("#adminUser").html("管理员：null");
+                    }
+                });
+            }
+
+
+            // 获取TOP5信息
+            function getTop5(data) {
+                // console.log(data);
+                $.ajax({
+                    url: baseurl + '/Admin/Spm_Index/getTop5',
+                    data: data,
+                    type: 'get',
+                    success: function (res) {
+                        if (res.success) {
+                            topDate = res.data
+                            // element.tabChange('top5', 'all');
+                            element.tabChange('top5', 'all');
+                            element.tabChange('roi', '7day');
+                            element.tabChange('retention', '1day');
+                        } else {}
+                    },
+                    error: function (xhr, msg, error) {
+                        layer.msg('获取TOP5失败');
+                    }
+                });
+            }
+
+
+
+            var dateRange = new pickerDateRange("date_range", 'date', {
+                theme: 'ta',
+                isTodayValid: 1,
+                startDate: "<?php echo $sdate ?>",
+                endDate: "<?php echo $edate ?>",
+                minValidDate: 1379174400,
+                needCompare: 0,
+                success: function (dateObj) {
+                    getPlan({
+                        'sdate': dateObj.startDate,
+                        'edate': dateObj.endDate,
+                    })
+                    getTop5({
+                        'sdate': dateObj.startDate,
+                        'edate': dateObj.endDate,
+                    })
+
+                }
+            });
+            getPlan({
+                'sdate': "<?php echo $sdate ?>",
+                'edate': "<?php echo $edate ?>",
+            })
+            getTop5({
+                'sdate': "<?php echo $sdate ?>",
+                'edate': "<?php echo $edate ?>",
+            })
+
+
+            var topDate = [];
+            var srcData = [];
+            var regCols = [
+                [
+                    { field: 'id', title: '序号', width: 80 },
+                    { field: 'name', title: '渠道' },
+                    { field: 'count', title: '新增用户数', width: 120 }
+                ]
+            ];
+            var roiCols = [
+                [
+                    { field: 'id', title: '序号', width: 80 },
+                    { field: 'name', title: '渠道' },
+                    { field: 'rate', title: 'ROI', width: 120 }
+                ]
+            ];
+            var retCols = [
+                [
+                    { field: 'id', title: '序号', width: 80 },
+                    { field: 'name', title: '渠道' },
+                    { field: 'rate', title: '留存率', width: 120 }
+                ]
+            ];
+
+            var ltvCols = [
+                [
+                    { field: 'id', title: '序号', width: 80 },
+                    { field: 'name', title: '渠道' },
+                    { field: 'count', title: 'LTV', width: 120 }
+                ]
+            ];
+
+
+            element.on('tab(general)', function (data) {
+                // console.log('myChart',$('.cart-field.cur').length);
+                if (data.index == 1 &&  $('.cart-field.cur').length==0) {
+                    $('.cart-field').eq(0).click();
+                }else if (data.index == 2) {
+                    location.href = '/Admin/Spm_Report/activity?appid=1' 
+                }
+            })
+
+            element.on('tab(top5)', function (data) {
+                srcData = topDate[data.index]
+                table_render({
+                    elem: '#register',
+                    cols: regCols,
+                    data: srcData.register[0]
+                });
+                table_render({
+                    elem: '#roi',
+                    cols: roiCols,
+                    data: srcData.roi[0]
+                });
+                table_render({
+                    height: 250,
+                    elem: '#ltv',
+                    cols: ltvCols,
+                    data: srcData.ltv[0]
+                });
+                table_render({
+                    height: 250,
+                    elem: '#retention',
+                    cols: retCols,
+                    data: srcData.retention[0]
+                });
+            });
+
+            element.on('tab(roi)', function (data) {
+                table_render({
+                    elem: '#roi',
+                    cols: roiCols,
+                    data: srcData.roi[data.index]
+                });
+            });
+            element.on('tab(ltv)', function (data) {
+                table_render({
+                    height: 250,
+                    elem: '#ltv',
+                    cols: ltvCols,
+                    data: srcData.ltv[data.index]
+                });
+            });
+            element.on('tab(retention)', function (data) {
+                table_render({
+                    height: 250,
+                    elem: '#retention',
+                    cols: retCols,
+                    data: srcData.retention[data.index]
+                });
+            });
+
+
+            // 回车提交 表单
+            form.on('submit(table_form)', function (data) {
+                var dataname = $(".activate").attr("data-name");
+                var time = getDatefromName(dataname);
+                where.token = token;
+                where.app_name = $("input[name='app_name']").val();
+                where.sdate = time.sdate;
+                where.edate = time.edate;
+                where.platform = '';
+                var objData = {
+                    elem: table_id,
+                    where: where,
+                    url: getAppList,
+                    cols: cols,
+                    initSort: initSort,
+                    page: page
+                }
+                renderTable(table, objData, null);
+                buildTip();
+                return false;
+            });
+
+            //查看数据
+            table.on('tool(table_app)', function (obj) {
+                if (obj.event == "detail") {
+                    // console.log(obj.data);
+                    localStorage.app_data = JSON.stringify(obj.data);
+                    setCookie('app_id', obj.data.app_id);
+                    setTimeout(function () {
+                        window.location.href = activityUrl; //+ "?app_id=" + obj.data.app_id
+                    }, 500)
+                }
+            });
+            // 切换排序
+            table.on('sort(table_app)', function (obj) {
+                initSort = {
+                    field: obj.field,
+                    type: obj.type
+                }
+                where.field = obj.field;
+                where.order = obj.type;
+                var initTable = {
+                    elem: table_id,
+                    where: where,
+                    url: getAppList,
+                    initSort: initSort,
+                    cols: cols
+                };
+                renderTable(table, initTable, null);
+                buildTip();
+            });
+
+        });
+
+
+        // 获取时间
+        function getDatefromName(name) {
+            var date = new Date();
+            var edate = date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate();
+            var sdate = edate;
+            if (name == "today") {
+                return {
+                    sdate: edate,
+                    edate: edate
+                }
+            } else if (name == "yesterday") {
+                date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+                sdate = date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate();
+            } else if (name == "hebdomad") {
+                date.setTime(date.getTime() - (24 * 60 * 60 * 1000 * 7));
+                sdate = date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate();
+            } else if (name == "month") {
+                date.setTime(date.getTime() - (24 * 60 * 60 * 1000 * 30));
+                sdate = date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate();
+            } else {
+                sdate = '', edate = '';
+            }
+            return {
+                sdate: sdate,
+                edate: edate
+            }
+        }
+
+
+        // 修改密码
+        $("#admin-user-pw").click(function () {
+            changePassword();
+        });
+
+        // 修改密码
+        var passwdPostUrl = baseurl + '/Admin/User/passwdPost';
+
+        function changePassword() {
+            var temp =
+                `
+        <br>
+        <form class="layui-form" id="pwd_form">
+            <div class="layui-form-item">
+                <label class="layui-form-label long-label">当前密码</label>
+                <div class="layui-input-inline ">
+                    <input lay-verify="required" type="password" maxlength="20" name="current_password" placeholder="请输入当前密码" value="` +
+                name +
+                `" class="layui-input" autocomplete="off">
+                </div>
+                <div class="layui-form-mid layui-word-aux red">*</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label long-label">新密码</label>
+                <div class="layui-input-inline ">
+                    <input lay-verify="required" type="password" maxlength="20" name="password" placeholder="请输入新密码" value="` +
+                name +
+                `" class="layui-input" autocomplete="off">
+                </div>
+                <div class="layui-form-mid layui-word-aux red">*</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label long-label">重复密码</label>
+                <div class="layui-input-inline ">
+                    <input lay-verify="required" type="password" maxlength="20" name="r_password" placeholder="请输入新密码" value="` +
+                name +
+                `" class="layui-input" autocomplete="off">
+                </div>
+                <div class="layui-form-mid layui-word-aux red">*</div>
+            </div>
+        </form>`;
+            layer.open({
+                title: '修改密码',
+                type: 1,
+                area: ['800px', '400px'],
+                shadeClose: true, //点击遮罩关闭
+                content: temp,
+                btn: ['保存', '取消'],
+                yes: function (index, layero) {
+                    var current_password = $("input[name='current_password']").val();
+                    var password = $("input[name='password']").val();
+                    var r_password = $("input[name='r_password']").val();
+                    if (!current_password || !password || !r_password) {
+                        layer.msg("请输入密码");
+                        return false;
+                    } else if (password != r_password) {
+                        layer.msg("输入密码不一致");
+                        return false;
+                    }
+                    var arr = $("#pwd_form").serializeArray();
+                    arr.push({
+                        name: 'token',
+                        value: token
+                    });
+                    $.ajax({
+                        url: passwdPostUrl,
+                        async: false,
+                        data: arr,
+                        type: 'post',
+                        dataType: 'json',
+                        jsonp: 'callback',
+                        success: function (data) {
+                            layer.msg(data.msg);
+                            setTimeout(function () {
+                                layer.closeAll();
+                            }, 500);
+                        },
+                        error: function (xhr, msg, e) {
+                            layer.msg("网络繁忙，请稍后再试！");
+                            setTimeout(function () {
+                                layer.closeAll();
+                            }, 500);
+                            return false;
+                        }
+                    })
+
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,188 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link href="<?php echo $staticPath;?>/css/monitor/css/index.css" rel="stylesheet" type="text/css">
+    <!--<link href="<?php echo $staticPath;?>/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+
+    <div class="colMain">
+        <div class="nav">
+            <ul class="cc">
+                <li class="current"><a href="<?php echo $IndexUrl;?>">监控数据概览</a></li>
+                <li><a href="<?php echo $DetailsUrl;?>">监控数据详情</a></li>
+                <li><a href="<?php echo $UsergroupListUrl;?>">监控用户组列表</a></li>
+            <!--<li ><a href="--><?php //echo $ScriptListUrl;?><!--">脚本列表</a></li>-->
+            </ul>
+        </div>
+        <div class="wrap">
+            <!-- 预警监控设置情况概要 begin  --> 
+            <div class="item-wrap">
+                    <div class="nav-title">
+                            <div class="nav-on-off">-</div>
+                            <h2>预警监控设置情况概要</h2>
+                    </div>
+                    <section class="nav-section">
+                            <ul class="typebox-list">
+                                <li>
+                                    <i></i>
+                                    <p class="tlist-name">应用</p>
+                                    <p class="tlist-total"><?php echo $data['appCount'];?></p>
+                                </li>
+                                <li>
+                                    <i></i>
+                                    <p class="tlist-name">曝光次数 </p>
+                                    <p class="tlist-total"><?php echo $data['perPeopleCount'];?></p>
+                                </li>
+                                <li>
+                                    <i></i>
+                                    <p class="tlist-name">ecpm值</p>
+                                    <p class="tlist-total"><?php echo $data['ecpmCount'];?></p>
+                                </li>
+                                <li>
+                                    <i></i>
+                                    <p class="tlist-name">活跃用户</p>
+                                    <p class="tlist-total"><?php echo $data['actCount'];?></p>
+                                </li>
+                                <li>
+                                    <i></i>
+                                    <p class="tlist-name">DoubleCheck</p>
+                                    <p class="tlist-total"><?php echo $data['doublecheckCount'];?></p>
+                                </li>
+                            </ul>
+                    </section>
+            </div>
+            <!-- 数据预警情况概要 end   --> 
+            <!-- 具体预算详情 begin  --> 
+            <div class="item-wrap">
+                    <div class="nav-title">
+                            <div class="nav-on-off">-</div>
+                            <h2>具体预警详情</h2>
+                    </div>
+                    <section class="nav-section">
+                            <table class="monitor-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" name="selectAll">&nbsp;监控项</th>
+                                        <th>所属应用</th>
+                                        <th>报警时间</th>
+                                        <th>实际值</th>
+                                        <th>预测最低值</th>
+                                        <th>差值</th>
+                                        <th>操作</th>
+                                        <th>状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($reportList as $key=>$val){?>
+                                    <tr>
+                                        <td><?php if(!$val['is_deal']){?><input type='checkbox' class='check' name="check" value='<?php echo $val['id'];?>'/><?php }?>&nbsp;&nbsp;
+                                            <?php
+                                                switch ($val['monitor_type']){
+                                                    case 'ecpm':echo "ecpm异常";break;
+                                                    case 'dau':echo "活跃用户异常";break;
+                                                    case 'impressions':echo "曝光次数异常";break;
+                                                    default:echo "未知异常";
+                                                }
+                                            ?>
+                                        </td>
+                                        <td><?php echo $applist[$val['log']['app_key']];?></td>
+                                        <td><?php echo $val['days'].' '.$val['hours'].":00"?></td>
+                                        <td><?php echo $val['log']['value']?></td>
+                                        <td><?php echo $val['log']['lower']?></td>
+                                        <td><?php echo $val['log']['value']-$val['log']['lower'];?></td>
+                                        <td>
+                                            <!--<a class="t-handle" href="#" onclick="showTable('<?php echo $val['days'];?>','<?php echo $val['monitor_type'];?>','<?php echo $val['log']['app_key'];?>')" />查看报表</a>-->
+                                            <a class="t-handle MonitorRule" data="<?php echo $val['id'];?>" href="javascript:;" info="<?php echo $val['desc'];?>" />预警规则</a>
+                                        </td>
+                                        <td><?php if($val['is_deal']) echo "<span class='label label-success'>已处理</span>"; else echo "<span class='label label-danger'>未处理</span>";?></td>
+                                    </tr>
+                                <?php }?>
+                                </tbody>
+                            </table>
+                        <div class="m-handle-wrap">
+                            <a class="m-btn m-rmargin" id="dealAll" href="javascript:;" />处理已选记录</a>
+                        </div>
+                    </section>
+            </div>
+            <!-- 具体预算详情 end   --> 
+    </div>
+    </div>
+<script>
+    $(function(){
+        $('#app_key').bind('change',function(){
+           var app_key =  $(this).val();
+           window.location = '<?php echo $IndexUrl;?>'+"?app_key="+app_key;
+        })
+
+
+        $('input[name="selectAll"]').click(function(){
+            //alert(this.checked);
+            if($(this).is(':checked')){
+                $('input[name="check"]').each(function(){
+                    //此处如果用attr，会出现第三次失效的情况
+                    $(this).prop("checked",true);
+                });
+            }else{
+                $('input[name="check"]').each(function(){
+                    $(this).removeAttr("checked",false);
+                });
+                //$(this).removeAttr("checked");
+            }
+        });
+
+
+        $('.MonitorRule').bind('click',function () {
+            layer.tips($(this).attr('info'), $(this), {
+                tips: [2, '#3595CC'],
+                time: 4000
+            });
+        })
+        $('#dealAll').bind('click',function () {
+            layer.confirm('确定要处理选中项?处理后不可恢复!', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                var id = '';
+                $('.check').each(function(e,val){
+                    if($(this).attr("checked")){
+                        //console.log(val.value);
+                        if(id == ''){
+                            id = val.value;
+                        }else{
+                            id = id + ","+ val.value;
+                        }
+                    }
+                })
+                if(id == ''){
+                    layer.msg('没有选中项!',{'icon':2});
+                    return false;
+                }
+                $.get("<?php echo $DealLog;?>", {ids:id}, function(result){
+                    if (result== 1){
+                        //layer.msg('删除成功!',{'icon':1});
+                        location.reload();
+                    }else{
+                        layer.msg('处理失败!',{'icon':1});
+                    }
+                },'json');
+            }, function(){
+            });
+        })
+    })
+
+    function showTable(date,kpis,appkey){
+       var map = {
+            'ecpm':'third_ecpm',
+            'dau':'user_dau',
+            'impressions':'impressions',
+            'doublecheck':'ad_income'
+        }
+        kpis = map[kpis];
+        layer.open({
+            type: 2,
+            title: '查看报表',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['1500px', '800px'],
+            content: '<?php echo $TableShowUrl;?>'+'?sdate='+date+'&edate='+date+'&dims=days,app_key&kpis='+kpis+'&app_key='+appkey
+        });
+    }
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

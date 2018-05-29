@@ -1,0 +1,28 @@
+<?php echo $this->render("layout/header.phtml");?>
+<form method="post"  action="<?php echo $saveConfigUrl;?>"  id="addFrom">
+<input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+	<table width="100%">
+	<tr class="tr">
+			<th class="th">是否关闭排名扣费价格</th>
+			<td class="td">
+			    <label class="mr20"><input name="rank_price_button"  value="1"  type="radio"  <?php echo $result['rank_price_button'] == '1'?'checked':''; ?> >是</label>
+				<label class="mr20"><input name="rank_price_button"  value="0"  type="radio"  <?php echo ($result['rank_price_button'] == '0' || $result['rank_price_button'] == '')?'checked':''; ?> >否</label>
+			</td>
+   </tr>
+
+	</table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit">保存</button></span></span></div>
+</form>
+
+<script type="text/javascript">
+//广告表单数据提交
+$(document).ready(function(){
+	ajaxForm('addFrom',function(ret){
+		ajaxRedirect(ret, baseurl+'<?php echo $configListUrl; ?>');
+	});
+
+});
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

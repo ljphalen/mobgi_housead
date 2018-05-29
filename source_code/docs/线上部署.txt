@@ -1,0 +1,124 @@
+
+ALTER DATABASE db_name DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+基本环境需求：
+php 7.0.10 + nginx1.2.9以上+mysql5.5以上+redis3.0以上
+
+php扩展安装需求
+tar zxvf redis-3.0.0.tgz 
+cd redis-3.0.0
+ /usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make && make install
+tar -zxvf yaf-3.0.4.tgz
+cd yaf-3.0.4
+ /usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make 
+sudo make install
+
+vim /usr/local/php/etc/php.ini
+修改时区
+date.timezone = Asia/ShangHai
+[yaf]
+extension=yaf.so
+YAF_ENV = product
+extension=redis.so
+
+新建目录 /var/www/mobgi_housead/
+代码更新地址  http://svn.ids111.com:81/dgc/mobgi_housead/trunck/mobgi_housead
+修改目录有777的权限 /var/www/mobgi_housead/data  /var/www/mobgi_housead/attachs
+
+
+ ha.mobgi.com, admin.mobgi.com 执行housead的web前置服务器
+新建nginx配置 ha.mobgi.com.conf
+nginx配置如下：
+server {
+    listen 80 ;
+        root /var/www/mobgi_housead/public/advertiser;
+        index index.php index.html index.htm;
+        server_name  ha.mobgi.com;
+        location ~ \.php$ {
+                fastcgi_pass 127.0.0.1:9000;
+                fastcgi_index index.php;
+                include fastcgi.conf;
+        }
+         location /
+        {
+             index index.php;
+              if (!-f $request_filename){
+                 rewrite (.*) /index.php;
+              }
+              try_files $uri $uri/ /index.html;
+         }
+         location /attachs/ {
+            proxy_pass http://127.0.0.1:8090/;
+          }
+          location /static/ {
+            proxy_pass http://127.0.0.1:8092/;
+          }
+}
+
+server
+{
+   server_name  admin.mobgi.com;
+   index  index.php index.html index.htm;
+   root  /var/www/mobgi_housead/public/admin/;
+
+   location ~ .*\.(php|php5)?$
+   {
+     fastcgi_pass  127.0.0.1:9000;
+     fastcgi_index index.php;
+     include fastcgi.conf;
+   }
+
+	   location /
+	   {
+	       index index.php;
+	       if (!-f $request_filename){
+	           rewrite (.*) /index.php;
+	        }
+	        try_files $uri $uri/ /index.html;
+	   }
+
+	   location /attachs/game/ {
+	       proxy_pass http://127.0.0.1:8091/;
+	   }
+	   location /static/ {
+	       proxy_pass http://127.0.0.1:8092/;
+	   }
+	  location ~ .*\.(js|css)?$
+	    {
+	        expires      1d;
+	        access_log off;
+	    }
+}
+
+server
+{
+  listen   8091;
+  server_name  127.0.0.1;
+  index  index.php index.html index.htm;
+  root /var/www/mobgi_housead/attachs/;
+  expires    modified +24h;
+
+
+}
+
+
+server
+  {
+    listen 8092;
+    server_name 127.0.0.1;
+    index  index.php index.html index.htm;
+    root /var/www/mobgi_housead/public/static/;
+
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+    {
+      expires 30d;
+    }
+
+    location ~ .*\.(js|css)$
+    {
+       expires 30d;
+    }
+}

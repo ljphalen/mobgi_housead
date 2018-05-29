@@ -1,0 +1,227 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+              <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li ><a href="<?php echo $listUrl;?>">测试列表</a></li>
+                        <li class="layui-this"><a href="#">查看测试</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <div class="temp-upload-wrap">
+                <form class="layui-form" >
+                   <div class="layui-form-item">
+                        <label class="layui-form-label">配置名称</label>
+                        <div class="layui-form-mid layui-word-aux"><?php echo $info['conf_name']?>
+                        </div>
+                    </div>
+                     <div class="layui-form-item">
+                        <label class="layui-form-label">测试类型</label>
+                      <div class="layui-form-mid layui-word-aux">
+                        <?php echo ($info['conf_type'] == 1)?"Abtest":'白名单';?>
+                       </div> 
+                   </div>
+                   <div class="layui-form-item choose-item-content conf_type1 <?php echo ($info['conf_type'] == 1)?'open':'';?>" >
+                         <label class="layui-form-label">应用</label>
+                        <div class="layui-form-mid layui-word-aux">
+                        <?php echo $appList[$info['app_key']]['app_name'].'('.$appList[$info['app_key']]['platform_cn'].')';?>
+                       </div> 
+                    </div>
+                    <div class="layui-form-item choose-item-content conf_type1 <?php echo ($info['conf_type'] == 1)?'open':'';?>">
+                        <label class="layui-form-label">测试时间</label>
+                        <div class="layui-form-mid layui-word-aux">
+                       <?php echo $info['start_time'];?> - <?php echo $info['end_time'];?>
+                       </div> 
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-form-mid layui-word-aux  <?php echo ($info['status'] == 1)?"green":'red';?> ">
+                                    <?php echo ($info['status'] == 1)?"开启":'关闭';?>
+                        </div> 
+                    </div>
+                     <hr class="layui-bg-gray">
+                    <!-- 配置内容 begin -->
+                    <div class="layui-form-item">
+                        <div class="choose-item-content conf_type2 <?php echo ($info['conf_type'] == 2)?'open':'';?>"  >
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">开启上报</label>
+                                <div class="layui-form-mid layui-word-aux  <?php echo ($info['is_report'] == 1)?"green":'red';?> ">
+                                    <?php echo ($info['is_report'] == 1)?"开启":'关闭';?>
+                                </div> 
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">DevMode</label>
+                                <div class="layui-form-mid layui-word-aux  <?php echo ($info['dev_mode'] == 1)?"green":'red';?> ">
+                                    <?php echo ($info['dev_mode'] == 1)?"开启":'关闭';?>
+                                </div>  
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">设备号</label>
+                                <div class="layui-input-block">
+                                    <table class="layui-table">
+                                        <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>设备号</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                   
+                                            <?php foreach ($info['device_list'] as $key=>$conf){?>
+                                                <tr>
+                                                    <td><?php echo $key+1;?></td>
+                                                    <td><?php echo $conf['device'];?></td>
+                                                </tr>
+                                                <?php }?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="choose-item-content conf_type1 <?php echo ($info['conf_type'] == 1)?'open':'';?>" >
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">渠道定向</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <div class="layui-form-mid layui-word-aux">
+                                        <?php echo ($info['channel_conf_type'] == 0)?"无":'自定义';?>
+                                    </div> 
+                                </div>
+                                <div class="layui-input-block" >
+                                    <div class="layui-form-mid layui-word-aux">已选中  <?php echo count($info['channel_conf'])?> 个</div>
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['channel_conf_type'] == 1)?'open':'';?>" data-name="channel_conf_type">
+                                    <ul class="view-name-list">
+                                        <?php if($info['channel_conf_type']){?>
+                                            <?php foreach ($info['channel_conf'] as $val){?>
+                                                <li><?php echo $val['name']?></li>
+                                            <?php }?>
+                                        <?php }?>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">区域定向</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <div class="layui-form-mid layui-word-aux">
+                                        <?php echo ($info['area_conf_type'] == 0)?"无":'自定义';?> 
+                                    </div>
+                                </div>
+                                <div class="layui-input-block" >
+                                    <div class="layui-form-mid layui-word-aux">已选中  <?php echo count($info['area_conf'])?> 个</div>
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['area_conf_type'] == 1)?'open':'';?>" data-name="area_conf_type">
+                                    <ul class="view-name-list">
+                                        <?php if($info['area_conf_type']){?>
+                                            <?php foreach ($info['area_conf'] as $val){?>
+                                                <li><?php echo $val['name']?></li>
+                                            <?php }?>
+                                        <?php }?>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">版本应用</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <div class="layui-form-mid layui-word-aux">
+                                        <?php echo ($info['game_conf_type'] == 0)?"无":'自定义';?>
+                                    </div> 
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['game_conf_type'] == 1)?'open':'';?>" data-name="game_conf_type">
+                                    <div class="versions-wrap">
+                                        <ul>
+                                          <?php if($info['game_conf_type']){?>
+                                          <?php foreach ($info['game_conf'] as $val){?>
+                                           <li>
+                                               <?php echo $val;?> 
+                                           </li>
+                                         <?php }?>
+                                          <?php }?>
+                                        </ul> 
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">系统版本</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <div class="layui-form-mid layui-word-aux">
+                                        <?php echo ($info['sys_conf_type'] == 0)?"无":'自定义';?>
+                                    </div> 
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['sys_conf_type'] == 1)?'open':'';?>" data-name="game_conf_type">
+                                      <div class="layui-form-mid layui-word-aux">
+                                     <?php echo ($info['sys_conf_condition'] == 1)?"高于":($info['sys_conf_condition'] == 2)?'低于':'等于';?>
+                                     </div>
+                                    <div class="versions-wrap">
+                                        <ul>
+                                          <?php if($info['sys_conf_content']){?>
+                                          <?php foreach ($info['sys_conf_content'] as $val){?>
+                                           <li>
+                                               <?php echo $val;?> 
+                                           </li>
+                                         <?php }?>
+                                          <?php }?>
+                                        </ul> 
+                                    </div>
+                                </div>
+                            </div>
+                                 <div class="layui-form-item">
+                                <label class="layui-form-label">抽样比例</label>
+                                <div class="layui-form-mid layui-word-aux">
+                                   <?php echo $info['rate']?>     
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">%</div>
+                              </div>
+                        </div>
+                    </div>
+                    <!-- 配置内容 end   -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">流量配置</label>
+                        <div class="layui-input-block">
+                            <table class="layui-table">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>配置名称</th>
+                                        <th>权重</th>
+                                    </tr>
+                                </thead>
+                                <tbody>                                   
+                                    <?php foreach ($info['conf_rel_list'] as $key=>$conf){?>
+                                        <tr>
+                                            <td><?php echo $key+1;?></td>
+                                            <td>
+                                                <div class="layui-input-inline">
+                                                <?php echo $info['flow_list'][$conf['flow_id']];?>
+                                                </div>
+                                            </td>
+                                            <td><?php echo $conf['weight'];?></td>
+                                        </tr>
+                                        <?php }?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+        //取消按钮
+        $(".cannel").click(function(){
+			window.location.href= baseurl +'<?php echo $listUrl;?>';
+        });
+    })();
+</script>

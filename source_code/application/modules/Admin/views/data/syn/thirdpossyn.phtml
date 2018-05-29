@@ -1,0 +1,77 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link media="screen" href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath;?>/css/jquery.datetimepicker.css" >
+<script type="text/javascript" src="<?php echo $staticPath;?>/js/admin/jquery.datetimepicker.full.min.js"></script>
+ <script>
+     $(function(){
+         $.datetimepicker.setLocale('ch');
+         $( "#datetimepicker" ).datepicker({dateFormat: "yy-mm-dd",maxDate :new Date()});
+
+     })
+ </script>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+        <li ><a href="<?php echo $IndexUrl;?>">操作</a></li>
+        <li ><a href="<?php echo $AppSynUrl;?>">应用</a></li>
+        <li ><a href="<?php echo $AdPosSynUrl;?>">广告位</a></li>
+        <li ><a href="<?php echo $AdsAppSynUrl;?>">第三方APPID</a></li>
+        <li class="current"><a href="<?php echo $ThirdPosSynUrl;?>">第三方广告位</a></li>
+        <li ><a href="<?php echo $ChannelSynUrl;?>">渠道</a></li>
+
+        <li ><a href="<?php echo $SynLogUrl;?>">同步日志</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="<?php echo $ThirdPosSynUrl;?>" method="GET">
+                <span>
+                    <label class="ig_label">搜索：</label>
+                      <input type="text" class="iText" name='pos_name'  value='<?php echo $search['pos_name'] ;?>' placeholder="广告位名称" />
+                        <input type="text" class="iText" name='pos_key'  value='<?php echo $search['pos_key'] ;?>' placeholder="广告位key" />
+                      <input type="text" class="iText" name='app_key'  value='<?php echo $search['app_key'] ;?>' placeholder="应用名称" />
+                    <input type="text" class="iText" name='ads_id'  value='<?php echo $search['ads_id'] ;?>' placeholder="广告商名称" />
+                </span>
+                    <span>
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th field='identifier' width='200px'>应用KEY</th>
+                            <th field='last_time'>广告位名称</th>
+                            <th field='status'>类型</th>
+                            <th field='msg'>广告商</th>
+                            <th field='time_limit'>广告位KEY</th>
+                            <th field='createtime'>第三方广告位KEY</th>
+                            <th field='createtime'>第三方广告位名称</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($List as $k1=>$value){
+                                echo "<tr>";
+                                echo "<td class='blue'>".$value['app_key']."</td>";
+                                echo "<td>".$value['pos_name']."</td>";
+                                echo "<td>".$value['ad_type']."</td>";
+                                echo "<td>".$value['ads_id']."</td>";
+                                echo "<td>".$value['pos_key']."</td>";
+                                echo "<td>".$value['third_pos_key']."</td>";
+                                 echo "<td>".$value['third_pos_name']."</td>";
+                                echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+  </div>
+<?php echo $this->render("layout/footer1.phtml");?>

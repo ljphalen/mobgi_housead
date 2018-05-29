@@ -1,0 +1,84 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li class="current"><a href="<?php echo $listUrl;?>">用户组列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">添加用户组</a></li>
+	</ul>
+</div>
+<div class="table_full">
+    <table width="100%">
+         <tr class="tr">
+            <th class="th">用户组名称</th>
+            <td class="td"><input type="text" class="iText" name="name"  id="name" value=""></td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button type="button" id="submitForm">搜 索</button></span></span></div>
+<div class="table_list">
+    <div class="h_a">
+        <span>共 <?php echo $total;?> 条结果</span>
+    </div>
+	<table width="100%">
+		<tr class="hd">
+			<td width="60">用户组ID</td>
+			<td>用户组名称</td>
+            <td width="20%">帐号数量</td>
+			<td>描述</td>
+			<td>操作</td>
+		</tr>
+<?php foreach($groups as $key => $value) {?>
+		<tr class="ct">
+			<td><?php echo $value['group_id'];?></td>
+			<td><?php echo $value['name']?></td>
+            <td><?php echo $value['user_num']?></td>
+			<td><?php echo $value['descrip']?></td>
+			<td>
+                <a href="<?php echo $editUrl;?>/?group_id=<?php echo $value['group_id'];?>" class="mr10">编辑</a>
+                 <a href="<?php echo $viewUrl;?>/?group_id=<?php echo $value['group_id'];?>" class="mr10">查看</a>
+                <?php if($value['user_num'] == 0) { ?>
+                    <a href="#" class="delgroup" group_id="<?php echo $value['group_id'] ?>">删除</a>
+                <?php } ?>
+            </td>
+		</tr>
+<?php }?>
+	</table>
+</div>
+ <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+<script type="text/javascript">
+$(function(){
+    $("#name").val("<?php echo $name ?>")
+    function submitForm(){
+        name = $("#name").val()
+        window.location.href='<?php echo $listUrl ?>?name=' + name 
+    }
+    $("#submitForm").click(submitForm);
+    $(".delgroup").click(function(){
+        group_id = $(this).attr("group_id")
+        $.ajax({
+            url: "<?php echo $delUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'group_id':group_id},
+            success: function(ret) {
+                if (ret.success) {
+                    showMsg('', ret.msg);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    })
+    $("#checkall").click(function(){
+        if($(this).attr("checked")){
+            $("input:checkbox[name='groupids[]']").attr("checked",'true');
+	    }
+	    else{
+            $("input:checkbox[name='groupids[]']").removeAttr("checked");
+	    }
+    });
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

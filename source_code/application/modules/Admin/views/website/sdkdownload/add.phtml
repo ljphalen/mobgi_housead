@@ -1,0 +1,125 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain">
+   <div class="nav">
+		<ul class="cc">
+			 <li ><a href="<?php echo $listUrl.'?tab_type=3';?>">Sdk下载列表</a></li>
+			<li class="current"><a href="<?php echo $addUrl;?>"><?php echo $navTitle; ?>Sdk下载列表</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+              <form action="<?php echo $addPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id"  id="id" value='<?php echo $info['id']; ?>' />
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                 <input type="hidden" name="tab_type"  id="tab_type" value='3' />
+                <ul class="form">   
+                     <li>
+                        <span class="label">类型：</span>
+                        <div class="fc">
+                            <select id="sdk_type"  name="sdk_type">
+                          <?php foreach($sdkType as $k1=>$v1){ ?>
+                            <option value="<?php echo $k1; ?>"  <?php if( $info['sdk_type']==$k1 ): ?> selected <?php endif; ?>><?php echo $v1; ?> </option>
+                        <?php } ?>
+                            </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                
+                    <li>
+                        <span class="label">SDK名称：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="name"  value="<?php echo $info['name']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    
+                     <li>
+                        <span class="label">SDK描述：</span>
+                        <div class="fc">
+                            <textarea name="sdk_desc" cols="30" rows="4"><?php echo $info['sdk_desc']; ?></textarea>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                     <li>
+                        <span class="label">SDK版本：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="version"  value="<?php echo $info['version']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+					<li><span class="label">上传时间：</span>
+						<div class="fc">
+							<input typt="text" class="iText datepicker" name='sdk_update_time' id='sdk_update_time'  value='<?php echo $info['sdk_update_time']; ?>' /> <span style="margin-left: 100px;"> </span>
+						</div>
+					</li>
+
+                     <li>
+                        <span class="label">排序：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="sort"  value="<?php echo $info['sort']; ?>" />
+                            <span class="red">*(整数)</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">SDK更新日志：</span>
+                        <div class="fc">
+                        <textarea  style="width:600px; height:300px" name="update_log"  id="update_log" ><?php echo $info['update_log']; ?></textarea> 
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <span class="label">选择zip包：</span>
+                        <div class="fc">
+							<ul class="uploadImg">
+								<li id="Img">
+								<a href="<?php echo $info['apk_url']?$attachPath.$info['apk_url']:'';?>" > 下载文件</a>
+								<span><?php echo $info['apk_url']?$attachPath.$info['apk_url']:'无';?></span>
+							    <input type="hidden" name="apk_url" value="<?php echo $info['apk_url'];　?>">
+							</li>
+							</ul>
+							<p style="clear: both;">
+								<iframe name="upload"
+									src="<?php echo $uploadUrl.'/?imgId=Img';?>"
+									style="height: 50px; width: 100%;" frameborder="0"
+									scrolling="no">
+								</iframe>
+							</p>
+						</div>
+                    </li>
+                
+                
+					<li>
+                        <div class="fc">
+                            <input type="submit"  value="保存" class="submit"  />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl.'?tab_type=3';?>' " />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="<?php echo $staticPath; ?>/js/admin/kindeditor/kindeditor.js?v=<?=$version?>"></script>
+<script>
+var editor;
+KindEditor.ready(function(K) {
+	K.token = '<?php echo $token;?>';
+	editor = K.create('textarea[name="update_log"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageUpload : true,
+        uploadJson : '<?php echo $uploadImgUrl;?>',
+        items : EDITOR_ITEMS
+    });
+});
+$(document).ready(function(){
+	ajaxForm('addForm',function(ret){ 
+	        ajaxRedirect(ret, baseurl+'<?php echo $listUrl.'?tab_type=3';?>');
+	 },function(){
+		 editor.sync();
+		 return true;
+	});
+	$('.datepicker').datepicker({});
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

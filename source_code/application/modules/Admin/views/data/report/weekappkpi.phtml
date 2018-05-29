@@ -1,0 +1,179 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath?>/css/layui.css"/>
+<style>
+    *{ margin: 0; padding: 0;}
+    ul,li{ list-style: none; }
+    html,body{
+        font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        font-size: 14px;
+    }
+    .wrapper{
+        background:#f2f2f2; padding:5px 20px 50px 20px; box-sizing:border-box;
+    }
+    .items-main-title{ width: 100%; overflow:hidden; padding: 10px 0 5px 0; box-sizing: border-box; border-bottom:1px solid #eee;  }
+    .items-main-title p{ float:left; padding-left: 5px; color: #1E9FFF; display: inline-block; font-size: 20px; line-height: 40px;  }
+    .items-main-search{ width: 100%;  padding: 10px 0 0 0; }
+    .items-main-buttons{ float:right; display: inline-block; }
+    .table-wrap{ width: 100%;}
+</style>
+<body>
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li ><a href="weekkpi">业务KPI</a></li>
+        <li class="layui-this"><a href="weekappkpi">应用明细KPI</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-fluid">
+                <div class="items-main-title"><p>应用明细KPI</p></div>
+                <!-- top begin -->
+                <div class="items-main-search ">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">查询年份：</label>
+                            <div class="layui-input-inline">
+                                <select name="years" lay-filter="years" id="years">
+                                    <option value="2017" <?php if($years == 2017) echo "selected";?>>2017</option>
+                                    <option value="2018" <?php if($years == 2018) echo "selected";?>>2018</option>
+                                    <option value="2019" <?php if($years == 2019) echo "selected";?>>2019</option>
+                                    <option value="2020" <?php if($years == 2020) echo "selected";?>>2020</option>
+                                </select>
+                            </div>
+                            <label class="layui-form-label">查询月份：</label>
+                            <div class="layui-input-inline">
+                                <select name="month" lay-filter="month" id="month">
+                                <option value="" >选择月份</option>
+                                <option value="1" <?php if($month == 1) echo "selected";?>>1</option>
+                                <option value="2" <?php if($month == 2) echo "selected";?>>2</option>
+                                <option value="3" <?php if($month == 3) echo "selected";?>>3</option>
+                                <option value="4" <?php if($month == 4) echo "selected";?>>4</option>
+                                <option value="5" <?php if($month == 5) echo "selected";?>>5</option>
+                                <option value="6" <?php if($month == 6) echo "selected";?>>6</option>
+                                <option value="7" <?php if($month == 7) echo "selected";?>>7</option>
+                                <option value="8" <?php if($month == 8) echo "selected";?>>8</option>
+                                <option value="9" <?php if($month == 9) echo "selected";?>>9</option>
+                                <option value="10" <?php if($month == 10) echo "selected";?>>10</option>
+                                <option value="11" <?php if($month == 11) echo "selected";?>>11</option>
+                                <option value="12" <?php if($month == 12) echo "selected";?>>12</option>
+                                </select>
+                            </div>
+                            <label class="layui-form-label">查询应用：</label>
+                            <div class="layui-input-inline">
+                                <select name="app_key" lay-filter="app_key" id="app_key">
+                                    <option value="" >选择应用</option>
+                                    <?php foreach ($apps as $key=>$app){?>
+                                        <option value="<?php echo $key;?>"><?php echo $app;?></option>
+                                    <?php }?>
+                                </select>
+
+                            </div>
+                            <a href="#" id='search' class="layui-btn layui-btn-normal">搜索</a>
+                            <div class="items-main-buttons">
+                                <a href="setappkpi" class="layui-btn layui-btn-normal">新增业务KPI</a>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th >年份</th>
+                            <th >月份</th>
+                            <th >游戏名称</th>
+                            <th >平台</th>
+                            <th >MAU</th>
+                            <th >游戏覆盖率</th>
+                            <th >ARPU</th>
+                            <th >收益KPI</th>
+                            <th >操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($data as $type=>$items) {
+                            ?>
+                            <tr>
+                                <td><?php echo $items['year'];?></td>
+                                <td><?php echo $items['month'];?></td>
+                                <td><?php echo $items['app_name'];?></td>
+                                <td><?php echo $items['platform'];?></td>
+                                <td><?php echo $items['mau'];?></td>
+                                <td><?php echo $items['game_cover'];?></td>
+                                <td><?php echo $items['arpu'];?></td>
+                                <td><?php echo $items['ad_income'];?></td>
+                                <td><a href="#"  data="<?php echo $items['id']?>" class="layui-btn layui-btn-sm edits">编辑</a></td>
+                            </tr>
+                        <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table end   -->
+            </div>
+        </div>
+        <div class="layui-tab-item">内容2</div>
+
+    </div>
+</div>
+</body>
+</html>
+<script src="<?php echo $staticPath; ?>/js/admin/lay/layui.js"></script>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['table','form'], function(){
+        var form = layui.form;
+
+
+    });
+    $('#search').bind('click',function(){
+        var years = $('#years').val();
+        var month = $('#month').val();
+        var app_key = $('#app_key').val();
+        window.location="weekAppKpi?years="+years+"&month="+month+"&app_key="+app_key;
+    })
+
+    $('.edits').bind('click',function(){
+        var id = $(this).attr('data')
+        layer.open({
+            type: 2,
+            title: '修改应用',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['600px', '500px'],
+            content: 'editAppKpi?id='+id,
+        });
+    })
+    $(".export").click(function(e) {
+        var uri = 'data:application/vnd.ms-excel;base64,',text='',
+            template = '<html><head><meta charset="UTF-8"></head><body><table>{table}</table></body></html>',
+            base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+            format = function(s, c) {
+                return s.replace(/{(\w+)}/g,
+                    function(m, p) { return c[p]; })
+            }
+        //console.log($(this).parent().parent().parent().parent().parent().find("table.layui-table").html())
+        $(this).parent().parent().parent().parent().parent().find("table.layui-table").each(function(index, el) {
+            if(index<2){
+                text+=$(this).html();
+            }
+        });
+        var ctx = {worksheet: 'sheet1', table: text}
+        window.location.href = uri + base64(format(template, ctx))
+        // this.href= window.URL.createObjectURL(new Blob([text], {type: 'text/plain'}));
+        e.stopPropagation();
+    });
+</script>
+<?php echo $this->render("layout/footer.phtml"); ?>

@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="target-densitydpi=device-dpi,width=640,user-scalable=no" /> 
+    <meta name="format-detection" content="telephone=no"/>
+    <title>视频广告</title>
+    <link media="screen" href="css/layout.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <img src="images/close.png" class="close" width="45" alt="关闭" onclick="handleJS('close')"/>
+            <img src="images/reset.png" class="reset" width="45" alt="重置" onclick="handleJS('replay')"/>
+        </div>
+        <div class="content clearfix">
+            <div class="banner">
+                <ul class="runContent clearfix">
+                    <li class="cur"><img src="{{mainpic}}" onclick="handleJS('download')"/></li>
+                    <li><img src="{{carouselpic1}}" onclick="handleJS('download')" /></li>
+                    <li><img src="{{carouselpic2}}" onclick="handleJS('download')"/></li>
+                    <li><img src="{{carouselpic3}}" onclick="handleJS('download')"/></li>
+                    <li><img src="{{carouselpic4}}" onclick="handleJS('download')"/></li>
+                </ul>
+                <ul class="runNav clearfix">
+                    <li class="cur"></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="banner-width" onclick="handleJS('download')" style="background-color:#0a0b12;min-height:640px;">
+                <div class="banner-width-only" style="display:none;">
+                    <img src="images/banner_w_only.jpg" onclick="handleJS('download')"/>
+                </div>
+                <div class="banner-width-more">
+                    <ul class="d_img">
+                        <li class="bwm_1"><img src="{{mainpic}}" onclick="handleJS('download')"/></li>
+                        <li><img src="{{carouselpic1}}" onclick="handleJS('download')"/></li>
+                        <li><img src="{{carouselpic2}}" onclick="handleJS('download')"/></li>
+                        <li><img src="{{carouselpic3}}" onclick="handleJS('download')"/></li>
+                        <li><img src="{{carouselpic4}}" onclick="handleJS('download')"/></li>
+                    </ul>
+                    <ul class="d_menu clearfix">
+                        <li class="cur"></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info clearfix">
+             <div class="winfo">
+                <div class="icon" onclick="handleJS('download')"><img src="{{iconpic}}" /></div>
+                <div class="md">
+                    <div class="name" onclick="handleJS('download')">{{videotitle}}</div>
+                    <div class="det"><div class="star"><div class="level{{star}}"><img src="images/star.png" width="150"/></div></div><span class="num">（{{commentnum}}）</span></div>
+                    <p class="desc" onclick="handleJS('download')">{{videodesc}}</p>
+                </div>
+                <a href="#" class="download" style="background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#5bd65d), to(#269726));" onclick="handleJS('download')"><img src="images/load.png" />{{buttonvalue}}</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/touchswipe.js"></script>
+<script type="text/javascript" src="js/animate.js"></script>
+<script>
+    var u = navigator.userAgent;
+    var isAndroidPlat = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOSPlat = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    var isiOS;
+    if (isAndroidPlat && !isiOSPlat) {
+        isiOS = false;
+    };
+    if (!isAndroidPlat && isiOSPlat) {
+        isiOS = true;
+    };
+    function handleJS(s) {
+        if (s == 'close') {
+            if (isiOS) window.location.href = 'ld://close';
+            else MobgiNativeObject.close();
+        }
+        else if (s == 'replay') {
+            if (isiOS) window.location.href = 'ld://replay';
+            else MobgiNativeObject.replay();
+        }
+        else if (s == 'download') {
+            if (isiOS) window.location.href = 'ld://download';
+            else MobgiNativeObject.download();
+        }
+    }
+</script>
+</html>

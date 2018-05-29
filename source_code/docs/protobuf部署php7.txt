@@ -1,0 +1,10 @@
+unzip php-protobuf-php7.zip
+cd php-protobuf-php7
+/usr/local/php7/bin/phpize
+./configure --with-php-config=/usr/local/php7/bin/php-config
+make 
+sudo make install
+
+vi /usr/local/php7/etc/php.ini
+在最后一行添加
+extension = protobuf.so

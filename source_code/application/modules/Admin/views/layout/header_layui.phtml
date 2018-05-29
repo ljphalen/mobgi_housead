@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>管理后台</title>
+</head>
+<link href="<?php echo $staticPath?>/js/admin/lay/css/layui.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $staticPath?>/css/flow-index.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath?>/css/treecheckbox.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath?>/css/selectBox.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticPath?>/js/admin/lay/layui.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath?>/js/common/jquery.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath?>/js/common/selectBox.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath?>/js/common/treecheckbox.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath?>/js/common/jquery-ui.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticPath;?>/js/common/common.js?v=<?php echo $version;?>" ></script>
+<script>
+var token = "<?php echo $token;?>";
+var baseurl = "<?php echo $adminroot; ?>";
+layui.use(['form','element'], function(){
+    var element = layui.element;
+});
+</script>
+

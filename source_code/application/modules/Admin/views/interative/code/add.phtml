@@ -1,0 +1,185 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+              <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li ><a href="<?php echo $listUrl;?>">兑换码列表</a></li>
+                        <li class="layui-this"><a href="<?php echo $addUrl;?>"><?php echo $info['id']?'编辑':'添加'; ?>兑换码</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <div class="temp-upload-wrap">
+                <form class="layui-form" action="<?php echo $addPostUrl;?>" method="POST"  id="addForm">
+                    <input name="token" type="hidden"  value="<?php  echo $token;  ?>" />
+                    <input name="id" type="hidden"  value="<?php  echo $info['id'];  ?>" />
+                   <div class="layui-form-item">
+                        <label class="layui-form-label">商品分类</label>
+                        <div class="layui-input-inline">
+                            <select id="type"  name="type" lay-verify="required" lay-search lay-filter="goods_type">
+                                <option value="">全部</option>
+								<?php foreach($goodsType as $k1=>$v1){ ?>
+                                    <option value="<?php echo $k1; ?>"  <?php if( $search['type']==$k1 ){ ?> selected <?php } ?> ><?php echo $v1; ?></option>
+								<?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商品</label>
+                        <div class="layui-input-inline">
+                        <select id="goods_id"  name="goods_id" lay-verify="required" lay-search >
+                            <option value="">全部</option>
+
+                        </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">生成类型</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="opt_type" value="0" title="系统生成" lay-verify="required" lay-filter="opt_type" checked>
+                            <input type="radio" name="opt_type" value="1" title="导入文件" lay-verify="required" lay-filter="opt_type" >
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item exchangeCodeNum">
+                        <label class="layui-form-label">兑换码数量</label>
+                        <div class="layui-input-inline">
+                            <input type="text"   name="num" placeholder="请输入数量" class="layui-input" value="<?php  echo $info['num'];  ?>">
+                        </div>
+                    </div>
+                    <div class="layui-form-item exchangeCodeFile" style="display: none;">
+                        <label class="layui-form-label">上传文件</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="code_file"  class="layui-input" value="">
+                            <button type="button" class="layui-btn" id="uploadTemplatid">
+                                <i class="layui-icon">&#xe67c;</i>点击上传
+                            </button>
+                            <span></span>
+                            <a href="<?php echo  $staticPath.'/template/codeDemo.csv'; ?>">实例文件</a>
+                        </div>
+
+                    </div>
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-big layui-btn-normal" type="button" lay-submit lay-filter="formTest">立即提交</button>
+                            <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        var $ = layui.jquery;
+        var uploadInst = upload.render({
+            elem: '#uploadTemplatid' //绑定元素
+            ,url: '<?php echo $uploadPostUrl;?>' //上传接口
+            ,method:'POST'
+            ,accept:'file'
+            ,data:{'token':token}
+            ,before: function(obj){
+                layer.load(); //上传loading
+
+            }
+            ,done: function(res){
+                if(res.success){
+                    layer.closeAll('loading');
+                    var attachPath = '<?php echo $attachPath;?>';
+                    var uploadtext = '<span class="green">上传成功：</span>'
+                    $('#uploadTemplatid').parent().find('input[type="hidden"]').val(res.data);
+                    $('#uploadTemplatid').parent().find('span').html(uploadtext+attachPath+res.data);
+                    layer.msg('上传成功');
+                }else{
+                    layer.closeAll('loading');
+                    layer.msg(res.msg);
+                }
+                //上传完毕回调
+            }
+            ,error: function(){
+                layer.msg(msg);
+            }
+        });
+    });
+    //取消按钮
+    $(".cannel").click(function(){
+             window.location.href= baseurl +'<?php echo $listUrl;?>';
+     });
+    //form 表单 提交
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('select(goods_type)', function(data){
+            $.ajax({
+                url : baseurl + '<?php echo $getGoodsIdsUrl?>'+'?type='+data.value+'&is_fill=1',
+                async: false,
+                data : '',
+                type : 'GET',
+                dataType : '',
+                jsonp : 'callback',
+                success:function(data){
+                    if(data.success){
+                        $("#goods_id").empty();
+                        var temp='<option value="">全部</option>',list =data.data;
+                        for (var key in list) {
+                            temp = temp + '<option value="' + key + '" >' + list[key] + '</option>';
+                        }
+                        $("#goods_id").append(temp);
+                        renderLayuiForm();
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+        });
+
+        form.on('radio(opt_type)', function(data){
+            if(data.value == 0){
+                $('.exchangeCodeNum').show();
+                $('.exchangeCodeFile').hide();
+            }else{
+                $('.exchangeCodeFile').show();
+                $('.exchangeCodeNum').hide();
+            }
+        });
+
+        form.on('submit(formTest)', function(data){
+            var index = layer.load(1);
+            var jsonData = $("form").serializeArray();
+               $.ajax({
+                    url : baseurl + '<?php echo $addPostUrl?>',
+                    async: false,
+                    data : jsonData,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg);
+                        layer.close(index);
+                        if(data.success){
+                          setTimeout(function() {
+                                window.location.href= baseurl +'<?php echo $listUrl;?>';
+                            }, 500);
+                            //跳转
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+                return false;  
+        }); 
+    });
+
+})();
+
+
+</script>

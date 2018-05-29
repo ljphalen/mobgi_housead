@@ -1,0 +1,15 @@
+<div id="main" class="ms-mian ms-height">
+        
+        <!-- app main top begin -->
+        <?php echo $this->render("intergration/flow/layout/top.phtml");?>
+        <!-- app main top end   -->
+        
+        <?php if($act == 'view'){?>
+              <?php echo $this->render("intergration/flow/layout/view.phtml");?>
+        <?php }else{ ?> 
+              <!-- app 新建 编辑 begin -->
+              <?php echo $this->render("intergration/flow/layout/form.phtml");?>
+              <!-- app 新建 end  -->
+        <?php } ?>  
+       
+</div>

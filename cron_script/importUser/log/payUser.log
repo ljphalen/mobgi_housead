@@ -1,0 +1,22 @@
+2018-01-19 18:00:56 base.py[line:70] INFO loginurl = http://edata.idreamsky.com/simpleLogin?username=soso.zhang&password=poppopp
+2018-01-19 18:00:56 base.py[line:70] INFO login statusCode=200
+2018-01-19 18:00:56 base.py[line:70] INFO 解析保存的ｕｒｌ errorNOAUTH Authentication required.
+2018-01-19 18:00:56 base.py[line:70] INFO 邮件发送失败No suitable authentication method found.
+2018-01-19 18:00:56 base.py[line:70] INFO 处理下载文件异常 local variable 'url' referenced before assignment
+2018-01-19 18:00:56 base.py[line:70] INFO start read file/data/www/mobgi_housead/branches/mobgi_housead_200170629/cron_script/importUser/data/payUser2018-01-19.csv
+2018-01-19 18:00:56 base.py[line:70] INFO 文件不存在/data/www/mobgi_housead/branches/mobgi_housead_200170629/cron_script/importUser/data/payUser2018-01-19.csv
+2018-01-19 18:03:19 base.py[line:70] INFO loginurl = http://edata.idreamsky.com/simpleLogin?username=soso.zhang&password=poppopp
+2018-01-19 18:03:19 base.py[line:70] INFO login statusCode=200
+2018-01-19 18:03:19 base.py[line:70] INFO 解析保存的ｕｒｌ errorNOAUTH Authentication required.
+2018-01-19 18:03:19 base.py[line:70] INFO 邮件发送失败No suitable authentication method found.
+2018-01-19 18:03:19 base.py[line:70] INFO 处理下载文件异常 local variable 'url' referenced before assignment
+2018-01-19 18:03:19 base.py[line:70] INFO start read file/data/www/mobgi_housead/branches/mobgi_housead_200170629/cron_script/importUser/data/payUser2018-01-19.csv
+2018-01-19 18:03:19 base.py[line:70] INFO 文件不存在/data/www/mobgi_housead/branches/mobgi_housead_200170629/cron_script/importUser/data/payUser2018-01-19.csv
+2018-01-19 18:18:39 base.py[line:79] INFO loginurl = http://edata.idreamsky.com/simpleLogin?username=soso.zhang&password=poppopp
+2018-01-19 18:18:39 base.py[line:79] INFO login statusCode=200
+2018-01-19 18:18:39 base.py[line:79] INFO 解析保存的ｕｒｌ errorcannot concatenate 'str' and 'NoneType' objects
+2018-01-19 18:18:39 base.py[line:79] INFO 任务id已经过期
+2018-01-23 09:55:59 base.py[line:79] INFO loginurl = http://edata.idreamsky.com/simpleLogin?username=soso.zhang&password=poppopp
+2018-01-23 09:55:59 base.py[line:79] INFO login statusCode=200
+2018-01-23 09:55:59 base.py[line:79] INFO 解析保存的ｕｒｌ errorcannot concatenate 'str' and 'NoneType' objects
+2018-01-23 09:55:59 base.py[line:79] INFO 任务id已经过期

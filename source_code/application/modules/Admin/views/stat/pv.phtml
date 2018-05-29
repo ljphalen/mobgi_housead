@@ -1,0 +1,96 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="table_full">
+	<form action="<?php echo $baseUrl;?>" method="POST">
+		<input type="hidden" name="token" value="<?php echo $token;?>" />
+		<table width="100%" cellspacing="0" cellpadding="0">
+		    <tr class="tr1">
+		        <td class="td1">
+		        选择日期：
+		        <select name="quick" id="quick">
+		       	<?php 
+		        	$monthSelect = $quick == 'month' ? ' selected' : '';
+		        	$quarterSelect = $quick == 'quarter' ? ' selected' : '';
+		        ?>
+		        	<option value="week">最近一周</option>
+		        	<option value="month"<?php echo $monthSelect;?>>最近一月</option>
+		        	<option value="quarter"<?php echo $quarterSelect;?>>最近三月</option>
+		        </select>
+		        <input class="input" type="text" maxlength="30" id="sdate" name="sdate" value="<?php echo $sdate;?>"> 至 
+		        <input class="input" type="text" id="edate" maxlength="30" name="edate" value="<?php echo $edate;?>">
+		        <input type="submit" value="生成报表" />
+		        </td>
+		    </tr>
+		</table>
+	</form>
+</div>
+<div class="h_a">数据报表</div>
+<input type="hidden" id="lineData" value="<?php echo $lineData;?>" />
+<input type="hidden" id="listUrl" value="<?php echo $listUrl;?>" />
+<table width="100%" cellspacing="0" cellpadding="0">
+    <tr class="tr1">
+        <td class="td2">
+        <div id="container" style="height: 400px; margin: 0 auto"></div>
+        </td>
+    </tr>
+</table>
+<div class="h_a">详细报表</div>
+<div class="table_list">
+<table cellspacing="0" cellpadding="0" width="100%">
+    <tbody>
+<?php if (!$list){?>
+	<tr>
+		<td colspan="7" class="p10">
+		<div class="admin_tips">啊哦，没有你要的信息！</div>
+		</td>
+	</tr>
+<?php 
+} else {
+foreach($list as $value) {
+?>    
+    <tr class="ct">
+        <td class="td2"><?php echo $value['dateline'];?></td>
+        <td class="td2"><?php echo $value['pv'];?>(PV)</td>
+    </tr>
+<?php }}?>
+</tbody></table>
+</div>
+<script src="<?php echo $staticPath;?>/js/admin/highcharts.js"></script>
+<script src="<?php echo $staticPath;?>/js/admin/exporting.js"></script>
+<script src="<?php echo $staticPath;?>/js/admin/stat.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	var yesterday = "<?php echo $yesterday;?>";
+	var weekday = "<?php echo $weekday;?>";
+	var monthday = "<?php echo $monthday;?>";
+	var threemonth = "<?php echo $threemonth;?>";
+	$("#sdate").datepicker({
+				dateFormat : 'yy-mm-dd'
+			});
+	$("#edate").datepicker({
+				dateFormat : 'yy-mm-dd'
+			});
+	$('#app').bind('change', function(){
+		var app = $(this).val();
+		window.location.href = $('#listUrl').val() + 'app=' + app;
+	});
+	$('#quick').bind('change',function(){
+		var selectDate = $(this).val();
+		console.log($('#listUrl').val());
+		if (selectDate == 'week') {
+			window.location.href = $('#listUrl').val() + '/?sdate=' + weekday + '&edate=' + yesterday + '&quick=week';
+		} else if (selectDate == 'month') {
+			window.location.href = $('#listUrl').val() + '/?sdate=' + monthday + '&edate=' + yesterday + '&quick=month';
+		} else if (selectDate == 'quarter') {
+			window.location.href = $('#listUrl').val() + '/?sdate=' + threemonth + '&edate=' + yesterday + '&quick=quarter';
+		}
+	});
+	$('#quick').bind('change',function(){
+		var selectDate = $(this).val();
+	});
+	if ($('#lineData').val()) {
+		var lineData = '<?php echo $lineData;?>';
+		draw(eval('('+lineData+')'), '用户统计', 'Num/Date');
+	}
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

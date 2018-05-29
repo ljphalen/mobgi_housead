@@ -1,0 +1,34 @@
+<?php echo $this->render("layout/header.phtml");?>
+<?php if(!$code && !empty($msg)){ ?>
+<font color=red><?php echo $msg;?></font> <a href="<?php echo $uploadApkUrl,'?apkId=',$apkId;?>">[返回]</a>
+<?php }elseif(!empty($data)){ ?>
+<b>上传成功！</b> <a href="<?php echo $uploadApkUrl,'?apkId=',$apkId;?>">[上传]</a>
+<?php }else{ ?>
+<form id="form1" name="form1" method="post" action="<?php echo $uploadApkPostUrl;?>" onsubmit="return checkFrom()" enctype="multipart/form-data">
+<input type="hidden" name="token" value="<?php echo $token;?>" /> 
+<input type="hidden" name="MAX_FILE_SIZE" value="524288000" />
+<input name="apkId" value="<?php echo $apkId;?>" type="hidden" />
+<input type="file" id="apk" name="apk" class="mr20"/>  
+<input type="submit" name="sub" value="上传"  class="btn"> 允许上传的文件格式为：apk  且文件大小不能超过500M
+</form>
+<?php } ?>
+<script> var par = /^.*?\.(apk|APK)$/i;
+
+function checkFrom() {
+	if($("#apk").val()==''){
+		window.parent.showError('出错','请选择要上传的文件');
+		return false;
+	}else if (!par.test($("#apk").val())){
+		window.parent.showError('出错','仅支持apk文件，且文件小于500M');
+		return false;
+	}else{
+		return true;
+	}
+}
+<?php if(!empty($data)){?>
+window.parent.showAttach('<?php echo $apkId;?>' ,'<?php echo $attachPath.$data;?>', '<?php echo $data;?>');
+<?php }?>
+</script>
+<?php echo $this->render("layout/footer.phtml");?>
+
+

@@ -1,0 +1,24 @@
+</div>
+<script>
+$(function(){
+    $("#menu").find(".title").css({cursor:'pointer'}).live('click', function(){
+        var dis = $(this).next('ul');
+        if (dis.css('display') == 'none') {
+            dis.show();
+        }else{
+            dis.hide();
+        }
+    });
+
+    $("#menu").find("li").click(function(){
+         clsid = $(this).attr("id");
+         $('#'+clsid).addClass('cur');
+    }).removeClass('cur');
+
+});
+</script>
+<div id="error_msg_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticPath;?>/img/common/error_bg.gif" /> <span id="err_content"><span></div>
+<div id="msg_box_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticPath;?>/img/common/success_bg.gif" /> <span id="msg_content"><span></div>
+<div id="ajax_loader" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticPath;?>/img/common/ajax-loader.gif" /> <span id="msg_content">正在处理，请稍后...<span></div>
+</body>
+</html>

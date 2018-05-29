@@ -1,0 +1,95 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="table_full">
+    <table width="100%">
+         <tr class="tr">
+            <th class="th">时间</th>
+            <td >
+                <input type="hidden" name="screatedate"  id="screatedate" value="<?php echo $_GET['screatedate'];?>">
+                <input type="hidden" name="ecreatedate" id="ecreatedate" value="<?php echo $_GET['ecreatedate'];?>">
+                <span class="mui-filter-group" id="date_range" sdate="<?php echo $search['sdate'];?>" edate="<?php echo $search['edate'];?>" csdate="" cedate=""></span>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button type="button" id="submitForm">搜 索</button></span></span></div>
+
+<div class="table_list">
+    <div class="h_a">
+        <span>共 <?php echo $total;?> 条结果</span>
+    </div>
+    <table width="100%">
+		<tr class="hd">
+			<td width="15%">时间</td>
+			<td width="15%">操作者</td>
+			<td width="15%">操作控制器</td>
+			<td width="15%">动作</td>
+			<td width="40%">详情</td>
+		</tr>
+		<?php if($loglist){?>
+        <?php foreach ($loglist as $log){ ?>
+        <tr class="ct">
+            <td><?php echo date('Y-m-d H:i:s',$log['create_time'] );?></td>
+            <td><?php echo $userInfo[$log['user_id']]['user_name'];?></td>
+            <td><?php echo $log['module'];?></td>
+            <td><?php echo $log['sub_module'];?></td>
+            <td><?php echo $log['content']?></td>
+        </tr>
+        <?php }?>
+           <?php }?>
+        </table>
+</div>
+
+
+<div class="mr10 cc tc">
+<?php echo $pager;?>
+</div>
+    
+<script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js??v=<?php echo $version;?>"></script>
+<link href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script type="text/javascript">
+$(function(){
+    var dateRange = new pickerDateRange("date_range",'date', {
+        theme : 'ta', // 日期选择器TA主题
+        isTodayValid : 1,
+        startDate : "<?php echo $search['sdate'];?>",
+        endDate : "<?php echo  $search['edate'];?>",
+        minValidDate : 1379174400,
+        needCompare : 0,
+        success : function (dateObj){
+            $("#date_range").attr("sdate", dateObj.startDate);
+            $("#date_range").attr("edate", dateObj.endDate);
+            $("#date_range").attr("csdate", "");
+            $("#date_range").attr("cedate", "");
+        }
+    });
+    
+    
+    $("#module").change(function(){
+        $("#sub_module").val('')
+        module = $(this).val()
+        operator=$("#module").find("option:selected").attr('operator')
+        if(module == ''){
+            $("#sub_module option").show();
+        }else{
+            $("#sub_module option").hide();
+            $("#sub_module option:first").show();
+            $("#sub_module option[module='"+module+"']").show();
+        }
+    })
+    
+    function submitForm(){
+        sdate = $("#date_range").attr("sdate")
+        edate = $("#date_range").attr("edate")
+        email = $("#email").val()
+        content = $("#content").val()
+        module = $("#module").val()
+        sub_module = $("#sub_module").val()
+        window.location.href='<?php echo $operatelogUrl ?>?sdate=' + sdate + "&edate=" + edate + "&email="+ email+ "&content="+ content + "&module="+ module+ "&sub_module="+ sub_module;
+    }
+    
+    $("#submitForm").click(submitForm);
+    
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

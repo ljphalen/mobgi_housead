@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>《梦幻花园》手游</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="shortcut icon" href="images/icon.png">
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script>
+          var oMeta = document.createElement('meta');
+          oMeta.name = 'viewport';
+          var scale = window.screen.width/640;
+          //console.log(scale)
+          oMeta.content = 'width=device-width, initial-scale='+scale+',maximum-scale='+scale+',minimum-scale='+scale;
+          document.getElementsByTagName('head')[0].appendChild(oMeta);
+    </script>
+    <style>
+
+        /*设置IOS页面长按不可复制粘贴，但是IOS上出现input、textarea不能输入，因此将使用-webkit-user-select:auto;*/
+        *{
+            -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+            -webkit-user-select:none; /*webkit浏览器*/
+            -khtml-user-select:none; /*早期浏览器*/
+            -moz-user-select:none;/*火狐*/
+            -ms-user-select:none; /*IE10*/
+            user-select:none;
+        }
+        input,textarea {
+            -webkit-user-select:auto; /*webkit浏览器*/
+            margin: 0px;
+            padding: 0px;
+            outline: none;
+        }
+        img{ vertical-align: top;}
+        a,input,button{ -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-appearance : none ;  border-radius: none;   }
+        html,body{ position: relative; width: 100%; height: 100%;  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;  }
+        html,body{ overflow-x: hidden;}
+        .wrap{ position: relative;  width: 640px; height: 100%; overflow: hidden;  }
+        .header{ position:absolute; z-index: 99; height: 123px; width:640px; box-sizing: border-box; -moz-box-sizing: border-box;  -khtml-box-sizing: border-box;  -webkit-box-sizing: border-box;  }
+        .header i{ position: absolute; left:10px; top:4px; z-index: 100;  display: inline-block; width: 111px; height:111px;    }
+        .header i img{ width: 111px; height:111px; }
+        .head-info{ position: relative; z-index: 100; float:left; height:100%; margin-left: 135px; }
+        .head-title{ color:#fff; font-size: 37px; font-weight: bold; margin: 24px 0 0 0;}
+        .head-description{ color:#fff; font-size: 19px; height: 30px; line-height: 30px; }
+        .head-grade{ overflow: hidden;  }
+        .head-grade span{ float:left; color:#b2d3f3; font-size: 16px;}
+        .head-grade ul{ float:left; padding: 2px 5px 0 0 ;} 
+        .head-grade ul li{ float:left; margin:0 0 0 5px; }
+        .mask-head{ position: absolute; z-index: 99; width: 100%; height: 100%;  background: #3a88af; filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity:0.6; -webkit-opacity:0.6; opacity:0.6;  }
+        .all-star{ width: 17px; height: 16px; background:url('images/star.png') no-repeat; background-size:17px 16px; }
+        .half-star{ width: 17px; height: 16px; background:url('images/half-star.png') no-repeat; background-size:17px 16px;}
+        .head-download{ position: relative; z-index: 100; float:right; display: inline-block; margin:34px 11px 0 0; cursor: pointer; }
+        .head-download img{  width: 167px; height: 57px; }
+        .main{ height: 100%; overflow-x: hidden; overflow-y: auto;   }
+        .pic-wrap{  position: relative; z-index: 2; width: 100%; }
+        .pic-wrap img{   position: relative; z-index: 2; width: 100%; }
+        .video_el{ position:absolute; left:50%; bottom:370px;  z-index: 3; width: 590px; height: 363px; margin-left:-295px; }
+        .vdownload{ position: absolute; z-index: 3; left:50%; bottom:206px; width: 315px; height: 117px; display: block; margin-left:-157.5px;   }
+        .vdownload img{  width: 315px; height: 117px; } 
+
+        .footer-wrap{ position:absolute; z-index: 4; left:0; bottom: 0; width: 100%; height: 166px;   }
+        .footer-mask{ position: absolute; z-index: 4; width:100%; height: 100%; background: #6432bf; filter:alpha(opacity=60); -moz-opacity:0.6; -khtml-opacity:0.6; -webkit-opacity:0.6; opacity:0.6; }
+        .footer-wrap p{ position: relative; z-index: 6; color:#fff; font-size: 20px; text-align: center; padding-top: 42px; line-height: 27px; }
+        .footer-wrap img{ position:absolute; z-index: 6;  left:0; bottom:0; width: 121px; height: 35px;  }
+    </style>
+</head>
+<body>
+      <div id="wrap" class="wrap">
+           <header class="header">
+                <p class="mask-head"></p>
+                <i><img src="images/icon.png" /></i>  
+                <div class="head-info">
+                     <p class="head-title">梦幻花园</p>
+                     <p class="head-description">模拟经营与消除完美融合的休闲游戏</p>
+                     
+                </div>
+                <a class="head-download download" href=""><img src="images/d1.png" /></a>    
+           </header>
+           <div class="main">
+               <section class="pic-wrap">
+                   <img src="images/bg1.jpg" />   
+               </section>
+               <div class="pic-wrap">
+                   <img src="images/bg2.jpg" /> 
+                   <video class="video_el" width="590" height="363" poster="images/video.jpg" controls="controls" preload="none" > 
+                        <source src="https://dl2.gxpan.cn/ad/delivery/201709/59bf24cc623e9.mp4" />
+                   </video>  
+                   <a class="vdownload download" href=""><img src="images/d3.jpg" /></a>
+                   <div class="footer-wrap">
+                        <div class="footer-mask"></div>
+                        <p>
+                            深圳市创梦天地科技股份有限公司版权所有 Copyright©2016-2020 <br>
+                            粤ICP备11018438号 粤网文【2014】0153-003号
+                        </p> 
+                        <img src="images/footer_icon.png" /> 
+                   </div>
+                </div>
+               
+            </div>
+            
+            
+      </div>
+</body>
+</html>
+<script>
+    (function(){
+        // 判断是否为pc
+        var os = function() {  
+            var ua = navigator.userAgent,  
+            isWindowsPhone = /(?:Windows Phone)/.test(ua),  
+            isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,   
+            isAndroid = /(?:Android)/.test(ua),   
+            isFireFox = /(?:Firefox)/.test(ua),   
+            isChrome = /(?:Chrome|CriOS)/.test(ua),  
+            isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),  
+            isPhone = /(?:iPhone)/.test(ua) && !isTablet,  
+            isPc = !isPhone && !isAndroid && !isSymbian;  
+            return {  
+                isTablet: isTablet,  
+                isPhone: isPhone,  
+                isAndroid : isAndroid,  
+                isPc : isPc  
+            };  
+        }(); 
+       
+
+        if(os.isPc && !os.isTablet){
+            document.getElementById("wrap").style.margin = 'auto';
+        };
+
+
+
+        function getQueryString(name) { 
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+            var r = window.location.search.substr(1).match(reg); 
+            if (r != null) return unescape(r[2]); return null; 
+        } 
+        
+        var id = getQueryString('id');
+        $.ajax({
+            url :'http://hunterdev.admin.mobgi.com/api/Landingpage/getTemplateData?id='+id,
+            async:false,
+            data : '',
+            type : 'post',
+            dataType : 'jsonp',
+            jsonp : 'callback',
+            success:function(data){
+                $('.download').attr('href',data.url);
+            },
+            error :function(xhr,msg,e){
+                console.log(xhr+", "+msg+", "+e);
+            }
+        });
+
+    })();
+
+</script>

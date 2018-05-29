@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath; ?>/js/admin/lay/css/layui.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath; ?>/css/selectBox.css"/>
+<style>
+    *{ margin: 0; padding: 0;}
+    html,body{
+        font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        font-size: 14px;
+        background: #e5e6eb;
+    }
+    .wrapper{ background: #fff; padding:5px 20px 50px 20px; box-sizing:border-box; }
+    .search-wrap{   padding-top: 2px; }
+    .tchar-side{ padding: 5px 10px; height: 600px; width: 100%;   }
+</style>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <!-- 广告用户LTV数据 begin -->
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>人均观看次数数据</legend>
+            </fieldset>
+            <div class="layui-collapse">
+                <!--  广告LTV报表   begin -->
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">人均观看次数数据报表</h2>
+                    <div class="layui-colla-content layui-show">
+                        <!--  条件搜索 begin -->
+                        <div class="search-wrap">
+                            <form id='formDemo1' class="layui-form" action="getNuvData"  data-id="1">
+                                <div class="layui-inline" style="width: 200px;">
+                                    <input type="text" name="days" class="layui-input" id="datetime1">
+                                </div>
+                                <div class="layui-inline platform" style="width: 150px;">
+                                    <select name="platform" lay-verify="" lay-search>
+                                        <option value="" >选择平台</option>
+                                        <?php foreach ($platform as $key=>$plat){?>
+                                        <option value="<?php echo $key;?>"><?php echo $plat;?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+                                <div class="layui-inline app_key" style="width: 150px;">
+                                    <select name="app_key" lay-verify="" lay-search>
+                                        <option value="" >选择应用</option>
+                                        <?php foreach ($apps as $key=>$app){?>
+                                        <option value="<?php echo $key;?>"><?php echo $app;?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+
+                                <div class="layui-inline ad_type" style="width: 150px;">
+                                    <select name="ad_type" lay-verify="" lay-search>
+                                        <option value="" >选择广告类型</option>
+                                        <?php foreach ($adType as $key=>$type){?>
+                                        <option value="<?php echo $key;?>"><?php echo $type;?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+                                <div class="layui-inline ads_id" style="width: 150px;">
+                                    <select name="ads_id" lay-verify="" lay-search>
+                                        <option value="" >选择广告商</option>
+                                        <?php foreach ($ads as $key=>$ad){?>
+                                        <option value="<?php echo $key;?>"><?php echo $ad;?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+                                <div class="layui-inline channel_gid" style="width: 150px;">
+                                    <select name="channel_gid" lay-verify="" lay-search>
+                                        <option value="" >选择渠道</option>
+                                        <?php foreach ($channels as $key=>$channel){?>
+                                        <option value="<?php echo $key;?>"><?php echo $channel;?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+
+                                <div class="layui-inline pos_key" style="width: 150px;">
+                                    <select name="pos_key" lay-verify="" lay-search>
+                                        <option value="" >选择广告位</option>
+                                        <?php foreach ($pos_key as $key=>$pos){?>
+                                        <option value="<?php echo $key;?>"><?php echo $pos;?></option>
+                                        <?php }?>
+                                    </select>
+                                </div>
+                                <button class="layui-btn lay-submit" lay-submit lay-filter="formDemo">立即查询</button>
+                            </form>
+                        </div>
+                        <!--  条件搜索 end -->
+                        <div class="tchar-side" id="chart1" ></div>
+                    </div>
+                </div>
+
+                <div class="layui-colla-item">
+                <h2 class="layui-colla-title">当前条件下观看广告用户的人均观看次数 （<span>人均：<em id="times" style="font-weight:bold"></em> 次</span>） 观看广告用户人均观看次数（<span>人均：<em id="totalavgtimes" style="font-weight:bold"></em> 次</span>）<a data-table="table1"  class="export" style="float:right">导出</a></h2>
+                    <div class="layui-colla-content layui-show">
+                        <table id="table1" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="<?php echo $staticPath; ?>/js/admin/lay/layui.js"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js"></script>
+<script>
+    Array.prototype.transpose = function () {
+        var rdata=[];
+        for (var ikey=0 ;ikey<this.length;ikey++) {
+            for (var jkey=0 ;jkey<this[ikey].length;jkey++) {
+                if(!rdata.hasOwnProperty(jkey)){
+                    rdata[jkey]=[];
+                }
+                rdata[jkey][ikey]=this[ikey][jkey];
+            }
+        }
+        return rdata;
+    };
+    Array.prototype.sum = function () {
+        var val=0;
+        for (var i=0 ;i<this.length;i++) {
+            val+=parseInt(this[i]);
+        }
+        return val;
+    };
+
+    ;(function(){
+        $(function(){
+            $(".export").click(function(e) {
+                var uri = 'data:application/vnd.ms-excel;base64,',text='',
+                template = '<html><head><meta charset="UTF-8"></head><body><table border="1">{table}</table></body></html>',
+                base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+                format = function(s, c) {
+                    return s.replace(/{(\w+)}/g,
+                        function(m, p) { return c[p]; })
+                }
+                $(this).parent().parent().find("table.layui-table").each(function(index, el) {
+                    if(index<2){
+                        text+=$(this).html();
+                    }
+                });
+                var ctx = {worksheet: 'sheet1', table: text}
+                window.location.href = uri + base64(format(template, ctx))
+                e.stopPropagation();
+            });
+        });
+        function to_array(obj){
+            var arr=[]
+
+            for (var i in obj){
+                arr.push(obj[i]);
+            }
+            return arr;
+        };
+
+        function table_render(table,tableId,data){
+            var rdata={},cols=[];
+            var tdata =data['list'].transpose();
+            var sumCols={};
+
+            for (var i=0 ;i<tdata.length;i++) {
+                sumCols[i]=tdata[i].sum();
+            }
+
+            for (var ikey=0 ;ikey<tdata.length;ikey++) {
+                mydata=tdata[ikey]
+
+                if(!rdata.hasOwnProperty(ikey)){
+                    rdata[ikey]={
+                        'days':data['toolbar'][ikey]
+                    }
+                }
+                for (var jkey=0 ;jkey<mydata.length;jkey++) {
+                    mykey='times'+jkey
+                    rdata[ikey][mykey]=mydata[jkey]+" | <span style='color:blue;'>"+(Math.round(mydata[jkey]/sumCols[ikey] * 10000) / 100.00 + "%")+'</span>'
+                }
+
+            }
+
+            var mydata=[];
+            for (var key in rdata) {
+                mydata.push(rdata[key]);
+            }
+
+            cols.push({field: "days", title: "日期", width: 150,fixed: 'left'});
+            for (var key=0 ;key<data['times'].length;key++) {
+                cols.push({field: 'times'+key, title:  data['times'][key], width: 150});
+            }
+
+            table.render({
+                elem: tableId,
+                data: mydata,
+                cols: [cols],
+                page: false,
+            });
+        }
+
+        function chart_render(chart,data){
+            var legend=data.times;
+            var xdata =data.toolbar;
+            var series=[];
+            for (var key in data['list']) {
+                series.push({
+                    name: legend[key],
+                    type: 'bar',
+                    stack: '总量',
+                    data:to_array(data['list'][key])
+                })
+            }
+            var option = {
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {
+                        type : 'shadow'
+                    }
+                },
+                legend: {
+                    data:legend
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                yAxis:  {
+                    type: 'value'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xdata
+                },
+                series: series
+            };
+            chart.setOption(option,true);
+        }
+
+        layui.use(['element','laydate','form','table'],  function(){
+            var element = layui.element;
+            var laydate = layui.laydate;
+            var form = layui.form;
+            var table = layui.table;
+            laydate.render({elem: '#datetime1',range: true,value: '<?php echo $sdate." - ".$edate ?>'});
+            laydate.render({elem: '#datetime2',range: true,value: '<?php echo $sdate." - ".$edate ?>'});
+            form.on('submit(formDemo)',function  (data){
+                var formId=parseInt(data.form.id.replace(/[^0-9]/ig,""))
+                var chart=echarts.init(document.getElementById('chart'+formId))
+                chart.showLoading();
+                layui.$.ajax({
+                    type: 'GET',
+                    data: data.field,
+                    url: data.form.action,
+                    dataType: 'json',
+                    success: function(data){
+                        if(data.success){
+                            // var data={
+                            //     data:{
+                            //         list:[
+                            //         [120, 132, 101, 134, 90, 230, 210, 230, 210],
+                            //         [220, 182, 191, 234, 290, 330, 310, 330, 310],
+                            //         [150, 212, 201, 154, 190, 330, 410, 330, 410],
+                            //         [820, 832, 901, 934, 1290, 1330, 1320, 1330, 1320],
+                            //         [130, 120, 134, 330, 290, 154, 310, 230, 320],
+                            //         [150, 212, 201, 154, 190, 330, 410, 330, 410],
+                            //         [120, 132, 101, 134, 90, 230, 210, 230, 210],
+                            //         [820, 832, 901, 934, 364, 456, 567, 543, 1320],
+                            //         [320, 302, 301, 334, 390, 330, 320, 330, 320],
+                            //         ],
+                            //         toolbar:['2017-10-10', '2017-10-11','2017-10-12','2017-10-13','2017-10-14','2017-10-15','2017-10-16','2017-10-17','2017-10-18'],
+                            //         times:['1次数', '2次数','3次数','4次数','5次数','6次数','7-10次','11-20次','20次以上'],
+                            //         avg:2.3
+                            //     }
+                            // }
+
+                            chart_render(chart,data.data);
+                            table_render(table,"#table1",data.data);
+                            console.log(typeof data.data.avg);
+                            layui.$('#times').html(data.data.avg);
+                            layui.$('#totalavgtimes').html(data.data.avgtotaluser);
+                        }
+                        chart.hideLoading();
+                    },
+                    error: function(xhr){
+                        layer.msg("fail");
+                    }
+                });
+return false;
+});
+layui.$('.lay-submit').click();
+})})();
+
+
+
+</script>
+
+
+

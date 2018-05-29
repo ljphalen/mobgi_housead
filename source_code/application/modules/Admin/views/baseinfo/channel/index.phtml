@@ -1,0 +1,122 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+   <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this"><a href="<?php echo $listUrl;?>">渠道列表</a></li>
+                <li><a href="<?php echo $addUrl;?>">添加渠道列表</a></li>
+            </ul>
+        </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap">
+        <form class="layui-form"   >
+            <label class="layui-form-label">渠道分组</label>
+            <div class="layui-input-inline">
+                <select id="group_id"  name="group_id" lay-verify="" lay-search >
+                    <option value="">全部</option>
+                    <?php foreach($channelGroupList as $k1=>$v1){ ?>
+                        <option value="<?php echo $k1; ?>"  <?php if( $search['group_id']==$k1 ){ ?> selected <?php } ?> ><?php echo $v1['channel_name']; ?></option>
+                    <?php } ?>
+                </select> 
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" value="<?php echo $search['channel_id'] ;?>" name="channel_id" placeholder="可输入渠道id查询" autocomplete="off" class="layui-input" >
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" value="<?php echo $search['channel_name'] ;?>" name="channel_name" placeholder="可输入渠道名称查询" autocomplete="off" class="layui-input" >
+            </div>
+            <div class="layui-input-inline">
+                <button type="submit" lay-filter="btn_submit" class="layui-btn submit">立即查询</button>
+            </div>
+        </form>
+    </div>
+    <!-- 表单 begin -->
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>渠道号</th>
+                <th>渠道名称</th>
+                <th>渠道所属分组</th>
+                <th>是否定制渠道</th>
+                <th>是否配置验证渠道</th>
+                <th>更新时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($channelList as $k1=>$v1): ?>
+            <tr>
+                <td><span class="blue cursor" data-id="<?php echo $v1['id']; ?>" ><?php echo $v1['channel_id']; ?></span></td>
+                <td><?php echo $v1['channel_name']; ?></td>
+                <td><?php echo $channelGroupList[$v1['group_id']]['channel_name']; ?></td>
+                <td><?php if($v1['is_custom'] == 1){ echo "<span class='red'>是</span>";}else{ echo '否';}?></td>
+                <td><?php if($v1['is_check_config'] == 1){ echo "<span class='red'>是</span>";}else{ echo '否';}?></td>
+                <td><?php echo date('Y-m-d',$v1['update_time']); ?></td>
+                <td>
+                    <button data-id="<?php echo $v1['id'];?>" class="layui-btn layui-btn-primary layui-btn-xs detail_form" lay-event="detail">查看</button>
+                    <button data-id="<?php echo $v1['id'];?>" class="layui-btn layui-btn-xs edit_form" lay-event="edit">编辑</button>
+                    <button data-id="<?php echo $v1['id'];?>" class="layui-btn layui-btn-danger layui-btn-xs del_form" lay-event="del">删除</button>
+                </td>
+            </tr> 
+            <?php endforeach; ?>
+        </tbody> 
+    </table>
+    <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+
+</div>
+<script type="text/javascript">
+var listUrl = baseurl + '<?php echo $listUrl;?>'; // 渠道列表
+var viewUrl = baseurl + '<?php echo $viewUrl;?>';  // 查看渠道
+var addUrl = baseurl + '<?php echo $addUrl;?>';  // 编辑渠道
+var deleteUrl = baseurl + '<?php echo $deleteUrl;?>';  // 删除渠道
+
+var group_id = getQueryString('group_id');
+var channel_id = getQueryString('channel_id');
+var channel_name = getQueryString('channel_name');
+var page = getQueryString('page');
+
+layui.use(['form','element'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    //  查看
+    $(".detail_form").click(function(){
+        var id = $(this).attr("data-id");
+        window.location.href = viewUrl + "?id=" + id + "&group_id=" + group_id + "&channel_id="+channel_id+"&channel_name="+channel_name+"&page="+page;
+    });
+
+    //  编辑
+    $(".edit_form").click(function(){
+        var id = $(this).attr("data-id");
+        window.location.href = addUrl + "?id=" + id + "&group_id=" + group_id + "&channel_id="+channel_id+"&channel_name="+channel_name+"&page="+page;
+    });
+
+    //  删除
+    $(".del_form").click(function(){
+        var id = $(this).attr("data-id");
+        layer.confirm('确认删除该记录?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : deleteUrl +"?id=" + id ,
+                async: false,
+                data : { id:id , token:token },
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.close(index);
+                    layer.msg(data.msg); 
+                    if(data.success){
+                        setTimeout(function(){
+                            window.location.href = listUrl +"?group_id=" + group_id + "&channel_id="+channel_id+"&channel_name="+channel_name+"&page="+page;
+                        },500);
+                    }  
+                },
+                error:function(xhr,msg,e){
+                    layer.close(index);
+                    layer.msg(msg); 
+                }
+            }); 
+            
+        });
+    });
+    
+});
+</script>   

@@ -1,0 +1,1 @@
+http://dev.advertiser.housead.com/api/adconfig/getAdList?blockId=MC40Nzg5MzYwMCAxNDc0MTg-NTZGM0E4&sp=1_1_1_model_1.0_4.0_320*480_1_1_uuid&appKey=56F3A86AF3BB6CFF264D

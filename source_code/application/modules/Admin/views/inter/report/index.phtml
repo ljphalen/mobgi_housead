@@ -1,0 +1,216 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+<style type="text/css">
+    .txtMarquee-left {
+        width: 450px;
+        position: relative;
+    }
+
+    .txtMarquee-left .hd {
+        overflow: hidden;
+        height: 30px;
+        background: #f4f4f4;
+        padding: 0 10px;
+    }
+
+    .txtMarquee-left .hd .prev,
+    .txtMarquee-left .hd .next {
+        display: block;
+        width: 5px;
+        height: 9px;
+        float: right;
+        margin-right: 5px;
+        margin-top: 10px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .txtMarquee-left .bd {
+        padding: 10px;
+    }
+
+    .txtMarquee-left .bd .tempWrap {
+        width: 420px !important;
+    }
+
+    .txtMarquee-left .bd ul {
+        overflow: hidden;
+        zoom: 1;
+    }
+
+    .txtMarquee-left .bd ul li {
+        margin-right: 20px;
+        float: left;
+        height: 24px;
+        line-height: 24px;
+        text-align: left;
+        _display: inline;
+        width: auto !important;
+    }
+
+    /* 用 width:auto !important 覆盖SuperSlide自动生成的宽度，解决文字不衔接问题 */
+
+    .txtMarquee-left .bd ul li span {
+        color: #999;
+    }
+</style>
+
+<div class="colMain">
+    <div class="main">
+        <div class="chart app-detail">
+            <ul class="chart-filter">
+                <li class="date-filter">
+                    <div id="date_range" class="fr" sdate="<?php echo $sdate; ?>" edate="<?php echo $edate; ?>"></div>
+                    <div id="kpi" class="ta_date fr" data-type="kpi" style="display:inline-block;margin-right:10px;">
+                        <span class="date_title">自定义指标</span>
+                        <a class="opt_sel">
+                            <i class="i_orderd"></i>
+                        </a>
+                    </div>
+                    <div class=" fr">
+                        <button class="btn-export">导出</button>
+                    </div>
+                    <div style="clear:both;"></div>
+                </li>
+                <li class="dim-filter">
+                    <dl id="dim"></dl>
+                </li>
+            </ul>
+
+            <div class="chart-show">
+                <table class="mui-charts-table">
+                    <tr id="chart_header"></tr>
+                </table>
+                <!-- <div class="chart-title">走势图</div> -->
+                <div id="data_charts" style="min-height:400px;"></div>
+            </div>
+            <hr>
+            <div class="chart-table">
+                <div class="chart-title">详细数据</div>
+                <div id="mg_talbe"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="blk">
+    <div id="blk_kpi" type="kpi" class="blk_view kpi" mod="submit_box"></div>
+</div>
+<div class="mask"></div>
+
+<link href="<?php echo $staticPath; ?>/css/gri.controls.css?v=<?php echo $version; ?>" rel="stylesheet" />
+<link href="<?php echo $staticPath; ?>/css/mgchart.css?v=<?php echo $version; ?>" rel="stylesheet" />
+<script src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.js?v=201712151100"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery-ui.min.js?v=201712151100"></script>
+<script src="<?php echo $staticPath; ?>/js/common/spmchart.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.loadmask.min.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/gri.dateRange.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.SuperSlide.2.1.1.js?v=<?php echo $version;?>"></script>
+<script type="text/javascript">
+    var appIdSelectChange;
+    $(function () {
+        var dateRange = new pickerDateRange("date_range", 'date', {
+            theme: 'ta',
+            isTodayValid: 1,
+            startDate: "<?php echo $sdate;?>",
+            endDate: "<?php echo $edate;?>",
+            minValidDate: 1379174400,
+            needCompare: 0,
+            success: function (dateObj) {
+                $("#date_range").attr("sdate", dateObj.startDate);
+                $("#date_range").attr("edate", dateObj.endDate);
+                $("#date_range").attr("csdate", "");
+                $("#date_range").attr("cedate", "");
+            }
+        });
+        report = new Spm.Report();
+        report.setDateRangePlugin("#date_range").init(<?php echo $chartConfig;?>).run()
+
+
+
+
+        // 时间选择 改变时候直接提交 dateRange.submitBtn为对应提交按钮
+        $("#" + dateRange.submitBtn).click(function () {
+            submitForm()
+        });
+        $(".ta_select_day").click(function () {
+            submitForm()
+        });
+        $("#operate_type").change(function () {
+            submitForm()
+        })
+        $("#account_type").change(function () {
+            submitForm()
+        })
+
+        function submitForm() {
+            sdate = $("#date_range").attr("sdate")
+            edate = $("#date_range").attr("edate")
+
+            //window.location.href='/Advertiser/Account/log/?sdate=' + sdate + "&edate=" + edate + "&operate_type="+ operate_type + "&account_type="+ account_type;
+        }
+
+        $(".btn-export").click(function (event) {
+            report.export();
+            //            window.location.href = "exportData?is_custom=0&" + report.getConfStr();
+        });
+        $("#set_dayconsumption_limit").click(function () {
+            oldvalue = $("#day_consume").html();
+            str = '<input type="text" class="input" value="' + oldvalue +
+                '"   id="set_dayconsumption_limit_value">'
+            $(this).siblings('.input').remove();
+            $("#day_consume").hide().after(str)
+            inputId = 'set_dayconsumption_limit_value'
+            $("#set_dayconsumption_limit_value").focus()
+            $("#set_dayconsumption_limit_value").blur(function () {
+                limit = $("#set_dayconsumption_limit_value").val();
+                $.ajax({
+                    url: baseurl + "/Advertiser/Account/setDayconsumptionLimit",
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        'token': token,
+                        'limit': limit
+                    },
+                    success: function (ret) {
+                        if (ret.success) {
+                            showMsg('', ret.msg);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 500);
+                        } else {
+                            showError('', ret.msg);
+                        }
+                        $("#day_consume").show()
+                        $("#" + inputId).remove()
+                    }
+                });
+            });
+        });
+        // compare
+        $("#compare").click(function (event) {
+            $(this).toggleClass('ta_btn_primary');
+            var compare = $(this).hasClass('ta_btn_primary');
+            report.setCompare(compare).doAction();
+            $(this).html(compare ? "√ 对比" : "对比").blur();
+        });
+
+
+        $('.inform').click(function () {
+            layer.open({
+                content: $(this).attr('content'),
+                scrollbar: false
+            });
+        })
+    })
+</script>
+<script type="text/javascript">
+    jQuery(".txtMarquee-left").slide({
+        mainCell: ".bd ul",
+        autoPlay: true,
+        effect: "leftMarquee",
+        vis: 2,
+        interTime: 50
+    });
+</script>
+<?php echo $this->render("layout/footer.phtml"); ?>

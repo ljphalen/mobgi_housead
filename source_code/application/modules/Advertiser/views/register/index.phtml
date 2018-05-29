@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title><?php echo $titlepre ?>子客投放系统</title>
+<link rel="shortcut icon" href="<?php echo $staticAdvertiserPath;?>/favicon.ico" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/reset.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/style.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/layout.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/jquery-ui.css?v=<?php echo $version;?>" rel="stylesheet"  />
+<link href="<?php echo $staticAdvertiserPath;?>/css/star/star.source.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/advertiser.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery.js??v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery-ui.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery.form.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/common.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/advertiser/core.js??v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/advertiser/advertiser.js??v=<?php echo $version;?>"></script>
+<script>
+var token = "<?php echo $token; ?>";
+var baseurl = "<?php echo $webRoot;?>";
+</script>
+</head>
+
+<style type="text/css">
+.login{width:500px;height:240px;padding:20px;position:absolute;top:50%;left:50%;margin:-141px 0 0 -271px;border:1px solid #bbb;background:#fff;}
+.login h1{float:none;clear:both;text-align:center;margin-bottom:20px;}
+</style>
+</head>
+<body>
+
+    <div class="colMain" style="min-height:900px">
+        <div class="title"><p class="fl">注册</p></div>
+        <form id="register_form" name="form" method="post" action="<?php echo $registerUrl ?>">
+            <div class="main" style='padding:20px;position:absolute;top:20%;left:35%;width: 550px;'>
+                <div class="app-detail">
+                    <ul class="form" id='form_ul'>
+                        <li>
+                            <span class="label">请选择帐号类型：</span>
+                            <div class="fc">
+                                <label><input type="radio" name="account_type" value='advertiser'/>广告投放帐号</label>&nbsp;&nbsp;
+                                <label title='可管理多个投放账号的资金和投放，需要提供代理资质'><input type="radio" name="account_type" value='agent' />代理商管理帐号</label>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">邮箱：</span>
+                            <div class="fc">
+                                <input type="text" style="width:200px;" class="iText required" value="" name="email" id="email" class='email'>
+                                <span class="red">*</span>
+                                <span class='tips'></span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">帐号：</span>
+                            <div class="fc">
+                                <input type="text" style="width:200px;" class="iText required" value="" name="advertiser_name" id="advertiser_name">
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">密码：</span>
+                            <div class="fc">
+                                <input type="password" style="width:200px;" class="iText" value="" name="password" id="password">
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">确认密码：</span>
+                            <div class="fc">
+                                <input type="password" style="width:200px;" class="iText" value="" name="confirm_password" id="confirm_password">
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">验证码：</span>
+                            <div class="fc">
+                                <input type="text" style="width:100px;" class="iText" value="" name="verify_code" id="verify_code" />
+                                <span>
+                                    <img src="/Advertiser/Register/verigycode" width="100" height="42" alt="Captcha" class="captcha changeCode" />
+                                </span>
+                                <a class="blue changeCode">换一张</a>
+                                <span class='tips'></span>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label"></span>
+                            <div class="fc">
+                                <label><input type="checkbox"  value="" name="user_agreement_checkbox" id="user_agreement_checkbox" class='checkbox'>&nbsp;&nbsp;我已经阅读并接受</label>　
+                                <a href="javascript:;" id="user_agreement" class='blue'>《用户协议》</a>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="fc">
+                                <input type="button" class="submit" id='submit_button' value="立即注册" onclick="confirmSubmit();">
+                                <span class="fr" style="margin:0 100px;font-size: 12px"><a onclick="login();">登录</a></span>
+                            </div>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+<div id="error_msg_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/error_bg.gif" /> <span id="err_content"><span></div>
+<div id="msg_box_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/success_bg.gif" /> <span id="msg_content"><span></div>
+<div id="ajax_loader" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/ajax-loader.gif" /> <span id="msg_content">正在处理，请稍后...<span></div>
+</body>
+</html>
+
+<div class="user_agreement" style="display:none;">
+  <strong>HouseAD平台开发者协议</strong>
+  <p class="tr">（2014年06月13日版）</p>
+  <p style="font-size:16px;color:#333;">尊敬的开发者：</p>
+  <br />
+  <p>欢迎注册HouseAD广告平台。请您（以下简称“您”或“开发者”）仔细阅读以下全部内容（以下简称“本协议”），如您不同意本协议中的任何内容，请勿注册或继续使用HouseAD广告平台。您勾选“我已阅读并接受”《HouseAD广告平台开发者协议》的行为即表示您完全接受本协议所有条款的约束。</p>
+  <p class="t">一、定义</p>
+  <p>1.1、“HouseAD”，指HouseAD广告平台的开发、所有及运营方，以下简称“本平台”。</p>
+  <p>1.2、“HouseAD广告平台”，指由HouseAD开发、所有并运营的移动广告平台。</p>
+  <p>1.3、“服务”，指HouseAD通过HouseAD广告平台提供的各种服务。</p>
+  <p>1.4、“开发者”，指接入HouseAD广告平台的SDK网站、应用程序等的所有人或拥有使用权人。</p>
+  <p>1.5、“开发者推广渠道”，指开发者所有的或有使用权及运营权的包括但不仅限于网站、应用程序等，该网站或应用程序等可接入HouseAD的SDK或可在该等渠道上展示广告内容。</p>
+  <p>1.6、“广告主”，指使用HouseAD广告平台，将其广告内容放在开发者推广渠道上推广的人。</p>
+  <p>1.7、“广告内容”，指广告主通过HouseAD广告平台在开发者推广渠道上发布的广告内容，包括但不限于图片、文字、软件、链接。</p>
+    
+    <p class="t">二、服务条款</p>
+    <p>2.1、HouseAD广告平台的服务内容由HouseAD根据实际情况向开发者提供。在开发者遵守本协议的前提下，HouseAD在此授予开发者限制性的、非独家的、不可转让的、不可再授权的权利来使用本平台的服务。</p>
+    <p>2.2、HouseAD保留在不通知开发者的情况下，有权暂时性或永久性地在任何时候修改或停止本平台相关服务的全部或部分。开发者同意HouseAD就本平台相关服务所做的任何修改、延展或停止不承担任何责任。</p>
+    <p>2.3、本平台有权在必要时对本协议进行修改，包括但不限于对平台的服务内容以及广告定价收费、广告收入分成比例进行调整，并无需通知开发者。开发者若需继续与本平台合作，须要完全接受修改后的协议内容。</p>
+    
+    <p class="t">四、使用规则</p>
+    <p>4.1、开发者在申请注册HouseAD广告平台后，须向HouseAD提供准确的资料。如开发者使用本平台服务期间资料（邮箱、联系方式、账户信息等）有所变更，应及时更新信息，否则对于可能造成的损失将由开发者自行承担。</p>
+    <p>4.2、开发者应当妥善保管自己的帐号和密码，并对以其帐号进行的所有活动和事件负法律责任。</p>
+	<p>4.3	开发者在使用本平台的过程中应当遵守中华人民共和国相关法律法规。开发者不得提交包含以下内容的应用程序或网站等，否则由开发者自行承担全部责任，如给HouseAD造成损失的，还应赔偿HouseAD全部损失：
+        •违反国家宪法所规定的基本原则的;<br>
+        •危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的;<br>
+        •损害国家荣誉和利益的;<br>
+        •煽动民族仇恨、民族歧视，破坏民族团结的;<br>
+        •破坏国家宗教政策，宣扬邪教和封建迷信的;<br>
+        •散布谣言，扰乱社会秩序，破坏社会稳定的;<br>
+        •散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的;<br>
+        •侮辱或者诽谤他人，侵害他人合法权益的;<br>
+        •含有法律、行政法规禁止的其他内容的;
+</p>
+	<p>4.4、开发者不得用任何不正当手段损害本平台的利益及声誉,不得利用非正规途径获得广告展示和点击、安装等。不正当手段包括但不限于技术模拟点击下载广告、人工唆使他人点击下载广告等获得虚假数据，本平台一旦发现开发者有前述行为,有权封锁帐号并且不予结算。</p>
+	   
+    <p class="t">五、期限与终止</p>
+    <p>5.1、本协议期限自开发者使用本平台或开始接受本平台相关服务开始，除本协议明确约定的提前终止的情形外，本协议将永久性持续有效。本协议终止后，开发者应立即停止使用本平台及/或其服务。在本协议终止后，本协议第1, 3, 5, 6, 7, 8,和9条仍然有效。</p>
+    <p>5.2、如因系统维护或升级的需要而需暂停服务，本平台将尽可能事先在重要页面进行通告。如发生以下任何一种情形，本平台有权随时中断或终止向开发者提供服务而无需通知开发者：
+•开发者提供的资料不真实
+•开发者违反本协议中规定的使用规则。
+</p>
+    <p>5.3、除前款所述情形外，本平台同时保留在不事先通知您的情况下中断或终止部分或全部服务的权利，对于所有服务的中断或终止而造成的任何损失，本平台无需对开发者或任何第三方承担任何责任。</p>
+
+    <p class="t">六、免责申明</p>
+    <p>6.1、开发者同意使用本平台服务所存在的风险将完全由自己承担；因其使用本平台服务而产生的一切后果也由开发者自行承担，本平台对开发者不承担任何责任。</p>
+    <p>6.2、本平台不保证服务一定能满足开发者的要求，也不保证服务不会中断，对服务的及时性、安全性、准确性也都不作保证。开发者存放在本平台的文件，本平台不承担任何风险责任。</p>
+	<p>6.3、本平台不对任何广告主提供的广告内容承担任何责任。如产生与广告内容相关的纠纷，开发者应当联系广告主解决。</p>
+	
+    <p class="t">七、违约赔偿</p>
+    <p>7.1、开发者同意保障和维护本平台的利益，如因开发者违反有关法律、法规或协议规定中的任何条款而给本平台或任何其他第三方造成损失，开发者同意承担由此造成的损害赔偿责任。</p>
+
+    <p class="t">八、通知</p>
+    <p>8.1	本协议下所有通知应以如下方式发出：（a）向本平台发出的通知，应以要求回执的电子邮件的形式向HouseAD电子邮箱 【mobgi@idreamsky.com】 发出，该等通知在HouseAD收到时生效。（b）向开发者发出的通知，应以页面公告或向开发者提供的电子邮箱地址发送电子邮件的形式发出，该等通知在发出时即生效。</p>
+
+    <p class="t">九、通则</p>
+    <p>9.1、开发者有义务履行保密义务，不得向任何第三方披露或者透露有关本协议项下内容的任何信息及因履行本协议而获知的本平台或HouseAD的商业秘密，但根据有关法律规定向有权机构（如政府执法部门或司法机构）必须披露的除外。</p>
+    <p>9.2、本协议受中国法律的约束。《联合国国际货物销售合同公约》不适用于本协议。所有本协议的争议应提交深圳仲裁委员会按照该仲裁机构的仲裁规则进行仲裁, 双方同意该仲裁机构就本协议所有争议事项具有不可撤销的管辖权。</p>
+    <p>9.3、若本协议中任何条款被具有司法管辖权的机构认定为无效、违法或不可执行，则其他条款仍继续有效。</p>
+    <p>9.4、未经HouseAD事先书面授权，开发者不得将本协议任何权利义务转让或转移，否则，该等转让、转移无效。</p>
+    <p>9.5、HouseAD有权在未来任何时间在不发出通知的情况下修改更新本协议。开发者随时获知更新是开发者的义务，且开发者是被本协议的最新版本约束。</p>
+    <p>9.6、本协议解释权归HouseAD所有。</p>
+</div>
+<script type="text/javascript">
+     $(document).ready(function(){
+        ajaxForm('register_form',function(ret){
+            ajaxRedirect(ret, baseurl+'<?php echo $loginindexUrl;?>');
+        });
+    });
+    
+    function confirmSubmit(){
+        var account_type = $('input[name=account_type]:checked').val()
+        var email = $.trim($("#email").val());
+        var advertiser_name = $.trim($("#advertiser_name").val());
+        var password = $.trim($("#password").val());
+        var confirm_password = $.trim($("#confirm_password").val());
+        var verify_code = $.trim($("#verify_code").val());
+        if(typeof account_type=='undefined'){
+            showError('', '请选择帐号类型');
+            return false;
+        }
+        if (!isEmail(email)){
+            showError('', '邮件格式不正确');
+            return false;
+        }
+        if ( password.length < 6 || password.length > 15){
+            showError('', '密码长度为6-15位');
+            return false;
+        }
+        if (password != confirm_password){
+            showError('', '两次密码不一致');
+            return false;
+        }
+        if (verify_code.length != 4){
+            showError('', '验证码错误');
+            return false;
+        }
+        if (!$(".checkbox").attr("checked")){
+            showError('', '您尚未选择接受《用户协议》');
+            return false;
+        }
+        $('form').submit()
+    }
+    function login(){
+        window.location='<?php echo $loginindexUrl ?>'
+    }
+    
+$(function(){
+    var email = $('#email');
+    var verify_code = $("#verify_code");
+    email.blur(function(){
+        if(email.val()==''){
+            showError('', '请输入邮箱');
+            return false;
+        }
+        $.ajax({
+            url: "<?php echo $checkemailUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'email':email.val() },
+            success: function(ret) {
+                if (ret.success) {
+                    email.siblings('.tips').removeClass('myerror').addClass('mysuccess');
+                } else {
+                    showError('', ret.msg);
+                    email.siblings('.tips').addClass('myerror').removeClass('mysuccess');
+                    return false
+                }
+            }
+        });    
+	});
+    verify_code.blur(function(){
+        $.ajax({
+            url: "<?php echo $checkVerifycodeUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'verify_code':verify_code.val() },
+            success: function(ret) {
+                if (ret.success) {
+                    verify_code.siblings('.tips').removeClass('myerror').addClass('mysuccess');
+                } else {
+                    verify_code.siblings('.tips').addClass('myerror').removeClass('mysuccess');
+                }
+            }
+        });
+    });
+    var captcha = function() {
+        $.ajax({
+            type: "GET",
+            url: "<?php echo $registerVerifycodeUrl  ?>?rand=" + Math.random(),
+            dataType: "html",
+            success: function(html) {
+                $("img.captcha").attr("src", "<?php echo $registerVerifycodeUrl  ?>?rand=" + Math.random());
+            }
+        });
+    }
+    captcha()
+    
+    $("#user_agreement").click(function(){
+        var $c = $('<div style="width:774px;height:514px;text-align:left;overflow-x:hidden;overflow-y:auto;line-height:24px;border:1px solid #e7e7e7;position:relative;left:-60px;top:-28px;background-color:#ffffff;"></div>');
+        $c.html($(".user_agreement").clone());
+        $c.children().show();
+        jDialog({
+            content:$c,
+            mask:true,
+            width:800,
+            height:600,
+            button:{'ok':{'name':'确定',"className":"btn-s"}},
+       });
+    })
+   
+    // 刷新验证码
+    $(".changeCode").click(function(){
+        captcha();
+    });
+});
+</script>

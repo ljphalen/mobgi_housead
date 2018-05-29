@@ -1,0 +1,171 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/material.css?v=<?php echo $version;?>" rel="stylesheet" />
+<style>
+    .long-label-input{
+        width: 200px;
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>添加<?php echo $typeName;?>素材标签</p>
+                </div>
+                <!-- 查询条件 begin -->
+                <form class="layui-form" action="">
+                    <div class="query-condition">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">渠道组名称</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="group_id" value="<?php echo $channelGroup['id']; ?>" />
+                                <input type="text" disabled name="name" placeholder="" value="<?php echo $channelGroup['name']; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">素材标签类型</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="type" value="<?php echo $type; ?>" />
+                                <input type="text" disabled name="name" placeholder="" value="<?php echo $typeName; ?>" class="layui-input">
+                            </div>
+                        </div>
+                        <?php if($type == 1||$type == 2){ ?>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">长度(px)</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="width" placeholder="0为不做限制" value="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">宽度(px)</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="height" placeholder="0为不做限制" value="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">大小限制(mb)</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="size" placeholder="0为不做限制" value="" class="layui-input">
+                                </div>
+                            </div>
+                        <?php }?>
+                        <?php if($type == 1){?>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">最大时长(s)</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="max_time" placeholder="0为不做限制" value="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">最小时长(s)</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="min_time" placeholder="0为不做限制" value="" class="layui-input">
+                                </div>
+                            </div>
+                        <?php }?>
+                        <?php if($type == 3){?>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">最大字数</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="max" placeholder="0为不做限制" value="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label long-label">最小字数</label>
+                                <div class="layui-input-block long-label-input">
+                                    <input type="text" name="min" placeholder="0为不做限制" value="" class="layui-input">
+                                </div>
+                            </div>
+                        <?php }?>
+                    </div>
+                    <!-- 素材列表 end-->
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button"  class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                            <a type="button" class="layui-btn layui-btn-primary" href="javascript:history.go(-1)">取消</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>
+<script>
+    //JavaScript代码区域
+    layui.use(['element', 'form', 'laydate', 'table', 'upload'], function () {
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var upload = layui.upload;
+        // 初始化 日期 date 插件
+        laydate.render({
+            elem: '#date', //指定元素
+            value: '',
+            range: true,
+            done: function (value, date, endDate) {
+                var begin = '',
+                    end = '';
+                if (value) {
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            data.field.token = token;
+            $.ajax({
+                url : 'addSpec',
+                async: false,
+                data : data.field,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    layer.msg(data.msg);
+                    if(data.success){
+                        setTimeout(function(){
+                            window.location.href = 'specConfig?id='+<?php echo $channelGroup['id'];?>;
+                        },500);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+            return false;
+        });
+
+    });
+
+
+
+
+    //重新渲染form
+    function renderLayuiForm(){
+        layui.use('form', function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+
+</script>

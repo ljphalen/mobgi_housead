@@ -1,0 +1,545 @@
+<div id="main" class="ms-mian ms-height">
+        <!-- app main top begin -->
+        <div class="items-wrap wrap-bg">
+            <div class="app-item-info">
+                <i class="app-icon"><img src="" /></i>
+                <p class="app-name">
+                    <i ></i>
+                    <span><?php echo $data['app_name']; ?></span>
+                </p>
+                <p class="app-key" data-app-key="">AppKey：<?php echo $data['app_key']; ?></p>
+            </div>
+        </div>
+        <!-- app main top end   -->
+
+        <!-- app 主页 begin -->
+        <div class="items-wrap wrap-bg space-top mian-h" id="main-index" >
+            <div class="items-main-title">
+                <p>广告商参数配置</p> 
+            </div> 
+            <div class="group-list"> 
+                <div class="layui-btn-group">
+                <?php foreach ($adsAppList as $val){?>
+                    <button data-type="<?php  echo $val['ad_type'];  ?>" class="layui-btn <?php echo ($val['ad_type'] == '1')?'layui-btn-normal':'layui-btn-primary' ?>"><?php echo $val['ad_type_name'];?></button>
+                  <?php }?>     
+                </div>
+            </div>
+            <!-- form begin -->
+            <form class="layui-form" action="<?php echo $addPostUrl;?>" method="POST"  id="addForm">
+                <input name="token" type="hidden"  value="<?php  echo $token;  ?>" />
+                <input name="platform" type="hidden"  value="<?php  echo $data['platform'];  ?>" />
+                <input name="app_name" type="hidden"  value="<?php  echo $data['app_name'];  ?>" />
+                <input name="app_key" class="page_app_key" type="hidden"  value="<?php  echo $data['app_key'];  ?>" />
+                <?php foreach ($adsAppList as $val){?>
+                <!--  广告类型 内容 begin -->
+                <!--  radio begin -->
+                <div class="layui-form-item ads-main" data-type="<?php echo $val['ad_type'];  ?>">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">网络策略：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="<?php  echo $val['ad_type_desc'];?>_play_network" value="0" title="WIFI下才去加载广告商的广告" <?php echo ($val['play_network'] == 0)?'checked':'';?>>
+                            <input type="radio" name="<?php  echo $val['ad_type_desc'];?>_play_network" value="1" title="全网络环境下加载广告商的广告" <?php echo ($val['play_network'] == 1)?'checked':'';?>>
+                            <span class="network-reminder">（*）</span>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">生命周期：</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" name="<?php  echo $val['ad_type_desc'];  ?>_life_cycle" type="text"   placeholder="300" value="<?php echo $val['life_cycle']; ?>"/>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">秒 <span class="red">（*）</span></div>
+                    </div>
+                   <?php    if(  in_array($val['ad_type_desc'],array('video','pic','splash')) ){    ?>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">原生拼装：</label>
+                        <div class="layui-input-block choose-item-title">
+                            <input lay-filter="choose-item-radio" name="<?php  echo $val['ad_type_desc'];  ?>_is_use_template" value="1" type="radio"  title="显示" <?php echo ($val['is_use_template'] == 1)?'checked':'';?>> 
+                            <input lay-filter="choose-item-radio"  name="<?php  echo $val['ad_type_desc'];  ?>_is_use_template" value="0" type="radio" title="不显示"  <?php echo ($val['is_use_template'] == 0)?'checked':'';?> >
+                        </div>
+                    </div>
+					<?php    if(  in_array($val['ad_type_desc'],array('video','splash')) ){    ?>
+                    <div class="layui-form-item  choose-item-content <?php echo ($val['is_use_template'] == 1)?'open':'';?>"  data-name="<?php  echo $val['ad_type_desc'];  ?>_is_use_template">
+                        <label class="layui-form-label">展示时长(单位秒)：</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" name="<?php  echo $val['ad_type_desc'];  ?>_template_show_time" type="text"   placeholder="3" value="<?php echo $val['template_show_time']; ?>"/>
+                        </div>
+                         <div class="layui-form-mid layui-word-aux">秒 <span class="red">（*）</span></div>
+                    </div>
+                       <?php }?>
+                     <div class="layui-form-item  choose-item-content <?php echo ($val['is_use_template'] == 1)?'open':'';?>"  data-name="<?php  echo $val['ad_type_desc'];  ?>_is_use_template">
+                        <label class="layui-form-label">模板：</label>
+                        <div class="layui-input-inline">
+                        <select name="<?php  echo $val['ad_type_desc'];  ?>_template_id">
+                        <?php foreach ($templateList[$val['ad_type']]  as $templateId =>$name){?>
+                         <option value="<?php echo $templateId;?>"  <?php echo ($val['template_id'] == $templateId)?"selected":'';?>><?php echo $name; ?></option>
+                        <?php }?>
+                        </select>
+                        </div>
+                    </div>
+                    <?php   }  ?> 
+                    
+                <?php    if( $val['ad_type_desc'] == 'splash' ){    ?>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">悬浮窗关闭按钮：</label>
+                        <div class="layui-input-block choose-item-title">
+                            <input lay-filter="choose-item-radio" name="<?php  echo $val['ad_type_desc'];  ?>_is_show_view" value="1" type="radio"  title="显示" <?php echo ($val['is_show_view'] == 1)?'checked':'';?>> 
+                            <input lay-filter="choose-item-radio"  name="<?php  echo $val['ad_type_desc'];  ?>_is_show_view" value="0" type="radio" title="不显示"  <?php echo ($val['is_show_view'] == 0)?'checked':'';?> >
+                        </div>
+                    </div>
+                    <div class="layui-form-item  choose-item-content <?php echo ($val['is_show_view'] == 1)?'open':'';?>"  data-name="<?php  echo $val['ad_type_desc'];  ?>_is_show_view">
+                        <label class="layui-form-label">关闭按钮出现时间(单位秒)：</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" name="<?php  echo $val['ad_type_desc'];  ?>_show_view_time" type="text"   placeholder="3" value="<?php echo $val['show_view_time']; ?>"/>
+                        </div>
+                    </div>
+                    <?php   }  ?> 
+                    <!--  radio end  -->
+                    <!--  table  begin -->
+                    <table  class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>广告商名称</th>
+                                <th>请输入第三方appkey</th>
+                                <th>密钥</th>
+                                <th>请输入第三方reportId</th>
+                                <th>第三方 blockid </th>
+                                <th>操作</th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                        <?php foreach($val['ads_list']  as $appRelConf){?>
+                        <tr data-desc="<?php  echo $val['ad_type_desc'];  ?>">
+                            <input class="layui-input" type="hidden"   name="<?php  echo $val['ad_type_desc'];  ?>_ads_id[]" value="<?php   echo $appRelConf['ads_id'];   ?>">
+                            <input  class="layui-input" type="hidden"   name="<?php  echo $val['ad_type_desc'];  ?>_ads_app_rel_id[]" value="<?php   echo $appRelConf['ads_app_rel_id'];   ?>">           
+                            <td><?php echo $appRelConf['ads_name'];  ?>(<?php echo $appRelConf['parent_name'];  ?>)</td>
+                            <td><input class="layui-input" type="text" name="<?php  echo $val['ad_type_desc'];  ?>_third_party_app_key[]" value="<?php echo $appRelConf['third_party_app_key'];?>"></td>
+                            <td><input class="layui-input" type="text" name="<?php  echo $val['ad_type_desc'];  ?>_third_party_secret[]" value="<?php echo $appRelConf['third_party_secret'];?>"></td>
+                            <td><input class="layui-input" type="text" name="<?php  echo $val['ad_type_desc'];  ?>_third_party_report_id[]" value="<?php echo $appRelConf['third_party_report_id'];?>"></td>
+                            <td><a class="link-set" data-ad-type="<?php echo $val['ad_type']?>" data-name="<?php echo $val['ad_type_desc']?>" >配置</a> <input class="layui-input" type="hidden" name="app_key_rel_pos_set_<?php echo $val['ad_type']?>[<?php echo $appRelConf['ads_id'];?>]" value='<?php echo $appRelConf['third_party_block_id'];?>'></td>
+                            <td><a data-ad-type="<?php  echo $val['ad_type'];  ?>"  data-desc="<?php  echo $val['ad_type_desc'];  ?>" class="link-delete" data-ad-name="customAppkey">删除</a></td>
+                        </tr>
+                        <?php }?>
+                        </tbody>
+                    </table>
+                    <!--  table  end  -->
+                    <div class="layui-input-inline">
+                        <div style="display:none;" class="form-blockList"></div>
+                        <div class="choose_selectBox" data-ad-type="<?php echo $val['ad_type']?>" ></div>
+                        <button class="layui-btn layui-btn-small ad-btn-add" type="button" data-ad-type="<?php echo $val['ad_type']?>" data-ad-name="<?php echo $val['ad_type_desc']?>">
+                            <i class="layui-icon">&#xe654;</i>
+                        </button>
+                    </div>
+                </div>
+                <!--  广告类型 内容 end  -->
+                 <?php }?>    
+                 <hr class="layui-bg-gray">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-big layui-btn-normal"  type="button" lay-submit  lay-filter="formTest">立即提交</button>
+                        <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button" >取消</button>
+                    </div>
+                </div>
+                
+            </form>
+            <!-- form begin -->
+            
+        </div>
+        <!-- app 主页 end -->
+</div>
+<script>
+    ;(function(){
+        var appKey;
+        // 主页 数据 回调
+        var mainCallback = {
+            success:function(data){
+                var app = data.data;
+                if(data.success){
+                    //初始化 mian 头部 信息
+                    $("#main").find(".app-icon img").attr("src",app.icon);
+                    $("#main").find(".app-name span").html(app.app_name);
+                    $("#main").find(".app-key").html('AppKey：'+app.app_key);
+                    $("#main").find(".app-type i").removeClass('ios');
+                    $("#main").find(".app-type i").removeClass('android');
+                    $("#main").find(".app-type i").addClass(app.platform_class);
+                    initTable(app.list,"#main-index-table");
+                }else{
+                    layer.msg(data.msg); 
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg); 
+            } 
+        };
+
+        // 主页初始化
+        function initMain(){
+           var app_key = getQueryString('app_key');
+           var icon = '',app_name='';
+           if(!app_key){
+               var app =  $($(".appList li").get(0));
+               icon = $($(".appList li").get(0)).find(".app-icon img").attr("src");
+               app_name =  $($(".appList li").get(0)).find(".app-title").html();
+               $($(".appList li").get(0)).addClass("active");   
+               app_key = app.find(".app-title").attr("data-app-key");
+               $(".page_app_key").val(app_key);
+           }else{
+               $(".appList li").removeClass("active"); 
+               var applist = $(".appList li");
+               applist.each(function(){
+                    var appKey = $(this).find(".app-title").attr("data-app-key");
+                    if(appKey==app_key){
+                        $(this).addClass("active"); 
+                        icon = $(this).find(".app-icon img").attr("src");
+                        app_name =  $(this).find(".app-title").html();
+                    }
+               });  
+           }
+           appKey = app_key;
+           $("#main .app-key").attr("data-app-key",app_key);
+           $("#main .app-icon img").attr("src",icon);
+           $($(".ads-main").get(0)).show();
+     
+           $(".choose_selectBox").selectBox({ name:'',title:'选择广告商', data:[] });
+           $(".choose_selectBox").parent().find(".layui-btn").hide();
+           renderLayuiForm();
+        }
+        
+        $(".group-list .layui-btn-group button").click(function(){
+            $(".group-list .layui-btn-group button").removeClass("layui-btn-normal");
+            $(".group-list .layui-btn-group button").removeClass("layui-btn-primary");
+            $(".group-list .layui-btn-group button").addClass("layui-btn-primary");
+            $(this).removeClass("layui-btn-primary");
+            $(this).addClass("layui-btn-normal");
+            var ad_type = $(this).attr("data-type");
+            var main = $(".ads-main");
+            main.each(function(){
+                var type = $(this).attr("data-type");
+                if(ad_type==type){
+                    $(".ads-main").hide();
+                    $(this).show();
+                    return ; 
+                }
+            });
+        });
+        // 初始化广告商
+        $(".choose_selectBox").click(function(){
+            var type = $(this).attr("data-ad-type");
+            var data = "?app_key="+appKey + "&ad_type="+type;
+            var that = $(this);
+            var init = that.attr("data-init");
+            if(!init){
+                $.ajax({
+                    url : baseurl + '<?php echo $getAdsUrl;?>' +data ,
+                    async: false,
+                    data : null,
+                    type : 'get',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        if(data.success){
+                            that.attr("data-init",true);
+                            that.parent().find(".layui-btn").show();
+                            that.parent().find(".form-blockList").html(JSON.stringify(data.data.blockList));
+                            var adsList = data.data.adsList;
+                            var list = [];
+                            for(var index in adsList){
+                                var id = adsList[index]['ads_id'];
+                                list[id] = adsList[index]['ads_name'] + "("+ adsList[index]['parent_name'] +")";
+                            }
+                            setSelectBox(that,list);
+                        }else{
+                            layer.msg(data.msg); 
+                        }
+                    },
+                    error :function(xhr,msg,e){
+                        layer.msg(msg); 
+                    }
+                }); 
+            }
+  
+        });
+        // //  遍历 selectBox 选中项
+        function setSelectBox(that,data){
+            var trs = that.parent().parent().find(".layui-table tbody tr");
+            //  遍历 selectBox 选中项
+            var selecteds = [];
+            if(trs.length>0){
+                trs.each(function(){
+                    selecteds.push($($(this).find('input').get(0)).val());
+                });
+            }
+            that.selectBox({ name: '' , title:'选择广告商', data:data ,selected:selecteds});
+            that.find(".menuitem").show();
+            renderLayuiForm();
+        } 
+        // 添加广告商
+        $(".ad-btn-add").click(function(){
+            var that = $(this);
+            var type = that.attr("data-ad-type");
+            var tbody = that.parent().parent().find(".layui-table tbody");
+            var boxs = that.parent().find(".menuitem-list input[type='checkbox']");
+            var adname = that.attr("data-ad-name");
+            var temp = '';
+            var blocklist = that.parent().find(".form-blockList").html();
+            boxs.each(function(){
+                if($(this).prop("checked")){
+                    var curval = $(this).val();
+                    var title = $(this).attr('title');
+                    var isExist = false;
+                    tbody.find("tr").each(function(){
+                        if(curval==$($(this).find("input").get(0)).val()){
+                            isExist = true;
+                        }
+                    });
+                    if(!isExist){ 
+                        temp = temp + `<tr data-desc=`+adname+`>
+                        <input class="layui-input" type="hidden"   name="`+adname+`_ads_id[]" value="`+curval+`">
+                        <input  class="layui-input" type="hidden"   name="`+adname+`_ads_app_rel_id[]" value="0">           
+                        <td>`+title+`</td>
+                        <td><input class="layui-input" type="text" name="`+adname+`_third_party_app_key[]" value=""></td>
+                        <td><input class="layui-input" type="text" name="`+adname+`_third_party_secret[]" value=""></td>
+                        <td><input class="layui-input" type="text" name="`+adname+`_third_party_report_id[]" value=""></td>
+                        <td><a class="link-set" data-ad-type="`+type+`">配置</a> <input class="layui-input" type="hidden" name="app_key_rel_pos_set_`+type+`[`+curval+`]" value=`+blocklist+`></td>
+                        <td><a class="link-delete" data-ad-type="`+type+`" data-desc="`+adname+`">删除</a></td>
+                        </tr> `;
+                    } 
+                }
+            });
+            tbody.append(temp);
+            removeUnselected(tbody,boxs);
+            renderLayuiForm();
+
+        });
+        // 删除 没有选中的项目 
+        function removeUnselected(tbody,boxs){
+            tbody.find("tr").each(function(){
+                var isRemove = false;
+                var name = $(this).attr("data-desc")
+                var ads_id = $(this).find("input[name='"+name+"_ads_id[]']").val();
+                var ads_app_rel_id = $(this).find("input[name='"+name+"_ads_app_rel_id[]']").val();
+                boxs.each(function(){
+                    if($(this).prop("checked")==false){
+                        if($(this).val()==ads_id && parseInt(ads_app_rel_id)==0){
+                            isRemove = true;
+                            return;
+                        }
+                    }
+                }); 
+                if(isRemove){
+                    $(this).remove();
+                }
+            });  
+        }
+        // 删除 
+        $(".layui-form").delegate(".layui-table .link-delete","click",function(){
+            var name = $(this).attr("data-desc");
+            var ads_app_rel_id = $(this).parent().parent().find("input[name='"+name+"_ads_app_rel_id[]']").val();
+            var ads_id = $(this).parent().parent().find("input[name='"+name+"_ads_id[]']").val();
+            var that = $(this);
+            var data =  {
+                ads_id : ads_id,
+                ad_type : $(this).attr("data-ad-type") ,
+                app_key : appKey,
+                token : token,
+            }
+
+            if(ads_app_rel_id!=0){
+                layer.confirm('确认是否要删除?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        url : baseurl + '<?php echo $deleteUrl?>' ,
+                        async: false,
+                        data : data,
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                            layer.close(index);
+                            layer.msg(data.msg);
+                            if(data.success){
+                                that.parent().parent().remove();
+                            }
+                        },
+                        error :function(xhr,msg,e){
+                            layer.close(index);
+                            layer.msg(msg); 
+                        }
+                    });
+                   
+                });
+            }else{
+                $(this).parent().parent().remove();
+            }
+        });
+
+        // 配置 
+        $(".layui-form").delegate('.layui-table .link-set','click',function(){
+            var list = $(this).parent().find(".layui-input").val();
+            var name = $($(this).parent().parent().find("td").get(0)).html();
+            var that = $(this);
+            var ad_type = $(this).attr("data-ad-type");
+            if(typeof list == 'string' && list){
+                list = JSON.parse(list);
+                var body = '';
+                console.log(list);
+                for(var k in list){
+                    var pos_key = list[k]['pos_key'];              
+                    var pos_name = list[k]['pos_name'];
+                    var third_party_block_id = list[k]['third_party_block_id'];
+                    var third_party_report_id =  list[k]['third_party_report_id'];
+                    var state = list[k]['state'];
+                    var switchButton = '';
+                    if(state==1){
+                        switchButton = ' <input type="checkbox" lay-filter="formSetting" lay-skin="switch" lay-text="开启|关闭" checked>'; 
+                    }else{
+                        switchButton = ' <input type="checkbox" lay-filter="formSetting" lay-skin="switch" lay-text="开启|关闭">';  
+                    }
+                    var extro = '';
+                    var ad_sub_type ,size;
+                   if(ad_type == 5){
+                	   extro = '/'+list[k]['ad_sub_type']+'/'+list[k]['size'];
+                	   ad_sub_type = list[k]['ad_sub_type'];
+                	   size = list[k]['size'];     
+                     }
+                    body = body + `<tr data-ads_pos_rel_id="`+list[k]['ads_pos_rel_id']+`" data-ad-sub-type="`+ad_sub_type+`" data-size="`+size+`">
+                        <td >`+pos_key+`</td>
+                        <td data-pos-name="`+pos_name+`">`+pos_name+extro+`</td>
+                        <td><input  class="layui-input" name="" type="text" value="`+third_party_block_id+`" /></td>
+                        <td><input  class="layui-input" name="" type="text" value="`+third_party_report_id+`" /></td>
+                        <td>`+switchButton+`
+                        <input class="state" type="hidden" value="`+state+`" /></td></form>
+                        </tr>`;
+                }
+                var trStr = '';
+                if(ad_type == 5){
+               	     trStr =  `<th>广告位ID</th><th>广告位名称/子类型/尺寸</th><th>`+name+` blockid</th><th>reportid</th><th>状态</th>`
+                 }else{
+                	 trStr =  `<th>广告位ID</th><th>广告位名称</th><th>`+name+` blockid</th><th>reportid</th><th>状态</th>`
+                 }
+                var temp = `<form class="layui-form" ><div class="setting-table-wrap">
+                            <table class="layui-table" >
+                                <thead>
+                                    <tr>
+                                    `+ trStr +`
+                                    </tr>
+                                </thead> 
+                                <tbody>
+                                    `+ body +`
+                                </tbody>
+                            </table>
+                            </div></form> `; 
+                layer.open({
+                    title : '第三方Blockid配置('+name+')',
+                    type: 1,
+                    area: ['1000px', '600px'],
+                    shadeClose: true, //点击遮罩关闭
+                    content: temp,
+                    btn: ['保存', '取消'],
+                    success: function(layero){
+                        var btn = layero.find('.layui-layer-btn').find('.layui-layer-btn0');
+                        btn.on("click",function(){
+                            var trs = $(".setting-table-wrap tbody").find("tr");
+                            var array = [];
+                            trs.each(function(){
+                                var obj = new Object();
+                                obj.pos_key = $($(this).find("td").get(0)).html();
+                                obj.pos_name = $($(this).find("td").get(1)).attr('data-pos-name');
+                                obj.third_party_block_id = $($(this).find("td").get(2)).find("input").val();
+                                obj.third_party_report_id = $($(this).find("td").get(3)).find("input").val();
+                                obj.state = $($(this).find("td").get(4)).find(".state").val();
+                                obj.ads_pos_rel_id = $(this).attr("data-ads_pos_rel_id");
+                                obj.ad_sub_type = $(this).attr("data-ad-sub-type");
+                                obj.size = $(this).attr("data-size");
+                                array.push(obj);
+                            });
+                            array = JSON.stringify(array);
+                            console.log(array)
+                            that.parent().find(".layui-input").val(array);
+                        });
+                        renderLayuiForm();
+                    }
+                });               
+            }else{
+                layer.msg('获取配置失败'); 
+            }
+        });
+        initMain();  // 初始化主页
+    })();
+
+
+    
+    // form 表单 提交
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('submit(formTest)', function(data){
+       	        var index = layer.load();
+                  //var  jsonData = data.field;
+                var jsonData = $("form").serializeArray();
+                $.ajax({
+                    url : baseurl + '<?php echo $addPostUrl?>',
+                    async: true,
+                    data : jsonData,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                    	layer.close(index);  
+                        layer.msg(data.msg); 
+                        if(data.success){
+                                setTimeout(function() {     
+                                    params = '<?php echo $queryString;?>';
+                                  window.location.href= baseurl +'<?php echo $listUrl;?>?app_key='+$('.page_app_key').val()+'&'+params;
+                            }, 500); 
+                            //跳转
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                    	layer.close(index);  
+                        layer.msg(msg); 
+                    }
+                });
+                return false;  
+        }); 
+
+        //取消按钮
+        $(".cannel").click(function(){
+			var queryString = "<?php echo $queryString;?>";
+			 window.location.href= baseurl +'<?php echo $listUrl;?>?app_key='+$('.page_app_key').val()+'&'+queryString;
+        });
+        //
+        form.on('switch(formSetting)', function(data){
+            if(data.elem.checked){
+                $(data.elem).parent().find(".state").val(1);
+            }else{
+                $(data.elem).parent().find(".state").val(0);
+            }
+        });
+
+        form.on('radio(choose-item-radio)', function(data){
+      	    var name = $(this).attr("name");
+            if(data.elem.checked && data.value==0){
+                $(".choose-item-content").each(function(){ 
+                    var dname = $(this).attr("data-name");
+                    if(name==dname){
+                       $(this).hide();
+                       return;
+                    }
+                });
+            }else if(data.elem.checked && data.value==1){
+                $(".choose-item-content").each(function(){ 
+                    var dname = $(this).attr("data-name");
+                    if(name==dname){
+                        $(this).show();
+                       return;
+                    }
+                 });
+            }
+      	});  
+    });
+
+
+</script>

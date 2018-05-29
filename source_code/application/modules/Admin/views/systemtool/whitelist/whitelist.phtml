@@ -1,0 +1,363 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+<div class="colMain" style="min-height: 196px;">
+	<div class="main">
+	<form action="/Admin/systemtool_Whitelist/whitelist" id="searchForm" method="get">
+		<!--<input name="token" type="hidden" value="<?php echo $token;?>" />-->
+        <input type ="hidden" name="action" id="action" value="check" />
+        <div class="table_full">
+        	<table width="100%">
+        	   <tr class="tr">
+        			<th class="th">请选择平台</th>
+        			<td class="td">
+                        <select id="platform" name="platform">
+                            <option value="" <?php if($params['platform'] == 0){echo 'selected';}; ?> >所有平台</option>
+                            <option value="1" <?php if($params['platform'] == 1){echo 'selected';}; ?> >Android</option>
+                            <option value="2" <?php if($params['platform'] == 2){echo 'selected';}; ?> >IOS</option>
+                        </select>
+                    </td>
+                    <th class="th">设备号</th>
+                    <td class="td">
+                        <input type="text" class="iText" name='imei_idfa' id='imei_idfa' value='<?php echo $params['imei_idfa']; ?>' placeholder="可输入IMEI/IDFA查询" />
+                    </td>
+            	</tr>
+        	</table>
+        </div>
+        <div class="mb10 tac">
+            <span><button type="button" class="btn" onclick="confirmSubmit();">搜 索</button></span>
+        </div>
+    </form>
+
+    <div class="table_list">
+        <div class="h_a">
+            <span class="btn2">
+                <span><button id="added" type="button">新增</button></span>
+            </span>
+            <span>共 <?php echo $total;?> 条结果</span>
+        </div>
+    
+        <table width="100%">
+            <tr class="hd">
+                <td width="">平台类型</td>
+                <td width="">设备名称</td>
+                <td width="">设备号</td>
+                <td width="">测试配置</td>
+                <td width="">更新时间</td>
+                <td width="">是否开启下发</td>
+                <td width="">是否开启上报</td>
+                <td width="">devMode</td>
+                <td width="">操作</td>
+            </tr>
+            <?php if($whitelist){?>
+                <?php foreach ($whitelist as $item){ ?>
+                <tr class="ct">
+                    <td><?php if($item['platform'] == 1){echo "Android";}else{echo "IOS";}?></td>
+                    <td><?php echo $item['device_name'];?></td>
+                    <td><?php echo $item['imei_idfa'];;?></td>
+                    <td>
+                        <?php if($item['configArr']){?>
+                            <?php foreach($item['configArr'] as $k2=>$v2){ ?>
+                                <?php echo $v2['intergration_type_str']. ": ". '<a href="javascript:return false;" area_conf_id='.$v2['area_conf_id'].' class="edit table_edit" title="编辑">' . $v2['conf_name'].'</a>' ."<br/>"; ?>
+                            <?php } ?>
+                        <?php }?>
+                    </td>
+                    <td><?php echo date("Y-m-d H:i:s", $item['updatetime']);?></td>
+                    <td><?php if($item['isopen'] == 1){echo "<font color='green'>开启</font>";}else{echo "<font color='red'>未开启</font>";}?></td>
+                    <td><?php if($item['isReport'] == 1){echo "<font color='green'>开启</font>";}else{echo "<font color='red'>未开启</font>";}?></td>
+                    <td><?php echo $item['devMode'];;?></td>
+                    <td>
+                        <a href="javascript:return false;" class="edit editwhiteitem" editid="<?php echo $item['id'];?>" title="编辑">编辑</a>
+                        <a href="javascript:return false;" class="search" platform="<?php echo $item['platform'];?>" imei_idfa="<?php echo $item['imei_idfa'] ?>" date="<?php echo date("Y-m-d"); ?>" title="数据查询">数据查询</a>
+                        <a href="javascript:" onclick="deleteOne('<?php echo $deletewhiteitemUrl;?>?id=<?php echo $item['id'];?>', '', event);"　class="mr10">删除</a> 
+                    </td>
+                </tr>
+                <?php }?>
+            <?php }?>
+        </table>
+        </div>
+        <div class="mr10 cc tc">
+        <?php echo $pager;?>
+        </div>
+	</div>
+</div>
+</div>
+
+<script type="text/html" id="DLgridPopUp">
+<ul class="form">
+    <li>
+        <span class="label">平台类型：</span>
+        <div class="fc">
+            <input type="hidden" name="whiteitemid" id="whiteitemid" />
+            <select id="pop_platform" name="pop_platform">
+                <option value="1">Android</option>
+                <option value="2">IOS</option>
+            </select>
+            <span class="red">*</span>
+        </div>
+    </li>
+    <li>
+        <span class="label">设备名称：</span>
+        <div class="fc">
+            <input type="text" name="pop_device_name" id="pop_device_name" class="iText" width="100px;" />
+            <span class="red">*</span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+	<li>
+        <span class="label">设备号：</span>
+        <div class="fc">
+            <input type="text" name="pop_imei_idfa" id="pop_imei_idfa" class="iText" width="100px;" />
+            <span class="red">*</span><font color="#CCCCCC">IMEI/IDFA</font>
+        </div>
+    </li>
+    <li>
+        <span class="label">视频配置：</span>
+        <div class="fc">
+            <select id="pop_video" name="pop_video" class='ads'>
+                <option value="0">请选择</option>
+                <?php foreach($areaList as $areaitem){ ?>
+                    <?php if($areaitem['intergration_type'] == 1){ ?>
+                    <option value="<?php echo $areaitem['id']; ?>" platform="<?php echo $areaitem['platform']; ?>"><?php echo $areaitem['conf_name']; ?></option>
+                    <?php } ?>
+                <?php }?>
+            </select>
+            <span class="red"></span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+    <li>
+        <span class="label">插页配置：</span>
+        <div class="fc">
+            <select id="pop_pic" name="pop_pic" class='ads'>
+                <option value="0">请选择</option>
+                <?php foreach($areaList as $areaitem){ ?>
+                    <?php if($areaitem['intergration_type'] == 2){ ?>
+                    <option value="<?php echo $areaitem['id']; ?>" platform="<?php echo $areaitem['platform']; ?>"><?php echo $areaitem['conf_name']; ?></option>
+                    <?php } ?>
+                <?php }?>
+            </select>
+            <span class="red"></span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+    <li>
+        <span class="label">开屏配置：</span>
+        <div class="fc">
+            <select id="pop_splash" name="pop_splash" class='ads'>
+                <option value="0">请选择</option>
+                <?php foreach($areaList as $areaitem){ ?>
+                    <?php if($areaitem['intergration_type'] == 4){ ?>
+                    <option value="<?php echo $areaitem['id']; ?>" platform="<?php echo $areaitem['platform']; ?>"><?php echo $areaitem['conf_name']; ?></option>
+                    <?php } ?>
+                <?php }?>
+            </select>
+            <span class="red"></span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+    <li>
+        <span class="label">原生配置：</span>
+        <div class="fc">
+            <select id="pop_enbed" name="pop_enbed" class='ads'>
+                <option value="0">请选择</option>
+                <?php foreach($areaList as $areaitem){ ?>
+                    <?php if($areaitem['intergration_type'] == 5){ ?>
+                    <option value="<?php echo $areaitem['id']; ?>" platform="<?php echo $areaitem['platform']; ?>"><?php echo $areaitem['conf_name']; ?></option>
+                    <?php } ?>
+                <?php }?>
+            </select>
+            <span class="red"></span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+    <li>
+        <span class="label">是否开启下发：</span>
+        <div class="fc">
+            <select id="pop_isopen" name="pop_isopen" >
+                <option value="1">开启</option>
+                <option value="0">关闭</option>
+            </select>
+            <span class="red"></span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+    <li>
+        <span class="label">是否开启上报：</span>
+        <div class="fc">
+            <select id="pop_isReport" name="pop_isReport" >
+                <option value="1">开启</option>
+                <option value="0">关闭</option>
+            </select>
+            <span class="red"></span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+    <li>
+        <span class="label">devMode：</span>
+        <div class="fc">
+            <select id="pop_devMode" name="pop_devMode" >
+                <option value=""></option>
+                <option value="YES">YES</option>
+                <option value="NO">NO</option>
+            </select>
+            <span class="red"></span><font color="#CCCCCC"></font>
+        </div>
+    </li>
+</ul>
+<div style="text-align:center;padding:10px 0;">
+    <a href="javascript:void(0)" class="btn" id="ok">确定</a>
+    <a href="javascript:void(0)" class="cancel">取消</a>
+</div>
+</script>
+
+<script type="text/javascript">
+    
+</script>
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>
+
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+
+<script type="text/javascript">
+function confirmSubmit()
+{
+    $("#searchForm").submit();
+}
+
+$(function(){
+    $("#platform").chosen({}); 
+
+});
+</script>
+
+<script>
+$(function(){
+    
+    //特定设备列表 -更新
+    function showPopUpGridDL(data){
+        var $content = $('<div class="tjgl"></div>').append($("#DLgridPopUp").html());
+        var param = {};
+        var PopUp = jDialog({
+            width:600,
+            height:480,
+            content:$content
+        });
+        if(data){//从列表更新
+            $("#whiteitemid").val(data.id);
+            $("#pop_platform").val(data.platform);
+            $("#pop_imei_idfa").val(data.imei_idfa);
+            $("#pop_device_name").val(data.device_name);
+            $("#pop_video").val(data.video);
+            $("#pop_pic").val(data.pic);
+            $("#pop_splash").val(data.splash);
+            $("#pop_enbed").val(data.enbed);
+            $("#pop_isopen").val(data.isopen);
+            $("#pop_isReport").val(data.isReport);
+            $("#pop_devMode").val(data.devMode);
+//             $.each(data,function(k,v){
+//                 $content.find('[name=pop_"'+k+'"]').val(v);
+//             })
+        }
+        $content.find("#ok").click(function(){
+            param.id = $("#whiteitemid").val();
+            param.platform = $("#pop_platform").val();
+            param.imei_idfa = $("#pop_imei_idfa").val();
+            param.device_name = $("#pop_device_name").val();
+            param.video = $("#pop_video").val();
+            param.pic = $("#pop_pic").val();
+            param.splash = $("#pop_splash").val();
+            param.enbed = $("#pop_enbed").val();
+            param.isopen = $("#pop_isopen").val();
+            param.isReport = $("#pop_isReport").val();
+            param.devMode = $("#pop_devMode").val();
+            param.token=token;
+            if (!param.platform){jAlert("请选择平台类型");return false;}
+            if (!param.imei_idfa){jAlert("请输入设备号");return false;}
+            if (!param.device_name){jAlert("请输入设备号");return false;}
+            //安桌
+            if(param.platform == 1){
+                //var imei_patt=new RegExp("^([0-9A-Za-z]{15})$");
+               // if(!imei_patt.test(param.imei_idfa)){
+                 //   jAlert("请输入正确格式的IMEI")
+              //      return false;
+               // }
+            }
+            //IOS
+            else{
+//                var idfa_patt =/([0-9a-zA-Z]{8})(-[0-9a-zA-Z]{4}){3}(-[0-9a-zA-Z]{12}){1}/
+                var idfa_patt=new RegExp("^([0-9a-zA-Z]{8})(-[0-9a-zA-Z]{4}){3}(-[0-9a-zA-Z]{12}){1}$");
+                if(!idfa_patt.test(param.imei_idfa)){
+                    jAlert("请输入正确格式的IDFA")
+                    return false;
+                }
+            }
+            $.ajax({
+                type : "POST",
+                dataType : "json",
+                url : "<?php echo $whiteitemSaveUrl; ?>",
+                data : param,
+                success: function(data){
+                    jAlert(data.msg);
+                    if(data.code){
+                        
+                    }else{
+                        if(PopUp){PopUp.close();}
+                        location.reload() 
+                    }
+                    
+                 }
+            });
+        });
+        $content.find(".cancel").click(function(){
+            if(PopUp){PopUp.close();}
+        });
+        $content.find("#pop_platform").change(function(){
+            platform = $(this).val()
+            //切换平台时，需要清除旧平台的选中状态
+            $content.find('.ads option:selected').each(function(){
+                if($(this).attr('platform') != platform){
+                    $(this).removeAttr('selected')
+                }
+            })
+            $content.find('.ads option').hide()
+            $content.find('.ads option[value=0]').show()
+            $content.find('.ads option[platform='+platform+']').show()
+        });
+        $("#pop_platform").change()
+        
+    };
+    //新增
+    $("#added").click(function(){
+        showPopUpGridDL();
+    });
+    //更新
+    $(".editwhiteitem").click(function(){
+        id = $(this).attr('editid')
+        ajaxGET("<?php echo $ajaxWhiteItemUrl;?>","id="+id,function(data){
+            if(data.code==0){
+                var param = {};
+                param.id = data.data.id;
+                param.platform = data.data.platform;;
+                param.imei_idfa = data.data.imei_idfa;
+                param.device_name = data.data.device_name;
+                param.video = data.data.config.video;
+                param.pic = data.data.config.pic;
+                param.splash = data.data.config.splash;
+                param.enbed = data.data.config.enbed;
+                param.isopen = data.data.isopen;
+                param.isReport = data.data.isReport;
+                param.devMode = data.data.devMode;
+                showPopUpGridDL(param);
+                return false;
+            }else{
+                jAlert(data.msg)
+            }
+        });
+    });
+    
+    $(".table_edit").click(function(){
+        area_conf_id = $(this).attr("area_conf_id");
+        window.location.href="<?php echo $whiteconfigUrl;?>?id="+area_conf_id; 
+    });
+    
+    $(".search").click(function(){
+        platform = $(this).attr("platform");
+        imei_idfa = $(this).attr("imei_idfa");
+        date = $(this).attr("date");
+        window.open("<?php echo $searchUrl;?>?platform="+platform + "&imei_idfa=" + imei_idfa+ "&screatedate=" + date+ "&ecreatedate=" + date); 
+    });
+    
+});
+</script>

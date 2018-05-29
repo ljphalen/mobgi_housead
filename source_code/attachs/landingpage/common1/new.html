@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/jquery.bigcolorpicker.css" type="text/css" />
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.bigcolorpicker.js"></script>
+    
+    <style>
+        input,img{ vertical-align: top; text-align:inherit; }
+
+        .temp-page{ position: relative; z-index: 1; overflow: hidden;  }
+        .layout-t-left{   float: left; overflow: hidden; }
+        .layout-t-right{  float:left; overflow: hidden; }
+        
+        .layout-retract{ padding: 0 20px;}
+        .temp-title{ height: 40px; line-height: 40px; color:#333; font-size: 14px; width: 100%;   }
+        .temp-pagetitle{ width: 100%; margin: 10px 0; overflow: hidden;  }
+        .text-title{ float:left; min-width: 70px;  height: 30px; line-height: 30px; color:#333; font-size: 14px; display: inline-block;    }
+        .text-in{ float:left; height: 28px; line-height: 28px; width: 300px; padding: 0 10px; outline: none; border:1px solid #ddd; background: #fff; font-size: 14px; color:#333;   }
+        .text-min-in{ float:left; height: 28px; line-height: 28px; width: 56px; text-align: center; padding: 0 5px; outline: none; border:1px solid #ddd; background: #fff; font-size: 14px; color:#333;   } 
+        .text-medium-in{ float:left; height: 28px; line-height: 28px; width: 90px; padding: 0 10px; outline: none; border:1px solid #ddd; background: #fff; font-size: 14px; color:#333; }
+        .text-textarea{resize: none; outline: none; background: #fff; border:1px solid #ddd; padding:10px; width: 300px; height: 133px;    }
+        .temp-textarea-Copyright{ resize: none; outline: none; background: #fff; border:1px solid #ddd; padding:10px; width: 370px; height: 60px; }
+
+        .temp-arcitle{ width: 100%; padding: 10px 0; margin-top: 20px; overflow: hidden;  }
+        .temp-section{ width: 100%; border-top: 1px dashed #999; padding: 10px 0 0 0; overflow: hidden;  }
+        .temp-section-title{   margin-bottom: 10px; border-left:4px solid #1eb3ed; padding-left:10px; height: 20px; line-height: 20px; font-size: 14px;     }
+        .temp-textpage{ position: relative; z-index: 2; width: 100%; margin-bottom: 10px; overflow: hidden;}
+        
+        
+        .temp-comments{ float:left; width: 320px;  }
+        .temp-comments li{ float:left; width:100%; position: relative; z-index: 2;  }
+        .temp-comments-n{ float:left; display:block; font-size: 14px; color:#666; width: 100%; height: 30px; line-height: 30px;   }
+        .text-textarea-comment{ resize: none; outline: none; background: #fff; border:1px solid #ddd; padding:10px; width: 225px; height: 80px; }
+        .add-comment{ cursor: pointer; display: inline-block; padding: 0 10px; margin:0 0 10px 70px;  border: 1px solid #1eb3ed; height:30px; line-height: 30px; font-size: 14px; color:#1eb3ed; }
+        .jscolor-wrap{ position: relative; z-index: 2; float:left; }
+        .jscolor{ position: absolute; z-index: 5; left:3px; top:3px; outline: none;  width: 24px; height: 24px; box-shadow: 2px 2px 2px #ddd; background: #ea4421; cursor: pointer; }
+        .jscolor-in{ float: left; position:relative; z-index: 3; outline: none; height: 28px; line-height: 28px; width: 90px; padding: 0 10px 0 35px; outline: none; border:1px solid #ddd; background: #fff; font-size: 14px; color:#333; }
+        .comment-delete{ position: absolute; z-index: 5; left:-50px; top:0; cursor: pointer;  display: block; width: 32px; height: 32px; background-size:32px 32px; background: url('images/delete.png') no-repeat;  }
+        .commentappicon{  position: absolute; z-index: 5; left:70px; top:0; width:57px; height: 57px;  opacity: 0; filter:alpha(opacity=0); -moz-opacity: 0; -khtml-opacity: 0; -webkit-opacity: 0; }
+
+        .temp-uploadlist{ position:relative; z-index: 2;  float:left; width: 330px; margin-top:5px; display:inline;   }
+        .temp-uploadlist li{  position:relative; z-index: 2; float:left; width: 100px; margin: 0 10px 10px 0; display: inline; }
+        .temp-uploadlist li img{  position:relative; z-index: 4; width: 100px; height: 165px; }
+        .swiperimgUpload{ position: absolute; z-index: 5; width: 100px; height: 165px; opacity: 0; filter:alpha(opacity=0); -moz-opacity: 0; -khtml-opacity: 0; -webkit-opacity: 0;  }
+        .upload-prompt{ display:inline-block; color:#ea4421; font-size: 14px; text-align: center; width:100%; line-height:30px;   }
+
+        .temp-remark{  color:#999; padding: 0 10px 0 70px; line-height: 30px; font-size: 12px; margin-bottom: 5px; }
+        .temp-appicon-wrap{ position: relative; z-index: 2;  float:left;   }
+        .temp-appicon{ position: relative; z-index: 2; float:left; width: 57px; height: 57px; cursor: pointer;  }
+        .appiconUpload{ position: absolute; z-index: 3; top:0;  width: 57px; height: 57px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); -moz-opacity: 0; -khtml-opacity: 0; -webkit-opacity: 0; }
+
+
+        .temp-appicon-remark{ float:left; color:#999; padding: 0 10px; line-height: 30px; font-size: 12px; margin-bottom: 5px; }
+        .temp-banner-img{ float:left; width: 320px; height: 60px;  }
+        .adbanner{ position: absolute; z-index: 3; top:0; left:70px;  width: 320px; height: 60px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); -moz-opacity: 0; -khtml-opacity: 0; -webkit-opacity: 0; }
+        
+
+        .temp_submit{ width: 220px; height: 40px; line-height: 40px; background: #1eb3ed; border-radius: 8px; color:#fff; text-align: center; font-size: 16px; margin:0 auto 50px auto;  }
+
+        .iframe-title{ min-height: 30px; width: 100%;  line-height: 30px; color:#333; font-size: 16px; margin:30px 0 0 10px; text-align: center;  }
+</style>
+</head>
+<body>
+   <div class="temp-page">
+        <!-- left begin -->
+        <div class="layout-t-left">
+            <div class="layout-retract">
+                 <div class="temp-arcitle">
+                        <h1 class="temp-title">模板一</h1>
+                        <div class="temp-pagetitle">
+                            <p class="text-title">页面标题：</p>
+                            <input name='pageTitle' class="text-in pageTarget" type="text" value="" placeholder="如：《xxx》手游" />
+                        </div>
+                 </div> 
+                 <!-- 轮播图 begin  -->
+                 <div class="temp-section">
+                     <p class="temp-section-title">轮播图</p>
+                     <!-- <div class="temp-textpage">
+                        <p class="text-title">轮播间隔：</p>
+                        <input class="text-medium-in" type="text" value="" placeholder="1000毫秒=1秒" />
+                        <p class="text-title">&nbsp;毫秒</p>
+                     </div> -->
+                     <div class="temp-textpage">
+                        <p class="text-title">上传图片：</p>
+                        <ul class="temp-uploadlist">
+                            
+                        </ul> 
+                     </div>
+                     <p class="temp-remark">轮播图尺寸480*640(4:3)，支持格式：png／jpg／gif，<br>单张图片<=200k</p>
+                 </div>
+                 <!-- 轮播图 end   -->
+
+                 <!-- 应用信息 begin  -->
+                 <div class="temp-section">
+                     <p class="temp-section-title">应用信息</p>
+                     <div class="temp-textpage">
+                        <p class="text-title">应用名称：</p>
+                        <input class="text-in appTarget" name='appName' type="text" value="" placeholder="" />
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title">应用图标：</p>
+                        <div class="temp-appicon-wrap">
+                            <img class="temp-appicon" id="appiconUpload"  src="images/add.png"/>
+                            <iframe name="upload"  class="appiconUpload uploadiframe" data-src="" src="/Admin/Systemtool_Landingpage/uploadImg?imgId=appiconUpload" frameborder="0" scrolling="no">                                         
+                            </iframe>
+                        </div>
+                        <p class="temp-appicon-remark">icon尺寸57*57，支持格式：png／jpg／gif，<br>单张图片<=100k</p>
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title">星级：</p>
+                        <input class="text-min-in appTarget" name='appStar' type="text" value="" placeholder="0.5~5"  min='0.5' max='5' />
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title">评论数：</p>
+                        <input class="text-medium-in appTarget" name='appComment' type="text" value="" placeholder="" />
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title">包大小：</p>
+                        <input class="text-medium-in appTarget" name='appPackage' type="text" value="" placeholder="" />
+                        <p class="text-title">&nbsp;MB</p>
+                     </div>
+                    <div class="temp-textpage">
+                        <p class="text-title">评分：</p>
+                        <input class="text-medium-in appTarget" name='appScore' type="text" value="" placeholder="" />
+                        <p class="text-title">&nbsp;MB</p>
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title">下载次数：</p>
+                        <input class="text-medium-in appTarget" name='appDownCount'  type="text" value="" placeholder="" />
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title">游戏简介：</p>
+                        <textarea class="text-textarea appTarget" name='appIntro'></textarea>
+                     </div>
+                 </div>
+                 <!-- 应用信息 end   -->
+                 <!-- banner begin  -->
+                 <div class="temp-section">
+                     <p class="temp-section-title">banner</p>
+                     <div class="temp-textpage">
+                        <p class="text-title">图片上传：</p>
+                        <iframe name="upload" class="adbanner uploadiframe" data-src="" src="/Admin/Systemtool_Landingpage/uploadImg?imgId=adbanner" frameborder="0" scrolling="no">                                         
+                        </iframe>
+                        <img class="temp-banner-img" id="adbanner" src="images/add2.png" />
+                     </div>
+                     <p class="temp-remark">轮播图尺寸426*30，支持格式：png／jpg／gif，<br>单张图片<=200k</p>
+                     <div class="temp-textpage">
+                        <p class="text-title">跳转地址：</p>
+                        <input class="text-in bannerTarget" type="text" name='bannerLink' value="" placeholder="" />
+                     </div>
+                 </div>
+                 <!-- banner end   -->
+                 <!-- 评论区 begin  -->
+                 <div class="temp-section">
+                     <p class="temp-section-title">评论区</p>
+                     <div class="temp-textpage">
+                        <p class="text-title">模块标题：</p>
+                        <input class="text-in commentTarget" type="text" name='commentTitle' value="" placeholder="" />
+                     </div>
+
+                     <div class="temp-textpage">
+                        <p class="text-title">上传评论：</p>
+                        <ul class="temp-comments" id="commentList">
+                             <li>
+                                 <span class="temp-comments-n">评论1</span>  
+                                 <div class="temp-textpage">
+                                    <p class="text-title">昵称：</p>
+                                    <input class="text-medium-in commentsTarget" name='commentNickname'  type="text" value="" placeholder="" />
+                                 </div>
+                                <div class="temp-textpage">
+                                    <p class="text-title">应用图标：</p>
+                                    <img class="temp-appicon" id="commentappicon1" src="images/add.png"/>
+                                    <iframe name="upload" class="commentappicon uploadiframe"  data-src="" src="/Admin/Systemtool_Landingpage/uploadImg?imgId=commentappicon1" frameborder="0" scrolling="no">                                         
+                                    </iframe>
+                                    <input class='commentsTarget' style='display:none;' name="commentIcon" type='text' value="" />
+                                    <p class="temp-appicon-remark">支持格式：png／jpg／gif，<br>单张图片<=100k</p>
+                                </div>
+                                 <div class="temp-textpage">
+                                    <p class="text-title">评论星级：</p>
+                                    <input class="text-min-in commentsTarget" name='commentStar' type="text" value="" placeholder=""  min='0.5' max='5' />
+                                 </div>
+                                 <div class="temp-textpage">
+                                    <p class="text-title">点赞数：</p>
+                                    <input class="text-min-in commentsTarget"  name='commentLike'  type="text" value="" placeholder="" />
+                                 </div>
+                                 <div class="temp-textpage">
+                                    <p class="text-title">评论：</p>
+                                    <textarea class="text-textarea-comment commentsTarget" name='commentCont'></textarea>
+                                 </div>
+                             </li>
+                        </ul>
+                     </div>
+                     <p class="add-comment">+ 增加新评论</p>
+                 </div>
+                 <!-- 评论区  end   -->
+                 <!-- 下载按钮 begin  -->
+                 <div class="temp-section">
+                     <p class="temp-section-title">下载按钮</p>
+                     <div class="temp-textpage">
+                        <p class="text-title">下载文案：</p>
+                        <input class="text-in downTarget" name='DownText' type="text" value="" placeholder="" />
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title ">按钮颜色</p>
+                        <div class="jscolor-wrap">
+                             <input class="jscolor-in downTarget" type="text" name='DownColor' value="#ea4421" placeholder="" />
+                             <span class="jscolor"></span>
+                        </div>
+                     </div>
+                     <div class="temp-textpage">
+                        <p class="text-title">跳转地址：</p>
+                        <input class="text-in downTarget" name='DownLink' type="text" value="" placeholder="" />
+                     </div>
+                 </div>
+                 <!-- 下载按钮 end   -->
+                 <!-- 页脚 begin  -->
+                 <div class="temp-section">
+                     <p class="temp-section-title">页脚文案</p>
+                     <div class="temp-textpage">
+                        <textarea class="temp-textarea-Copyright pageTarget" name='pageCopyright' placeholder="Copyright © 2009-2017 深圳市创梦天地科技有限公司版权所有
+粤ICP备11018438号 粤网文（2016）6817-1632号">Copyright © 2009-2017 深圳市创梦天地科技有限公司版权所有
+粤ICP备11018438号 粤网文（2016）6817-1632号</textarea>
+                     </div>    
+                 </div>
+                 <!-- 页脚 end   -->
+            </div>
+            <div class="temp_submit" onclick='pageSubmit()'>提交</div>
+        </div>
+        <!-- left end   -->
+        <!-- right begin -->
+        <div class="layout-t-right">
+             <div class='iframe-title'></div>
+             <iframe id="previewIframe" name="previewIframe" width="640px"  frameborder='0' scrolling='no' src='./temp1/index.html' >该浏览器不支持iframe预览</iframe>
+        </div>
+        <!-- right end   -->
+   </div>
+</body>
+</html>
+<script>
+
+// 
+ var par = /^.*?\.(jpg|gif|jpeg|png)$/i;
+
+function checkFrom() {
+	if($("#img").val()==''){
+		alert('出错','请选择要上传的图片');
+		return false;
+	}else if (!par.test($("#img").val())){
+	    alert('出错','仅支持JPG、GIF、PNG图片文件，且文件小于2M');
+		return false;
+	}else{
+		return true;
+	}
+};
+
+function submitForm() {
+	if(!checkFrom()){
+       return false;
+		}
+    document.getElementById("form1").submit();
+};
+
+
+
+
+
+
+
+;(function(){
+          var host=null,id=null; 
+          // 初始化模板参数
+          var defaults = {
+               scrollHeight : 0,
+               scrollTop:0,
+               pageModule: { 
+                    pageTitle :'',
+                    pageCopyright :'Copyright © 2009-2017 深圳市创梦天地科技有限公司版权所有粤ICP备11018438号 粤网文（2016）6817-1632号',
+               } ,
+               swiperModule:['images/default-banner.png','images/default-banner.png','images/default-banner.png'],
+               appModule: {
+                    appName:'xxx',
+                    appStar : 0,
+                    appComment:0,
+                    appPackage:0,
+                    appDownCount:0,
+                    appIntro:'',
+                    appScore:0,
+                    appIcon: '',
+               },
+               bannerModule: {
+                    bannerPic : 'images/user-protect.jpg',
+                    bannerLink : '',
+               },
+               commentsModule:{
+                    commentTitle :'',
+                    commentsList : [],
+               },
+               downModule :{
+                    DownText:'',
+                    DownColor:'#ea4421',
+                    DownLink:'',
+               },
+          };
+          
+          // 序列化json字符串
+          $.fn.serializeJson=function(){
+                var serializeObj={};
+                var array=this.serializeArray();
+                var str=this.serialize();
+                $(array).each(function(){
+                if(serializeObj[this.name]){
+                    if($.isArray(serializeObj[this.name])){
+                    serializeObj[this.name].push(this.value);
+                    }else{
+                    serializeObj[this.name]=[serializeObj[this.name],this.value];
+                    }
+                }else{
+                    serializeObj[this.name]=this.value;
+                }
+                });
+                return serializeObj;
+          };
+
+
+          window.onload = function(){
+               postMessageiFrames(defaults,null); // 获取子窗口页面高度
+               window.defaults = defaults;
+               setHeight();  // 设置页面高度
+               getParame();  // 设置host,id
+               setSwiperimgUpload(null,host);
+               var list = $(".uploadiframe");
+               for(var i=0;i<list.length;i++){
+                   var src = $($(".uploadiframe").get(i)).attr("src");
+                   $($(".uploadiframe").get(i)).attr("src",host+src);
+               } 
+               var url = host + '/api/Landingpage/getTemplateData?id=' + id;
+               if(id){
+                  getAjaxRequest(url,editorPage);
+               }
+               
+
+         };
+         
+
+         // 编辑 
+         var editorPage = {
+            success : function(data){
+                window.defaults = $.extend(true,defaults,JSON.parse(data.template_data));
+                postMessageiFrames(defaults,null);
+                console.log(defaults)
+                 // app信息
+                $(".appTarget").each(function(){
+                    eachParame(this,this.name,this.value,defaults.appModule);
+                });
+                if(defaults.appModule.appIcon){
+                   $("#appiconUpload").attr('data-value',defaults.appModule.appIcon);
+                   $("#appiconUpload").attr('src',defaults.appModule.appIcon);
+                }
+                // page 
+                $(".pageTarget").each(function(){
+                    eachParame(this,this.name,this.value,defaults.pageModule);
+                });
+                //banner
+                $(".pageTarget").each(function(){
+                    eachParame(this,this.name,this.value,defaults.bannerModule);
+                });
+                if(defaults.bannerModule.bannerPic){
+                    $("#adbanner").attr('data-value',defaults.bannerModule.bannerPic);
+                    $("#adbanner").attr('src',defaults.bannerModule.bannerPic);
+                }
+                //download 
+                $(".downTarget").each(function(){
+                    eachParame(this,this.name,this.value,defaults.downModule);
+                });
+                // swiper
+                setSwiperimgUpload(defaults.swiperModule,host);
+                // commentsTarget
+                $(".commentsTarget").each(function(){
+                    eachParame(this,this.name,this.value,defaults.commentsModule);
+                });
+                addComments(defaults.commentsModule.commentsList,host);
+            },
+            error:function(xhr,msg,e){
+                  
+            }
+         };
+         
+         //
+         function eachParame(el,name,val,arr){
+             for(var key in arr){
+                 if(key==name){
+                      el.value = arr[key];
+                      return ;
+                 }
+             }
+         }
+       
+
+
+         // 设置 host ，id 参数
+         function getParame(){
+            var iframe = parent.document.getElementById("template_iframe");
+            host = iframe.getAttribute('data-host');
+            id = iframe.getAttribute('template_id');
+            var apiHost = iframe.getAttribute('api-host');
+            var token = iframe.getAttribute('token');
+            $('.temp-uploadlist').find("input[name='token']").val(token);
+        }
+        
+          
+
+          // 监听收取子窗口的message
+          window.addEventListener('message',function(e){
+               if(e.data.scrollHeight){
+                    $.extend(true,defaults,{ scrollHeight : e.data.scrollHeight});
+                   initIframeBasic(e.data.scrollHeight);
+               }
+          },false);
+          // 初始化 iframe 宽高 
+          function initIframeBasic(scrollHeight){
+                 
+                $("#previewIframe").css("height",scrollHeight);
+          }
+          //   page
+          $(".pageTarget").bind('input porpertychange',function(){
+                var options = $(this).serializeJson();
+                var settings = $.extend(true,defaults,{ pageModule : options});
+                // console.log(options)
+                if(options.pageTitle){
+                   $(".iframe-title").html(options.pageTitle);
+                }  
+                postMessageiFrames(settings,null);
+                
+          });
+          //  app信息
+          $(".appTarget").bind('input porpertychange',function(){
+                var options = $(this).serializeJson();
+                var settings = $.extend(true,defaults,{ appModule : options});
+                postMessageiFrames(settings,null);
+          });
+          // banner 
+          $(".bannerTarget").bind('input porpertychange',function(){
+                var options = $(this).serializeJson();
+                var settings = $.extend(true,defaults,{ bannerModule : options});
+                postMessageiFrames(settings,null);
+          });
+        
+          //增加评论
+          var commentindex = $('#commentList li').length;
+          $(".add-comment").click(function(){
+               commentindex += 1;
+               var li = $($('#commentList li').get(0)).html();
+               var parent= $('#commentList');
+               parent.append($("<li></li>").append(li+"<i class='comment-delete'></i>"));
+               var self = $(parent.find('li').get(parent.find('li').length-1));
+               self.find('.temp-comments-n').html('评论'+(self.index()+1));
+               self.find('.commentappicon').attr("src",host+'/Admin/Systemtool_Landingpage/uploadImg?imgId=commentappicon'+commentindex);
+               self.find('.temp-appicon').attr("id",'commentappicon'+commentindex);
+               self.find('.temp-appicon').attr("src",'images/add.png');
+               setHeight();
+          });
+          // 删除评论
+          $("#commentList").delegate('.comment-delete','click',function(){
+               var index = $(this).parent().index();
+               $(this).parent().remove();
+               setHeight();
+               defaults.commentsModule.commentsList.splice(index,1); 
+               var settings = $.extend(true,defaults,{});              
+               postMessageiFrames(settings,null); 
+               var len = $("#commentList li").length;
+               for(var i=0;i<len;i++){
+                   $($("#commentList li").get(i)).find(".temp-comments-n").html('评论'+(i+1));
+               }
+          });
+         //  评论列表
+           $("#commentList").delegate('.commentsTarget','input porpertychange',function(){
+                var len = $("#commentList li").length;
+                var index = $($(this).parent().parent()).index(); // 评论 index
+                // console.log("index:",index);
+                var commentsLen = defaults.commentsModule.commentsList.length; 
+                var oComments = $($(this).parent().parent()).find('.commentsTarget');
+                var comments = oComments.serializeJson();
+                if(len>0){
+                    defaults.commentsModule.commentsList.splice(index,1,comments); 
+                 }else{
+                    defaults.commentsModule.commentsList.push(comments);
+                 }  
+                 var settings = $.extend(true,defaults,{});   
+                 //console.log(settings)
+                 postMessageiFrames(settings,null); 
+          }); 
+          // 下载 按钮
+          $(".downTarget").bind('input porpertychange',function(){
+                if($(this).is('.jscolor-in')){
+                    $(this).val()?$(this).parent().find('.jscolor').css("background",$(this).val()):$(this).parent().find('.jscolor').css("background",'rgba(0,0,0,0)');
+                }
+                downModulePostMessage(this);
+          });
+           // 绑定取色器  l: 生成li 色阶格式，p：图片 。sideLength参数是指小格子的个数，只有engine为L时生效，范围：2-10，默认为6。
+          $('.jscolor').bigColorpicker(function(el,color){
+              if(!color)color='rgba(0,0,0,0)';
+              $(el).css("background",color);
+              $(el).parent().find("input[type='text']").val(color);
+              var oEl =$(el).parent().find("input[type='text']");
+              downModulePostMessage(oEl);
+          },'l',10);
+
+
+
+          function downModulePostMessage(t){
+                var options = $(t).serializeJson();
+                var settings = $.extend(true,defaults,{ downModule : options});
+               // console.log('options',settings)
+                postMessageiFrames(settings,null); 
+          };
+
+})();
+
+ // 对子窗口发送 Message
+function postMessageiFrames(Message,url){
+    if(!url){
+        url = '*';
+    }
+    window.frames['previewIframe'].postMessage(Message,url); 
+}
+
+// 提交数据
+function pageSubmit(){
+    window.parent.setTemplateData(JSON.stringify(defaults))
+}
+
+// 设置当前页面高度
+function setHeight(){
+    var height = document.body.scrollHeight?document.body.scrollHeight:null;
+    window.parent.setIframeHeight(height)
+}
+
+// 上传图片回调函数
+function showLandingpageImage(errorcode,msg,id,imgpath,url,width,heigth) {
+    if(errorcode==0){
+        $("#"+id).attr('src',url);
+        $("#"+id).attr('data-value',imgpath);
+        var iframe = parent.document.getElementById("template_iframe");
+        var host = iframe.getAttribute('data-host');
+        
+        //判断是否为 swiper 轮播图
+        if(id.indexOf('swiperimg')!=-1){
+            var imgId = 'swiperimg' + (parseInt(id.split('swiperimg')[1])+1);
+            addSwiperimgUpload(host,imgId);
+            var swiperList = $('.temp-uploadlist li');
+            var arr = [];
+            for(var i=0;i<swiperList.length;i++){
+                var src = $($(swiperList).get(i)).find("img").attr('src');
+                if($($(swiperList).get(i)).find("img").attr('data-value')){
+                    arr.push(src);
+                }
+            }
+            defaults.swiperModule = arr;
+            
+        }else if(id.indexOf('appiconUpload')!=-1){
+            defaults.appModule.appIcon = url;
+        }else if(id.indexOf('adbanner')!=-1){
+            defaults.bannerModule.bannerPic =url;
+        }else if(id.indexOf('commentappicon')!=-1){
+            $("#"+id).parent().find("input[name='commentIcon']").val(url);
+        }
+        var settings = $.extend(true,defaults,{});    
+        postMessageiFrames(settings,null); 
+    }else{
+     //   $(id).parent().find(".").html(msg);
+    } 
+}
+
+//  轮播 
+function setSwiperimgUpload(list,host){
+   var temp = '';
+   if(!list){
+        var temp = `<li>
+                <iframe name="upload" id="upload1"  class="swiperimgUpload" data-src="" src="`+host+`/Admin/Systemtool_Landingpage/uploadImg?imgId=swiperimg1" frameborder="0" scrolling="no">                                         
+                </iframe>
+                <img id="swiperimg1" class="swiperimg" src="images/add3.png" />
+                <span class="upload-prompt"></span></li>`;  
+   }else{
+       for(var k in list){
+           temp = temp + `<li>
+                <iframe name="upload" id="upload`+k+`"  class="swiperimgUpload" data-src="" src="`+host+`/Admin/Systemtool_Landingpage/uploadImg?imgId=swiperimg1" frameborder="0" scrolling="no">                                         
+                </iframe>
+                <img data-value="`+list[k]+`" id="swiperimg`+k+`" class="swiperimg" src="`+list[k]+`" />
+                <span class="upload-prompt"></span></li>`; 
+       }
+       temp = temp + `<li>
+                <iframe name="upload" id="upload1"  class="swiperimgUpload" data-src="" src="`+host+`/Admin/Systemtool_Landingpage/uploadImg?imgId=swiperimg1" frameborder="0" scrolling="no">                                         
+                </iframe>
+                <img id="swiperimg1" class="swiperimg" src="images/add3.png" />
+                <span class="upload-prompt"></span></li>`;  
+   }
+   $('.temp-uploadlist').html(temp);
+   setHeight();
+}
+
+// 轮播
+function addSwiperimgUpload(host,id){
+    var isHasId = $('#'+id).attr('id');
+    if(!isHasId){
+        var uploadId;
+        if(id.indexOf('swiperimg')!=-1){
+            uploadId = 'upload' + (parseInt(id.split('swiperimg')[1]));
+        }
+        var temp = `<li>
+                    <iframe name="upload" id="`+uploadId+`"  class="swiperimgUpload" data-src="" src="`+host+`/Admin/Systemtool_Landingpage/uploadImg?imgId=`+id+`" frameborder="0" scrolling="no">                                         
+                    </iframe>
+                    <img id="`+id+`" class="swiperimg" src="images/add3.png" />
+                    <span class="upload-prompt"></span></li>`;  
+        $('.temp-uploadlist').append(temp);
+        setHeight();
+    }
+}
+
+//
+function getQueryString(name) { 
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+    var r = window.location.search.substr(1).match(reg); 
+    if (r != null) return unescape(r[2]); return null; 
+} 
+
+// ajax 请求
+function getAjaxRequest(url,callbackFun){
+    $.ajax({
+            url : url,
+            async:false,
+            data : '',
+            type : 'post',
+            dataType : 'jsonp',
+            jsonp : 'callback',
+            success:function(data){
+                var url = data.url;
+                var template_data= JSON.parse(data.template_data);
+                callbackFun.success(data);
+            },
+            error :function(xhr,msg,e){
+                //console.log(xhr+", "+msg+", "+e);
+                callbackFun.error(xhr,msg,e);
+            }
+        });
+}
+
+// 添加评论list
+function addComments(list,host){
+    var li = '';
+    for(var k in list){
+        var icon = 'images/add.png';
+        if(list[k]['commentIcon']){
+            icon = list[k]['commentIcon'];
+        }
+        li = li + `<li>
+        <span class="temp-comments-n">评论`+(k+1)+`</span>  
+        <div class="temp-textpage">
+            <p class="text-title">昵称：</p>
+            <input class="text-medium-in commentsTarget" name='commentNickname'  type="text" value="`+list[k]['commentNickname']+`" placeholder="" />
+        </div>
+        <div class="temp-textpage">
+            <p class="text-title">应用图标：</p>
+            <img class="temp-appicon" id="commentappicon`+(k+1)+`" src="`+icon+`" data-value="`+list[k]['commentIcon']+`"/>
+            <iframe name="upload" class="commentappicon uploadiframe"  data-src="" src="`+host+`/Admin/Systemtool_Landingpage/uploadImg?imgId=commentappicon`+(k+1)+`" frameborder="0" scrolling="no">                                         
+            </iframe>
+            <input class='commentsTarget' style='display:none;' name="commentIcon" type='text' value="" />
+            <p class="temp-appicon-remark">支持格式：png／jpg／gif，<br>单张图片<=100k</p>
+        </div>
+        <div class="temp-textpage">
+            <p class="text-title">评论星级：</p>
+            <input class="text-min-in commentsTarget" name='commentStar' type="text" value="`+list[k]['commentStar']+`" placeholder=""  min='0.5' max='5' />
+        </div>
+        <div class="temp-textpage">
+            <p class="text-title">点赞数：</p>
+            <input class="text-min-in commentsTarget"  name='commentLike'  type="text" value="`+list[k]['commentLike']+`" placeholder="" />
+        </div>
+        <div class="temp-textpage">
+            <p class="text-title">评论：</p>
+            <textarea class="text-textarea-comment commentsTarget" name='commentCont' value='`+list[k]['commentCont']+`'>`+list[k]['commentCont']+`</textarea>
+        </div>
+    </li>`;   
+    } 
+    $("#commentList").html(li); 
+    setHeight();   
+}
+
+
+</script>

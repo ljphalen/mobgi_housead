@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="Keywords" content="">
+    <meta name="author" content="idreamsky">
+    <title><?php echo $goodsInfo['title'];?></title>
+    <link href="<?php echo $staticPath?>/images/icon.ico?v=<?php echo $version;?>" rel="shortcut icon">
+    <link rel="stylesheet" href="<?php echo $staticPath?>/css/style.css?v=<?php echo $version;?>">
+    <script src="<?php echo $staticPath?>/js/jquery-3.2.1.min.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath?>/js/common.js?v=<?php echo $version;?>"></script>
+    <script>
+        var isShowPrizeTimes = false;
+        var activity_id = '<?php echo $activity_id;?>';
+        var user_id = '<?php echo $user_id;?>';
+        if( (user_id == '') || (typeof(user_id) == "undefined") || user_id == 'undefined'){
+            user_id = getUUID('<?php echo $webroot.$uuidUrl;?>');
+        }
+        var cw = document.documentElement.clientWidth || document.body.clientWidth;
+        document.documentElement.style.fontSize = cw / 7.5 + 'px';
+    </script>
+
+</head>
+
+<body>
+<div class="prize-wrapper">
+    <div class="banner">
+        <img src="<?php echo $attachPath.$goodsInfo['big_img'] ;?>" />
+    </div>
+    <div class="main-box">
+        <p class="title">商品名称：<?php echo $goodsInfo['title'] ;?></p>
+        <!--<p class="qrcode-text">商品兑换码：<?php /*echo $code;*/?></p>-->
+		<?php if(Util_Environment::isDevelop()){?>
+            <p class="qrcode-text"> <a href="<?php echo $content;?>">二维码</a></p>
+		<?php }else{?>
+            <div class="qrcode-wrap">
+                <img src="<?php echo $webroot.$qrCodeUrl.'?url='.urlencode($content); ?>" />
+            </div>
+		<?php }?>
+        <span class="qrcode-desc">(到店后请向商家出示二维码获得礼品)</span>
+        <div style="line-height:0.4rem;margin-top: 0.3rem;font-size: 0.3rem;">
+			<?php echo html_entity_decode($goodsInfo['desc']) ;?>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>

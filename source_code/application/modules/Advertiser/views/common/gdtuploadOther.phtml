@@ -1,0 +1,24 @@
+<?php if($code && !empty($msg)){ ?>
+<font color=red><?php echo $msg;?></font> <a href="<?php echo $uploadOtherUrl .'?otherId=' . $otherId."&template_id=". $template_id."&type=". $type;?>">[返回]</a>
+<?php }elseif(!empty($data)){ ?>
+<b>上传成功！</b> <a href="<?php echo $uploadOtherUrl . '?otherId=' . $otherId."&template_id=". $template_id."&type=". $type;?>">[重新上传]</a>
+<?php }else{ ?>
+<form id="form1" name="form1" method="post" action="<?php echo $uploadOtherPostUrl;?>" onsubmit="return checkFrom()" enctype="multipart/form-data">
+<input type="hidden" name="token" value="<?php echo $token;?>" /> 
+<input type="hidden" name="MAX_FILE_SIZE" value="200000000000" />
+<input name="otherId" value="<?php echo $otherId;?>" type="hidden" />
+<input name="template_id" value="<?php echo $template_id;?>" type="hidden" />
+<input name="type" value="<?php echo $type;?>" type="hidden" />
+<input name="mkthumb" value="<?php echo $mkthumb;?>" type="hidden" />
+<input type="file" id="other" name="other" class="mr20"/>  
+<input type="submit" name="sub" value="上传"  class="btn"> 
+</form>
+<?php } ?>
+<script> 
+function checkFrom() {
+		return true;
+}
+<?php if(!empty($data)){?>
+window.parent.showgdtOtherAttach('<?php echo $otherId;?>' ,'<?php echo $attachPath.$data;?>', '<?php echo $data;?>', '<?php echo $our_media_id;?>');
+<?php }?>
+</script>

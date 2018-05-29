@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title><?php echo $titlepre ?>子客投放系统</title>
+<link rel="shortcut icon" href="http://localhost.backend.mobgi.com/misc/ledou/favicon.ico" />
+<link media="screen" href="http://localhost.backend.mobgi.com/misc/ledou/css/reset.css?ver=2016031601" rel="stylesheet" type="text/css">
+<link media="screen" href="http://localhost.backend.mobgi.com/misc/ledou/css/layout.css?ver=2016031601" rel="stylesheet" type="text/css">
+<script src="http://localhost.backend.mobgi.com/misc/ledou/js/jquery-1.8.2.min.js?ver=2016031601" type="text/javascript"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>logo</h1>
+        <p class="fr">
+            <span>欢迎您，</span>
+            <a href="#">罗家朋 [rock.luo]</a>
+            <a href="http://localhost.backend.mobgi.com/login/loginout" class="logout">退出</a>
+        </p>
+    </div>    
+    <div class="mainWrap clearfix" >
+        <div class="sidebar" id="menu">
+            <div class="box">
+                <div class="title"><h3 class="gg">交叉推广</h3></div>
+                <ul>
+                    <li class="cur"  id="mli_401"><a href="#">配置列表</a></li>
+                    <li class="cur" id="mli_402"><a href="#">安装提醒</a></li>
+                    <li  class="cur" id="mli_403"><a href="#">神庙2PUSH配置</a></li>
+                    <li  class="cur" id="mli_404"><a href="#">神庙2PUSH防骚扰</a></li>
+                    <li class="cur" id="mli_405"><a href="#">新增列表广告配置</a></li>
+                    <li class="cur" id="mli_406"><a href="#">新增PUSH广告配置项</a></li>
+                    <li class="last" id="mli_407"><a href="#">特殊配置</a></li>
+                </ul>
+            </div>
+        </div>
+    
+    <div class="colMain">
+        <div class="title">
+            <p class="fl">-流量配置</p>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="../IntergrationPolicyConf/saveArea" method="POST" >
+                    <input type="hidden" name="id"  id="config_id" value='8' />
+                    <input type="hidden" name="policy_conf_id"  id="policy_conf_id" value='9' />
+                    <input type="hidden" name="app_key"  id="app_key" value='0f881ba4e517c6c28d88' />
+                    <input type="hidden" name="intergration_type"  id="intergration_type" value='2' />
+                    <ul class="form">
+                      <li> <span class="label">配置名称：</span>
+                           <div class="fc">        
+                             <span class="red">*</span>
+                                 <input type="text"  class="iText"   id = "conf_name" name="conf_name"  value="默认通用区域"> 
+                            </div>
+                        </li> 
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="footer">
+        <p>
+            <a href="#">SDK下载</a>
+            <a href="#">联系我们</a>
+        </p>
+        <p>CopyRight@2013</p>
+    </div>
+<script type="text/javascript" src="http://localhost.backend.mobgi.com/misc/ledou/js/jquery.cookie.js"></script>
+<script>
+$(function(){
+    $("#menu").find(".title").css({cursor:'pointer'}).live('click', function(){
+        var dis = $(this).next('ul');
+        if (dis.css('display') == 'none') {
+            dis.show();
+        }else{
+            dis.hide();
+        }
+    });
+    $("#menu").find("li").click(function(){
+        var clsid = $(this).attr("id");
+        $.cookie("clsid", clsid, { expires: 7, path: '/' });
+    }).removeClass("cur");
+     
+});
+</script>
+</body>
+</html>

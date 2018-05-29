@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "32D2GB62F4.com.idreamsky.mekorama",
+                "paths": [ "/app/*" ]
+            }
+        ]
+    }
+}

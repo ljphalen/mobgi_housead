@@ -1,0 +1,141 @@
+button,input,select,textarea,section,article,aside,header,footer,nav,dialog,figure{font-size:100%}
+article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}
+audio[controls],canvas,video{display:inline-block;*display:inline;*zoom:1}
+html{background-color:#fff}
+html{font-size:80%!important;font-size:100%;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0}
+img{border:0;-ms-interpolation-mode:bicubic}
+fieldset{border:0}
+select{padding:1px}
+textarea{resize:none}
+body,button,input,select,textarea{font-size:12px;
+line-height:18px;
+font-weight:normal;
+font-family:"微软雅黑",arial,Simsun,Arial Unicode MS,Mingliu,Arial}
+h1,h2,h3,h4,h5,h6{font-size:100%}
+ul,ol{list-style:none}
+table{border-collapse:collapse;border-spacing:0}
+a{color:#333;text-decoration:none;cursor:pointer}
+a:hover,a:active{color:#016db5;text-decoration:underline;outline:none}
+*html ul, *html ol, *html dl{position:relative}
+b,strong{font-weight:bold}
+address,cite,dfn,em,var{font-style:normal}
+small{font-size:12px}
+dfn{font-style:italic}
+mark{background:#ff0;color:#000}
+pre,code,kbd,samp{font-family:monospace,monospace;_font-family:'courier new',monospace;font-size:1em}
+pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}
+q{quotes:none}
+q:before,q:after{content:'';content:none}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top: -0.5em}
+sub{bottom: -0.25em}
+figure{margin:0}
+legend{*margin-left: -7px}
+button,input,select,textarea{font-size:100%;vertical-align:baseline;*vertical-align:middle}
+button,input{line-height:normal;*overflow:visible}
+button,input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box}
+input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}
+input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+.filter{height:25px; line-height:25px;margin:10px;}
+.plugin{float:left; height:25px; line-height:25px;margin-left:10px;}
+.chart-title{height:35px; line-height:35px;border-left:1px #CCCCCC solid; border-right:1px #CCCCCC solid;border-top: 3px solid #61d5ff;color:#888;border-top:3px solid #61d5ff;background:#f5f8fd;background:-webkit-gradient(linear,left top,left bottom,from(#fafbff),color-stop(0.5,#f5f9fc),to(#eff2f7));background:-moz-linear-gradient(top,#fafbff,#f5f9fc 50%,#eff2f7 100%);}
+.chart-title span{margin:auto 10px; font-size:14px; color:#000000;}
+.hightchart{border-left:1px #CCCCCC solid; border-right:1px #CCCCCC solid;border-bottom:1px #CCCCCC solid;padding-top:20px; background:#FFF;}
+.index{padding:8px;color:blue;}
+.index-sel{color:red; font-weight:bold;}
+.choose-select {min-width:200px;}
+.muti-select{border:1px #CCCCCC solid; padding:4px 20px 7px 10px;}
+.filter-panel{
+    border:1px solid #E5E5E5;
+    background:#FFFFFF;
+    width:400px;
+    display:none;
+    position:absolute;
+}
+.filter-panel .panel-main i{
+    padding:5px;
+    display:block;
+    background:#FAFAFA;
+    border-bottom:1px solid #E5E5E5;
+    color:blue;
+}
+.panel-data span{
+    font-size:10px;
+    border-bottom: 1px solid #E5E5E5;
+    border-right: 1px solid #E5E5E5;
+    display: inline-block;
+    min-width: 99px;
+    text-align: center;
+    line-height:23px;
+    cursor: pointer;
+}
+.tright{text-align:right;}
+#desc-content{
+    width:400px;
+    display : none;
+    position:absolute;
+}
+#desc-content table {
+    width:100%;
+    border:2px solid #CCC;
+}
+#desc-content table tr:nth-child(even) {background: #CCC}
+#desc-content table tr:nth-child(odd) {background: #FFF}
+#desc-content table td{
+    line-height:25px;
+    padding:5px;
+}
+
+
+/* css for timepicker jquery-ui-timepicker-addon.js*/
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { float: left; clear:left; padding: 0 0 0 5px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 45%; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; padding: 0 5px 0 0; }
+.ui-timepicker-rtl dl dt{ float: right; clear: right; }
+.ui-timepicker-rtl dl dd { margin: 0 45% 10px 10px; }
+
+.nav{margin-bottom:15px;}
+.nav ul{background:url(../img/content/nav.png) 0 bottom repeat-x;height:35px;}
+.nav li{float:left;}
+.nav li a{float:left;line-height:32px;color:#666;width:100px;text-align:center;}
+.nav li.current a{border-bottom:2px solid #266aae;font-weight:700;color:#266aae;}
+.nav li a:hover{border-bottom:2px solid #aaa;color:#333; text-decoration:none;}
+.nav li.return a{line-height:20px;border:1px solid #ccc;background:#fff url(../img/content/pre.png) 7px center no-repeat;margin:6px 0 0 10px;width:auto;padding:0 10px 0 20px;}
+/*font size*/
+.f10{font-size:10px;}
+.f12{font-size:12px}
+.f14{font-size:14px}
+.f16{font-size:16px;}
+.f20{font-size:20px;}
+.f24{font-size:24px;}
+.fn,.fn a{font-weight:normal}
+/*Patch*/
+.mt10{margin-top:10px;}
+.mb5{margin-bottom:5px;}
+.mb10{margin-bottom:10px;}
+.mb15{margin-bottom:15px;}
+.mb20{margin-bottom:20px;}
+.mr5{margin-right:5px;}
+.mr10{margin-right:10px;}
+.mr15{margin-right:15px;}
+.mr20{margin-right:20px;}
+.p5{padding:5px;}
+.p10{padding:10px;}
+.p15{padding:15px;}
+.p20{padding:20px;}
+/*clear both*/
+.tc{text-align:center;}
+.cc{*zoom:1;}
+.cc:after{content:'\20';display:block;height:0;clear:both;visibility: hidden;}
+.c{clear:both;height:0px;font:0px/0px Arial;overflow:hidden;width:0;}
+/*all style*/

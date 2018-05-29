@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="Keywords" content="">
+    <meta name="author" content="idreamsky">
+    <title>我的奖品</title>
+    <link href="<?php echo $staticPath?>/images/icon.ico?v=<?php echo $version;?>" rel="shortcut icon">
+    <link rel="stylesheet" href="<?php echo $staticPath?>/css/style.css?v=<?php echo $version;?>">
+    <script src="<?php echo $staticPath?>/js/jquery-3.2.1.min.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath?>/js/common.js?v=<?php echo $version;?>"></script>
+    <script>
+        var isShowPrizeTimes = false;
+        var activity_id = '<?php echo $activity_id;?>';
+        var user_id = '<?php echo $user_id;?>';
+        if( (user_id == '') || (typeof(user_id) == "undefined") || user_id == 'undefined'){
+            user_id = getUUID('<?php echo $webroot.$uuidUrl;?>');
+        }
+        var cw = document.documentElement.clientWidth || document.body.clientWidth;
+        document.documentElement.style.fontSize = cw / 7.5 + 'px';
+    </script>
+
+</head>
+
+<body>
+    <div class="record-wrapper">
+		<?php if($userLog) { ?>
+            <ul class="record-list">
+                <?php foreach($userLog as $val){?>
+                    <li>
+                        <span class="icon">
+                            <img src="<?php echo $attachPath.$goodsList[$val['goods_id']]['icon']; ?>"/>
+                        </span>
+                        <span class="title"><?php echo $goodsList[$val['goods_id']]['title']; ?></span>
+                        <div class="info">
+                            <p class="info-title"><a href="<?php echo $webroot.$goodsUrl.'?activity_id='.$activity_id.'&user_id='.$user_id.'&id='.$val['id'];?>">免费领取</a></p>
+                            <p class="info-date"><?php echo $val['create_time']; ?></p>
+                        </div>
+                        <a href="<?php echo $webroot.$goodsUrl.'?activity_id='.$activity_id.'&user_id='.$user_id.'&id='.$val['id'];?>"><i class="direction"> </i></a>
+                    </li>
+                <?php }?>
+            </ul>
+		<?php }else{ ?>
+            <div class="nolist-icon"></div>
+            <div class="nolist-info">
+                <span>哦哦，你还木有奖品~</span>
+                <a href="<?php echo $webroot.$activityUrl.'?activity_id='.$activity_id;?>">立马抽奖</a>
+            </div>
+        <?php }?>
+    </div>
+</body>
+<script>
+    $(function(){
+        getUser('<?php echo $webroot.$getUserUrl;?>');
+    });
+</script>
+</html>

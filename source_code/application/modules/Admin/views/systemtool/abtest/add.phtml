@@ -1,0 +1,532 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+              <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li ><a href="<?php echo $listUrl;?>">测试列表</a></li>
+                        <li class="layui-this"><a href="#"><?php echo $info['conf_id']?'编辑':'添加'; ?>测试</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <div class="temp-upload-wrap">
+                <form class="layui-form" action="<?php echo $addPostUrl;?>" method="POST"  id="addForm">
+                    <input name="token" type="hidden"  value="<?php  echo $token;  ?>" />
+                    <input name="conf_id" type="hidden"  value="<?php  echo $info['conf_id'];  ?>" />
+                   <div class="layui-form-item">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-inline imf-text">
+                            <input class="layui-input" type="text" required lay-verify="required" name="conf_name"  placeholder="请输入配置名称" autocomplete="off"  value="<?php echo $info['conf_name']?>">     
+                        </div>
+                    </div>
+                     <div class="layui-form-item">
+                        <label class="layui-form-label">测试类型</label>
+                        <div class="layui-input-inline">
+                            <select name="conf_type" lay-filter="conf_type" lay-search required lay-verify="required">
+                                <option value="">所有测试类型</option>
+                                   <?php foreach ($configType as $key=> $val){?>
+                                     <option value="<?php echo $key;?>" <?php echo ($info['conf_type'] == $key)?"selected":'';?>><?php echo $val; ?></option>
+                                    <?php }?>
+                                </select>
+                        </div>
+                   </div>
+                  <div class="layui-form-item ">
+                        <label class="layui-form-label">测试时间</label>
+                        <div class="layui-input-inline">
+                              <input type="hidden" name="start_time" class="start_time" class="layui-input" value="<?php echo $info['start_time'];?>">
+                               <input type="hidden" name="end_time" class="end_time" class="layui-input" value="<?php echo $info['end_time'];?>">
+                             <input type="text" name="date" class="layui-input" id="date" placeholder="测试时间" value="<?php echo $info['start_time'];?> - <?php echo $info['end_time'];?>">
+                        </div>  
+                    </div>
+                   <div class="layui-form-item choose-item-content conf_type1 <?php echo ($info['conf_type'] == 1)?'open':'';?>" >
+                     <label class="layui-form-label">应用</label>
+                     <div class="layui-input-inline">
+                            <select name="app_key" lay-verify="" lay-search>
+                                <option value="" >所有应用</option>
+                               <?php foreach ($appList as $key=> $val){?>
+                                 <option value="<?php echo $key;?>"  <?php echo ($info['app_key'] == $key)?"selected":'';?>><?php echo $val['app_name'].'('.$val['platform_cn'].')'; ?></option>
+                                <?php }?>
+                            </select> 
+                        </div>  
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-block choose-item-title">
+                            <input type="radio" name="status" lay-filter="status" value="0" title="关闭" <?php echo ($info['status'] == 0)?'checked':'';?>>
+                            <input type="radio" name="status" lay-filter="status" value="1" title="开启" <?php echo ($info['status'] == 1)?'checked':'';?>>
+                        </div>
+                    </div>
+                     <hr class="layui-bg-gray">
+                    <!-- 配置内容 begin -->
+                    <div class="layui-form-item">
+                        <div class="choose-item-content conf_type2 <?php echo ($info['conf_type'] == 2)?'open':'';?>"  >
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">开启上报</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <input type="radio" name="is_report" lay-filter="is_report" value="0" title="关闭" <?php echo ($info['is_report'] == 0)?'checked':'';?>>
+                                    <input type="radio" name="is_report" lay-filter="is_report" value="1" title="开启" <?php echo ($info['is_report'] == 1)?'checked':'';?>>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">DevMode</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <input type="radio" name="dev_mode" lay-filter="dev_mode" value="0" title="关闭" <?php echo ($info['dev_mode'] == 0)?'checked':'';?>>
+                                    <input type="radio" name="dev_mode" lay-filter="dev_mode" value="1" title="开启" <?php echo ($info['dev_mode'] == 1)?'checked':'';?>>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">设备号</label>
+                                <div class="layui-input-block">
+                                    <table class="layui-table">
+                                        <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>设备号</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                   
+                                            <?php foreach ($info['device_list'] as $key=>$conf){?>
+                                                <tr>
+                                                    <td><?php echo $key+1;?></td>
+                                                    <td><input class="layui-input" type="text" name="device[]" value="<?php echo $conf['device'];?>"></td>
+                                                    <td><a class="link-delete" data-name="device_conf" >删除</a></td>
+                                                </tr>
+                                                <?php }?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-small" type="button"   data-name="device_conf">
+                                        <i class="layui-icon">&#xe654;</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="choose-item-content conf_type1 <?php echo ($info['conf_type'] == 1)?'open':'';?>" >
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">渠道定向</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <input type="radio" name="channel_conf_type" lay-filter="channel_conf_type" value="0" title="无" <?php echo ($info['channel_conf_type'] == 0)?'checked':'';?>>
+                                    <input type="radio" name="channel_conf_type" lay-filter="channel_conf_type" value="1" title="自定义" <?php echo ($info['channel_conf_type'] == 1)?'checked':'';?>>
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['channel_conf_type'] == 1)?'open':'';?>" data-name="channel_conf_type">
+                                    <div id="Channelbox" class="treecheckbox">选择渠道</div>
+                                    <div class="box_selected" data-name="channel_id">
+                                        <?php if($info['channel_conf_type']){?>
+                                          <?php foreach ($info['channel_conf'] as $val){?>
+                                         <input type="hidden" value="<?php echo $val['id']?>" data-level=<?php echo $val['level']?> />
+                                         <?php }?>
+                                          <?php }?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">区域定向</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <input type="radio" name="area_conf_type" lay-filter="area_conf_type" value="0" title="无" <?php echo ($info['area_conf_type'] == 0)?'checked':'';?>>
+                                    <input type="radio" name="area_conf_type" lay-filter="area_conf_type" value="1" title="自定义" <?php echo ($info['area_conf_type'] == 1)?'checked':'';?>>
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['area_conf_type'] == 1)?'open':'';?>" data-name="area_conf_type">
+                                    <div id="areabox" class="treecheckbox">选择区域</div>
+                                    <div class="box_selected" data-name="area_id">
+                                            <?php if($info['area_conf_type']){?>
+                                          <?php foreach ($info['area_conf'] as $val){?>
+                                         <input type="hidden" value="<?php echo $val['id']?>" data-level=<?php echo $val['level']?> />
+                                         <?php }?>
+                                          <?php }?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">版本应用</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <input type="radio" name="game_conf_type" lay-filter="game_conf_type" value="0" title="无" <?php echo ($info['game_conf_type'] == 0)?'checked':'';?>>
+                                    <input type="radio" name="game_conf_type" lay-filter="game_conf_type" value="1" title="自定义"  <?php echo ($info['game_conf_type'] == 1)?'checked':'';?>>
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['game_conf_type'] == 1)?'open':'';?>" data-name="game_conf_type">
+                                    <div class="versions-wrap">
+                                        <ul>
+                                          <?php if($info['game_conf_type']){?>
+                                          <?php foreach ($info['game_conf'] as $val){?>
+                                           <li><?php echo $val;?> <i class="game_conf_delete"></i>
+                                             <input class="layui-input game_conf" type="hidden" name="game_conf[]" value="<?php echo $val;?>"  />
+                                           </li>
+                                         <?php }?>
+                                          <?php }?>
+                                        </ul> 
+                                    </div>
+                                    <div class="layui-input-inline">
+                                        <input class="layui-input game_conf_content" type="text" name="" placeholder="请输入游戏版本" autocomplete="off" >     
+                                    </div>
+                                    <button class="layui-btn layui-btn-normal game_conf_add" type="button">增加</button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">系统版本</label>
+                                <div class="layui-input-block choose-item-title">
+                                    <input type="radio" name="sys_conf_type" lay-filter="sys_conf_type" value="0" title="无" <?php echo ($info['sys_conf_type'] == 0)?'checked':'';?>>
+                                    <input type="radio" name="sys_conf_type" lay-filter="sys_conf_type" value="1" title="自定义" <?php echo ($info['sys_conf_type'] == 1)?'checked':'';?>>
+                                </div>
+                                <div class="layui-input-block choose-item-content <?php echo ($info['sys_conf_type'] == 1)?'open':'';?>" data-name="sys_conf_type">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-inline">
+                                            <select name="sys_conf_condition" lay-filter="sys_conf_condition">
+                                                <option value="1" <?php echo ($info['sys_conf_condition'] == 1)?"selected":'';?>>高于</option>
+                                                <option value="2" <?php echo  ($info['sys_conf_condition'] == 2)?"selected":'';?>>低于</option>
+                                                <option value="3" <?php echo  ($info['sys_conf_condition'] == 3)?"selected":'';?>>等于</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="versions-wrap">
+                                        <ul>
+                                          <?php if($info['sys_conf_content']){?>
+                                          <?php foreach ($info['sys_conf_content'] as $val){?>
+                                           <li><?php echo $val;?> <i class="sys_conf_delete"></i>
+                                             <input class="layui-input sys_conf_content" type="hidden" name="sys_conf_content[]" value="<?php echo $val;?>"  />
+                                           </li>
+                                         <?php }?>
+                                          <?php }?>
+                                        </ul> 
+                                     </div>
+                                     <div class="layui-input-inline">
+                                        <input class="layui-input sys_conf_input" type="text" name="" placeholder="请输入系统版本" autocomplete="off" >     
+                                    </div>
+                                    <button class="layui-btn layui-btn-normal sys_conf_add" type="button">增加</button>
+                                    </div>
+                                </div>
+                                 <div class="layui-form-item">
+                                <label class="layui-form-label">抽样比例</label>
+                                <div class="layui-input-inline">
+                                   <input class="layui-input" type="text"  name="rate"  placeholder="请输入抽样比例：1-100" autocomplete="off"  value="<?php echo $info['rate']?>">      
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">%</div>
+                              </div>
+                        </div>
+                    </div>
+                    <!-- 配置内容 end   -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">流量配置</label>
+                        <div class="layui-input-block">
+                            <table class="layui-table">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>配置名称</th>
+                                        <th>权重</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+								<?php if($info['conf_rel_list']){?>
+                                    <?php foreach ($info['conf_rel_list'] as $key=>$conf){?>
+                                        <tr>
+                                            <td><?php echo $key+1;?></td>
+                                            <td>
+                                                <div class="layui-input-inline">
+                                                    <select name="flow_id[]" lay-search="">
+                                                        <option value="" >请选择配置</option>
+                                                        <?php foreach($info['flow_list'] as $flowId => $name){?>
+                                                        <option value="<?php echo $flowId;?>" <?php echo ($flowId == $conf['flow_id'])?'selected':'';?>><?php echo $name;?></option>
+                                                        <?php }?>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td><input class="layui-input" type="text" name="weight[]" value="<?php echo $conf['weight'];?>"></td>
+                                            <td><a class="link-delete" data-name="flow_conf" data-conf-rel-id='<?php echo $conf['conf_rel_id'];?>'>删除</a>
+                                            <input class="layui-input" type="hidden" name="conf_rel_id[]" value="<?php echo $conf['conf_rel_id'];?>">
+                                            </td>
+                                            
+                                        </tr>
+                                        <?php }?>
+								<?php }?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-small" type="button"   data-name="flow_conf">
+                                <i class="layui-icon">&#xe654;</i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-big layui-btn-normal" type="button" lay-submit lay-filter="addForm">立即提交</button>
+                            <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+    var areaURL = baseurl + '<?php echo $getAreaListUrl;?>'; //  区域
+    var ChannelURL = baseurl + '<?php echo $getChannelListUrl;?>'; //  渠道
+    //  区域 数据回调函数
+    var areaCallback = {
+        success:function(data){
+            var inputs = $("#areabox").parent().find(".box_selected").find("input");
+            var selecteds = [];
+            inputs.each(function(){
+                var obj = new Object();
+                obj.id = $(this).val();
+                obj.level = $(this).attr("data-level");
+                selecteds.push(obj);
+            });
+            $("#areabox").treecheckbox({data:data,name:'area_id[]',selected:selecteds});
+        }
+        ,error:function(xhr,msg,e){
+
+        }
+    };
+    //  渠道 数据回调函数
+    var ChannelCallback = {
+        success:function(data){
+            var inputs = $("#Channelbox").parent().find(".box_selected").find("input");
+            var selecteds = [];
+            inputs.each(function(){
+                var obj = new Object();
+                obj.id = $(this).val();
+                obj.level = $(this).attr("data-level");
+                selecteds.push(obj);
+            });
+            $("#Channelbox").treecheckbox({data:data,name:'channel_id[]',selected:selecteds});
+        },error:function(xhr,msg,e){
+
+        }
+    };
+    requestAjax({url:areaURL,dataType:'jsonp'},areaCallback);
+    requestAjax({url:ChannelURL,dataType:'jsonp'},ChannelCallback);
+})();
+;(function(){
+    // 广告  --  新增按钮
+    $(".layui-btn-small").click(function(){
+      	  var that = $(this);
+          var name = $(this).attr("data-name"); 
+          console.log(name);
+         if(name=='flow_conf'){
+            initFlowConf(that);
+          }else{
+            initDevice(that);
+           }
+
+
+     });
+    function initDevice(that){
+        var t = that.parent().parent().find(".layui-table tbody");
+        var index = t.find("tr").length+1;                   
+        var content = `<tr>
+        <td>`+index+`</td>
+        <td><input class="layui-input" type="text" name="device[]" value=""></td>
+        <td><a class="link-delete" data-name="device_conf" >删除</a></td></tr>`;
+        t.append(content);
+        renderLayuiForm(); // 重新渲染form
+      }
+    function initFlowConf(that){
+        $.ajax({
+            url : baseurl + '<?php echo $getFlowListUrl;?>',
+            async: false,
+            data : {},
+            type : 'get',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                if(data.success){
+                	var t = that.parent().parent().find(".layui-table tbody");
+                    var temp = '',tr='',list = data.data;
+                    for(var key in list){
+                        temp = temp + `<option value="`+ key +`" >`+list[key]+`</option>`;
+                    }
+                    var index = t.find("tr").length+1;                   
+                    var content = `<tr>
+                    <td>`+index+`</td>
+                    <td>
+                        <div class="layui-input-inline">
+                            <select name="flow_id[]" lay-search="">
+                                <option value="" >请选择配置</option>
+                                `+ temp +`            
+                            </select>
+                        </div>
+                    </td>
+                    <td><input class="layui-input" type="text" name="weight[]" value=""></td>
+                    <td><a class="link-delete" data-name="flow_conf" data-conf-rel-id="0">删除</a>
+                    <input class="layui-input" type="hidden" name="conf_rel_id[]" value="0">
+                    </td>
+                </tr>`;
+                    t.append(content);
+                    renderLayuiForm(); // 重新渲染form
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg); 
+            }
+        });
+     }
+	  // 新增应用版本
+    $(".game_conf_add").click(function(){
+        var game_conf =  $(this).parent().find(".game_conf_content").val();
+        if(game_conf){
+            var ul = $(this).parent().find(".versions-wrap ul");
+            var li = `<li> `+ game_conf +` <i class="game_conf_delete"></i>
+                        <input class="layui-input game_conf" type="hidden" name="game_conf[]" value="`+game_conf+`"  />   
+                    </li>`;
+            ul.append(li);
+            $(this).parent().find(".game_conf_content").val("");
+        }
+    });
+    // 删除 应用版本 
+    $(".versions-wrap").delegate('.game_conf_delete','click',function(){
+         $(this).parent().remove();
+    });
+    // 新增系统版本
+    $(".sys_conf_add").click(function(){
+        var sys_conf =  $(this).parent().find(".sys_conf_input").val();
+        if(sys_conf){
+            var ul = $(this).parent().find(".versions-wrap ul");
+            var li = `<li> `+ sys_conf +` <i class="sys_conf_delete"></i>
+                        <input class="layui-input sys_conf_content" type="hidden" name="sys_conf_content[]" value="`+sys_conf+`"  />   
+                    </li>`;
+            ul.append(li);
+            $(this).parent().find(".sys_conf_input").val("");
+        }
+    });
+    // 删除 应用版本 
+    $(".versions-wrap").delegate('.sys_conf_delete','click',function(){
+         $(this).parent().remove();
+    });
+    layui.use('laydate', function(){
+          var laydate = layui.laydate;
+          laydate.render({
+      	    elem: '#date'
+      	    ,range: true
+ 	    	 ,done: function(value, date, endDate){
+   	    	    console.log(value); //得到日期生成的值，如：2017-08-18
+   	    	    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+   	    	    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                $('.start_time').val(date.year+'-'+date.month+'-'+date.date);
+                $('.end_time').val(endDate.year+'-'+endDate.month+'-'+endDate.date);
+   	    	  }
+        
+      	  });
+    });
+         //广告 自定义
+    layui.use('form', function(){
+        //  单选 -- 
+      var form = layui.form;
+        var radios= $(".choose-item-title").find('input[type="radio"]');
+        radios.each(function(){
+            var name = $(this).attr("name");
+            form.on('radio('+name+')', function(data){
+                if(data.elem.checked && data.value==0){
+                    $(".choose-item-content").each(function(){ 
+                        var dname = $(this).attr("data-name");
+                        if(name==dname){
+                           $(this).hide();
+                           return;
+                        }
+                    });;
+                }else if(data.elem.checked && data.value==1){
+                    $(".choose-item-content").each(function(){ 
+                        var dname = $(this).attr("data-name");
+                        if(name==dname){
+                            $(this).show();
+                           return;
+                        }
+                     });;
+                }
+            });
+        });
+        form.on('select(conf_type)', function(data){
+            console.log(data);
+            if(data.value == 1){
+                $('.conf_type1').show();
+                $('.conf_type2').hide();
+             }else{
+                 $('.conf_type2').show();
+                 $('.conf_type1').hide();
+              }
+
+        });
+            
+        });
+
+        //取消按钮
+        $(".cannel").click(function(){
+			window.location.href= baseurl +'<?php echo $listUrl;?>';
+        });
+        // form 表单 提交
+        layui.use('form', function(){
+            var form = layui.form;
+            form.on('submit(addForm)', function(data){
+                    var jsonData = $("form").serializeArray();
+                    $.ajax({
+                        url : baseurl + '<?php echo $addPostUrl;?>',
+                        async: false,
+                        data : jsonData,
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                            layer.msg(data.msg); 
+                            if(data.success){
+                            	 setTimeout(function() {
+                         			window.location.href= baseurl +'<?php echo $listUrl;?>';
+								}, 500); 
+                               //跳转
+                            }
+                        },
+                        error:function(xhr,msg,e){
+                            layer.msg(msg); 
+                        }
+                    });
+                    return false;  
+            }); 
+        });
+
+        //删除 表格行
+        $(".layui-table").delegate('.link-delete','click',function(){
+                var name = $(this).attr("data-name");
+                if(name == 'flow_conf'){
+                    var confRelId = $(this).attr("data-conf-rel-id");
+                    if(parseInt(confRelId)){
+                        delConfFlowRel(confRelId);
+                    }
+                }
+                var tbody = $(this).parent().parent().parent();
+                $(this).parent().parent().remove();
+                var tr =tbody.find("tr");
+                tr.each(function(index,el){
+                    $($(this).find("td").get(0)).html(index+1);
+                });
+        });
+
+        function delConfFlowRel(confRelId){
+        	jsonData ={'token':token,
+                                'conf_rel_id':confRelId
+                    };
+            $.ajax({
+                url : baseurl + '<?php echo $delConfRelUrl;?>',
+                async: false,
+                data : jsonData,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    if(data.success){
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg); 
+                }
+            });
+            return false; 
+         }
+ 
+    })();
+</script>

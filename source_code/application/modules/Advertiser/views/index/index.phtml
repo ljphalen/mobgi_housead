@@ -1,0 +1,163 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="colMain">
+    <div class="main">
+        <div style="margin:10px 0" class="app-detail account_log">
+            <div class="subtitle" style="width:100%">基本信息：<span class="grid">日消耗限额：<span id="day_consume"><?php echo $accountDayAmountLimitList;?></span>&nbsp;<a class="edit" id="set_dayconsumption_limit"></a>
+            </span>
+            <span>当日已消耗：<span id="day_consume"><?php echo $accountTodayConsumeAmount;?></span></span></div>
+            <div class="content" style='margin-left:50px;' >
+                <ul id='account_log_ul'>
+                    <?php foreach($account_detail_arr as $key => $value) {?>
+                    <li>
+                        <div class="account_name"><?php echo $value['account_type_str']; ?></div>
+                        <div>
+                            <p>余额：<?php echo $value['balance']; ?></p>
+                            <p>今日消耗：<?php echo floatval($day_consumption_arr[$key]['consumption']); ?></p>
+                        </div>
+                    </li>
+                    <?php }?>
+                    <li >
+                        <div class="ml20" >
+                         <p  class="ml20" >
+                           <span>广告总量：<?php echo $adTotal; ?></span>
+                           <span >审核通过：<?php echo $checkPassTotal; ?></span></p>
+                           <p   class="ml20" > <span>投放中：<?php echo $checkingTotal; ?></span>
+                               <span>  审核不通过：<?php echo $checkNoPassTotal; ?></span></p>
+                           </div>
+                       </li>
+                   </ul>
+               </div>
+           </div>
+
+           <div class="title">
+            <?php if($account_detail_arr['cache']['balance']<$advertiserCacheTipLimit){?>
+            您的现金余额已低于 <?php echo $advertiserCacheTipLimit ?>元，将影响广告正常曝光，请及时充值
+            <?php } ?>
+        </div>
+
+        <div class="chart app-detail">
+            <div class="subtitle" style="width:100%">数据概况</div>
+            <ul class="chart-filter">
+                <li class="date-filter">
+                    <div id="date_range" class="fr" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>"></div>
+                    <div id="kpi" class="ta_date fr" data-type="kpi"  style="display:inline-block;margin-right:10px;" >
+                        <span class="date_title">自定义指标</span>
+                        <a class="opt_sel"> <i class="i_orderd"></i></a>
+                    </div>
+                    <div style="clear:both;"></div>
+                </li>
+                <li class="dim-filter">
+                    <dl id="dim"></dl>
+                </li>
+            </ul>
+            <div class="chart-show">
+                <table class="mui-charts-table" >
+                    <tr id="chart_header"></tr>
+                </table>
+                <div class="chart-title">走势图</div>
+                <div id="data_charts"></div>
+            </div>
+            <hr>
+            <div class="chart-table">
+                <div class="chart-title">详细数据</div>
+                <div id="mg_talbe"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="blk">
+    <div id="blk_kpi" type="kpi" class="blk_view kpi" mod="bottom_box">
+        <div class="check_box">
+            <dl id="kpi_data" title="客户端上报数据"></dl>
+            <dl id="kpi_stat" title="统计扩展数据"></dl>
+        </div>
+    </div>
+</div>
+
+<link href="<?php echo $commonPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $commonPath;?>/css/mgchart.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $commonPath;?>/js/highcharts.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $commonPath;?>/js/mgchart.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $commonPath;?>/js/jquery.loadmask.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $commonPath;?>/js/gri.dateRange.js?v=<?php echo $version;?>"></script>
+<script type="text/javascript">
+    $(function(){
+
+        var dateRange = new pickerDateRange("date_range",'date', {
+            theme : 'ta',
+            isTodayValid : 1,
+            startDate : "<?php echo $sdate;?>",
+            endDate : "<?php echo $edate;?>",
+            minValidDate : 1379174400,
+            needCompare : 0,
+            success : function (dateObj){
+                $("#date_range").attr("sdate", dateObj.startDate);
+                $("#date_range").attr("edate", dateObj.endDate);
+                $("#date_range").attr("csdate", "");
+                $("#date_range").attr("cedate", "");
+                report.doAction();
+            }
+        });
+
+
+        report=new Mg.Report();
+        report.setDateRangePlugin("#date_range").init(<?php echo $chartConfig;?>);
+
+
+    // 时间选择 改变时候直接提交 dateRange.submitBtn为对应提交按钮
+    $("#"+dateRange.submitBtn).click(function(){
+        submitForm()
+    });
+    $(".ta_select_day").click(function(){
+        submitForm()
+    });
+    $("#operate_type").change(function(){
+        submitForm()
+    })
+    $("#account_type").change(function(){
+        submitForm()
+    })
+
+    function submitForm(){
+        sdate = $("#date_range").attr("sdate")
+        edate = $("#date_range").attr("edate")
+
+        //window.location.href='/Advertiser/Account/log/?sdate=' + sdate + "&edate=" + edate + "&operate_type="+ operate_type + "&account_type="+ account_type;
+    }
+
+    $("#set_dayconsumption_limit").click(function(){
+        oldvalue = $("#day_consume").html();
+        str = '<input type="text" class="input" value="'+ oldvalue +'"   id="set_dayconsumption_limit_value">'
+        $(this).siblings('.input').remove();
+        $("#day_consume").hide().after(str)
+        inputId='set_dayconsumption_limit_value'
+        $("#set_dayconsumption_limit_value").focus()
+        $("#set_dayconsumption_limit_value").blur(function(){
+            limit = $("#set_dayconsumption_limit_value").val();
+            $.ajax({
+                url:  baseurl+"/Advertiser/Account/setDayconsumptionLimit",
+                type: "POST",
+                dataType : 'json',
+                data : { 'token':token, 'limit':limit},
+                success: function(ret) {
+                    if (ret.success) {
+                        showMsg('', ret.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                    $("#day_consume").show()
+                    $("#" + inputId).remove()
+                }
+            });
+        });
+    });
+
+
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

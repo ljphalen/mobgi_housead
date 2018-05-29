@@ -1,0 +1,75 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain">
+   <div class="nav">
+		<ul class="cc">
+            <li><a href="<?php echo $listUrl;?>">Sdk插件列表</a></li>
+			<li class="current"><a href="<?php echo $addUrl;?>"><?php echo $navTitle; ?>插件</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+              <form action="<?php echo $addPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id"  id="id" value='<?php echo $info['id']; ?>' />
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">
+                     <li>
+                        <span class="label">平台：</span>
+                        <div class="fc">
+                            <select id="sdk_type"  name="sdk_type">
+                          <?php foreach($sdkType as $k1=>$v1){ ?>
+                            <option value="<?php echo $k1; ?>"  <?php if( $info['sdk_type']==$k1 ): ?> selected <?php endif; ?>><?php echo $v1; ?> </option>
+                          <?php } ?>
+                            </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <span class="label">SDK名称：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="name"  value="<?php echo $info['name']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">logo图片上传：</span>
+                        <div id="logoImg" >
+                            <span>logo</span><br>
+                            <img class="fc" src="<?php echo $info['logo_url']?$attachPath.$info['logo_url']:$staticPath.'/img/content/nopic.jpg';?>" style="height:100px;"/>
+                            <input type="hidden" name="logo_url" value="<?php echo  $info['logo_url'] ; ?>">
+                        </div>
+                        <div class="fc"  >
+                            <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=logoImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">
+                                </iframe>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">排序：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="sort"  value="<?php echo $info['sort']; ?>" />
+                            <span class="red">*(整数)</span>
+                        </div>
+                    </li>
+					<li>
+                        <div class="fc">
+                            <input type="submit"  value="保存" class="submit"  />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl;?>' " />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+	ajaxForm('addForm',function(ret){ 
+	        ajaxRedirect(ret, baseurl+'<?php echo $listUrl;?>');
+	 },function(){
+		 return true;
+	});
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

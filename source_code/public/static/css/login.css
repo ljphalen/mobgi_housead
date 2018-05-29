@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+html,
+body {
+    font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+    font-size: 14px;
+    width:100%; 
+    height:100%;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
+    color:    #a5a5a5;
+}
+input:-moz-placeholder, textarea:-moz-placeholder { 
+    color:    #a5a5a5;
+}
+input::-moz-placeholder, textarea::-moz-placeholder { 
+    color:    #a5a5a5;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { 
+    color:    #a5a5a5;
+}
+input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {  
+    -webkit-text-fill-color: #555 !important;  
+    -webkit-box-shadow: 0 0 0px 1000px transparent  inset !important;  
+    background-color:transparent;  
+    background-image: none;  
+     transition: background-color 50000s ease-in-out 0s;
+}  
+input {  
+     background-color:transparent;  
+}  
+
+.login-wrap {
+    width: 100%;
+    height: 100%;
+    min-height: 710px;
+    position: relative;
+}
+.login-wrap .bg-top{ position: relative; z-index: 2; width: 100%; height:50%; background: #282b2d;   }
+.login-wrap .bg-bottom{ position: relative; z-index: 2; width: 100%; height: 50%; background: #ffffff; }
+
+.login-wrap .login{ position: absolute; z-index: 99; left:50%; top:50%;  width: 480px; height: 710px; margin: -320px 0 0 -240px;   }
+.login-wrap .login .login-logo{ display:block; text-align: center;   }
+.login-wrap .login .login-logo img{ width:300px; }
+.login-wrap .login .signin-wrap{ width:100%; height:522px; background: #fff; margin-top: 72px; overflow:hidden; box-sizing: border-box;  border-radius: 20px; -khtml-border-radius: 20px; -webkit-border-radius: 20px; box-shadow:0 0 10px #999; -webkit-box-shadow:0 0 10px #999; -khtml-box-shadow:0 0 10px #999; -moz-box-shadow:0 0 10px #999; }
+.login-wrap .login .signin-wrap .title{ width:100%; color:#a5a5a5; font-size: 30px; text-align: center; margin: 82px 0 80px 0;;   }
+.login-wrap .login .signin-wrap .form-in{ width:100%; overflow: hidden; }
+.login-wrap .login .signin-wrap .form-in li{ float:left; width:100%; margin-bottom: 28px; padding-left: 65px; box-sizing:border-box;  }
+.login-wrap .login .signin-wrap .form-in li i{ display: inline-block; float:left; margin-right: 8px; }
+.login-wrap .login .signin-wrap .form-in li input{ float:left; height: 38px; line-height: 38px; width:245px; padding:0 20px; font-size: 16px;  color:#555;  border-radius: 25px; outline: none; border:none; background: #f6f6f4; }
+.login-wrap .login .signin-wrap .form-submit{ cursor: pointer; display: block; margin: 30px auto; outline: none; border:none; border-radius: 25px;  width: 284px; height: 42px; line-height: 42px; background: #45b9fb; color:#fff; text-align: center; font-size: 25px;  }
+
+
+

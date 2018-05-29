@@ -1,0 +1,191 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="tabs-wrapper">
+                <div class="layui-tab layui-tab-brief" lay-filter="">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">归因查询</li>
+                    <li>清除设备</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <!-- 归因查询  begin -->
+                    <div class="layui-tab-item layui-show layui-anim layui-anim-upbit">
+                        <div class="wrapper">
+                            <!-- 查询条件 begin -->
+                            <div class="query-condition">    
+                                <form class="layui-form">
+                                    <div class="layui-form-item ">
+                                        <div class="layui-input-inline">
+                                            <input type="text" lay-verify="required" name="deviceid" placeholder="请输入设备ID" value=""  class="layui-input" />
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <button type="button" class="layui-btn" lay-submit lay-filter="search">搜索</button>
+                                        </div>   
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-mid layui-word-aux">说明：支持通过 idfa ，imei ，idfa 或 imei 加密值查询</div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- 查询条件 end  -->    
+                            <hr class="layui-bg-gray">
+                            <div class="data-result layui-anim layui-anim-up" style="display:none;">
+                                <ul class="layui-timeline" id="data-result-items"> </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 归因查询  end  -->
+                    <!-- 清除设备  begin -->
+                    <div class="layui-tab-item layui-anim layui-anim-upbit">
+                        <div class="wrapper">
+                            <!-- 查询条件 begin -->
+                            <div class="query-condition">    
+                                <form class="layui-form">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-inline">
+                                            <input type="text" lay-verify="required" name="deviceid" placeholder="请输入设备ID" value=""  class="layui-input" />
+                                        </div>
+                                        <div class="layui-input-inline">
+                                            <button type="button" class="layui-btn" lay-submit lay-filter="cleardevice">清除设备</button>
+                                        </div>   
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-form-mid layui-word-aux">说明：支持通过 idfa ，imei ，idfa 或 imei 加密值清除设备</div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- 查询条件 end  -->    
+                            <hr class="layui-bg-gray">  
+                        </div>
+                    </div>
+                    <!-- 清除设备  end  -->
+                </div>
+                </div>
+              
+            </div>
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+<script>
+    layui.use(['element','form'], function(){
+        var form = layui.form;
+        // 查询设备
+        form.on('submit(search)', function(data){
+            $(".data-result").hide();
+            var field = data.field;
+            field.token = token;
+            field.app_id = JSON.parse(localStorage.app_data).app_id;
+            var arr = [{ click_id: '点击 ID' }];
+            $.ajax({
+                url: baseurl + '/Admin/Spm_Tools/getAttributeList' ,
+                data: field,
+                type:'post',
+                success:function(data){
+                    if(data.success){
+                        var jsonData = data.data; 
+                        var key_map = jsonData.key_map, items = jsonData.data, total = jsonData.total;
+                        var defaultTemp = '';
+                        var totalTemp = '<div class="layui-timeline-title green">统计</div>';
+                        for(var key in total){
+                            totalTemp = totalTemp + `<p class="data-result-item">`+key_map[key]+`：<span>`+total[key]+`</span></p>`;
+                            delete key_map[key];
+                        }
+                        defaultTemp =  defaultTemp + `<li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                <div class="layui-timeline-content layui-text">
+                                `+ totalTemp +`   
+                                </div>
+                            </li> `;
+                        var itemsTemps = '';
+                        for(var index in items){
+                            var isactive = 'grey';
+                            if(items[index]['isactive']=="已激活"){
+                                isactive = 'red';
+                            }
+                            var temp = `<div class="layui-timeline-title green">设备ID：`+ items[index]['idfa'] +` `+
+                               `<span class="`+isactive+`">(`+ items[index]['isactive'] + `)</span> 点击时间：`+ items[index]['clicktime'] +`<span class="isShow bule" style="cursor: pointer; padding:0 10px;">  [点击展开]</span></div>`;
+                            for(var key in key_map){
+                                temp = temp +  `<p class="data-result-item" style="display:none;">`+key_map[key]+`：
+                                <span>`+items[index][key]+`</span></p>`;
+                            }
+                            itemsTemps =  itemsTemps + `<li class="layui-timeline-item">
+                                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                    <div class="layui-timeline-content layui-text">
+                                    `+ temp +`   
+                                    </div>
+                                </li>`       
+                        }
+                        defaultTemp =  defaultTemp + itemsTemps +`
+                            <li class="layui-timeline-item">
+                                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                <div class="layui-timeline-content layui-text"></div>
+                            </li> `;
+                        $("#data-result-items").html(defaultTemp);
+                        $(".data-result").show();   
+                    }else{
+                        layer.msg(data.msg); 
+                    }
+                },error:function(xhr,msg,error){
+                    console.log(msg);
+                    layer.msg(msg); 
+                }
+            });
+            return false; 
+        });
+         // 点击展开
+        $("#data-result-items").delegate('li .isShow','click',function(){
+            var isShow = $(this).hasClass("show");
+            if(!isShow){
+                $(this).addClass("show");
+                $(this).html("[点击隐藏]");
+                $(this).parent().parent().find(".data-result-item").show();
+            }else{
+                $(this).removeClass("show");
+                $(this).html("[点击展开]");
+                $(this).parent().parent().find(".data-result-item").hide();
+            }
+        });
+
+        // 清除设备cleardevice
+        form.on('submit(cleardevice)', function(data){
+            var field = data.field;
+            field.token = token;
+            field.app_id = JSON.parse(localStorage.app_data).app_id;
+            $.ajax({
+                url: baseurl + '/Admin/Spm_Tools/resetData' ,
+                data: field,
+                type:'post',
+                success:function(data){
+                    layer.msg(data.msg); 
+                },
+                error:function(xhr,msg,error){
+                    console.log(msg);
+                    layer.msg(msg); 
+                }
+            });
+            return false;
+        });
+        
+    });
+
+    // equipment
+    
+ 
+      
+
+</script>
+</body>
+</html>

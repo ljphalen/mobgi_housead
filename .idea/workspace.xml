@@ -1,0 +1,1853 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V1/Housead.php" line="1502" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" readonly="true" id="450c96e8-2964-47d8-beb6-c8a2f00818f8" name="Default" comment="互动广告">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/.settings/org.eclipse.php.core.prefs" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/.settings/org.eclipse.php.core.prefs" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/account/account_consume.py" afterPath="$PROJECT_DIR$/cron_script/account/account_consume.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/account/conf/account_consume.conf" afterPath="$PROJECT_DIR$/cron_script/account/conf/account_consume.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/account/log/recovery_expired_virtualmoney_setting.txt" afterPath="$PROJECT_DIR$/cron_script/account/log/recovery_expired_virtualmoney_setting.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Action/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Action/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Application.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Application.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Bootstrap/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Bootstrap/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Ini.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Ini.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Config/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Controller/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Controller/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Dispatcher.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Dispatcher.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/DispatchFailed.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/DispatchFailed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/Action.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/Action.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/Controller.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/Controller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/Module.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/Module.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/View.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/LoadFailed/View.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/RouterFailed.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/RouterFailed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/StartupError.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/StartupError.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/TypeError.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Exception/TypeError.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/G.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/G.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Loader.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Loader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Plugin/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Plugin/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Registry.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Registry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Http.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Request/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Cli.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Cli.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Http.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Response/Http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Interface.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Interface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Map.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Map.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Regex.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Regex.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Rewrite.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Rewrite.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Static.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Static.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Supervar.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Route/Supervar.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Router.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Router.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/Session.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/Session.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/View/Interface.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/View/Interface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf/View/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf/View/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Action/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Action/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Application.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Application.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Bootstrap/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Bootstrap/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Ini.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Ini.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Config/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Controller/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Controller/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Dispatcher.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Dispatcher.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/DispatchFailed.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/DispatchFailed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/Action.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/Action.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/Controller.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/Controller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/LoadFailed.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/LoadFailed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/Module.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/Module.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/View.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/LoadFailed/View.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/RouterFailed.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/RouterFailed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/StartupError.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/StartupError.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/TypeError.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Exception/TypeError.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/G.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/G.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Loader.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Loader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Plugin/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Plugin/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Registry.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Registry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Http.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Request/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Abstract.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Cli.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Cli.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Http.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Response/Http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Exception.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Interface.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Interface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Map.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Map.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Regex.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Regex.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Rewrite.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Rewrite.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Static.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Static.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Supervar.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Route/Supervar.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Router.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Router.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Session.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/Session.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/View/Interface.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/View/Interface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/View/Simple.php" afterPath="$PROJECT_DIR$/cron_script/framework/Yaf_Namespace/View/Simple.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/framework/loader.php" afterPath="$PROJECT_DIR$/cron_script/framework/loader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_active.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_active.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_base.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_base.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_charge.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_charge.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_charge_min.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_charge_min.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_client.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_client.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_client2.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_client2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_dsp.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_dsp.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_fillrate.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_fillrate.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_hour.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_hour.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_housead.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_housead.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_ip.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_ip.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_test.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_try.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_mid_try.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_server.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_dsp.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_dsp.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_exitstime.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_exitstime.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_fillrate.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_fillrate.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_hour.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_hour.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_housead.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_housead.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_ip.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_ip.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_test.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_test_dau.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_test_dau.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_test_dau_ver.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_test_dau_ver.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_times.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_times.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_try_hour.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_try_hour.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_watchingtime.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_stat_watchingtime.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/ad_user.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/ad_user.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/adx/adx_set_frequency_cache.py" afterPath="$PROJECT_DIR$/cron_script/idsy/adx/adx_set_frequency_cache.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/config/adx.py" afterPath="$PROJECT_DIR$/cron_script/idsy/config/adx.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/lib/mybase.py" afterPath="$PROJECT_DIR$/cron_script/idsy/lib/mybase.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/lib/mysql.py" afterPath="$PROJECT_DIR$/cron_script/idsy/lib/mysql.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/tools/tool_base.py" afterPath="$PROJECT_DIR$/cron_script/idsy/tools/tool_base.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/tools/tool_rainbow.py" afterPath="$PROJECT_DIR$/cron_script/idsy/tools/tool_rainbow.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/idsy/tools/tool_spm.py" afterPath="$PROJECT_DIR$/cron_script/idsy/tools/tool_spm.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cron_script/importUser/pay_user_to_cache.py" afterPath="$PROJECT_DIR$/cron_script/importUser/pay_user_to_cache.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source_code/docs/mobgi_housead.sql" afterPath="$PROJECT_DIR$/source_code/docs/mobgi_housead.sql" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" synchronizationState="DONT_SYNCHRONIZE" />
+  <component name="Cvs2Configuration">
+    <option name="SHOW_OUTPUT" value="true" />
+    <option name="MAKE_NEW_FILES_READONLY" value="true" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <expand />
+    <select />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Iaad.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/controllers/Iaad.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="29" column="6" lean-forward="true" selection-start-line="29" selection-start-column="6" selection-end-line="29" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="account_consume.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cron_script/account/account_consume.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="8" column="23" lean-forward="false" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="108">
+                <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Dsp.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V2/Dsp.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="142">
+              <caret line="100" column="0" lean-forward="true" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Abtestflow.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Systemtool/Abtestflow.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="376">
+              <caret line="252" column="39" lean-forward="true" selection-start-line="252" selection-start-column="39" selection-end-line="252" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Base.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source_code/application/controllers/Admin/Base.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="385">
+              <caret line="171" column="45" lean-forward="true" selection-start-line="171" selection-start-column="45" selection-end-line="171" selection-end-column="45" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Base.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source_code/application/controllers/Common/Base.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="223">
+              <caret line="207" column="21" lean-forward="true" selection-start-line="207" selection-start-column="21" selection-end-line="207" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Exception.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source_code/framework/Yaf/Exception.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Core.php" pinned="false" current-in-tab="false">
+        <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/Core/Core.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="196">
+              <caret line="598" column="9" lean-forward="false" selection-start-line="598" selection-start-column="9" selection-end-line="598" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="verifygoods.phtml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/verifygoods.phtml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="23" column="6" lean-forward="false" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>verifyGoods</find>
+      <find>gerneral</find>
+      <find>getActivityRelConf</find>
+      <find>goods</find>
+      <find>updateActivityRel</find>
+      <find>getGoodsIds</find>
+      <find>getUserDayDrawTimes</find>
+      <find>goods_type</find>
+      <find>uploadTemplatid</find>
+      <find>uploadPost</find>
+      <find>input_csv</find>
+      <find>-1</find>
+      <find>getPrizeId</find>
+      <find>showDrawResultDiv</find>
+      <find>IdWorker</find>
+      <find>hiddeDraw</find>
+      <find>ui</find>
+      <find>record-list</find>
+      <find>sendDataToStatInterFace</find>
+      <find>getReportData</find>
+      <find>isWhitelist</find>
+      <find>device</find>
+      <find>uploadDescImg</find>
+      <find>$reportData['goods_id']</find>
+      <find>alert</find>
+      <find>saveActivityEventTypeToCache</find>
+      <find>checkGoodsInfo</find>
+      <find>checkPostParam</find>
+      <find>box-text</find>
+      <find>MobgiApi_Service_PolymericAdsModel</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/source_code/configs</dir>
+      <dir>$PROJECT_DIR$/source_code/application/modules/Api/controllers</dir>
+      <dir>$PROJECT_DIR$/source_code/application/models/MobgiApi/Service</dir>
+      <dir>$PROJECT_DIR$/source_code/application/models/Advertiser</dir>
+      <dir>$PROJECT_DIR$/source_code</dir>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
+  </component>
+  <component name="FrameworkCommandLineHistory">
+    <commandsHistory>
+      <command text="DS" />
+    </commandsHistory>
+  </component>
+  <component name="HierarchyBrowserManager">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="true" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/activity/view.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/goods/view.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/controllers/Index.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/index.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Dao/InteractiveAdUser.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Cache/InteractiveAdUser.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Cache/InteractiveAdUserDayDrawTimes.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Dao/InteractiveAdUserDayDrawTimes.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdUserDayDrawTimes.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdGoodsCode.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdGoodsExchangeLog.php" />
+        <option value="$PROJECT_DIR$/source_code/application/controllers/Coupon/Base.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/getgoods.phtml" />
+        <option value="$PROJECT_DIR$/source_code/library/Util/CacheKey.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdActivityRel.php" />
+        <option value="$PROJECT_DIR$/source_code/library/Common/Dao/Base.php" />
+        <option value="$PROJECT_DIR$/source_code/library/Util/EventType.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/baseinfo/template/add.phtml" />
+        <option value="$PROJECT_DIR$/source_code/public/static/js/common/common.js" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/activity/add.phtml" />
+        <option value="$PROJECT_DIR$/source_code/library/Util/PHPQRcode/qrconfig.php" />
+        <option value="$PROJECT_DIR$/source_code/library/Common.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Interative/Goods.php" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdUser.php" />
+        <option value="$PROJECT_DIR$/source_code/public/static/template/codeDemo.csv" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/goods/add.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Api/controllers/Test.php" />
+        <option value="$PROJECT_DIR$/source_code/configs/router.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/systemtool/abtestflow/add.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/systemtool/abtest/add.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/controllers/Adx/Api/Base.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Systemtool/Abtest.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V2/Intergration.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/code/add.phtml" />
+        <option value="$PROJECT_DIR$/source_code/public/static/iaad/js/common.js" />
+        <option value="$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdActivity.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Interative/Activity.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/activity/index.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/goods/index.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Interative/Code.php" />
+        <option value="$PROJECT_DIR$/source_code/public/static/iaad/css/style.css" />
+        <option value="$PROJECT_DIR$/source_code/configs/siteConfig.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Coupon/controllers/Iaad.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/goods.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/prize.phtml" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/verifygoods.phtml" />
+        <option value="$PROJECT_DIR$/source_code/public/admin/index.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/activity.phtml" />
+        <option value="$PROJECT_DIR$/source_code/docs/mobgi_housead.sql" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V2/Dsp.php" />
+        <option value="$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Systemtool/Abtestflow.php" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsFlowSettings">
+    <service-enabled>false</service-enabled>
+    <exe-path />
+    <annotation-enable>false</annotation-enable>
+    <other-services-enabled>false</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="PhpDebugGeneral" xdebug_debug_port="9001" />
+  <component name="PhpServers">
+    <servers>
+      <server host="localhost.api.mobgi.com" id="a080c183-974f-4f05-96bd-5dc1f4de0d12" name="localhost.api.mobgi.com" />
+      <server host="localhost.admin.mobgi.com" id="0c8e132e-be6f-4c8c-ac7d-eb235906868a" name="localhost.admin.mobgi.com" />
+      <server host="localhost.api.ha.mobgi.com" id="e7af730f-5214-4f53-8cd5-54a12081eb36" name="localhost.api.ha.mobgi.com" />
+      <server host="localhost.stat.ha.mobgi.com" id="ef45fef6-a087-44df-9391-35b93bfd1ed5" name="localhost.stat.ha.mobgi.com" />
+      <server host="localhost.ha.mobgi.com" id="b485382a-b735-4a2b-a382-29453a00966a" name="localhost.ha.mobgi.com" />
+    </servers>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP７">
+    <include_path>
+      <path value="$PROJECT_DIR$/../../../yaf.auto.complete/phpstorm" />
+    </include_path>
+  </component>
+  <component name="PhpXdebugProxy" ide_key=" PHPSTROM" host="localhost" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="260" />
+    <option name="y" value="53" />
+    <option name="width" value="1392" />
+    <option name="height" value="1009" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>AngularJS</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="mobgi_housead_200170629" type="cbb8eebc:String" user="mobgi_housead_200170629" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="mobgi_housead_200170629" type="cbb8eebc:String" user="mobgi_housead_200170629" />
+              <item name="mobgi_housead_200170629" type="cbb8eebc:String" user="mobgi_housead_200170629" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="trunck" type="cbb8eebc:String" user="trunck" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="application" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="application" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="application" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Admin" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="application" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Admin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="controllers" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="application" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Admin" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="controllers" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Systemtool" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mobgi_housead_200170629" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="source_code" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="application" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="modules" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="Advertiser" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="mobgi_housead_200170629" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
+    <property name="settings.editor.selected.configurable" value="vcs.CVS" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///data/www/mobgi_housead/branches/mobgi_housead_200170629/source_code/application/modules/Api/controllers/Adx/V2/Dsp.php&#10;v&#9;FILE&#9;file:///data/www/mobgi_housead/branches/mobgi_housead_200170629/source_code/application/modules/Api/controllers/Mobgi/Videoads.php&#10;mobgi&#9;null&#9;null&#10;housead.php&#9;FILE&#9;file:///data/www/mobgi_housead/branches/mobgi_housead_200170629/source_code/application/modules/Api/controllers/Adx/V1/Housead.php" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../jinli/game.gionee.com" />
+    <property name="Constants" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Apple JS" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/source_code/application/modules/Api/controllers/Mobgi/Videoads.php" />
+    <property name="nodejs_interpreter_path" value="/usr/bin/node" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/source_code/public/static/iaad/images" />
+      <recent name="$PROJECT_DIR$/source_code/public/static/iaad/js" />
+      <recent name="$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad" />
+      <recent name="$PROJECT_DIR$/source_code/application/models/MobgiApi/Service" />
+      <recent name="$PROJECT_DIR$/source_code/application/models/MobgiApi/Dao" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V1" />
+    </key>
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/configs/marketingConfig.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/controllers/Stat/Base.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/views/spm/index/index.phtml</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/views/spm/material/addmaterial.phtml</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/views/spm/material/index.phtml</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/views/spm/material/addlabel.phtml</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Interative/Report.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Spm/Tools.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Spm/Report.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Spm/Material.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Marketing/Ads.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Marketing/Adgroups.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Marketing/Adcreatives.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Stat/controllers/Adx/V1/Stat.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiSpm/Service/Report.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiSpm/Service/Material.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiData/Service/MiddleBase.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiData/Service/Interactive.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiData/Dao/ReportBase.php</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Marketing/Rule.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiMarket/Service/Rule.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiMarket/Dao/RuleReceiver.php</PATH>
+          <PATH vcs="svn" revision="234845">$PROJECT_DIR$/source_code/application/models/MobgiMarket/Dao/Rule.php</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JavaScript Debug.protoc-gen-php.php">
+    <configuration name="　" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V1/Ad.php" />
+    <configuration name="Dsp.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/mobgi_housead_200170629/source_code/application/modules/Api/controllers/Adx/V2/Dsp.php" />
+    <configuration name="Videoads.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/mobgi_housead_200170629/source_code/application/modules/Api/controllers/Mobgi/Videoads.php" />
+    <configuration name="http://localhost.api.mobgi.com/" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" server_name="localhost.api.mobgi.com" url="http://localhost.api.mobgi.com/" />
+    <configuration name="protoc-gen-php.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/mobgi_housead_200170629/source_code/docs/php-protobuf-php7/protoc-gen-php.php" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="PHP HTTP Request.http://localhost.api.mobgi.com/" />
+      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.Videoads.php" />
+      <item index="2" class="java.lang.String" itemvalue="PHP Script.　" />
+      <item index="3" class="java.lang.String" itemvalue="JavaScript Debug.Dsp.php" />
+      <item index="4" class="java.lang.String" itemvalue="JavaScript Debug.protoc-gen-php.php" />
+    </list>
+    <recent_temporary>
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.protoc-gen-php.php" />
+        <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.Dsp.php" />
+        <item index="2" class="java.lang.String" itemvalue="JavaScript Debug.Videoads.php" />
+        <item index="3" class="java.lang.String" itemvalue="PHP Script.　" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+    <option name="ACTIVE_ACTIONS" value=",Show Private Members,SHOW_INHERITED,Show Fields,VISIBILITY_SORTER" />
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>$USER_HOME$/.subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="true" />
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="450c96e8-2964-47d8-beb6-c8a2f00818f8" name="Default" comment="" />
+      <created>1504158028226</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1504158028226</updated>
+      <workItem from="1504158029625" duration="90000" />
+      <workItem from="1516694492720" duration="290000" />
+      <workItem from="1516700417525" duration="439000" />
+      <workItem from="1516701028475" duration="24624000" />
+      <workItem from="1516846369901" duration="11664000" />
+      <workItem from="1516873991277" duration="493000" />
+      <workItem from="1516874492347" duration="291000" />
+      <workItem from="1516874788102" duration="5000" />
+      <workItem from="1516875110459" duration="721000" />
+      <workItem from="1516875960648" duration="24885000" />
+      <workItem from="1517298928703" duration="35336000" />
+      <workItem from="1517480347325" duration="10342000" />
+      <workItem from="1517577722771" duration="4297000" />
+      <workItem from="1517583270907" duration="26018000" />
+      <workItem from="1517910616026" duration="1869000" />
+      <workItem from="1517966580078" duration="10788000" />
+      <workItem from="1518311666580" duration="2700000" />
+      <workItem from="1519870611286" duration="23555000" />
+      <workItem from="1520237822804" duration="5000" />
+      <workItem from="1520243877201" duration="526000" />
+      <workItem from="1520319177935" duration="172918000" />
+      <workItem from="1521531118472" duration="111210000" />
+      <workItem from="1522319569227" duration="28856000" />
+      <workItem from="1522637066393" duration="2651000" />
+      <workItem from="1522640265035" duration="25691000" />
+      <workItem from="1522812102603" duration="103000" />
+      <workItem from="1522812422815" duration="26754000" />
+      <workItem from="1523325240850" duration="14972000" />
+      <workItem from="1523430656818" duration="30429000" />
+      <workItem from="1523516200304" duration="54864000" />
+      <workItem from="1523849848338" duration="86787000" />
+      <workItem from="1524222683981" duration="696000" />
+      <workItem from="1524223489478" duration="1260000" />
+      <workItem from="1524224907851" duration="183000" />
+      <workItem from="1524225463937" duration="31867000" />
+      <workItem from="1524554964043" duration="13383000" />
+      <workItem from="1524650438600" duration="21000" />
+      <workItem from="1524650585001" duration="6328000" />
+      <workItem from="1524737657328" duration="4756000" />
+      <workItem from="1524793298047" duration="32534000" />
+      <workItem from="1524880648905" duration="18374000" />
+      <workItem from="1524904792173" duration="5710000" />
+      <workItem from="1525231675213" duration="26976000" />
+      <workItem from="1525398018983" duration="17766000" />
+      <workItem from="1525677438286" duration="3423000" />
+      <workItem from="1525683522689" duration="8002000" />
+      <workItem from="1525746488597" duration="6792000" />
+      <workItem from="1525760632696" duration="828000" />
+      <workItem from="1525761963926" duration="1561000" />
+      <workItem from="1525763559010" duration="30010000" />
+      <workItem from="1525852277349" duration="131039000" />
+      <workItem from="1526608308179" duration="6986000" />
+      <workItem from="1526783420742" duration="571000" />
+      <workItem from="1526869280485" duration="134074000" />
+      <workItem from="1527479745079" duration="12113000" />
+    </task>
+    <task id="LOCAL-00386" summary="互动广告">
+      <created>1527147628580</created>
+      <option name="number" value="00386" />
+      <option name="presentableId" value="LOCAL-00386" />
+      <option name="project" value="LOCAL" />
+      <updated>1527147628580</updated>
+    </task>
+    <task id="LOCAL-00387" summary="互动广告">
+      <created>1527151649894</created>
+      <option name="number" value="00387" />
+      <option name="presentableId" value="LOCAL-00387" />
+      <option name="project" value="LOCAL" />
+      <updated>1527151649894</updated>
+    </task>
+    <task id="LOCAL-00388" summary="互动广告">
+      <created>1527152239464</created>
+      <option name="number" value="00388" />
+      <option name="presentableId" value="LOCAL-00388" />
+      <option name="project" value="LOCAL" />
+      <updated>1527152239464</updated>
+    </task>
+    <task id="LOCAL-00389" summary="互动广告">
+      <created>1527152310546</created>
+      <option name="number" value="00389" />
+      <option name="presentableId" value="LOCAL-00389" />
+      <option name="project" value="LOCAL" />
+      <updated>1527152310546</updated>
+    </task>
+    <task id="LOCAL-00390" summary="互动广告">
+      <created>1527152511437</created>
+      <option name="number" value="00390" />
+      <option name="presentableId" value="LOCAL-00390" />
+      <option name="project" value="LOCAL" />
+      <updated>1527152511437</updated>
+    </task>
+    <task id="LOCAL-00391" summary="互动广告">
+      <created>1527152607921</created>
+      <option name="number" value="00391" />
+      <option name="presentableId" value="LOCAL-00391" />
+      <option name="project" value="LOCAL" />
+      <updated>1527152607921</updated>
+    </task>
+    <task id="LOCAL-00392" summary="互动广告">
+      <created>1527152819359</created>
+      <option name="number" value="00392" />
+      <option name="presentableId" value="LOCAL-00392" />
+      <option name="project" value="LOCAL" />
+      <updated>1527152819360</updated>
+    </task>
+    <task id="LOCAL-00393" summary="互动广告">
+      <created>1527154097932</created>
+      <option name="number" value="00393" />
+      <option name="presentableId" value="LOCAL-00393" />
+      <option name="project" value="LOCAL" />
+      <updated>1527154097932</updated>
+    </task>
+    <task id="LOCAL-00394" summary="互动广告">
+      <created>1527156777835</created>
+      <option name="number" value="00394" />
+      <option name="presentableId" value="LOCAL-00394" />
+      <option name="project" value="LOCAL" />
+      <updated>1527156777835</updated>
+    </task>
+    <task id="LOCAL-00395" summary="互动广告">
+      <created>1527156785562</created>
+      <option name="number" value="00395" />
+      <option name="presentableId" value="LOCAL-00395" />
+      <option name="project" value="LOCAL" />
+      <updated>1527156785562</updated>
+    </task>
+    <task id="LOCAL-00396" summary="互动广告">
+      <created>1527156818578</created>
+      <option name="number" value="00396" />
+      <option name="presentableId" value="LOCAL-00396" />
+      <option name="project" value="LOCAL" />
+      <updated>1527156818578</updated>
+    </task>
+    <task id="LOCAL-00397" summary="互动广告">
+      <created>1527156956804</created>
+      <option name="number" value="00397" />
+      <option name="presentableId" value="LOCAL-00397" />
+      <option name="project" value="LOCAL" />
+      <updated>1527156956804</updated>
+    </task>
+    <task id="LOCAL-00398" summary="互动广告">
+      <created>1527157044485</created>
+      <option name="number" value="00398" />
+      <option name="presentableId" value="LOCAL-00398" />
+      <option name="project" value="LOCAL" />
+      <updated>1527157044485</updated>
+    </task>
+    <task id="LOCAL-00399" summary="互动广告">
+      <created>1527157848904</created>
+      <option name="number" value="00399" />
+      <option name="presentableId" value="LOCAL-00399" />
+      <option name="project" value="LOCAL" />
+      <updated>1527157848904</updated>
+    </task>
+    <task id="LOCAL-00400" summary="互动广告">
+      <created>1527159043043</created>
+      <option name="number" value="00400" />
+      <option name="presentableId" value="LOCAL-00400" />
+      <option name="project" value="LOCAL" />
+      <updated>1527159043043</updated>
+    </task>
+    <task id="LOCAL-00401" summary="互动广告">
+      <created>1527159588656</created>
+      <option name="number" value="00401" />
+      <option name="presentableId" value="LOCAL-00401" />
+      <option name="project" value="LOCAL" />
+      <updated>1527159588656</updated>
+    </task>
+    <task id="LOCAL-00402" summary="互动广告">
+      <created>1527161196235</created>
+      <option name="number" value="00402" />
+      <option name="presentableId" value="LOCAL-00402" />
+      <option name="project" value="LOCAL" />
+      <updated>1527161196235</updated>
+    </task>
+    <task id="LOCAL-00403" summary="互动广告">
+      <created>1527161351128</created>
+      <option name="number" value="00403" />
+      <option name="presentableId" value="LOCAL-00403" />
+      <option name="project" value="LOCAL" />
+      <updated>1527161351128</updated>
+    </task>
+    <task id="LOCAL-00404" summary="互动广告">
+      <created>1527163188210</created>
+      <option name="number" value="00404" />
+      <option name="presentableId" value="LOCAL-00404" />
+      <option name="project" value="LOCAL" />
+      <updated>1527163188210</updated>
+    </task>
+    <task id="LOCAL-00405" summary="互动广告">
+      <created>1527163495604</created>
+      <option name="number" value="00405" />
+      <option name="presentableId" value="LOCAL-00405" />
+      <option name="project" value="LOCAL" />
+      <updated>1527163495604</updated>
+    </task>
+    <task id="LOCAL-00406" summary="互动广告">
+      <created>1527163785330</created>
+      <option name="number" value="00406" />
+      <option name="presentableId" value="LOCAL-00406" />
+      <option name="project" value="LOCAL" />
+      <updated>1527163785330</updated>
+    </task>
+    <task id="LOCAL-00407" summary="互动广告">
+      <created>1527213567208</created>
+      <option name="number" value="00407" />
+      <option name="presentableId" value="LOCAL-00407" />
+      <option name="project" value="LOCAL" />
+      <updated>1527213567208</updated>
+    </task>
+    <task id="LOCAL-00408" summary="互动广告">
+      <created>1527214447661</created>
+      <option name="number" value="00408" />
+      <option name="presentableId" value="LOCAL-00408" />
+      <option name="project" value="LOCAL" />
+      <updated>1527214447661</updated>
+    </task>
+    <task id="LOCAL-00409" summary="互动广告">
+      <created>1527219628636</created>
+      <option name="number" value="00409" />
+      <option name="presentableId" value="LOCAL-00409" />
+      <option name="project" value="LOCAL" />
+      <updated>1527219628637</updated>
+    </task>
+    <task id="LOCAL-00410" summary="互动广告">
+      <created>1527220049939</created>
+      <option name="number" value="00410" />
+      <option name="presentableId" value="LOCAL-00410" />
+      <option name="project" value="LOCAL" />
+      <updated>1527220049939</updated>
+    </task>
+    <task id="LOCAL-00411" summary="互动广告">
+      <created>1527220094211</created>
+      <option name="number" value="00411" />
+      <option name="presentableId" value="LOCAL-00411" />
+      <option name="project" value="LOCAL" />
+      <updated>1527220094211</updated>
+    </task>
+    <task id="LOCAL-00412" summary="互动广告">
+      <created>1527227537189</created>
+      <option name="number" value="00412" />
+      <option name="presentableId" value="LOCAL-00412" />
+      <option name="project" value="LOCAL" />
+      <updated>1527227537189</updated>
+    </task>
+    <task id="LOCAL-00413" summary="互动广告">
+      <created>1527228522131</created>
+      <option name="number" value="00413" />
+      <option name="presentableId" value="LOCAL-00413" />
+      <option name="project" value="LOCAL" />
+      <updated>1527228522131</updated>
+    </task>
+    <task id="LOCAL-00414" summary="互动广告">
+      <created>1527236811839</created>
+      <option name="number" value="00414" />
+      <option name="presentableId" value="LOCAL-00414" />
+      <option name="project" value="LOCAL" />
+      <updated>1527236811839</updated>
+    </task>
+    <task id="LOCAL-00415" summary="互动广告">
+      <created>1527239966127</created>
+      <option name="number" value="00415" />
+      <option name="presentableId" value="LOCAL-00415" />
+      <option name="project" value="LOCAL" />
+      <updated>1527239966127</updated>
+    </task>
+    <task id="LOCAL-00416" summary="互动广告">
+      <created>1527239977153</created>
+      <option name="number" value="00416" />
+      <option name="presentableId" value="LOCAL-00416" />
+      <option name="project" value="LOCAL" />
+      <updated>1527239977153</updated>
+    </task>
+    <task id="LOCAL-00417" summary="互动广告">
+      <created>1527240011377</created>
+      <option name="number" value="00417" />
+      <option name="presentableId" value="LOCAL-00417" />
+      <option name="project" value="LOCAL" />
+      <updated>1527240011377</updated>
+    </task>
+    <task id="LOCAL-00418" summary="互动广告">
+      <created>1527240494910</created>
+      <option name="number" value="00418" />
+      <option name="presentableId" value="LOCAL-00418" />
+      <option name="project" value="LOCAL" />
+      <updated>1527240494910</updated>
+    </task>
+    <task id="LOCAL-00419" summary="互动广告">
+      <created>1527240512944</created>
+      <option name="number" value="00419" />
+      <option name="presentableId" value="LOCAL-00419" />
+      <option name="project" value="LOCAL" />
+      <updated>1527240512944</updated>
+    </task>
+    <task id="LOCAL-00420" summary="互动广告">
+      <created>1527241091436</created>
+      <option name="number" value="00420" />
+      <option name="presentableId" value="LOCAL-00420" />
+      <option name="project" value="LOCAL" />
+      <updated>1527241091436</updated>
+    </task>
+    <task id="LOCAL-00421" summary="互动广告">
+      <created>1527241170160</created>
+      <option name="number" value="00421" />
+      <option name="presentableId" value="LOCAL-00421" />
+      <option name="project" value="LOCAL" />
+      <updated>1527241170160</updated>
+    </task>
+    <task id="LOCAL-00422" summary="互动广告">
+      <created>1527241276137</created>
+      <option name="number" value="00422" />
+      <option name="presentableId" value="LOCAL-00422" />
+      <option name="project" value="LOCAL" />
+      <updated>1527241276137</updated>
+    </task>
+    <task id="LOCAL-00423" summary="互动广告">
+      <created>1527241333892</created>
+      <option name="number" value="00423" />
+      <option name="presentableId" value="LOCAL-00423" />
+      <option name="project" value="LOCAL" />
+      <updated>1527241333892</updated>
+    </task>
+    <task id="LOCAL-00424" summary="互动广告">
+      <created>1527243293701</created>
+      <option name="number" value="00424" />
+      <option name="presentableId" value="LOCAL-00424" />
+      <option name="project" value="LOCAL" />
+      <updated>1527243293701</updated>
+    </task>
+    <task id="LOCAL-00425" summary="互动广告">
+      <created>1527243382817</created>
+      <option name="number" value="00425" />
+      <option name="presentableId" value="LOCAL-00425" />
+      <option name="project" value="LOCAL" />
+      <updated>1527243382817</updated>
+    </task>
+    <task id="LOCAL-00426" summary="互动广告">
+      <created>1527243559040</created>
+      <option name="number" value="00426" />
+      <option name="presentableId" value="LOCAL-00426" />
+      <option name="project" value="LOCAL" />
+      <updated>1527243559040</updated>
+    </task>
+    <task id="LOCAL-00427" summary="互动广告">
+      <created>1527244597007</created>
+      <option name="number" value="00427" />
+      <option name="presentableId" value="LOCAL-00427" />
+      <option name="project" value="LOCAL" />
+      <updated>1527244597007</updated>
+    </task>
+    <task id="LOCAL-00428" summary="互动广告">
+      <created>1527244604494</created>
+      <option name="number" value="00428" />
+      <option name="presentableId" value="LOCAL-00428" />
+      <option name="project" value="LOCAL" />
+      <updated>1527244604494</updated>
+    </task>
+    <task id="LOCAL-00429" summary="互动广告">
+      <created>1527244850610</created>
+      <option name="number" value="00429" />
+      <option name="presentableId" value="LOCAL-00429" />
+      <option name="project" value="LOCAL" />
+      <updated>1527244850610</updated>
+    </task>
+    <task id="LOCAL-00430" summary="互动广告">
+      <created>1527244918608</created>
+      <option name="number" value="00430" />
+      <option name="presentableId" value="LOCAL-00430" />
+      <option name="project" value="LOCAL" />
+      <updated>1527244918608</updated>
+    </task>
+    <task id="LOCAL-00431" summary="互动广告">
+      <created>1527245080895</created>
+      <option name="number" value="00431" />
+      <option name="presentableId" value="LOCAL-00431" />
+      <option name="project" value="LOCAL" />
+      <updated>1527245080895</updated>
+    </task>
+    <task id="LOCAL-00432" summary="互动广告">
+      <created>1527245150060</created>
+      <option name="number" value="00432" />
+      <option name="presentableId" value="LOCAL-00432" />
+      <option name="project" value="LOCAL" />
+      <updated>1527245150060</updated>
+    </task>
+    <task id="LOCAL-00433" summary="互动广告">
+      <created>1527245314074</created>
+      <option name="number" value="00433" />
+      <option name="presentableId" value="LOCAL-00433" />
+      <option name="project" value="LOCAL" />
+      <updated>1527245314075</updated>
+    </task>
+    <task id="LOCAL-00434" summary="互动广告">
+      <created>1527558294040</created>
+      <option name="number" value="00434" />
+      <option name="presentableId" value="LOCAL-00434" />
+      <option name="project" value="LOCAL" />
+      <updated>1527558294040</updated>
+    </task>
+    <option name="localTasksCounter" value="435" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="1230998000" />
+  </component>
+  <component name="TodoView" selected-index="2">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-1" y="27" width="1922" height="1054" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28342247" sideWeight="0.4940978" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18079096" sideWeight="0.48288772" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39887005" sideWeight="0.50213903" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994652" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2723164" sideWeight="0.49786097" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30056497" sideWeight="0.48716578" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20320855" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15028249" sideWeight="0.48074865" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14973262" sideWeight="0.5059022" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15706214" sideWeight="0.49786097" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299435" sideWeight="0.49786097" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Command Line Tools Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299435" sideWeight="0.49786097" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299435" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973261" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10169491" sideWeight="0.49572194" order="3" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="true" />
+    <option name="SHOW_DIRTY_RECURSIVELY" value="true" />
+    <MESSAGE value="试玩菜单去掉" />
+    <MESSAGE value="插页的原生模板的支持" />
+    <MESSAGE value="插页的原生支持" />
+    <MESSAGE value="欧朋DSP的更新" />
+    <MESSAGE value="欧朋DSP的开发" />
+    <MESSAGE value="智子云DSP接入" />
+    <MESSAGE value="修改原声的验证的bug" />
+    <MESSAGE value="DSP竞价修改" />
+    <MESSAGE value="DSP竞价价格调整" />
+    <MESSAGE value="bitId统一长度" />
+    <MESSAGE value="欧朋视频的接入" />
+    <MESSAGE value="分众的接入" />
+    <MESSAGE value="跳转类型修改" />
+    <MESSAGE value="ssp接入修改" />
+    <MESSAGE value="时间检验" />
+    <MESSAGE value="修改开屏对原生模板的支持" />
+    <MESSAGE value="互动广告的添加" />
+    <MESSAGE value="KK" />
+    <MESSAGE value="测试工具修改" />
+    <MESSAGE value="４３９９支持" />
+    <MESSAGE value="debug信息输出" />
+    <MESSAGE value="清理多余表" />
+    <MESSAGE value="清理多余代码" />
+    <MESSAGE value="k" />
+    <MESSAGE value="互动广告" />
+    <option name="LAST_COMMIT_MESSAGE" value="互动广告" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/controllers/Adx/Api/Base.php</url>
+          <line>1401</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Test.php</url>
+          <line>332</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Test.php</url>
+          <line>305</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Test.php</url>
+          <line>327</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Advertiser/views/delivery/addadstep3.phtml</url>
+          <line>58</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Test.php</url>
+          <line>284</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/library/Util/PHPQRcode/QRcode.php</url>
+          <line>3014</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/library/Util/PHPQRcode/QRcode.php</url>
+          <line>3299</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/library/Dsp/Base.php</url>
+          <line>291</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Error.php</url>
+          <line>16</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Error.php</url>
+          <line>15</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/controllers/Adx/Base.php</url>
+          <line>46</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/controllers/Adx/Base.php</url>
+          <line>44</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" log-message="true" suspend="NONE" type="php">
+          <url>file://$PROJECT_DIR$/source_code/library/Util/IdWorker.php</url>
+          <line>17</line>
+          <option name="timeStamp" value="124" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/library/Db/Pdo.php</url>
+          <line>9</line>
+          <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Baseinfo/Adsrelconfig.php</url>
+          <line>473</line>
+          <option name="timeStamp" value="131" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Baseinfo/Adsrelconfig.php</url>
+          <line>472</line>
+          <option name="timeStamp" value="132" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Baseinfo/Adsrelconfig.php</url>
+          <line>400</line>
+          <option name="timeStamp" value="133" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Baseinfo/Adsrelconfig.php</url>
+          <line>488</line>
+          <option name="timeStamp" value="134" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V2/Dsp.php</url>
+          <line>33</line>
+          <option name="timeStamp" value="137" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/library/Dsp/Base.php</url>
+          <line>32</line>
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/library/Dsp/Yomob.php</url>
+          <line>130</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdGoodsCode.php</url>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="145" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="1183" column="0" lean-forward="false" selection-start-line="1183" selection-start-column="0" selection-end-line="1183" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/index.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/library/Util/Http/Base.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="241">
+          <caret line="201" column="20" lean-forward="false" selection-start-line="201" selection-start-column="20" selection-end-line="201" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/library/Dsp/Adin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2014">
+          <caret line="117" column="46" lean-forward="true" selection-start-line="117" selection-start-column="46" selection-end-line="117" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/data/logs/stat_err_0503.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/data/logs/stat_err_0427.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/data/0.95960700 1523620769.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/data/logs/2018-05-03_sspStatError">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="58" column="80" lean-forward="true" selection-start-line="58" selection-start-column="80" selection-end-line="58" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/views/systemtool/abtestflow/add.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="422" column="69" lean-forward="false" selection-start-line="422" selection-start-column="69" selection-end-line="422" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/views/systemtool/abtest/add.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="846">
+          <caret line="350" column="67" lean-forward="true" selection-start-line="350" selection-start-column="67" selection-end-line="350" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/controllers/Adx/Api/Base.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="774" column="26" lean-forward="true" selection-start-line="774" selection-start-column="26" selection-end-line="774" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Systemtool/Abtest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="190" column="41" lean-forward="true" selection-start-line="190" selection-start-column="41" selection-end-line="190" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/library/Util/Ssp.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="23" column="33" lean-forward="true" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V2/Intergration.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding>
+            <marker date="1527151618133" expanded="true" signature="723:1457" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="1504:6557" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="1545:1751" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="1685:1741" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="1863:1974" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="2202:2319" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="2430:2541" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="2581:3202" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="2708:2824" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="2939:3192" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="3058:3178" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="3210:6160" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="3305:3382" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="3435:6046" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="3707:4853" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="4247:4835" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="4861:6032" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="4987:5084" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="5156:5896" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="5291:5428" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="5564:5697" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="5904:6014" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="6054:6150" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="6422:6509" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="6606:7904" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="6783:6881" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="7005:7110" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="7161:7287" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="7374:7472" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="7579:7840" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="7724:7830" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="7922:7944" ph=" 填充数据，格式化 ..." />
+            <marker date="1527151618133" expanded="true" signature="8022:9212" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="8149:8468" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="8476:9184" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="8622:8665" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="8770:8813" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="9291:10942" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="9331:9369" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="9506:9703" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="9782:10911" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="9971:10214" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="10097:10200" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="10405:10648" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="10529:10634" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="10683:10900" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="11007:12364" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="11182:11387" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="11565:12331" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="11671:11710" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12017:12056" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12093:12320" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12452:13923" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12526:12560" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12625:13896" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12684:12723" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12799:12829" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12835:13008" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="12947:12994" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="13235:13437" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="13333:13423" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="13527:13885" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14024:15450" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14111:15423" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14198:14237" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14313:14343" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14349:14522" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14461:14508" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14749:14951" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="14847:14937" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="15041:15412" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="15498:16408" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="15546:15584" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="15735:16377" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="15841:15880" ph="..." />
+            <marker date="1527151618133" expanded="true" signature="15915:16366" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/code/add.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="36" lean-forward="true" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/goods/add.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="67" column="82" lean-forward="true" selection-start-line="67" selection-start-column="82" selection-end-line="67" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/public/static/iaad/js/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-900">
+          <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/activity/add.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4968">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/library/Util/EventType.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="15" column="10" lean-forward="false" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdActivityRel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="6" lean-forward="false" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdActivity.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="20" column="33" lean-forward="false" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdGoods.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="17" column="10" lean-forward="false" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/activity/index.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="118" column="14" lean-forward="true" selection-start-line="118" selection-start-column="14" selection-end-line="118" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/views/interative/goods/index.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="79" column="39" lean-forward="true" selection-start-line="79" selection-start-column="39" selection-end-line="79" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/public/static/iaad/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="656" column="16" lean-forward="false" selection-start-line="656" selection-start-column="16" selection-end-line="656" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/configs/siteConfig.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="47" lean-forward="false" selection-start-line="13" selection-start-column="47" selection-end-line="13" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/library/Common.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9378">
+          <caret line="521" column="41" lean-forward="false" selection-start-line="521" selection-start-column="41" selection-end-line="521" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/goods.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="56" lean-forward="false" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/prize.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="56" lean-forward="false" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/public/static/iaad/images/pic300" />
+    <entry file="file://$PROJECT_DIR$/source_code/public/static/iaad/images/pic300.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/public/static/favicon.ico">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/public/admin/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="5" lean-forward="false" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/activity.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="31" column="30" lean-forward="false" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/docs/mobgi_housead.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13">
+          <caret line="1574" column="40" lean-forward="true" selection-start-line="1574" selection-start-column="40" selection-end-line="1574" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Interative/Activity.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="20" column="63" lean-forward="false" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Interative/Goods.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="50" lean-forward="false" selection-start-line="17" selection-start-column="46" selection-end-line="17" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Interative/Code.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="0" lean-forward="true" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/models/MobgiApi/Service/InteractiveAdGoodsExchangeLog.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="52" column="27" lean-forward="false" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Accounttask.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="42" lean-forward="true" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/Core/Core.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="598" column="9" lean-forward="false" selection-start-line="598" selection-start-column="9" selection-end-line="598" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/framework/Yaf/Exception.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="6" lean-forward="false" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/controllers/Common/Base.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="207" column="21" lean-forward="true" selection-start-line="207" selection-start-column="21" selection-end-line="207" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/controllers/Admin/Base.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="171" column="45" lean-forward="true" selection-start-line="171" selection-start-column="45" selection-end-line="171" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/views/iaad/verifygoods.phtml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="23" column="6" lean-forward="false" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Coupon/controllers/Iaad.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="29" column="6" lean-forward="true" selection-start-line="29" selection-start-column="6" selection-end-line="29" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cron_script/account/account_consume.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="23" lean-forward="false" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cron_script/account/log/account_consume.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="LargeFileEditor">
+        <state relative-caret-position="-373826">
+          <caret line="103" column="79" lean-forward="true" selection-start-line="103" selection-start-column="79" selection-end-line="103" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="108">
+            <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Api/controllers/Adx/V2/Dsp.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="100" column="0" lean-forward="true" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source_code/application/modules/Admin/controllers/Systemtool/Abtestflow.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="252" column="39" lean-forward="true" selection-start-line="252" selection-start-column="39" selection-end-line="252" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="Copyright.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.35043806" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

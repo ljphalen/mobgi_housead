@@ -1,0 +1,139 @@
+<div id="main" class="ms-mian ms-height">
+    <!-- app main top begin -->
+	<?php echo $this->render("interative/conf/layout/top.phtml"); ?>
+    <!-- app main top end   -->
+
+    <!-- app 主页 begin -->
+    <div class="items-wrap wrap-bg space-top mian-h" id="main-index">
+        <div class="items-main-title">
+            <p>互动流量配置</p>
+        </div>
+        <div class="main-nolist">暂无配置</div>
+        <table id="main-index-table" class="layui-table">
+            <colgroup>
+                <col width="150">
+                <col width="200">
+                <col>
+            </colgroup>
+            <thead>
+            <tr>
+                <th>广告位id</th>
+                <th>广告位名称</th>
+                <th>广告位状态</th>
+                <th>操作人</th>
+                <th>更新时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <!-- app 主页 end -->
+</div>
+<script>
+    ;(function () {
+        // 主页 数据 回调
+        var mainCallback = {
+            success: function (data) {
+                var app = data.data;
+                if (data.success) {
+                    //初始化 mian 头部 信息
+                    $("#main").find(".app-icon img").attr("src", app.icon);
+                    $("#main").find(".app-name span").html(app.app_name);
+                    $("#main").find(".app-key").html('AppKey：' + app.app_key);
+                    $("#main").find(".app-type i").removeClass('ios');
+                    $("#main").find(".app-type i").removeClass('android');
+                    $("#main").find(".app-type i").addClass(app.platform_class);
+                    initTable(app.list, "#main-index-table");
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function (xhr, msg, e) {
+                layer.msg(msg);
+            }
+        };
+
+        // 主页初始化
+        function initMain() {
+            var app_key = getQueryString('app_key');
+            if (!app_key) {
+                var app = $($(".appList li").get(0));
+                $($(".appList li").get(0)).addClass("active");
+                app_key = app.find(".app-title").attr("data-app-key");
+                $(".page_app_key").val(app_key);
+            } else {
+                $(".appList li").removeClass("active");
+                var applist = $(".appList li");
+                applist.each(function () {
+                    var appKey = $(this).find(".app-title").attr("data-app-key");
+                    if (appKey == app_key) {
+                        $(this).addClass("active");
+                    }
+                });
+
+            }
+            $(".app-key").attr("data-app-key", app_key);
+            var url = baseurl + '<?php echo $getPosListUrl;?>?app_key=' + app_key;
+            requestAjax({url: url}, mainCallback);
+        }
+
+        // 流量配置 列表初始化
+        function initTable(list, id) {
+            if (list.length > 0) {
+                var tr = '';
+                var tr_class = '';
+                for (var k in list) {
+                    if (list[k].conf_type == 1) {
+                        tr_class = 'red';
+                    }
+                    tr = tr + `<tr class="` + tr_class + `">
+                        <td><a class="table-btn"  onclick="tableRecordHandle(this,1,'` + list[k].pos_key + `',`+ list[k].conf_rel_id + `)">` + list[k].pos_key + `</a></td>
+                        <td>` + list[k].pos_name + `</td>
+                        <td>` + list[k].state + `</td>
+                        <td>` + list[k].operator + `</td>
+                        <td>` + list[k].update_time + `</td>
+                        <td>
+                            <a class="table-btn"  onclick="tableRecordHandle(this,1,'` + list[k].pos_key + `',` + list[k].conf_rel_id + `)">查看</a>
+                            <a class="table-btn"  onclick="tableRecordHandle(this,2,'` + list[k].pos_key + `',` + list[k].conf_rel_id + `)">编辑</a>
+                        </td>
+                    </tr> `;
+                }
+                $(id).find("tbody").html(tr);
+                $(id).show();
+                $('.main-nolist').hide();
+            } else {
+                $(id).find("tbody").html('');
+                $(id).hide();
+                $('.main-nolist').show();
+            }
+        };
+        initMain();  // 初始化主页
+    })();
+
+
+    /**
+     *  table 记录操作
+     *  @parame type 处理类型 1 查看 ，2 编辑
+     */
+    function tableRecordHandle(t, type, pos_key, id) {
+        var href = window.location.href;
+        var param = '';
+        if (href.split('?').length > 0) {
+            param = href.split('?')[1];
+        }
+        if(typeof (param) == 'undefined'){
+            var app = $($(".appList li").get(0));
+            $($(".appList li").get(0)).addClass("active");
+            app_key = app.find(".app-title").attr("data-app-key");
+            param = 'app_key='+app_key;
+        }
+        if (type == 1) {
+            location.href = baseurl + '<?php echo $viewUrl;?>?conf_rel_id=' + id + '&pos_key='+pos_key+'&' + param;
+        } else if (type == 2) {
+            location.href = baseurl + '<?php echo $addUrl;?>?conf_rel_id=' + id + '&pos_key='+pos_key+'&' + param;
+        }
+
+    }
+</script>

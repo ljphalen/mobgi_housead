@@ -1,0 +1,112 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+<style type="text/css">
+</style>
+<div class="colMain">
+    <div class="main">
+        <div class="chart app-detail">
+            <ul class="chart-filter">
+                <li class="date-filter">
+                    <div id="date_range" class="fr" sdate="<?php echo $sdate; ?>" edate="<?php echo $edate; ?>"></div>
+                    <div id="kpi" class="ta_date fr" data-type="kpi" style="display:inline-block;margin-right:10px;">
+                        <span class="date_title">自定义指标</span>
+                        <a class="opt_sel">
+                            <i class="i_orderd"></i>
+                        </a>
+                    </div>
+                    <div class=" fr">
+                        <button class="btn-export">导出</button>
+                    </div>
+                    <div style="clear:both;"></div>
+                </li>
+                <li class="dim-filter">
+                    <dl id="dim"></dl>
+                </li>
+            </ul>
+
+            <div class="chart-show">
+                <table class="mui-charts-table">
+                    <tr id="chart_header"></tr>
+                </table>
+                <div id="data_charts" style="min-height:400px;"></div>
+            </div>
+            <hr>
+            <div class="chart-table">
+                <div class="chart-title">详细数据</div>
+                <div id="mg_talbe"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="blk">
+    <div id="blk_kpi" type="kpi" class="blk_view kpi" mod="submit_box"></div>
+</div>
+<div class="mask"></div>
+
+<link href="<?php echo $staticPath; ?>/css/gri.controls.css?v=<?php echo $version; ?>" rel="stylesheet" />
+<link href="<?php echo $staticPath; ?>/css/mgchart.css?v=<?php echo $version; ?>" rel="stylesheet" />
+<script src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.js?v=201712151100"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery-ui.min.js?v=201712151100"></script>
+<script src="<?php echo $staticPath; ?>/js/common/spmchart.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.loadmask.min.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/gri.dateRange.js?v=<?php echo $version; ?>"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.SuperSlide.2.1.1.js?v=<?php echo $version;?>"></script>
+<script type="text/javascript">
+    var appIdSelectChange;
+    $(function () {
+        var dateRange = new pickerDateRange("date_range", 'date', {
+            theme: 'ta',
+            isTodayValid: 1,
+            startDate: "<?php echo $sdate;?>",
+            endDate: "<?php echo $edate;?>",
+            minValidDate: 1379174400,
+            needCompare: 0,
+            success: function (dateObj) {
+                $("#date_range").attr("sdate", dateObj.startDate);
+                $("#date_range").attr("edate", dateObj.endDate);
+                $("#date_range").attr("csdate", "");
+                $("#date_range").attr("cedate", "");
+            }
+        });
+        report = new Spm.Report();
+        report.setDateRangePlugin("#date_range").init(<?php echo $chartConfig;?>).run()
+
+
+
+
+        // 时间选择 改变时候直接提交 dateRange.submitBtn为对应提交按钮
+        $("#" + dateRange.submitBtn).click(function () {
+            submitForm()
+        });
+        $(".ta_select_day").click(function () {
+            submitForm()
+        });
+        $("#operate_type").change(function () {
+            submitForm()
+        })
+        $("#account_type").change(function () {
+            submitForm()
+        })
+
+        function submitForm() {
+            sdate = $("#date_range").attr("sdate")
+            edate = $("#date_range").attr("edate")
+        }
+
+        $(".btn-export").click(function (event) {
+            report.export();
+        });
+
+    })
+</script>
+<script type="text/javascript">
+    jQuery(".txtMarquee-left").slide({
+        mainCell: ".bd ul",
+        autoPlay: true,
+        effect: "leftMarquee",
+        vis: 2,
+        interTime: 50
+    });
+</script>
+<?php echo $this->render("layout/footer.phtml"); ?>

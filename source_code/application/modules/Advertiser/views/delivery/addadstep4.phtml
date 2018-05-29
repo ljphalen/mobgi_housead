@@ -1,0 +1,402 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml"); ?>
+    <div class="colMain">
+        <div class="title">
+            <p class="fl">新建广告活动:
+                <span class="solid_circle">基本信息</span>－－－－－
+                <span class="solid_circle">上传创意</span>－－－－－
+                <span class="solid_circle">选择定向</span>－－－－－
+                <span class="hollow_circle">预览并提交</span>
+            </p>
+        </div>
+        <div class="main">
+            <div class="fr app-detail ml20 p20">
+                <p class="mb20">预计覆盖用户数</p>
+                <p class="mb20">50,000,000人</p>
+                <p class="mb20">预计日最大曝光量</p>
+                <p class="mb20">50,000,000人</p>
+            </div>
+            <div class="app-detail">
+                <form action="<?php echo $addAdStep4PostUrl; ?>" method="POST" id="addFrom">
+                    <input name="token" value="<?php echo $token; ?>" type="hidden"/>
+                    <input type="hidden" name="id" id="" value='<?php echo $step1Reslut['id']; ?>'/>
+                    <ul class="form">
+						<?php if ($step2Reslut['trial_originality_type'] == 6) { ?>
+                            <li>
+                                <span class="label">广告目标：</span>
+                                <span><?php echo $trialAdTargetType[$step2Reslut['trial_ad_target_type']]; ?></span>
+                                <span><?php echo $step2Reslut['ad_target']; ?></span>
+                            </li>
+						<?php } else { ?>
+                            <li>
+                                <span class="label">广告目标：</span>
+                                <span><?php echo $adTargetType[$step2Reslut['ad_target_type']]; ?></span>
+                                <span><?php echo $step2Reslut['ad_target']; ?></span>
+                            </li>
+						<?php } ?>
+                        <li>
+                            <span class="label">投放单元：</span>
+                            <span><?php echo $unitConfList[$step1Reslut['unit_id']]['name']; ?></span>&nbsp;
+							<?php if ($step2Reslut['trial_originality_type'] != 6) { ?>
+                                <span><?php echo $modeType[$unitConfList[$step1Reslut['unit_id']]['mode_type']]; ?></span>&nbsp;
+                                <span><?php echo $limitType[$unitConfList[$step1Reslut['unit_id']]['limit_type']]; ?></span>&nbsp;
+                                <span><?php if ($unitConfList[$step1Reslut['unit_id']]['limit_type']) echo $unitConfList[$step1Reslut['unit_id']]['limit_range']; ?></span>&nbsp;
+							<?php } ?>
+                        </li>
+                        <li>
+                            <span class="label">广告名称：</span>
+                            <span><?php echo $step1Reslut['ad_name']; ?></span>
+                        </li>
+                        <li>
+                            <span class="label">投放日期：</span>
+                            <span><?php echo $step1Reslut['start_date']; ?></span>
+                            <span>至<?php echo $step1Reslut['end_date']; ?></span>
+                        </li>
+                        <li>
+                            <span class="label">投放时段：</span>
+							<?php if ($step1Reslut['time_type'] == 0) { ?>
+                                全部时段
+							<?php } else if ($step1Reslut['time_type'] == 1) { ?>
+								<?php if ($step1Reslut['hour_set_type'] == 0) { ?>
+                                    <span><?php echo $step1Reslut['start_time']; ?></span>
+                                    <span>至<?php echo $step1Reslut['end_time']; ?></span>
+								<?php } else { ?>
+
+                                    <div id="timesetAdvanceWrap" class="_advanceSelForm"
+                                         style="float:left ; <?php echo $step1Reslut['hour_set_type'] == 0 ? 'display:none' : '' ?>;">
+                                        <input type="hidden" name="time_series" id="timeset"
+                                               value='<?php echo $step1Reslut['time_series']; ?>'/>
+                                        <div class="time-choose" style="">
+                                            <object id="timesetHandlerId" name="timesetHandlerId"
+                                                    type="application/x-shockwave-flash"
+                                                    data="<?php echo $staticPath . '/img/daterange.swf'; ?>"
+                                                    height="285" width="720">
+                                                <param name="allowScriptAccess" value="always"/>
+                                                <param name="allowFullScreen" value="false"/>
+                                                <param name="movie"
+                                                       value="<?php echo $staticPath . '/img/daterange.swf'; ?>"/>
+                                                <param name="wmode" value="transparent"/>
+                                                <param name="quality" value="high"/>
+                                                <param name="bgcolor" value="#ffffff"/>
+                                            </object>
+                                        </div>
+                                        <div class="time-show">
+                                            <p class="detail-item">已选时间：</p>
+                                            <ol class="_timesetSelected" style="">-</ol>
+                                            <!--<a href="javascript:;" onclick="return false" class="ButtonBg5 revoke _reset" opt="alltimereset">撤销所有选择</a>-->
+                                        </div>
+                                    </div>
+								<?php } ?>
+							<?php } ?>
+                        </li>
+						<?php if ($step2Reslut['trial_originality_type'] == 6) { ?>
+                            <li class="line"></li>
+                            <li>
+                                <span class="label">创意形式：</span>
+                                <span><?php echo $originalityType[$step2Reslut['trial_originality_type']]; ?></span>
+                            </li>
+                            <li>
+                                <span class="label">安装提示：</span>
+                                <span><?php echo $step2Reslut['installation_hint']; ?></span>
+                            </li>
+                            <li>
+                                <span class="label">悬浮窗：</span>
+                                <span><?php
+									if ($step2Reslut['float_view'] == 1) {
+										$str = '显示';
+									} else {
+										$str = '不显示';
+									}
+									echo $str;
+									?></span>
+                            </li>
+                            <li>
+                                <span class="label">桌面快捷方式：</span>
+                                <span><?php
+									if ($step2Reslut['shortcut'] == 1) {
+										$str = '显示';
+									} else {
+										$str = '不显示';
+									}
+									echo $str;
+									?></span>
+                            </li>
+						<?php } else { ?>
+                            <li class="line"></li>
+                            <li>
+                                <span class="label">创意形式：</span>
+                                <span><?php echo $originalityType[$step2Reslut['originality_type']]; ?></span>
+                            </li>
+                            <li>
+                                <span class="label">创意曝光策略：</span>
+                                <span><?php echo $strategy[$step2Reslut['strategy']]; ?></span>
+                            </li>
+                            <li class="line"></li>
+                            <li>
+                                <span class="label">地域：</span>
+                                <span><?php
+									if ($step3Reslut['area_type'] == 0) {
+										$str = '不限';
+									} else {
+										$tmp = array();
+										foreach ($step3Reslut['area_range'] as $val) {
+											$tmp[] = $val['name'];
+										}
+										$str = implode(',', $tmp);
+									}
+									echo $str;
+									?></span>
+                            </li>
+                            <li>
+                                <span class="label">年龄：</span>
+                                <span><?php
+									if ($step3Reslut['age_direct_type'] == 0) {
+										$str = '不限';
+									} else {
+										$tmp = array();
+										foreach ($step3Reslut['age_direct_range'] as $val) {
+											$tmp[] = $ageDirectList[$val];
+										}
+										$str = implode(',', $tmp);
+									}
+									echo $str;
+									?></span>
+                            </li>
+                            <li>
+                                <span class="label">付费能力：</span>
+                                <span><?php
+									if ($step3Reslut['pay_ability_type'] == 0) {
+										$str = '不限';
+									} else {
+										$tmp = array();
+										foreach ($step3Reslut['pay_ability_range'] as $val) {
+											$tmp[] = $payAbilityList[$val];
+										}
+										$str = implode(',', $tmp);
+									}
+									echo $str;
+									?></span>
+                            </li>
+                            <li class="line"></li>
+                            <li>
+                                <span class="label">计费类型：</span>
+                                <span><?php echo $chargeTypeList[$step3Reslut['charge_type']]; ?></span>
+                            </li>
+                            <li>
+                                <span class="label">出价：</span>
+                                <span><?php echo $step3Reslut['price']; ?></span>
+                            </li>
+						<?php } ?>
+
+                        <li class="line"></li>
+
+						<?php if ($step3Reslut['age_direct_type']) { ?>
+                            <li>
+                                <span class="label">年龄：</span>
+                                <span>
+                                <?php foreach ($ageDirectList as $key => $val) { ?>
+									<?php if ($step3Reslut['age_direct_range'] && in_array($key, $step3Reslut['age_direct_range'])) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['sex_direct_type']) { ?>
+                            <li>
+                                <span class="label">性别：</span>
+                                <span>
+                                <?php foreach ($sexTypeList as $key => $val) { ?>
+									<?php if ($step3Reslut['sex_direct_type'] == $key) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['os_direct_type']) { ?>
+                            <li>
+                                <span class="label">操作系统：</span>
+                                <span>
+                                <?php foreach ($osTypeList as $key => $val) { ?>
+									<?php if ($step3Reslut['os_direct_type'] == $key) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['network_direct_type']) { ?>
+                            <li>
+                                <span class="label">网络环境：</span>
+                                <span>
+                                <?php foreach ($netWorkList as $key => $val) { ?>
+									<?php if ($step3Reslut['network_direct_range'] && in_array($key, $step3Reslut['network_direct_range'])) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['operator_direct_type']) { ?>
+                            <li>
+                                <span class="label">运营商：</span>
+                                <span>
+                                <?php foreach ($operatorList as $key => $val) { ?>
+									<?php if ($step3Reslut['operator_direct_range'] && in_array($key, $step3Reslut['operator_direct_range'])) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['brand_direct_type']) { ?>
+                            <li>
+                                <span class="label">手机品牌：</span>
+                                <span>
+                                <?php foreach ($ostypeBrandList as $ostype => $brandListItem) { ?>
+									<?php foreach ($brandListItem as $key => $val) { ?>
+										<?php if ($step3Reslut['brand_direct_range'] && in_array($key, $step3Reslut['brand_direct_range'])) { ?>
+											<?php echo $val . " "; ?>
+										<?php } ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['screen_direct_type']) { ?>
+                            <li>
+                                <span class="label">屏幕大小：</span>
+                                <span>
+                                <?php foreach ($screenList as $key => $val) { ?>
+									<?php if ($step3Reslut['screen_direct_range'] && in_array($key, $step3Reslut['screen_direct_range'])) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['interest_direct_type']) { ?>
+                            <li>
+                                <span class="label">游戏兴趣：</span>
+                                <span>
+                                <?php foreach ($interestList as $key => $val) { ?>
+									<?php if ($step3Reslut['interest_direct_range'] && in_array($key, $step3Reslut['interest_direct_range'])) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['pay_ability_type']) { ?>
+                            <li>
+                                <span class="label">付费能力：</span>
+                                <span>
+                                <?php foreach ($payAbilityList as $key => $val) { ?>
+									<?php if ($step3Reslut['pay_ability_range'] && in_array($key, $step3Reslut['pay_ability_range'])) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['game_frequency_type']) { ?>
+                            <li>
+                                <span class="label">游戏频率：</span>
+                                <span>
+                                <?php foreach ($gameFrequencyList as $key => $val) { ?>
+									<?php if ($step3Reslut['game_frequency_range'] && in_array($key, $step3Reslut['game_frequency_range'])) { ?>
+										<?php echo $val . " "; ?>
+									<?php } ?>
+								<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+						<?php if ($step3Reslut['app_behavior_type']) { ?>
+                            <li>
+                                <span class="label">媒体定向：</span>
+                                <span>
+                                    <?php foreach ($step3Reslut['app_behavior_range'] as $key => $val) { ?>
+										<?php echo  $val; ?>
+									<?php } ?>
+                            </span>
+                            </li>
+						<?php } ?>
+
+                        <li class="line"></li>
+
+                        <li>
+                            <div class="fc">
+                                <input type="button"
+                                       onclick="javascript:forwardToPrePage('<?php echo $addAdStep3Url; ?>');"
+                                       value="上一步" class="submit btn">
+                                <input type="submit" value=" 创建广告" class="submit btn">
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="showCreateAdFinishedDiv" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+        <ul class="form">
+            <li>
+                <span class="label">创建广告成功</span>
+            </li>
+            <li>
+                <div class="fc">
+                    <a type="button" class="submit btn" href="<?php echo $addAdStep1Url; ?>">创建广告 </a>
+                    <a type="button" class="submit btn" href="<?php echo $adManageListUrl; ?>">查看广告</a>
+                    <a type="button" class="submit btn" href="" id="copyAdInfo">复制广告</a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+
+    <script src="<?php echo $staticPath; ?>/js/common/jquery-ui-timepicker.js"></script>
+    <link href="<?php echo $staticPath; ?>/css/gdt_daterange.css" rel="stylesheet"/>
+    <script src="<?php echo $staticPath; ?>/js/advertiser/gdt_daterange.js"></script>
+    <script type="text/javascript">
+        var nextUrl = '<?php echo $addAdStep4Url; ?>';
+        var listUrl = '<?php echo $adManageListUrl; ?>';
+        var copyUrl = '<?php echo $addAdStep1Url; ?>';
+        //广告表单数据提交
+        $(document).ready(function () {
+            $("input[name='originality_type']").click(function () {
+                id = $(this).val();
+                $("#originality_type" + id).show().siblings().hide();
+            });
+            ajaxForm('addFrom', function (ret) {
+                if (ret.success) {
+                    $('#copyAdInfo').attr('href', copyUrl + '?action=copy&id=' + ret.data.id);
+                    showCreateAdFinishedDiv('创建广告完成');
+                } else {
+                    showError('', ret.msg);
+                }
+            });
+        })
+
+        function showDiv(id, type) {
+            if (type == 'show') {
+                $('#' + id).show();
+            } else {
+                $('#' + id).hide();
+            }
+        }
+
+        function showCreateAdFinishedDiv(title) {
+            return $("#showCreateAdFinishedDiv").dialog({
+                title: title,
+                draggable: false,
+                width: 600,
+                modal: true,
+                resizable: false,
+                close: function () {
+                    location.href = baseurl + listUrl;
+                }
+            });
+
+        }
+    </script>
+<?php echo $this->render("../../Admin/views/layout/header.phtml"); ?>

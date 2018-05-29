@@ -1,0 +1,726 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+    <div class="colMain">
+        <div class="title">
+            <p class="fl">新建广告活动: 
+                <span class="solid_circle">基本信息</span>－－－－－
+                <span class="hollow_circle">上传创意</span>－－－－－
+                <span class="hollow_circle_gray">选择定向</span>－－－－－
+                <span class="hollow_circle_gray">预览并提交</span>
+            </p>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="<?php echo $addAdStep2PostUrl; ?>" method="POST"  id="addFrom" >
+                	<input name="token" value="<?php echo $token;?>" type="hidden" />
+                    <input type="hidden" name="id"   id=""  value='<?php echo $result['id']; ?>' />
+                    <input type="hidden" name="originality_id"     value='<?php echo $result['originality_id']; ?>' />
+                    <ul class="form">
+                        <li> 
+                            <span class="label">广告目标：</span>
+                            <div class="fc">
+                            <?php foreach ($adTargetTypeConfig   as $key=>$val){?>
+                                <span><input type="radio" value="<?php echo $key;?>" name="ad_target_type" class="radio" <?php echo  $result['ad_target_type'] == $key?'checked=checked':''; ?> id="ad_target_type<?php echo $key;?>"><label  for="ad_target_type<?php echo $key;?>"><?php echo $val;?></label></span>
+                                <?php }?>
+                            </div>
+                        </li>
+                         <li id='jumpTypeLi'> 
+                            <span class="label">点击动作：</span>
+                            <div class="fc">
+                                <?php foreach ($jumpTypeConfig as $adTargetType=>$jumpTypeArr){?>
+                                    <?php foreach ($jumpTypeArr as $jumpType=>$jumpTypeCN){?>
+                                        <label  data-adTargetType='<?php echo $adTargetType; ?>' style="<?php echo $result['ad_target_type'] && ($result['ad_target_type'] !=$adTargetType)? "display:none;":"" ?>"><input type="radio" value="<?php echo $jumpType; ?>" name="jump_type" class="radio"  <?php echo  !is_null($result['jump_type']) && ($result['jump_type'] == $jumpType)?'checked=checked':''?>> </span> <?php echo $jumpTypeCN;?></label>
+                                    <?php }?>
+                                <?php }?>
+                            </div>
+                        </li>
+                         <li> 
+                            <span class="label">创意类型：</span>
+                            <div class="fc">
+                                <?php foreach ($originalityType as $originalityTypeKey=>$originalityTypeCN){?>
+                                    <label id='originality_type<?php echo $originalityTypeKey?>_label'><input type="radio" value="<?php echo $originalityTypeKey; ?>" name="originality_type" class="radio" <?php echo  $result['originality_type'] == $originalityTypeKey?'checked=checked':''?> > </span> <?php echo $originalityTypeCN;?></label>
+                                <?php }?>
+                            </div>
+                        </li>
+             
+                        <li id='app_name_li' style="<?php echo  in_array($result['ad_target_type'], array(2,3)) &&  in_array($result['originality_type'], array(1,2,4)) ? "display:none;":"" ?>"  > 
+                            <span class="label">应用名称：</span>
+                            <div class="fc">
+                               <input name="app_name" id="app_name" type="text" value="<?php echo  $result['app_name']; ?>" class="iText " >
+                            </div>
+                        </li>
+                        <li id='apk_upload_li' style="<?php echo  $result['ad_target_type'] != 1?'display:none;':''?>"> 
+                            <span class="label">应用上传：</span>
+                            <div class="fc">
+                               <div>
+                                    <iframe name="breakpointupload" src="<?php echo $breakpointuploadApkUrl.'/?apkId=apk1&fileName='.$result['fileName']."&fileType=".$result['fileType']."&fileSize=".$result['fileSize']."&progress=".$result['progress']."&uploadVal=".$result['uploadVal'];?>" style="height:125px;width:100%;" frameborder="0" scrolling="no">                                         
+                                    </iframe>
+                                    <input type="hidden" class="iText"  value="<?php echo  $result['fileName']; ?>"  name="fileName" id="fileName">
+                                    <input type="hidden" class="iText"  value="<?php echo  $result['fileType']; ?>"  name="fileType" id="fileType">
+                                    <input type="hidden" class="iText"  value="<?php echo  $result['fileSize']; ?>"  name="fileSize" id="fileSize">
+                                    <input type="hidden" class="iText"  value="<?php echo  $result['progress']; ?>"  name="progress" id="progress">
+                                    <input type="hidden" class="iText"  value="<?php echo  $result['uploadVal']; ?>"  name="uploadVal" id="uploadVal">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">推广链接：</span>
+                            <div class="fc">
+                               <p id="apk1"> <input type="text" class="iText"  value="<?php echo  $result['ad_target']; ?>"  name="ad_target"  placeholder="输入链接地址" style="width:600px;"> <a  class='showMacro'  >宏变量</a></p>
+                            </div>
+                        </li>
+                        <li id="package_name_li" style="" >
+                            <span class="label">应用包名：</span>
+                            <div class="fc">
+                                <p > <input type="text" class="iText"  value="<?php echo  $result['package_name']; ?>"  name="package_name" id="package_name"  placeholder="输入包名" style="width:600px;"></p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">DeepLink：</span>
+                            <div class="fc">
+                               <input name="deeplink" id="deeplink" type="text" value="<?php echo  $result['deeplink']; ?>" class="iText " style="width:600px;">         
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">曝光监测链接：</span>
+                            <div class="fc">
+                               <input name="imp_trackers" id="imp_trackers" type="text" value="<?php echo  $result['imp_trackers']; ?>" class="iText " style="width:600px;">
+                               <a  class='showMacro'  >宏变量</a>
+                            </div>
+                        </li>
+                        <li> 
+                            <span class="label">点击监测链接：</span>
+                            <div class="fc">
+                               <input name="click_trackers" id='click_trackers' type="text" value="<?php echo  $result['click_trackers']; ?>" class="iText " style="width:600px;">
+                               <a  class='showMacro'  >宏变量</a>
+                            </div>
+                        </li>
+                        <li class="originality_type5_li"  style="<?php echo $result['originality_type'] !=Common_Service_Const::ENBED_AD_SUB_TYPE? "display:none;":"" ?>">
+                            <span class="label">展现形式：</span>
+                            <div class="fc">
+                                <?php foreach ($adSubType[5] as $adSubTypeKey=>$adSubTypeValue){?>
+                                    <label id='ad_sub_type<?php echo $adSubTypeKey?>_label'><input type="radio" value="<?php echo $adSubTypeKey; ?>" name="ad_sub_type" class="radio" <?php echo  $result['ad_sub_type'] == $adSubTypeKey?'checked=checked':''?> > </span> <?php echo $adSubTypeValue;?></label>
+                                <?php }?>
+                            </div>
+                        </li>
+                        <li class="originality_type5_li"  style="<?php echo $result['originality_type'] !=Common_Service_Const::ENBED_AD_SUB_TYPE? "display:none;":"" ?>">
+                            <span class="label">评分：</span>
+                            <div class="fc">
+                                <input name="score" id="score" type="text" value="<?php echo  $result['score']; ?>" class="iText " style="width:200px;">
+                            </div>
+                        </li>
+                        <li class="originality_type5_li"  style="<?php echo $result['originality_type'] !=Common_Service_Const::ENBED_AD_SUB_TYPE? "display:none;":"" ?>">
+                            <span class="label">行动语：</span>
+                            <div class="fc">
+                                <input name="action_text" id="action_text" type="text" value="<?php echo  $result['action_text']?$result['action_text']:'立即下载' ; ?>" class="iText " style="width:200px;">
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">创意曝光策略：</span>
+                            <div class="fc">
+                                  <?php foreach ($strategyType   as $key=>$val){?>
+                                <label><input type="radio" value="<?php echo $key;?>" name="strategy" class="radio" <?php echo  $result['strategy'] == $key?'checked=checked':''; ?> id="strategy<?php echo $key;?>"><?php echo $val;?></label>
+                                <?php }?>
+                            </div>
+                        </li>
+                        <li> 
+                            <span class="label">创意标题：</span>
+                            <div class="fc">
+                               <input name="title" type="text" value="<?php echo  $result['title']; ?>" class="iText " >         
+                            </div>
+                        </li>
+                        <li> 
+                            <span class="label">创意描述(推广文案)：</span>
+                            <div class="fc">
+                               <input name="desc" type="text" value="<?php echo  $result['desc']; ?>" class="iText " >         
+                            </div>
+                        </li>
+                        <li id="icon_li" style ='<?php echo  in_array($result['ad_target_type'], array(2,3)) &&  in_array($result['originality_type'], array(1,2,4)) ? "display:none;":"" ?>'> 
+                            <span class="label">上传icon：</span>   
+                            <div id="iconImg" >
+                                <span>icon</span><br>
+                                    <img class="fc" src="<?php echo $result['icon']?$attachPath.$result['icon']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                <input type="hidden" name="icon" value="<?php echo  $result['icon'] ; ?>">
+                            </div>
+                            <div class="fc"  >
+                                <p style="clear:both;">
+                                <iframe name="upload" class="uploadIcon" data-src="<?php echo $uploadUrl.'/?imgId=iconImg&originality_type=';?>" src="<?php echo $uploadUrl.'/?imgId=iconImg&originality_type=';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                              <div class="uploadIconTitle" style="" >
+                                    <span style='margin-left:170px' class="size">支持尺寸:(150*150)；</span><br>
+                                    <span style='margin-left:170px'>支持格式：png；文件容量<=300k</span><br>
+                               </div>
+                        </li>
+                        <li>
+                            <div id="originality_type2"  style="<?php echo  $result['originality_type'] != Common_Service_Const::PIC_AD_SUB_TYPE?'display:none':''; ?>">	
+                                <span class="label">上传创意：</span>   
+                                <div id="crossImg" >
+                                    <span>横屏图片</span><br>
+                                        <img class="fc" src="<?php echo $result['cross_img']?$attachPath.$result['cross_img']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                    <input type="hidden" name="cross_img" value="<?php echo  $result['cross_img'] ; ?>">
+                                </div>
+                                <div class="fc"  >
+                                    <p style="clear:both;">
+                                    <iframe name="upload"  class="crossImg" data-src="<?php echo $uploadUrl.'/?imgId=crossImg&originality_type=';?>" src="<?php echo $uploadUrl.'/?imgId=crossImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                     </iframe>
+                                    </p>
+                                </div>
+                                 <div class="crossImgTitle" style="" >
+                                    <span style='margin-left:170px' class="size">支持尺寸:(960*640)；</span><br>
+                                    <span style='margin-left:170px'>支持格式：png/jpg；文件容量<=300k</span><br>
+                               </div>
+                                <div id="verticalImg">
+                                    <span style='margin-left:170px'>竖屏图片</span><br>
+                                        <img class="fc" src="<?php echo $result['vertical_img']?$attachPath.$result['vertical_img']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                    <input type="hidden"   name="vertical_img" value="<?php echo  $result['vertical_img'] ; ?>">
+                                </div>
+                                <div class="fc"  >
+                                    <p style="clear:both;">
+                                    <iframe name="upload" class="verticalImg" data-src="<?php echo $uploadUrl.'/?imgId=verticalImg&originality_type=';?>" src="<?php echo $uploadUrl.'/?imgId=verticalImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                     </iframe>
+                                    </p>
+                                </div> 
+                                    <div class="verticalImgTitle" style="" >
+                                    <span style='margin-left:170px' class="size">支持尺寸:(640*960)；</span><br>
+                                    <span style='margin-left:170px'>支持格式：png/jpg；文件容量<=300k</span><br>
+                               </div>  
+                            </div>
+
+                            <div id="originality_type1" style="<?php echo  $result['originality_type'] != Common_Service_Const::VIDEO_AD_SUB_TYPE?'display:none':''; ?>" class="originality_type1">	
+                                <span class="label">上传创意：</span>   
+                                <div id="videoId"  style="margin-left:200px;">
+                                    <span>视频</span>
+                                    <input type="hidden" name="video" value="<?php echo  $result['video'] ; ?>">
+                                </div>
+                                <div class="fc"  >
+                                    <p style="clear:both;">
+                                    <iframe name="upload" src="<?php echo $uploadOtherUrl.'/?otherId=videoId';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                     </iframe>
+                                    </p>
+                                </div>   
+                                <div id="h5Id"  style="margin-left:200px;">
+                                    <span>H5</span>
+                                    <input type="hidden" name="h5" id="h5" value="<?php echo  $result['h5'] ; ?>">
+                                </div>
+                                <div class="fc"  >
+                                    <p style="clear:both;">
+                                        <?php foreach ($h5uploadType as $key=>$val){?>
+                                        <input type="radio" value="<?php echo $key;?>" name="h5upload" class="radio" <?php echo  $result['h5upload'] == $key?'checked=checked':''; ?> id="h5upload<?php echo $key;?>"><label  for="h5upload<?php echo $key;?>"><?php echo $val;?></label>
+                                        <?php }?>
+                                        <div id="h5upload1div" style="<?php echo $result['h5upload']!=1?'display:none;':'' ?>">
+                                            <iframe name="upload" src="<?php echo $uploadOtherUrl.'/?otherId=h5Id';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                            </iframe>
+                                        </div>
+                                        <div id="h5upload2div" style="<?php echo $result['h5upload']!=2?'display:none;':'' ?>">
+                                            <input type="button" value="配置H5模板" class="submit btn" id="configH5TemplateButton"/>
+                                                <input type="hidden" value="" id="previewUrl"/>
+                                                <input type="button" value="预览" class="btn" id="previewButton"/>
+                                        </div>
+                                    </p>
+                                </div>   
+                            </div>
+                            <div id="originality_type5" style="<?php echo  $result['originality_type'] != Common_Service_Const::ENBED_AD_SUB_TYPE?'display:none':''; ?>" class="originality_type5">
+                                <input type="hidden" name="enbed_image_size" id="enbed_image_size" value="<?php echo  $result['enbed_image_size'] ; ?>">
+                                <div style="<?php echo  $result['ad_sub_type'] != 51?'display:none':''; ?>" id="singleEnbedImg_div">
+                                    <span class="label">上传创意：</span>
+                                    <div id="singleEnbedImg" >
+                                        <span>单图</span><br>
+                                        <img class="fc" src="<?php echo $result['single_img']?$attachPath.$result['single_img']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                        <input type="hidden" name="single_img" id="single_img" value="<?php echo  $result['single_img'] ; ?>">
+                                    </div>
+                                    <div class="fc"  >
+                                        <p style="clear:both;">
+                                        <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=singleEnbedImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                         </iframe>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div style="<?php echo  $result['ad_sub_type'] != 52?'display:none':''; ?>" id="combinationEnbedImg_div">
+                                    <span class="label">上传创意：</span>  
+                                    <div class="combinationEnbedImg_list">
+                                        <div class="combinationEnbedImg_item" id="combinationEnbedImg1" >
+                                            <span>图1</span><br>
+                                            <img src="<?php echo $result['combination_img1']?$attachPath.$result['combination_img1']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                            <input type="hidden" name="combination_img1" id="combination_img1" value="<?php echo  $result['combination_img1'] ; ?>">
+                                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=combinationEnbedImg1';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">
+                                            </iframe>
+                                        </div>
+                                        
+                                        <div class="combinationEnbedImg_item" id="combinationEnbedImg2"  >
+                                            <span>图2</span><br>
+                                            <img  src="<?php echo $result['combination_img2']?$attachPath.$result['combination_img2']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                            <input type="hidden" name="combination_img2" id="combination_img2" value="<?php echo  $result['combination_img2'] ; ?>">
+                                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=combinationEnbedImg2';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                            </iframe>
+                                        </div>
+                                        <div class="combinationEnbedImg_item" id="combinationEnbedImg3"  >
+                                            <span>图3</span><br>
+                                            <img src="<?php echo $result['combination_img3']?$attachPath.$result['combination_img3']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                            <input type="hidden" name="combination_img3" id="combination_img3" value="<?php echo  $result['combination_img3'] ; ?>">
+                                            <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=combinationEnbedImg3';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                            </iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="enbedImgTips" style="<?php echo !in_array($result['ad_sub_type'], array(51, 52))?'display:none':''; ?>" >
+                                    <span style='margin-left:170px'>支持尺寸:16:9(1280*720)、2:3(640*960)、3:2(960*640)、32:5(640*100)、1:1(1200*1200)、2:1、1200:627(1200*627)；</span><br>
+                                    <span style='margin-left:170px'>支持格式：png／jpg；文件容量<=200k</span><br>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="fc">
+                                <input type="button"  onclick="javascript:forwardToPrePage('<?php echo $addAdStep1Url; ?>');" value="上一步" class="submit btn">    
+                                <input type="submit"  value="下一步" class="submit btn" onclick="confirmSubmit();return false;">      
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="configH5Template" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+    <ul class="form">
+        <li> 
+            <span class="label">选择模板：</span>
+            <div class="fc">
+                <?php foreach ($h5templateType   as $key=>$val){?>
+                    <input type="radio" value="<?php echo $key;?>" name="h5template" class="radio" <?php echo  $result['h5template'] == $key?'checked=checked':''; ?> id="h5template<?php echo $key;?>"><label  for="h5template<?php echo $key;?>"><?php echo $val;?></label>
+                <?php }?>
+            </div>
+        </li>
+        <li> 
+            <span class="label">上传图片：</span>
+            <div id="mainImg" >
+                <span>上传主图: 请上传640*960图片</span><br>
+                    <img class="fc" src="<?php echo $result['mainpic']?$attachPath.$result['mainpic']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                <input type="hidden" name="mainpic" id="mainpic" value="<?php echo  $result['mainpic'] ; ?>">
+            </div>
+            <div class="fc"  >
+                <p style="clear:both;">
+                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=mainImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                 </iframe>
+                </p>
+            </div>
+            <div id="carouselImg" style="<?php if($result['h5template']==2){echo "display:none;";} ?>">
+                <div id="carouselImg1" style="margin-left:170px;">
+                    <span>上传轮播图1: 请上传640*960图片</span><br>
+                        <img class="fc" src="<?php echo $result['carouselpic1']?$attachPath.$result['carouselpic1']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;padding-left: 0px"/>
+                    <input type="hidden" name="carouselpic1" id="carouselpic1" value="<?php echo  $result['carouselpic1'] ; ?>">
+                </div>
+                <div class="fc"  >
+                    <p style="clear:both;">
+                    <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=carouselImg1';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                     </iframe>
+                    </p>
+                </div>
+                <div id="carouselImg2" style="margin-left:170px;">
+                    <span>上传轮播图2: 请上传640*960图片</span><br>
+                        <img class="fc" src="<?php echo $result['carouselpic2']?$attachPath.$result['carouselpic2']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;padding-left: 0px"/>
+                    <input type="hidden" name="carouselpic2" id="carouselpic2" value="<?php echo  $result['carouselpic2'] ; ?>">
+                </div>
+                <div class="fc"  >
+                    <p style="clear:both;">
+                    <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=carouselImg2';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                     </iframe>
+                    </p>
+                </div>
+                <div id="carouselImg3" style="margin-left:170px;">
+                    <span>上传轮播图3: 请上传640*960图片</span><br>
+                        <img class="fc" src="<?php echo $result['carouselpic3']?$attachPath.$result['carouselpic3']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;padding-left: 0px"/>
+                    <input type="hidden" name="carouselpic3" id="carouselpic3" value="<?php echo  $result['carouselpic3'] ; ?>">
+                </div>
+                <div class="fc"  >
+                    <p style="clear:both;">
+                    <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=carouselImg3';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                     </iframe>
+                    </p>
+                </div>
+                <div id="carouselImg4" style="margin-left:170px;">
+                    <span>上传轮播图4: 请上传640*960图片</span><br>
+                        <img class="fc" src="<?php echo $result['carouselpic4']?$attachPath.$result['carouselpic4']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;padding-left: 0px"/>
+                    <input type="hidden" name="carouselpic4" id="carouselpic4" value="<?php echo  $result['carouselpic4'] ; ?>">
+                </div>
+                <div class="fc"  >
+                    <p style="clear:both;">
+                    <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=carouselImg4';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                     </iframe>
+                    </p>
+                </div>
+            </div>
+        </li>
+        <li> 
+            <span class="label">上传icon：</span>
+            <div id="videoiconImg" >
+                <span>上传icon: 请上传100*100图片</span><br>
+                    <img class="fc" src="<?php echo $result['iconpic']?$attachPath.$result['iconpic']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                <input type="hidden" name="iconpic" id="iconpic" value="<?php echo  $result['iconpic'] ; ?>">
+            </div>
+            <div class="fc"  >
+                <p style="clear:both;">
+                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=videoiconImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                 </iframe>
+                </p>
+            </div>
+        </li>
+        <li> 
+            <span class="label">标题：</span>
+            <div class="fc"  >
+                <input type="text" class="iText" value="<?php echo  $result['videotitle'] ; ?>" name="videotitle" id="videotitle">
+            </div>
+        </li>
+        <li> 
+            <span class="label">描述：</span>
+            <div class="fc"  >
+                <input type="text" class="iText" value="<?php echo  $result['videodesc'] ; ?>" name="videodesc" id="videodesc">
+            </div>
+        </li>
+        <li> 
+            <span class="label">星级：</span>
+            <div class="fc"  >
+                <input type="text" class="iText" value="<?php echo  $result['star'] ; ?>" name="star" id="star">
+            </div>
+        </li>
+        <li> 
+            <span class="label">评价数：</span>
+            <div class="fc"  >
+                <input type="text" class="iText" value="<?php echo  $result['commentnum'] ; ?>" name="commentnum" id="commentnum">
+            </div>
+        </li>
+        <li> 
+            <span class="label">交互文案：</span>
+            <div class="fc">
+                <input type="text" class="iText" value="<?php echo  $result['buttonvalue']?$result['buttonvalue']:'免费下载' ; ?>" name="buttonvalue" id="buttonvalue">
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div id="showMacro" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+  <div class="grid">
+        <table>
+            <thead>
+                <tr><th width='15%'>宏变量</th><th width='35%'>用途描述</th><th width='50%'>格式和示例</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>CID</td><td>渠道ID</td><td>监控方提供，AE在创建活动时填写</td></tr>
+                <tr><td>CPID</td><td>广告活动ID</td><td>投放活动在ADX注册的ID</td></tr>
+                <tr><td>CRID</td><td>创意ID</td><td>物料在ADX注册的ID</td></tr>
+                <tr><td>OS</td><td>客户端操作系统的类型</td><td>0-Android、1-IOS、2-WP、3-Others</td></tr>
+                <tr><td>IMEI</td><td>用户终端的IMEI，15位数字</td><td>取 md5sum 摘要</td></tr>
+                <tr><td>MAC</td><td>用户终端的eth0接口的MAC地址(大写且去除冒号分隔符)，md5加密</td><td>去除分隔符":"，（保持大写）取md5sum 摘要</td></tr>
+                <tr><td>MAC1</td><td>用户终端的 eth0 接口的 MAC 地址（大写且保留冒号分隔符），md5 加密</td><td>保留分隔符":"，（保持大写）取md5sum摘要</td></tr>
+                <tr><td>IDFA</td><td>IOSIDFA适用于IOS6及以上</td><td>保留原始值</td></tr>
+                <tr><td>IMEI</td><td>安桌IMEI</td><td>保留原始值</td></tr>
+                <tr><td>AppKey</td><td>乐逗广告业务部内部使用的Appkey</td><td>保留原始值</td></tr>
+                <tr><td>UDID</td><td>IOS UDID，md5加密</td><td>保留原始值</td></tr>
+                <tr><td>AAID</td><td>Android Advertising ID</td><td>保留原始值</td></tr>
+                <tr><td>AndroidID</td><td>用户终端的AndroidID</td><td>取md5sum摘要</td></tr>
+                <tr><td>IP</td><td>用户终端的公网IP地址</td><td>4段分点，如A.B.C.D(4 段点分)，如12.34.56.78</td></tr>
+                <tr><td>UA</td><td>用户终端设备的User Agent</td><td>字符串，需escape转义，如Mozilla%2F5.0(Linux%3BAndroid4.0.4%3BGT-I9220%20Build%2FIMM76D )</td></tr>
+                <tr><td>TS</td><td>客户端出发监测的时间</td><td>UTC时间戳，自1970年起的毫秒数</td></tr>
+                <tr><td>RequestID</td><td>下发配置请求ID</td><td>字符串</td></tr>
+                <tr><td>Callvback</td><td>回调地址</td><td>字符串</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<script type="text/javascript">
+var id = '<?php echo $result['id']; ?>';
+var nextUrl = '<?php echo $addAdStep3Url; ?>';
+if(id){
+	nextUrl +='?id='+id;
+}
+
+//广告表单数据提交
+$(document).ready(function(){
+    ajaxForm('addFrom',function(ret){
+    	ajaxRedirect(ret, baseurl+nextUrl);
+    });
+    
+    $("#configH5TemplateButton").click(showConfigH5TemplateDiv);
+    $(".showMacro").click(showMacro);
+    $("#previewButton").click(function(){
+        previewUrl = $("#previewUrl").val()
+        h5upload = $('input[name="h5upload"]:checked').val();
+        if(previewUrl != '' && h5upload==2){
+            window.open(previewUrl);
+        }else{
+            showError('', '请先配置H5模板');
+        }
+    });
+    $("#h5template1").click(function(){
+        $("#carouselImg").show();
+    });
+    $("#h5template2").click(function(){
+        $("#carouselImg").hide();
+    });
+    $("#h5upload1").click(function(){
+        $("#h5upload1div").show();
+        $("#h5upload2div").hide();
+    });
+    $("#h5upload2").click(function(){
+        $("#h5upload1div").hide();
+        $("#h5upload2div").show();
+    });
+    setImgOrighinalityType();
+    
+    //广告目标单击事件
+   $("input[name=ad_target_type]").click(function(){
+    	setJumpType();
+    	setAppNameLiDisplay();
+    	setApkUpload();
+        setIconliDisplay();
+        setImgOrighinalityType();
+    });
+
+
+
+    //创意类型
+    $("input[name=originality_type]").click(function(){
+        originality_type = $("input[name=originality_type]:checked").val()
+    	if(originality_type){
+    		$("#originality_type"+originality_type).show().siblings().hide();
+    	}
+        //交叉推广使用icon,横竖屏 开屏使用icon,横竖屏
+        if(originality_type == 3 || originality_type == 4){
+            $("#originality_type2").show().siblings().hide();
+        }
+        if(originality_type == 5){
+            $(".originality_type5_li").show();
+        }else{
+            $(".originality_type5_li").hide();
+        }
+        setIconliDisplay();
+        setAppNameLiDisplay();
+        setImgOrighinalityType();
+    });
+        
+    //创意类型
+    $("input[name=ad_sub_type]").click(function(){
+        ad_sub_type = $("input[name=ad_sub_type]:checked").val()
+    	if(ad_sub_type == 51){
+    		$("#singleEnbedImg_div").show().siblings().hide();
+            $("#enbedImgTips").show();
+    	}else if(ad_sub_type == 52){
+            $("#combinationEnbedImg_div").show().siblings().hide();
+            $("#enbedImgTips").show();
+        }
+    });
+ 
+});
+
+function setImgOrighinalityType(){
+	ad_target_type = $("input[name=ad_target_type]:checked").val()
+	originality_type = $("input[name=originality_type]:checked").val();
+	$(".uploadIcon").attr('src',$(".uploadIcon").attr('data-src')+originality_type);
+	 if(originality_type == 3){
+			$(".uploadIconTitle .size").html('支持尺寸:(210*210)');
+		} else{
+			$(".uploadIconTitle .size").html('支持尺寸:(150*150)');
+		}
+	$(".crossImg").attr('src',$(".crossImg").attr('data-src')+originality_type);
+	$(".verticalImg").attr('src',$(".verticalImg").attr('data-src')+originality_type);
+	//横屏竖屏图片
+	if(originality_type == 2){
+		$(".crossImgTitle .size").html('支持尺寸:(960*640)');
+		$(".verticalImgTitle .size").html('支持尺寸:(640*960)');
+	}else if(originality_type == 3){
+		$(".crossImgTitle .size").html('支持尺寸:(1250*350)');
+		$(".verticalImgTitle .size").html('支持尺寸:(920*450)');
+	} else if(originality_type == 4){
+		$(".crossImgTitle .size").html('支持尺寸:(1280*720)');
+		$(".verticalImgTitle .size").html('支持尺寸:(720*1280)');
+	} 
+}
+
+
+function setApkUpload(){
+	ad_target_type = $("input[name=ad_target_type]:checked").val();
+    jump_type = $("input[name=jump_type]:checked").val()
+	if(ad_target_type== 1){
+		$("#apk_upload_li").show();
+	}else{
+		$("#apk_upload_li").hide();
+	}
+}
+
+function setJumpType(){
+	ad_target_type = $("input[name=ad_target_type]:checked").val();
+	$("#jumpTypeLi label" ).hide();
+    $("#jumpTypeLi label[data-adTargetType='"+ad_target_type+"']").show();
+}
+
+function setIconliDisplay(){
+	ad_target_type = $("input[name=ad_target_type]:checked").val()
+    originality_type = $("input[name=originality_type]:checked").val()
+    //应用名称安卓全部需求
+    if(ad_target_type == 1){
+    	$("#icon_li").show();
+    }else{
+        //原生，交叉需要
+    	if(originality_type == 5 || originality_type ==3){
+    		$("#icon_li").show();
+         }else{
+        	 $("#icon_li").hide();
+         }
+     }
+}
+
+function setAppNameLiDisplay(){
+	ad_target_type = $("input[name=ad_target_type]:checked").val()
+    originality_type = $("input[name=originality_type]:checked").val()
+    //应用名称安卓全部需求
+    if(ad_target_type == 1){
+    	$("#app_name_li").show();
+    }else{
+        //原生，交叉需要
+    	if(originality_type == 5 || originality_type ==3){
+    		$("#app_name_li").show();
+         }else{
+        	 $("#app_name_li").hide();
+         }
+     }
+    
+}
+
+function confirmSubmit(){
+    //原生广告
+    originality_type = $("input[name=originality_type]:checked").val()
+    if(originality_type == 5){
+        ad_sub_type = $("input[name=ad_sub_type]:checked").val()
+        //单图
+		if(ad_sub_type == 51 && $("#single_img").attr("imagesize")){
+            $("#enbed_image_size").val($("#single_img").attr("imagesize"))
+		}else if(ad_sub_type == 52){
+            if($("#combination_img1").attr("imagesize") != $("#combination_img2").attr("imagesize")){
+                jAlert("原生广告组图一与图二尺寸不一致")
+                return false
+            }
+            if($("#combination_img1").attr("imagesize") != $("#combination_img3").attr("imagesize")){
+                jAlert("原生广告组图一与图三尺寸不一致")
+                return false
+            }
+            if($("#combination_img1").attr("imagesize")){
+                $("#enbed_image_size").val($("#combination_img1").attr("imagesize"))
+            }
+        }
+    }
+    //todo 提交表单前前端校验
+    $('form').submit();
+}
+
+
+function showConfigH5TemplateDiv(){
+       return $("#configH5Template").dialog({
+           title : '配置H5模板',
+           draggable : false,
+           width:1200,
+           modal : true,
+           resizable : false,
+           buttons: {
+               'ok': function() {
+                   h5template = $("input[name='h5template']:checked").val()
+                   mainpic = $("#mainpic").val()
+                   carouselpic1 = $("#carouselpic1").val()
+                   carouselpic2 = $("#carouselpic2").val()
+                   carouselpic3 = $("#carouselpic3").val()
+                   carouselpic4 = $("#carouselpic4").val()
+                   iconpic = $("#iconpic").val()
+                   videotitle = $("#videotitle").val()
+                   videodesc = $("#videodesc").val()
+                   star = $("#star").val()
+                   commentnum = $("#commentnum").val()
+                   buttonvalue = $("#buttonvalue").val()
+                   if(typeof h5template == 'undefined'){
+                       showError('', '请选择模板');
+                       return false
+                   }
+                   if(mainpic == ''){
+                       showError('', '请上传主图');
+                       return false
+                   }
+                   if(h5template == 1){
+                       if(carouselpic1 == '' ||carouselpic2 == '' ||carouselpic3 == '' ||carouselpic4 == '' ){
+                           showError('', '请上传完整轮播图');
+                           return false
+                       }
+                   }else if(h5template == 2){
+                   }else{
+                       showError('', '参数错误');
+                       return false
+                   }
+                   if(iconpic==''){
+                       showError('', '请上传icon');
+                       return false
+                   }
+                   if(videotitle==''){
+                       showError('', '请填写标题');
+                       return false
+                   }
+                   if(videodesc==''){
+                       showError('', '请填写描述');
+                       return false
+                   }
+                   if(star==''){
+                       showError('', '请填写星级');
+                       return false
+                   }
+                   if(commentnum==''){
+                       showError('', '请填写评价数');
+                       return false
+                   }
+                   if(buttonvalue==''){
+                       showError('', '请填写交互方案');
+                       return false
+                   }
+                   var object = $(this);
+                   $.ajax({
+                       url : baseurl+'<?php echo $createH5ZipUrl ?>',
+                       type : 'POST',
+                       dataType : 'json',
+                       data : { 'token':token, 'h5template':h5template , 'mainpic': mainpic, 
+                                   'carouselpic1':carouselpic1,'carouselpic2':carouselpic2, 'carouselpic3':carouselpic3, 'carouselpic4':carouselpic4,
+                                   'iconpic':iconpic,'videotitle':videotitle, 'videodesc':videodesc, 'star':star,
+                                   'commentnum':commentnum,'buttonvalue':buttonvalue
+                               },
+                       success : function(ret) {
+                           if (ret.success) {
+                               object.dialog('close');
+                               $("#h5").val(ret['data']['h5'])
+                               $("#previewUrl").val(ret['data']['previewUrl'])
+                               showMsg('', '配置成功')
+                           } else {
+                               showError('', ret.msg);
+                           }
+                       }
+                   });
+               },
+               Cancel: function() {
+                   $(this).dialog('close');
+               }
+           },
+       });
+   }
+   function showMacro(){
+       return $("#showMacro").dialog({
+           title : '宏变量',
+           draggable : false,
+           width:960,
+           modal : true,
+           resizable : false,
+           buttons: {
+               'ok': function() {
+                   $(this).dialog('close');
+               }
+           }
+       });
+   }
+</script>
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>

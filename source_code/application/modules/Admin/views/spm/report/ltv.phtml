@@ -1,0 +1,186 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 头部区域 begin  -->
+        <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+        <!-- 头部区域 end   -->
+
+        <!-- content begin   -->
+        <div class="content-wrap">
+            <!-- leftMenu begin   -->
+            <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+            <!-- leftMenu begin   -->
+
+            <div class="content-main">
+
+                <div class="wrapper">
+                    <ul class="layui-tab-title">
+                        <li>
+                            <a href="activity">活动报表</a>
+                        </li>
+                        <li>
+                            <a href="ltv" class="layui-this">活动LTV</a>
+                        </li>
+                        <li>
+                            <a href="retention">活动留存</a>
+                        </li>
+                    </ul>
+                    <!-- title begin -->
+
+                    <!-- title end  -->
+                    <div class="colMain">
+                        <div class="main">
+                            <div class="chart app-detail">
+                                <ul class="chart-filter">
+                                    <li class="date-filter">
+                                        <div id="date_range" class="fr" sdate="<?php echo $sdate; ?>" edate="<?php echo $edate; ?>"></div>
+                                        <div class=" fr">
+                                            <button class="btn-export">导出</button>
+                                        </div>
+                                        <div style="clear:both;"></div>
+                                    </li>
+                                    <li class="dim-filter">
+                                        <dl id="dim"></dl>
+                                    </li>
+                                </ul>
+
+                                <div class="chart-show">
+                                    <!-- <div class="chart-title">走势图</div> -->
+                                    <div id="data_charts" style="min-height:400px;"></div>
+                                </div>
+                                <hr>
+                                <div class="chart-table">
+                                    <div class="chart-title">详细数据</div>
+                                    <div id="mg_talbe"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content end     -->
+        </div>
+
+        <div id="blk">
+            <div id="blk_kpi" type="kpi" class="blk_view kpi" mod="submit_box"></div>
+        </div>
+        <div class="mask"></div>
+
+
+        <link href="<?php echo $staticPath; ?>/css/gri.controls.css?v=<?php echo $version; ?>" rel="stylesheet" />
+        <link href="<?php echo $staticPath; ?>/css/mgchart.css?v=<?php echo $version; ?>" rel="stylesheet" />
+        <script src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.js?v=201712151100"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery-ui.min.js?v=201712151100"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/spmchart.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.loadmask.min.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/gri.dateRange.js?v=<?php echo $version; ?>"></script>
+        <script src="<?php echo $staticPath; ?>/js/common/jquery.SuperSlide.2.1.1.js?v=<?php echo $version;?>"></script>
+        <script type="text/javascript">
+            $(function () {
+                var dateRange = new pickerDateRange("date_range", 'date', {
+                    theme: 'ta',
+                    isTodayValid: 1,
+                    startDate: "<?php echo $sdate;?>",
+                    endDate: "<?php echo $edate;?>",
+                    minValidDate: 1379174400,
+                    needCompare: 0,
+                    success: function (dateObj) {
+                        $("#date_range").attr("sdate", dateObj.startDate);
+                        $("#date_range").attr("edate", dateObj.endDate);
+                        $("#date_range").attr("csdate", "");
+                        $("#date_range").attr("cedate", "");
+                    }
+                });
+
+                report = new Spm.Report();
+                app_id = parseInt(getCookie('app_id'))
+                if (app_id > 0) {
+                    report.setParams('app_id', app_id);
+                };
+                report.setDateRangePlugin("#date_range").init(<?php echo $chartConfig;?>).run()
+
+
+                //   topMenu 切换app 回调
+
+                appIdSelectChange = {
+                    callBack: function (id) {
+                        location.reload()
+                    }
+                };
+
+
+
+                // 时间选择 改变时候直接提交 dateRange.submitBtn为对应提交按钮
+                $("#" + dateRange.submitBtn).click(function () {
+                    submitForm()
+                });
+                $(".ta_select_day").click(function () {
+                    submitForm()
+                });
+                $("#operate_type").change(function () {
+                    submitForm()
+                })
+                $("#account_type").change(function () {
+                    submitForm()
+                })
+
+                function submitForm() {
+                    sdate = $("#date_range").attr("sdate")
+                    edate = $("#date_range").attr("edate")
+
+                    //window.location.href='/Advertiser/Account/log/?sdate=' + sdate + "&edate=" + edate + "&operate_type="+ operate_type + "&account_type="+ account_type;
+                }
+
+                $(".btn-export").click(function (event) {
+                    report.export();
+                });
+                $("#set_dayconsumption_limit").click(function () {
+                    oldvalue = $("#day_consume").html();
+                    str = '<input type="text" class="input" value="' + oldvalue +
+                        '"   id="set_dayconsumption_limit_value">'
+                    $(this).siblings('.input').remove();
+                    $("#day_consume").hide().after(str)
+                    inputId = 'set_dayconsumption_limit_value'
+                    $("#set_dayconsumption_limit_value").focus()
+                    $("#set_dayconsumption_limit_value").blur(function () {
+                        limit = $("#set_dayconsumption_limit_value").val();
+                        $.ajax({
+                            url: baseurl + "/Advertiser/Account/setDayconsumptionLimit",
+                            type: "POST",
+                            dataType: 'json',
+                            data: {
+                                'token': token,
+                                'limit': limit
+                            },
+                            success: function (ret) {
+                                if (ret.success) {
+                                    showMsg('', ret.msg);
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 500);
+                                } else {
+                                    showError('', ret.msg);
+                                }
+                                $("#day_consume").show()
+                                $("#" + inputId).remove()
+                            }
+                        });
+                    });
+                });
+            })
+        </script>
+        <script type="text/javascript">
+            jQuery(".txtMarquee-left").slide({
+                mainCell: ".bd ul",
+                autoPlay: true,
+                effect: "leftMarquee",
+                vis: 2,
+                interTime: 50
+            });
+        </script>
+        </script>
+</body>
+
+</html>

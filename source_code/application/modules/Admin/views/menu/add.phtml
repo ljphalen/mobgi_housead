@@ -1,0 +1,60 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+       <li ><a href="<?php echo $listUrl;?>">菜单配置列表</a></li>
+		<li class="current"><a href="<?php echo $addUrl;?>"><?php echo $title;?>菜单配置</a></li>
+	</ul>
+</div>
+<div class="h_a"><?php echo $title;?>菜单配置</div>
+<form method="post" action="<?php echo $addPostUrl;?>" id='addForm'>
+<input name="token" value="<?php echo $token;?>" type="hidden" />
+<input name="id" value="<?php echo $info['id'];?>" type="hidden" />
+<div class="table_full">
+    <table width="100%">
+        <tr class="tr">
+            <th class="th">菜单id</th>
+             <td class="td">     
+             	<select  name="menu_id" id="menu_id">
+                 <?php foreach($menuIds as $k1=>$v1){ ?>
+                 <option value="<?php echo $k1; ?>"  <?php if( $info['menu_id']==$k1){ ?> selected <?php } ?>><?php echo $v1; ?> </option>
+               <?php } ?>
+                </select>
+                </td>
+        </tr>
+         <tr class="tr">
+            <th class="th">模块</th>
+            <td class="td"><input type="text" maxlength="500" style="width: 550px"  name="module" class="input" value="<?php echo $info['module'];?>" ></td>
+        </tr>
+         <tr class="tr">
+            <th class="th">控制器</th>
+            <td class="td"><input type="text" maxlength="500" style="width: 550px"  name="controler" class="input" value="<?php echo $info['controler'];?>" ></td>
+        </tr>
+           <tr class="tr">
+            <th class="th">action</th>
+            <td class="td">    
+            <input type="text"  style="width: 1000px" maxlength="1000" name="action" class="input" value="<?php echo $info['action'];?>" ></td>
+        </tr>
+           <tr class="tr">
+            <th class="th">名称</th>
+            <td class="td"><input type="text" maxlength="30" name="name" class="input" value="<?php echo $info['name'];?>" ></td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button onfocus="blur();" type="submit">保存</button></span></span>
+<span class="btn"><span><button type="button" onclick="window.location.href='<?php echo $listUrl;?>'" >返回</button></span></span>
+</div>
+</form>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript">
+    $(document).ready(function(){
+      	 $('#menu_id').chosen({
+    		 search_contains:true,
+    		 disable_search_threshold:2
+    		});
+        ajaxForm('addForm',function(ret){
+            ajaxRedirect(ret, baseurl+'<?php echo $listUrl;?>');
+        });
+    })
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

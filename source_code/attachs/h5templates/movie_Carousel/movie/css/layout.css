@@ -1,0 +1,78 @@
+﻿html{font-size:62.5%;background:none;} 
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}
+body{color:#2C2C2C;word-wrap:break-word;word-break:break-all;}
+ol,ul,li{list-style:none;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;}
+img{vertical-align:middle;}
+.clearfix:after{content:".";height:0;visibility:hidden;display:block;clear:both;font-size:0;line-height:0;}
+.clearfix{*zoom:1;}
+.fl{float:left;}
+.fr{float:right;}
+
+.page{margin:0 auto;font-family:"微软雅黑";}
+.page_width{width:1136px;min-height:640px;}
+.page_height{width:640px;}
+
+.header{position:relative;width:100%;}
+.header img{position:absolute;top:15px;z-index:10;box-shadow: 2px 2px 10px #000;border-radius:50%;}
+.close{left:15px;}
+.reset{right:15px;}
+
+.content{height:100%;}
+
+.banner{width:640px;overflow:hidden;position:relative;}
+.runContent{height:100%;position:absolute;left:0;}
+.runContent li{float:left;width:640px;height:100%;}
+.runContent li img{max-width:640px;width:640px;vertical-align:midden;position:absolute;top:50%;margin-top:-480px;}
+
+.runNav{position:absolute;width:246px;height:19px;background:url("img/banner_nav.png") no-repeat;bottom:5px;left:50%;margin-left:-123px;text-align:center;padding-top:3px;}
+.runNav li{width:15px;height:15px;display:inline-block;border-radius:50%;background-color:#c0c0c0;opacity:0.5;margin:0 5px;}
+.runNav .cur{background-color:#fff;opacity:1;}
+
+.banner-width{width:777px;background-color:#0a0b12;float:left;height:100%;}
+.banner-width-only{line-height:640px;position:relative;top:50%;margin-top:-320px;}
+
+.banner-width-more{position:relative;top:50%;margin-top:-320px;}
+.banner-width-more .d_img{width:777px;margin:0 auto;position:relative;height:640px;background-color:#151624;}
+.banner-width-more .d_img li{position:absolute;-webkit-transition:all .5s;}
+.banner-width-more .d_img li img{width:100%;-webkit-box-reflect:below 0 -webkit-linear-gradient(top,rgba(250,250,250,0),rgba(250,250,250,0) 75%,rgba(250,250,250,0.5));}
+
+.bwm_1{display:block;width:260px;left:275px;top:80px;z-index:5;-webkit-transform:scale(1.2,1.2);}/*507px*/
+.bwm_2{display:block;width:260px;left:40px;top:80px;z-index:3;}
+.bwm_3{display:block;width:260px;right:40px;top:80px;z-index:4;}
+.bwm_list{width:260px;left:259px;top:80px;z-index:1;-webkit-transform:scale(0.1,0.1);display:none;}
+
+.d_menu{position:absolute;width:246px;height:19px;background:url("img/banner_nav.png") no-repeat;bottom:20px;left:50%;margin-left:-123px;text-align:center;padding-top:3px;}
+.d_menu li{width:15px;height:15px;display:inline-block;border-radius:50%;background-color:#c0c0c0;opacity:0.5;margin:0 5px;}
+.d_menu .cur{background-color:#fff;opacity:1;}
+
+
+.blur{-webkit-filter: blur(1px);}
+
+.page_height .info{padding:28px 30px;}
+.page_height .icon{float:left;}
+.page_height .icon img{width:120px;}
+.page_height .md{float:left;margin-left:15px;width:300px;}
+.name{font-size:24px;color:#333;font-weight:700;}
+.det{margin-top:3px;}
+.star{width:150px;height:24px;background:url("img/star_bg.png") no-repeat 0 0;display:inline-block;background-size:150px 24px;}
+.star span{display:inline-block;overflow:hidden;position:relative;height:24px;}
+.level4{width:120px;}
+.level4-5{width:138px;}
+.level5{width:150px;}
+.star span img{position:absolute;top:0;left:0;}
+.num{font-size:20px;color:#c0c0c0;position:relative;top:5px;}
+.desc{font-size:16px;color:#8d8d8d;margin-top:5px;line-height:24px;}
+.download{display:inline-block;border:1px solid #4ab84c;border-radius:3px;margin-top:14px;min-width:72px;}
+.page_height .download{height:90px;float:right;padding-left:18px;line-height:90px;}
+.page_height .download span{display:none;}
+
+.page_width .info{text-align:center;float:right;height:100%;}
+.page_width .winfo{position:relative;top:50%;margin-top:-250px;width:359px;}
+.page_width .icon img{width:155px;}
+.page_width .name{margin-top:10px;font-size:45px;}
+.page_width .star{text-align:left;margin-top:10px;}
+.page_width .desc{width:280px;margin:30px auto;font-size:19px;}
+.page_width .download{height:80px;line-height:80px;padding:0 25px;font-size:30px;color:#fff;text-decoration:none;white-space:nowrap;width:200px;}
+.page_width .download img{position:relative;top:-5px;margin-right:15px;}
+.page_width .download span{font-size:30px;color:#fff;display:inherit;height:40px;}

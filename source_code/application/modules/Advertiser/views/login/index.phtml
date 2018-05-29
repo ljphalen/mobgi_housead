@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title><?php echo $titlepre ?>子客投放系统</title>
+<link rel="shortcut icon" href="<?php echo $staticAdvertiserPath;?>/favicon.ico" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/reset.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/style.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/layout.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/jquery-ui.css?v=<?php echo $version;?>" rel="stylesheet"  />
+<link href="<?php echo $staticAdvertiserPath;?>/css/star/star.source.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/advertiser.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery.js??v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery-ui.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery.form.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/common.js?v=<?php echo $version;?>"></script>
+<script>
+var token = "<?php echo $token; ?>";
+var baseurl = "<?php echo $webRoot;?>";
+</script>
+</head>
+
+<style type="text/css">
+.login{width:500px;height:240px;padding:20px;position:absolute;top:50%;left:50%;margin:-141px 0 0 -271px;border:1px solid #bbb;background:#fff;}
+.login h1{float:none;clear:both;text-align:center;margin-bottom:20px;}
+</style>
+</head>
+<body>
+    <div class="login">
+        <h1>子客投放系统</h1>
+        <form name="form" method="post" action="<?php echo $loginUrl ?>" onsubmit="return checkinput()">
+            <input TYPE="hidden" name="Login_f" value="1">
+            <input name="token" type="hidden" value="<?php echo $token ?>" />
+            <ul class="form clearfix">
+                <li>
+                    <span class="label">邮箱帐号：</span>
+                    <div class="fc">
+                        <input type="text" class="iText" name="email" id="email" style="width:220px;" />
+                    </div>
+                </li>
+                <li>
+                    <span class="label">密码：</span>
+                    <div class="fc">
+                        <input type="password" class="iText" name="password" id="password" style="width:220px;" />
+                    </div>
+                </li>
+                <li>
+                    <div class="fc">
+                        <input type="submit" value="登录" class="submit" />
+                        <span class="fr" style="margin:0 86px 0 10px;font-size: 12px"><a href="<?php  echo $pwdeditemailUrl ?>">忘记密码?</a></span>
+                        <span class="fr" style="margin:0 10px;font-size: 12px"><a onclick="register();">注册</a></span>
+                    </div>
+                </li>
+            </ul>
+        </form>
+    </div>
+<div id="error_msg_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/error_bg.gif" /> <span id="err_content"><span></div>
+<div id="msg_box_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/success_bg.gif" /> <span id="msg_content"><span></div>
+<div id="ajax_loader" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/ajax-loader.gif" /> <span id="msg_content">正在处理，请稍后...<span></div>
+</body>
+<script type="text/javascript">
+    function checkinput(){
+        var email=$("#email").val();
+        var password=$("#password").val();
+        if(email==""){
+            showError('', '请输入邮箱帐号');
+            $("#email").focus();
+            return false;
+        }
+        if(password==""){
+            showError('',"请输入密码");
+            $("#password").focus();
+            return false;
+        }
+        return true;
+    }
+    function register(){
+        window.location='<?php echo $registerUrl ?>'
+    }
+</script>
+
+</html>

@@ -1,0 +1,184 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl">新建广告定向</p>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="<?php echo $savePostUrl; ?>" method="POST"  id="addFrom" >
+                	<input name="token" value="<?php echo $token;?>" type="hidden" />
+                     <input type="hidden" name="id"   id="" value='<?php echo $id ?>' />
+                    <ul class="form">
+                        <li> 
+                            <span class="label">定向名称：</span>
+                            <div class="fc">
+                                <input type="text"  id="direct_name" name="direct_name" value="<?php echo $result['direct_name']?>" class="iText">
+                            </div>
+                        </li>
+                        <li> 
+                            <span class="label">地域：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0"  name="area_type" class="radio" onclick="showDiv('province_list', 'hide');" <?php echo  $result['area_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1"  name="area_type" class="radio" onclick="showDiv('province_list', 'show');" <?php echo  $result['area_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['area_type'] != 1?'display:none':''; ?>" id=province_list>
+                                    <p><a onclick="checkAll('.checkboxArea')">全选</a></p>
+                                    <?php foreach ($provinceList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="area_range[]"  class="checkboxArea"  type="checkbox" value="<?php echo $key; ?>"  <?php echo  ($result['area_range'] && in_array($key, $result['area_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                                    <?php }?>
+                            </div>
+                        </li>
+                         <li> 
+                            <span class="label">年龄：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="age_direct_type" class="radio" onclick="showDiv('age_direct_range', 'hide');" <?php echo  $result['age_direct_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="age_direct_type" class="radio" onclick="showDiv('age_direct_range', 'show');" <?php echo  $result['age_direct_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['age_direct_type'] != 1?'display:none':''; ?>" id="age_direct_range">
+                                <?php foreach ($ageDirectList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="age_direct_range[]"  type="checkbox" value="<?php echo $key; ?>" <?php echo ($result['age_direct_range'] && in_array($key, $result['age_direct_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                            </div>
+                        </li>
+                         <li> 
+                            <span class="label">性别：</span>
+                            <div class="fc">
+                            <?php foreach ($sexTypeList as $key=>$val){?>
+                                <span><label><input type="radio" value="<?php echo $key; ?>" name="sex_direct_type" class="radio"  <?php echo  $result['sex_direct_type'] == $key?'checked=checked':''; ?>><?php echo $val; ?></label></span>
+                            <?php }?>
+                            </div>
+                        </li>
+                          <li> 
+                            <span class="label">操作系统：</span>
+                            <div class="fc">
+                             <?php foreach ($osTypeList as $key=>$val){?>
+                                <span><label><input type="radio" value="<?php echo $key; ?>" name="os_direct_type" class="radio" <?php echo  $result['os_direct_type'] == $key?'checked=checked':''; ?> ><?php echo $val; ?></label></span>
+                            <?php }?>
+                            </div>
+                        </li>
+                        <li> 
+                            <span class="label">网络环境：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="network_direct_type" class="radio" onclick="showDiv('network_direct_range', 'hide');" <?php echo  $result['network_direct_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="network_direct_type" class="radio" onclick="showDiv('network_direct_range', 'show');" <?php echo  $result['network_direct_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['network_direct_type'] != 1?'display:none':''; ?>" id="network_direct_range">
+                                <?php foreach ($netWorkList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="network_direct_range[]"  type="checkbox" value="<?php echo $key; ?>" <?php echo  ($result['network_direct_range'] && in_array($key, $result['network_direct_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                            </div>
+                        </li>
+                         <li> 
+                            <span class="label">运营商：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="operator_direct_type" class="radio" onclick="showDiv('operator_direct_range', 'hide');" <?php echo  $result['operator_direct_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="operator_direct_type" class="radio" onclick="showDiv('operator_direct_range', 'show');" <?php echo  $result['operator_direct_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['operator_direct_type'] != 1?'display:none':''; ?>" id="operator_direct_range">
+                                <?php foreach ($operatorList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="operator_direct_range[]"  type="checkbox" value="<?php echo $key; ?>" <?php echo  ($result['operator_direct_range'] &&   in_array($key, $result['operator_direct_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                            </div>
+                        </li>
+                           <li> 
+                            <span class="label">手机品牌：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="brand_direct_type" class="radio" onclick="showDiv('brand_direct_range', 'hide');" <?php echo  $result['brand_direct_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="brand_direct_type" class="radio" onclick="showDiv('brand_direct_range', 'show');" <?php echo  $result['brand_direct_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['brand_direct_type'] != 1?'display:none':''; ?>" id="brand_direct_range">
+                                <?php foreach ($brandList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="brand_direct_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo   ($result['brand_direct_range'] &&  in_array($key, $result['brand_direct_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                            </div>
+                        </li>
+                        <li class="line"></li> 
+                        <li> 
+                            <span class="label">屏幕大小：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="screen_direct_type" class="radio" onclick="showDiv('screen_direct_range', 'hide');" <?php echo  $result['screen_direct_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="screen_direct_type" class="radio" onclick="showDiv('screen_direct_range', 'show');" <?php echo  $result['screen_direct_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['screen_direct_type'] != 1?'display:none':''; ?>" id="screen_direct_range">
+                               <?php if($screenList){?>
+                                <?php foreach ($screenList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="screen_direct_range[]"  type="checkbox" value="<?php echo $key; ?>"  <?php echo  ($result['screen_direct_range'] &&  in_array($key, $result['screen_direct_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                                <?php }?>
+                            </div>
+                        </li>
+                           <li> 
+                            <span class="label">游戏兴趣：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="interest_direct_type" class="radio" onclick="showDiv('interest_direct_range', 'hide');" <?php echo  $result['interest_direct_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="interest_direct_type" class="radio" onclick="showDiv('interest_direct_range', 'show');" <?php echo  $result['interest_direct_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['interest_direct_type'] != 1?'display:none':''; ?>" id="interest_direct_range">
+                                <?php foreach ($interestList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="interest_direct_range[]"  type="checkbox" value="<?php echo $key; ?>" <?php echo ($result['interest_direct_range'] &&  in_array($key, $result['interest_direct_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                            </div>
+                        </li>
+                          <li> 
+                            <span class="label">付费能力：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="pay_ability_type" class="radio" onclick="showDiv('pay_ability_range', 'hide');" <?php echo  $result['pay_ability_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="pay_ability_type" class="radio" onclick="showDiv('pay_ability_range', 'show');" <?php echo  $result['pay_ability_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['pay_ability_type'] != 1?'display:none':''; ?>" id="pay_ability_range">
+                                <?php foreach ($payAbilityList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="pay_ability_range[]"  type="checkbox" value="<?php echo $key; ?>" <?php echo   ($result['pay_ability_range'] && in_array($key, $result['pay_ability_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                            </div>
+                        </li>
+                        <li> 
+                            <span class="label">游戏频率：</span>
+                            <div class="fc">
+                                <span><label><input type="radio" value="0" name="game_frequency_type" class="radio" onclick="showDiv('game_frequency_range', 'hide');" <?php echo  $result['game_frequency_type'] == 0?'checked=checked':''; ?>>不限</label></span>
+                                <span><label><input type="radio" value="1" name="game_frequency_type" class="radio" onclick="showDiv('game_frequency_range', 'show');" <?php echo  $result['game_frequency_type'] == 1?'checked=checked':''; ?>>定向</label></span>
+                            </div>
+                            <div style="margin-left:180px;<?php echo  $result['game_frequency_type'] != 1?'display:none':''; ?>" id="game_frequency_range">
+                                <?php foreach ($gameFrequencyList as $key=>$val){?>
+                                    <p style=" float: left;width:100px;height:30px;"><label><input name="game_frequency_range[]"  type="checkbox" value="<?php echo $key; ?>" <?php echo  ($result['game_frequency_range'] && in_array($key, $result['game_frequency_range']))?'checked=checked':''; ?>><?php echo $val; ?></label></p> 
+                              <?php }?>
+                            </div>
+                        </li>
+                        <li class="line"></li>                
+                        <li>
+                            <div class="fc">
+                                <input type="submit"  value="保存" class=" btn" id="save" onclick="confirmSubmit();return false;">    
+                                <input type="cancel"  value="取消" class=" btn" id="cancel_add">    
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<script type="text/javascript">
+var nextUrl = '<?php echo $addAdStep4Url; ?>';
+//广告表单数据提交
+$(document).ready(function(){
+	ajaxForm('addFrom',function(ret){
+		ajaxRedirect(ret, "<?php echo $listUrl ?> ");
+	});
+    
+    $("#cancel_add").click(function(){
+        history.back();
+    });
+})
+function showDiv(id, type){
+	if(type == 'show'){
+		$('#'+id).show();
+	}else{
+		$('#'+id).hide();
+	}
+}
+function confirmSubmit(){
+        //todo 提交表单前前端校验
+        $('form').submit()
+    }
+</script>
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>

@@ -1,0 +1,115 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain" style="min-height: 173px;">
+    <div class="nav">
+		<ul class="cc">
+	    	<li ><a href="<?php echo $listUrl;?>">广告商列表</a></li>
+			<li class="current"><a href="javascript:">查看广告商</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+                <ul class="form">
+                    <li>
+                        <span class="label">广告商编号：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="ads_id" <?php if( $adsInfo['ads_id'] ){ ?> readonly <?php }; ?> style="width:220px;" value="<?php echo $adsInfo['ads_id']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">广告商名称：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="name" class="iText required" name="name" required style="width:220px;" name="name" value="<?php echo $adsInfo['name']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">广告类型：</span>
+                        <div class="fc">
+                            <select id="ad_type"  name="ad_type">
+                          <?php foreach($adTypeArr as $k1=>$v1){ ?>
+                            <option value="<?php echo $k1; ?>"  <?php if( $adsInfo['ad_type']==$k1){ ?> selected <?php } ?>><?php echo $v1; ?> </option>
+                        <?php } ?>
+                            </select>
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                    
+                    <li id="show_ad_type"  style="<?php if( $adsInfo['ad_type']==2){ ?> display:none <?php }else{ ?>display:block<?php } ?>">
+                        <span class="label">支持广告子类型：</span>
+                        <div class="fc">
+                        <?php 
+                           $adSubType = json_decode($adsInfo['ad_sub_type'], true);
+                          foreach($adSubTypeArr as $k1=>$v1){ ?>
+                        	<label><input name="ad_sub_type[]" type="checkbox"  <?php echo in_array($k1, $adSubType)?'checked':''; ?> value="<?php echo $k1; ?>"  /><?php echo $v1; ?> </label> 
+                        <?php } ?>
+                        </div>
+                    </li>
+                    
+                     <li class="show_list"  >
+                        <span class="label">请求接口地址：</span>
+                        <div class="fc ">
+                            <input type="text"   class="iText "  style="width:220px;" name="interface_url" value="<?php echo $adsInfo['interface_url']; ?>" />
+                        </div>
+                    </li>
+                   <li class="show_list"  >
+                        <span class="label">是否实时竞价：</span>
+                        <div class="fc ">
+                         <label><input type="radio" name="is_bid" value="1" class="is_bid"  <?php if( $adsInfo['is_bid']==1){ ?> checked="checked" <?php } ?> >是</label>
+	                     <label><input type="radio" name="is_bid" value="0" class="is_bid" <?php if( $adsInfo['is_bid']==0){ ?> checked="checked" <?php } ?>>否</label>
+                        </div>
+                    </li>
+                      <li class="show_list"  >
+                        <span class="label">计费类型：</span>
+                        <div class="fc ">
+                         <label><input type="radio" name="settlement_method" value="1"  <?php if( $adsInfo['settlement_method']==1){ ?> checked="checked" <?php } ?> >CPM</label>
+	                     <label><input type="radio" name="settlement_method" value="2" <?php if( $adsInfo['settlement_method']==2){ ?> checked="checked" <?php } ?>>CPC</label>
+                        </div>
+                    </li>
+                      <li class="show_list settlement_price"  style="display:none" >
+                        <span class="label">价格：</span>
+                        <div class="fc ">
+               			<input type="text"   class="iText "  style="width:220px;" name="settlement_price" value="<?php echo $adsInfo['settlement_price']; ?>" />
+                        </div>
+                    </li>
+                 
+                    <li>
+                        <span class="label">管理后台地址：</span>
+                        <div class="fc Menu2">
+                              <input type="text"　 class="iText " required style="width:220px;" name="out_url" value="<?php echo $adsInfo['out_url']; ?>" />
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">是否国内外</span>
+                        <div class="fc Menu2">
+                            <label><input type="radio" class=" required" name="is_foreign"  <?php if( $adsInfo['is_foreign']==0){ ?> checked <?php } ?>  value="0">国内</label>
+                             <label><input type="radio" class=" required" name="is_foreign"  <?php if( $adsInfo['is_foreign']==1){ ?> checked <?php } ?>  value="1">国外</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc"> 
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl?>'">
+                        </div>
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){;
+        ad_type = $("#ad_type").val();
+        is_bid = $("input[name='is_bid']:checked").val();
+        if(ad_type == 3){
+        	$(".show_list").show();
+        	if(is_bid == 0) {
+        		$(".settlement_price").show();
+        	}else{
+        		$(".settlement_price").hide();
+        	}
+        }else{
+        	$(".show_list").hide();
+        }
+
+})   
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

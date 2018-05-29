@@ -1,0 +1,23 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
+
+#开发环境
+LOGPATH="log/"
+
+#是否是调试模式　是True 否False
+# DEBUG=False
+ENV="PROD" #环境模式　DEV：开发环境模式　 PROD:生产环境模式
+if ENV=="DEV":
+    NUM = 1
+    EMAIL_BATCHNUM = 10
+    SLEEPSECOND=3
+    REDIS={"host":"192.168.141.216","port":6378}
+    # 发送邮件配置
+    MAIL_CONF={"mail_sender":"frankn72@126.com","mail_host":"smtp.126.com","mail_port":25,"mail_user":"frankn72@126.com","mail_pass":"123456"}
+else:
+    NUM = 1
+    EMAIL_BATCHNUM = 10
+    SLEEPSECOND=3
+    REDIS={"host":"codis.ad.housead.queue.ids.com","port":18000}
+    # 发送邮件配置
+    MAIL_CONF={"mail_sender":"admonitor@idreamsky.com","mail_host":"smtp.idreamsky.com","mail_port":25,"mail_user":"admonitor","mail_pass":"#7XjFwSb6Rdx"}

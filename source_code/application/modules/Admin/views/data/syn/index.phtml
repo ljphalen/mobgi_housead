@@ -1,0 +1,104 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#ads').bind('click',function(){
+                syn('ads');
+            })
+            $('#third_pos').bind('click',function(){
+                syn('third_pos');
+            })
+            $('#ads_app_id').bind('click',function(){
+                syn('ads_app_id');
+            })
+            $('#channel').bind('click',function(){
+                syn('channel');
+            })
+            $('#app').bind('click',function(){
+                syn('app');
+            })
+            $('#ad_pos').bind('click',function(){
+                syn('ad_pos');
+            })
+
+           function syn(type){
+               var params = {
+                   type : type,
+               };
+               $.get('<?php echo $SynUrl;?>', params, function(data){
+                   if(data.code==0){
+                       alert("同步数据完成");
+                       location.reload();
+                   }else{
+                       console.log(data.msg);
+                       alert(data.msg);
+                   }
+               });
+           }
+        })
+    </script>
+    <div class="colMain">
+        <div class="nav">
+            <ul class="cc">
+                <li class="current"><a href="<?php echo $IndexUrl;?>">操作</a></li>
+                <li ><a href="<?php echo $AppSynUrl;?>">应用</a></li>
+                <li ><a href="<?php echo $AdPosSynUrl;?>">广告位</a></li>
+                <li ><a href="<?php echo $AdsAppIdSynUrl;?>">第三方APPID</a></li>
+                <li ><a href="<?php echo $ThirdPosSynUrl;?>">第三方广告位</a></li>
+                <li ><a href="<?php echo $ChannelSynUrl;?>">渠道</a></li>
+                <li ><a href="<?php echo $SynLogUrl;?>">同步日志</a></li>
+            </ul>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <ul class="form">
+                        <li>
+                            <span class="label">广告商同步：</span>
+                            <div class="fc">
+                                <a href="#" id="ads" class="submit">点击同步</a>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">第三方广告位同步：</span>
+                            <div class="fc">
+                                <a href="#" id="third_pos" class="submit" >点击同步</a>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">第三方appid同步：</span>
+                            <div class="fc">
+                                <a href="#" id="ads_app_id" class="submit" >点击同步</a>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">渠道同步：</span>
+                            <div class="fc">
+                                <a href="#" id="channel" class="submit" >点击同步</a>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">应用同步：</span>
+                            <div class="fc">
+                                <a href="#" id="app" class="submit" >点击同步</a>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label">广告位同步：</span>
+                            <div class="fc">
+                                <a href="#" id="ad_pos" class="submit" >点击同步</a>
+                                <span class="red">*</span>
+                            </div>
+                        </li>
+
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php echo $this->render("layout/footer1.phtml");?>

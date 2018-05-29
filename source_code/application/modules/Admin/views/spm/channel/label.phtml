@@ -1,0 +1,130 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>渠道标签管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" placeholder="请输入标签名称" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+ 
+                            <button id="addLabelId" type="button" class="right layui-btn layui-btn-normal">新建渠道标签</button>
+                        </div>
+                    </form>
+                </div>
+            
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+                <!-- table end  -->
+        </div>
+        <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接 */
+var addLabelUrl = baseurl + '<?php echo $addLabelUrl; ?>'; // 配置渠道标签
+var labelListUrl = baseurl + "<?php echo $labelListUrl; ?>"; // 列表
+/* table 渲染参数 */
+var layuiTable;
+var page = true; 
+var where = { token: token ,name: '' } ;
+var table_id = '#activity_table';
+var cols = [[ //表头
+    {field: 'id', title: '编号',  sort: true  }
+    ,{field: 'name', title: '标签名称',  sort: true }
+    ,{field: 'num', title: '渠道组个数',  sort: true }
+    ,{field: '', title: '操作', align:'center', toolbar: '#barDemo'}
+]];
+
+// 判断本地缓存是否 有渲染表格参数
+if(localStorage.searchData){
+    if(window.location.href == JSON.parse(localStorage.searchData).url){
+        page = JSON.parse(localStorage.searchData).page;
+        where = JSON.parse(localStorage.searchData).where; 
+        // 初始化搜索条件
+        $("input[name='name']").val(where.name);
+    }
+}
+
+
+//JavaScript代码区域
+layui.use(['element','form','laydate','table'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    layuiTable = layui.table;
+    //初始化表格
+    var initTable = {
+        elem: table_id,
+        where: where,
+        url : labelListUrl ,
+        cols: cols ,
+        page : page
+    };
+    renderTable(table,initTable,null);
+
+    //监听搜索按钮
+    form.on('submit(search)', function(data){
+        var field = data.field;
+        field.token = token;
+        where = field;
+        var params = {
+            elem: table_id,
+            where: where,
+            url : labelListUrl ,
+            cols: cols ,
+            page : page
+        }
+        renderTable(table,params,null);
+        return false;
+    });
+
+    //监听单元格事件  -- 查看 ， 编辑
+    table.on('tool(activity_table)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'edit'){  // 编辑
+            window.location.href = addLabelUrl + "?id=" + data.id;
+        }
+    });
+
+    // 新建渠道
+    $("#addLabelId").click(function(){
+        window.location.href = addLabelUrl ;
+    });
+
+});
+
+</script>
+</body>
+</html>
+      

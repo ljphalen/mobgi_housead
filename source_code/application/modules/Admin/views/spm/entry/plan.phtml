@@ -1,0 +1,243 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>广告计划管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <select name="channel_group_id" lay-verify="" lay-search>
+                                    <option value="" >所有渠道组</option>
+                                    <?php foreach($channelGroupList as $key=>$value){ ?>
+                                        <option value="<?php echo $value['id'] ?>" ><?php echo $value['name'] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="date" class="layui-input" placeholder="请选择日期" id="date">
+                                <input type="hidden" name="sdate" class="layui-input" value="" >
+                                <input type="hidden" name="edate" class="layui-input" value="" >
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                            <button type="button" class="right layui-btn layui-btn-normal" lay-submit lay-filter="export">导出</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+
+                <!-- 批量处理 -->
+                <div class="layui-btn-group batch">
+                    <button class="layui-btn" data-type="getCheckDataDelete">删除</button>
+                </div>
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <!--   <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> -->
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+<script>
+    var planListUrl = baseurl + "<?php echo $planListUrl; ?>"; // 列表
+    var exportPlanUrl = baseurl + "<?php echo $exportPlanUrl; ?>"; // 导出数据
+    var planBatchDelUrl = baseurl + "<?php echo $planBatchDelUrl; ?>"; // 批量删除
+    var layuiTable, table_id = "#activity_table"; // table 渲染对象 ,table 渲染id
+    var editPlanUrl = baseurl + '<?php echo $editPlanUrl; ?>'; // 编辑
+    // 渲染表格参数
+    var page = true; // 默认开启分页
+    var where = { token:token , app_id:JSON.parse(localStorage.app_data).app_id  }; // 默认渲染table的初始条件
+
+    // 判断本地缓存是否 有渲染表格参数
+    if(localStorage.searchData){
+        if(window.location.href == JSON.parse(localStorage.searchData).url){
+            page = JSON.parse(localStorage.searchData).page;
+            where = JSON.parse(localStorage.searchData).where;
+            // 设置日期
+            $("#date").val(where.date);
+            $("#sdate").val(where.sdate);
+            $("#edate").val(where.edate);
+        }
+    }
+    // 渲染表格表头参数
+    var cols = [[
+        {type:'checkbox' ,fixed: 'left'}
+        ,{field: 'start_date', title: '开始日期',  sort: true  , }
+        ,{field: 'end_date', title: '结束日期',  sort: true  , }
+        ,{field: 'app_name', title: '产品',  sort: true  ,}
+        ,{field: 'channel_group_name', title: '渠道组', sort: true , }
+        ,{field: 'daily_consumption', title: '日均消耗金额', sort: true , }
+        ,{field: 'daily_amount', title: '日均量', sort: true , }
+        ,{field: 'daily_cost', title: '日均成本', sort: true , }
+        ,{field: 'id', title: '操作', align:'center', toolbar: '#barDemo'}
+    ]];
+
+    //JavaScript代码区域
+    layui.use(['element','form','laydate','table'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        layuiTable = layui.table; // 表格渲染对象 --
+
+        // 初始化 date 插件
+        laydate.render({
+            elem: '#date' //指定元素
+            ,value: ''
+            ,range: true
+            ,done: function(value, date, endDate){
+                var begin = '',end='';
+                if(value){
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end  = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+
+        //初始化表格
+        var initTable = {
+            elem: table_id,
+            where: where,
+            url : planListUrl,
+            cols: cols ,
+            page: page
+        };
+        renderTable(table,initTable,null);
+
+        //监听单元格事件
+        table.on('tool(activity_table)', function(obj){
+            var data = obj.data;
+            //  -- 查看 ， 编辑
+            if(obj.event === 'edit'){
+                window.location.href = baseurl + '<?php echo $editPlanUrl; ?>?id='+ data.id;
+            }
+        });
+
+        //监听搜索按钮
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            field.app_id = $("select[name='app_id']").find("option:selected").val();
+            field.token = token;
+            var params = {
+                elem: table_id,
+                url : planListUrl,
+                where: field,
+                cols: cols,
+                page: true
+            }
+            renderTable(table,params,null);
+            return false;
+        });
+
+        //监听导出按钮
+        form.on('submit(export)', function(data){
+            var field = data.field;
+            field.app_id = $("select[name='app_id']").find("option:selected").val();
+            exportPlanUrl = exportPlanUrl + '?'
+            for (var key in field){
+                exportPlanUrl = exportPlanUrl + '&' + key + '=' +field[key];
+            }
+            window.location.href = exportPlanUrl ;
+        });
+
+        // 批量处理
+        var active = {
+            getCheckDataDelete: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('activity_table')
+                    ,data = checkStatus.data;
+                // layer.msg(checkStatus.isAll ? '全选': '未全选')
+                // layer.alert(JSON.stringify(data));
+                var arr = new Array();
+                for(var key in data){
+                    arr.push(data[key].id)
+                }
+                layer.confirm('是否确定删除？', {
+                    btn: ['确定', '取消'] //可以无限个按钮
+                }, function(index, layero){
+                    layer.close(index);
+                    $.ajax({
+                        url : planBatchDelUrl ,
+                        async: false,
+                        data : {token:token , id_arr:arr },
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                            if(data.success){
+                                layer.msg(data.msg);
+                                // 刷新页面
+                                var initTable = {
+                                    elem: table_id,
+                                    where: where,
+                                    url : planListUrl,
+                                    cols: cols ,
+                                    page: page
+                                };
+                                renderTable(table,initTable,null);
+                            }else{
+                                layer.msg(data.msg);
+                            }
+                        },
+                        error:function(xhr,msg,e){
+                            layer.msg(msg);
+                        }
+                    });
+                }, function(index){
+                    layer.close(index);
+                });
+                console.log(arr);
+            }
+        };
+
+        $('.batch .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+
+    //   topMenu 切换app 回调
+    var appIdSelectChange = {
+        callBack:function(id){
+            var initTable = {
+                elem: table_id,
+                where: { token: token ,app_id: id},
+                url : planListUrl,
+                cols: cols
+            };
+            renderTable(layuiTable,initTable,null);
+        }
+    };
+</script>
+</body>
+</html>

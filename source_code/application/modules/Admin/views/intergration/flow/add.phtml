@@ -1,0 +1,105 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <!-- left begin -->
+            <?php echo $this->render("common/appinfo.phtml");?>
+            <!-- left end  -->
+            <!-- right begin  -->
+            <?php echo $this->render("intergration/flow/layout/right.phtml");?>
+            <!-- right end   -->
+        </div>
+    </div>
+</body>
+<script>
+
+;(function(){
+    var areaURL = baseurl + '<?php echo $getAreaListUrl;?>'; //  区域
+    var ChannelURL = baseurl + '<?php echo $getChannelListUrl;?>'; //  渠道
+    //  区域 数据回调函数
+    var areaCallback = {
+        success:function(data){
+            var inputs = $("#areabox").parent().find(".box_selected").find("input");
+            var selecteds = [];
+            inputs.each(function(){
+                var obj = new Object();
+                obj.id = $(this).val();
+                obj.level = $(this).attr("data-level");
+                selecteds.push(obj);
+            });
+            $("#areabox").treecheckbox({data:data,name:'area_id[]',selected:selecteds});
+        }
+        ,error:function(xhr,msg,e){
+
+        }
+    };
+    //  渠道 数据回调函数
+    var ChannelCallback = {
+        success:function(data){
+            var inputs = $("#Channelbox").parent().find(".box_selected").find("input");
+            var selecteds = [];
+            inputs.each(function(){
+                var obj = new Object();
+                obj.id = $(this).val();
+                obj.level = $(this).attr("data-level");
+                selecteds.push(obj);
+            });
+            $("#Channelbox").treecheckbox({data:data,name:'channel_id[]',selected:selecteds});
+        },error:function(xhr,msg,e){
+
+        }
+    };
+
+    requestAjax({url:areaURL,dataType:'jsonp'},areaCallback);
+    requestAjax({url:ChannelURL,dataType:'jsonp'},ChannelCallback);
+})();
+    ;(function(){
+        // 主页 数据 回调
+        var mainCallback = {
+            success:function(data){
+                var app = data.data;
+                if(data.success){
+                    //初始化 mian 头部 信息
+                    $("#main").find(".app-icon img").attr("src",app.icon);
+                    $("#main").find(".app-name span").html(app.app_name);
+                    $("#main").find(".app-key").html('AppKey：'+app.app_key);
+                    $("#main").find(".app-type i").removeClass('ios');
+                    $("#main").find(".app-type i").removeClass('android');
+                    $("#main").find(".app-type i").addClass(app.platform_class);
+                }else{
+                    layer.msg(data.msg); 
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg); 
+            } 
+        };
+
+        // 主页初始化
+        function initMain(){
+            var app_key = getQueryString('app_key');
+            if(!app_key){
+                var app =  $($(".appList li").get(0));
+                $($(".appList li").get(0)).addClass("active");   
+                app_key = app.find(".app-title").attr("data-app-key");
+               $(".page_app_key").val(app_key);
+            }else{
+                $(".appList li").removeClass("active"); 
+                var applist = $(".appList li");
+                applist.each(function(){
+                     var appKey = $(this).find(".app-title").attr("data-app-key");
+                     if(appKey==app_key){
+                          $(this).addClass("active");   
+                     }
+                });
+                renderLayuiForm();
+            }
+            $(".app-key").attr("data-app-key",app_key);
+            var url = baseurl + '<?php echo $flowListUrl;?>?app_key=' + app_key;
+            requestAjax({url:url},mainCallback);
+         }
+
+        initMain();  // 初始化主页
+    })();
+</script>
+</html>

@@ -1,0 +1,105 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="colMain" style="min-height: 196px;">
+	<div class="title">
+		<p class="fl">广告创意管理列表</p>
+	</div>
+	<div class="main">
+		<form id="batchForm" action="<?php echo $batchUpdateOriginalityUrl;?>" method="post">
+            <input name="token" type="hidden" value="<?php echo $token;?>" />
+            <input name="action" id="action" type="hidden" value="" />
+            <input name="value" id="value" type="hidden" value="" />
+    		<div class="content">
+    			<div class="grid">
+    				<table>
+    					<thead>
+    						<tr>
+                                <th>本地创意id</th>
+                                <th>广点通创意id</th>
+                                <th>广点通广告id</th>
+                                <th>创意名称</th>
+                                <th>配置状态</th>
+                                <th>审核状态</th>
+                                <th>创意规格 id</th>
+                                <th>创意目标 url</th>
+                                <th>创意元素</th>
+                                <th>创建时间</th>
+<!--   1）创意id
+   2）广点通创意id
+   3）广点通广告id
+   4）创意名称
+   5）创意规格（4选1，创意类型）
+   6）创意目标：URL
+   7）创意内容：标题、描述、图片
+   8）创建时间-->
+                            </tr>
+    					</thead>
+    				 <?php if(is_array($list)){ foreach ($list as $key=>$val ){?>
+    					<tr>
+                            <td><?php echo $val['outer_creative_id']; ?></td>
+    					    <td><?php echo $val['creative_id']; ?></td>
+    						<td><?php echo $val['adgroup_id']; ?></td>
+                            <td><?php echo $val['creative_name']; ?></td>
+                            <td style="color:<?php echo $val['configured_status_color']; ?>;"><?php echo $val['configured_status_cn'];?></td>
+                            <td style="color:<?php echo $val['system_status_color']; ?>;"><?php echo $val['system_status_cn'];?></td>
+    						<td>
+                                创意规格id:<?php echo $val['creative_template_id']; ?><br>
+                                创意类型:<?php echo $gdt_creative_template[$val['creative_template_id']]['name']; ?>
+                            </td>
+                            <td><?php echo $val['destination_url']; ?></td>
+                            <td>
+                                <?php if($val['creative_template_id']==65){?>
+                                    商标:<?php echo $val['creative_elements']['corporate']['corporate_name'];?> 
+                                    <a href="<?php echo $val['creative_elements']['corporate']['corporate_img_url']; ?>" target="_blank">
+                                        <img alt="<?php echo $val['creative_elements']['corporate']['corporate_img'];?>" title="<?php echo $val['creative_elements']['corporate']['corporate_img'];?>" src="<?php echo $val['creative_elements']['corporate']['corporate_img_url']; ?>" class="imgRadio" style="width:80px;height:80px;">
+                                    </a>
+                                    <a href="<?php echo $val['creative_elements']['image_url']; ?>" target="_blank">
+                                        <img alt="<?php echo $val['creative_elements']['image'];?>" title="<?php echo $val['creative_elements']['image'];?>" src="<?php echo $val['creative_elements']['image_url']; ?>" class="imgRadio" style="width:100px;height:100px;">
+                                    </a>
+                                <?php }else if($val['creative_template_id']==271){?>
+                                    <a href="<?php echo $val['creative_elements']['element_story'][0]['image_url']; ?>" target="_blank">
+                                        <img alt="<?php echo $val['creative_elements']['element_story'][0]['image'];?>" title="<?php echo $val['creative_elements']['element_story'][0]['image'];?>" src="<?php echo $val['creative_elements']['element_story'][0]['image_url']; ?>" class="imgRadio" style="width:100px;height:100px;">
+                                    </a>
+                                    <a href="<?php echo $val['creative_elements']['element_story'][1]['image_url']; ?>" target="_blank">
+                                        <img alt="<?php echo $val['creative_elements']['element_story'][1]['image'];?>" title="<?php echo $val['creative_elements']['element_story'][1]['image'];?>" src="<?php echo $val['creative_elements']['element_story'][1]['image_url']; ?>" class="imgRadio" style="width:100px;height:100px;">
+                                    </a>
+                                    <a href="<?php echo $val['creative_elements']['element_story'][2]['image_url']; ?>" target="_blank">
+                                        <img alt="<?php echo $val['creative_elements']['element_story'][2]['image'];?>" title="<?php echo $val['creative_elements']['element_story'][2]['image'];?>" src="<?php echo $val['creative_elements']['element_story'][2]['image_url']; ?>" class="imgRadio" style="width:100px;height:100px;">
+                                    </a>
+                                <?php }else if($val['creative_template_id']==351){?>
+                                    标题:<?php echo $val['creative_elements']['title'];?>
+                                    描述:<?php echo $val['creative_elements']['description'];?>
+                                    <a href="<?php echo $val['creative_elements']['image_url']; ?>" target="_blank">
+                                        <img alt="<?php echo $val['creative_elements']['image'];?>" src="<?php echo $val['creative_elements']['image_url']; ?>" class="imgRadio" style="width:100px;height:100px;">
+                                    </a>
+                                    <a href="<?php echo $val['creative_elements']['image2_url']; ?>" target="_blank">
+                                        <img alt="<?php echo $val['creative_elements']['image2'];?>" src="<?php echo $val['creative_elements']['image2_url']; ?>" class="imgRadio" style="width:100px;height:100px;">
+                                    </a>
+                                    <a alt="<?php echo $val['creative_elements']['video'];?>" href="<?php echo $val['creative_elements']['video_url']; ?>" target="_blank">
+                                        查看视频
+                                    </a>
+                                <?php }?>
+                            </td>
+    						<td><?php echo date("Y-m-d H:i:s", $val['created_time']);?></td>
+    					</tr>
+    				   <?php }}?>
+    				</table>
+    			</div>
+    			<div class="mt10 cc tc">
+                    <?php echo $pager;?>
+                </div>
+    		</div>
+        </form>
+	</div>
+</div>
+</div>
+
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<script type="text/javascript">
+//广告表单数据提交
+$(document).ready(function(){
+
+})
+
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

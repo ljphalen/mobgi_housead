@@ -1,0 +1,263 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+  <div class="colMain">
+    <div class="nav">
+		<ul class="cc">
+	    	<li ><a href="<?php echo $listUrl;?>">应用列表</a></li>
+			<li class="current"><a href="<?php echo $addAppUrl.'?app_id='.$appInfo['app_id']; ?>">编辑应用</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="appdetail_nav">
+            <ul class="clearfix">
+                <li ><span>1</span>填写基本资料<i class="navline2"></i></li>
+                <li class="cur"><span>2</span>添加广告位<i class="navline1"></i><i class="navline2"></i></li>
+                <li><span>3</span>添加完成<i class="navline1"></i></li>
+            </ul>
+        </div>
+         <div class="app-info">
+            <div class="app_info_detail clearfix">
+                <div class="fl">
+                    <img class="imgRadio" alt="" src="<?php echo stristr($appInfo['icon'],'http')?$appInfo['icon']: $attachPath.$appInfo['icon']?>">
+                </div>
+                <div class="fl">
+                    <div class="ig_appname"><?php echo $appInfo['app_name'];?></div>
+                    <div class="ig_appkey">App Key：<?php echo $appInfo['app_key'];?></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="app-detail">
+            <div class="right_table">
+              <div class="toolbar" style="margin:0 20px 10px;">
+                <form action="<?php echo $addPosUrl;?>" method="get" enctype="multipart/form-data"  >
+                	<input type="hidden" name="app_id" value='<?php echo $appInfo['app_id'];?>' />
+                	<input type="hidden" name="opt" value='searchPos' />
+                    <div class="search fl" style='width:100%'>
+                        <span>广告形式：</span>
+                        <span>
+                            <select name="search_pos_key_type">
+                                <option value="">全部</option>
+                                        <?php foreach ($adPosType as $key=>$val){ ?>
+                                   <option value="<?php echo $key; ?>"  <?php if( $search['search_pos_key_type'] ==$key ){ ?>SELECTED<?php } ?>><?php echo $val; ?></option>
+                                   <?php } ?>
+                            </select>
+                            	<input type="text" class="iText" placeholder="可输入广告名称查询"  name="search_pos_name"  value="<?php echo $search['search_pos_name']; ?>" />
+                               <input type="text" class="iText" placeholder="可输入广告ID"  name="search_pos_key"  value="<?php echo $search['search_pos_key']; ?>" />
+                            <input type="submit" class="submit" value="" />
+                            <!--<span class="sign">可输入应用名称查询</span>-->
+                        </span>
+                        <a class="fr add" id="export_excel" app_id="<?php echo $appInfo['app_id'];?>">导出</a>
+                    </div>
+                    </form>
+                </div>
+            
+            <form action="<?php echo $addPosPostUrl;?>" method="POST" enctype="multipart/form-data"  class="app_form" id="addForm">
+                <input type="hidden" name="app_id" value='<?php echo $appInfo['app_id'];?>' />
+                  <input type="hidden" name="app_key" value="<?php echo $appInfo['app_key'];?>">
+                        <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">
+                    <li>
+                        <table width="100%" id="pos_tb_box" boder='1'>
+                            <thead>
+                                 <tr><td>广告位ID</td><td>广告位名称</td><td>广告位形式</td><td>广告位描述</td><td>广告位开关</td><td>广告显示概率</td><td>单天单个用户次数限制</td><td>操作</td></tr>
+                            </thead>
+                              <?php if($appPosList){?>
+                             <?php foreach ($appPosList as $key=>$val){?>
+                            <tr id="<?php echo $val['id'];?>">
+								<td>
+									<span class="pos_key_span" style="display: inline;"><a href="" title="编辑"></a><?php echo $val['dever_pos_key']; ?> </span>
+    								<a class="edit_pos edit_pos_key"  data-pos-key="<?php echo $val['dever_pos_key']; ?>"  data-pos-key-id="<?php echo $val['id']; ?>" ></a>
+			                       <input type="hidden" name="pos_key_type[]" value="<?php echo $val['pos_key_type'];?>">
+			                        <input type="hidden" name="ad_sub_type[]" value="<?php echo $val['ad_sub_type']; ?>">
+                                    <input type="hidden" name="size[]" value="<?php echo $val['size']; ?>">
+									<input type="hidden" name="dever_pos_key[]" value="<?php echo $val['dever_pos_key'];?>"> 
+									<input type="hidden" name="pos_id[]" value="<?php echo $val['id'];?>">
+									<input type="hidden" name="pos_desc[]" value="<?php echo $val['pos_desc'];?>"> 
+									<input type="hidden" name="dever_pos_name[]" value="<?php echo $val['dever_pos_name'];?>">
+								</td>
+                                <td><?php echo $val['dever_pos_name'];?></td>
+                                <td><?php echo $adPosType[$val['pos_key_type']];?>
+                                    <?php if($val['pos_key_type']=='CUSTOME_INTERGRATION' || $val['pos_key_type']=='ENBED_INTERGRATION'){echo ' '.$val['ad_sub_type_str']; };?>
+                                    <?php if($val['pos_key_type']=='ENBED_INTERGRATION'){echo ' '.$val['size']; if($enbedSize[$val['size']]){echo "(".$enbedSize[$val['size']].")";}};?>
+                                </td>
+                                <td><?php echo $val['pos_desc'];?></td>     
+                                     <td>
+								    <p class="onfbk">
+								    	<input type="hidden" name="state[]"  class=""  value="<?php echo $val['state'];?>">
+				                        <a class="aon setPosStateOn <?php echo ($val['state'] == 1)?'cur':'' ;?>" >ON</a>
+				                        <a class="aoff setPosStateOff <?php echo ($val['state'] == 0)?'cur':'' ;?>" >OFF</a>
+					               </p>
+								</td>
+                                <td><input type="text" name="rate[]"  value="<?php echo $val['rate'];?>"/></td>
+                                <td><input type="text"  name="limit_num[]"   value="<?php echo $val['limit_num'];?>" /></td>
+                                <td> <a   onclick="update_pos_key('<?php echo $val['id'];?>')"  >编辑</a>  
+                                </td>
+                            </tr>
+                            <?php }?>
+                             <?php }?>
+                        </table>
+                        <input type='button' name="add_pos" class="right_btn_add" onclick="$('#pos_box').toggle();createPosKey()" value="+添加广告位" />
+                        <div class="pop_up" style="display: none;" id="pos_box" >
+								<div class="filt"></div>
+								<div class="pop_open">
+									<div class="ig_add_title">广告位</div>
+									<div class="ig_add_content">
+										<div class=" clearfix" style="">
+										<div class="">
+								            <span class="label">广告位ID：</span>
+					                            <input type='hidden' name="pos_id_tmp" value="" />
+					                            <input type='hidden' name="dever_pos_key_tmp" value="" />
+					                            <div id="pos_key_text"></div>
+					                            <span class="label">广告位名称：</span>
+					                            <div><input type='text' name="dever_pos_name_tmp" class="iText" value="" placeholder="请输入广告位名称" /><span class="red">*</span></div>
+					                            <span class="label">广告形式：</span>
+					                            <div>	<select id="mki_select_2" name="pos_key_type_tmp" class="" style="width: 120px">
+														   <option value="">请选择</option>
+										                   <?php foreach ($adPosType as $key=>$val){ ?>
+										                   <option value="<?php echo $key; ?>"><?php echo $val; ?></option>
+										                   <?php } ?>
+														</select> <span class="red">*</span></div>
+												<div id="custom_sub_type_div" style="display: none;">
+                                                    <span class="label">交叉推广子类型：</span>
+                                                    <?php foreach($customSubType as $k1=>$v1){ ?>
+                                                    <label><input value="<?php echo $k1; ?>" name="custom_sub_type" class="radio" type="radio" asSubTypeStr="<?php echo $v1; ?>"><?php echo $v1; ?></label>
+                                                    <?php } ?>
+                                                </div>
+                                                <div id="enbed_sub_type_div" style="display: none;">
+                                                    <span class="label">原生广告样式：</span>
+                                                    <?php foreach($enbedSubType as $k1=>$v1){ ?>
+                                                    <label><input value="<?php echo $k1; ?>" name="enbed_sub_type" class="radio" type="radio" asSubTypeStr="<?php echo $v1; ?>"><?php echo $v1; ?></label>
+                                                    <?php } ?>
+                                                </div>
+                                                <div id="enbed_size_div" style="display: none;">
+                                                    <span class="label">主图尺寸：</span>
+                                                    <label>
+                                                        <select id="enbed_size_tmp" name="enbed_size_tmp">
+                                                            <?php foreach($enbedSize as $k1=>$v1){ ?>
+                                                            <option value='<?php echo $k1; ?>'><?php echo $k1; if($v1){echo "(".$v1. ")";}?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </label>
+                                                </div>
+					                            <span class="label">广告位描述：</span>
+					                            <div class="add_pos_desc">
+					                                <textarea placeholder="广告位描述" name="add_pos_desc"  style="width: 250px;height:60px;"></textarea>
+					                            </div>	                          
+											</div>
+										</div>
+									</div>
+									<div class="ig_add_btn">
+										          <input type="button" class="posbox_sure" value="完成" onclick='add_pos_key()'  pid="1" />
+                           						 <input type="button" class="posbox_cancel" value="取消" onclick="$('#pos_box').toggle()" />
+									</div>
+								</div>
+							</div>
+                        
+                        
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="submit"  value="确定" class="submit"  />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl?>'" />
+                        </div>
+                    </li>
+                </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+ <script src="<?php echo $staticPath; ?>/js/common/games.js?<?php echo $version; ?>" type="text/javascript"></script>
+<script>
+$(function(){
+	  	  ajaxForm('addForm',function(ret){ 
+		        ajaxRedirect(ret, baseurl+'/admin/Baseinfo_App/index');
+		  }); 
+        $("#mki_select_2").change(function(){
+            if($(this).val() == 'CUSTOME_INTERGRATION'){
+                $("#custom_sub_type_div").show();
+                $("#enbed_sub_type_div").hide();
+                $("#enbed_size_div").hide();
+            }else if($(this).val() == 'ENBED_INTERGRATION'){
+                $("#custom_sub_type_div").hide();
+                $("#enbed_sub_type_div").show();
+                $("#enbed_size_div").show();
+            }else{
+                $("#custom_sub_type_div").hide();
+                $("#enbed_sub_type_div").hide();
+                $("#enbed_size_div").hide();
+            }
+        });
+
+        $("#pos_tb_box").delegate('.setPosStateOn','click',function(){
+	     	   if($(this).hasClass('cur')){
+	      	        return;
+	      	    }
+	      	    if(!confirm("您确认要打开这个广告位吗？")){
+	      	        return;
+	      	    }
+	      	    $(this).addClass("cur");
+	      	    $(this).parent().find("input").val(1);
+	      	    $(this).parent().find(".setPosStateOff").removeClass('cur');
+            
+           });
+        $("#pos_tb_box").delegate('.setPosStateOff','click',function(){
+		       	 if($(this).hasClass('cur')){
+			           return;
+			       }   		
+			       if(!confirm("您确认要关闭这个广告位吗？")){
+			           return;
+			       }
+			       $(this).addClass("cur");
+			       $(this).parent().find("input").val(0);
+			       $(this).parent().find(".setPosStateOn").removeClass('cur');
+             });
+       
+
+   	 $(".edit_pos_key").click(function(){
+         pos_key = $(this).attr('data-pos-key');
+   		 id = $(this).attr('data-pos-key-id');
+   		 app_key = $("#app_key").val();
+        inputId = 'modify_pos_key' + id
+        $(this).siblings('.input').remove();
+        str = '<input type="text" class="iText" value="'+ pos_key +'"   id="'+inputId+'">'
+        $(this).siblings('.pos_key_span').hide().after(str);
+        $("#" + inputId).focus()
+        $("#" + inputId).blur(function(){
+        	pos_key = $("#"+inputId).val();
+            if( $.trim(pos_key) == ''){
+        		return false;
+             }
+            $.ajax({
+                url:  '/Admin/Baseinfo_App/modifyPosKey',
+                type: "POST",
+                dataType : 'json',
+                data : {'token':token,'pos_key_id':id,'pos_key': pos_key,'app_key':app_key},
+                success: function(ret) {
+                    if (ret.success) {
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                 	   jAlert(ret.msg);
+                    }
+                    $("#" + inputId).siblings('.pos_key_span').show();
+                    $("#" + inputId).remove()
+                }
+            });
+        });
+    });
+    
+
+   $("#export_excel").click(function() {
+         var app_id = $(this).attr('app_id');
+         var search_pos_key_type = "<?php echo $search['search_pos_key_type']; ?>";
+         var search_pos_name = "<?php echo $search['search_pos_name']; ?>";
+    	 var search_pos_key = "<?php echo $search['search_pos_key']; ?>";
+         str='app_id='+app_id + "&search_pos_key_type=" + search_pos_key_type + "&search_pos_name=" + search_pos_name+ "&search_pos_key=" + search_pos_key
+         window.location.href = "<?php echo $exportExcelUrl; ?>"+"?"+str;
+     });
+     
+}) 
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

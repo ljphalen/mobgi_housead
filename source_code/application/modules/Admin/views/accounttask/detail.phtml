@@ -1,0 +1,199 @@
+<?php echo $this->render("layout/header.phtml");?>
+<form action="<?php echo $origainalityListUrl;?>" method="post">
+    <input name="token" type="hidden" value="<?php echo $token;?>" />
+    <div class="table_full">
+        <table width="100%">
+             <tr class="tr">
+                <input type="hidden" class="iText" name="taskid" id="taskid" value="">
+                <th class="th">申请人</th>
+                <td class="td"><input type="text" class="iText" name="applyby"  id="applyby" value=""></td>
+                <th class="th">帐号ID</th>
+                <td class="td"><input type="text" class="iText" name="email" id="email" value=""></td>
+                <th class="th">帐户类型</th>
+                <td class="td">
+                    <select name="virtual_account_type" id="virtual_account_type" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_virtualaccount_type_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">任务申请时间</th>
+                <td class="td">
+                    <input class="iText " type="text" style="width:143px;" id="apply_sdate" name="apply_sdate" value="" />
+                    到
+                    <input class="iText " type="text" style="width:143px;" id="apply_edate" name="apply_edate" value="" />
+                </td>
+            </tr>
+            <tr class="tr">
+                <th class="th">操作类型</th>
+                <td class="td">
+                    <select name="opertype" id="opertype" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_opertype_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">审核状态</th>
+                <td class="td">
+                    <select name="auditstate" id="auditstate" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_auditstate_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">任务状态</th>
+                <td class="td">
+                    <select name="taskdetailstate" id="taskdetailstate" class="wa">
+                        <option value="" >全部</option>
+                        <?php foreach($Admin_account_taskdetailstate_config as $key=>$value){ ?>
+                            <option value="<?php echo $key ?>" ><?php echo $value ?></option>
+                        <?php }?>
+                    </select>
+                </td>
+                <th class="th">任务到期时间</th>
+                <td class="td">
+                    <input class="iText " type="text" style="width:143px;" id="expire_sdate" name="expire_sdate" value="" />
+                    到
+                    <input class="iText " type="text" style="width:143px;" id="expire_edate" name="expire_edate" value="" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="mb10 tac"><span class="btn"><span><button type="button" id="submitForm">搜 索</button></span></span></div>
+</form>
+
+
+<div class="table_list">
+    <div class="h_a">
+        <span class="btn2">
+           <span><button id="exportDetail" type="button">导出详情</button></span>
+        </span>
+        <span>共 <?php echo $total;?> 条结果</span>
+    </div>
+    <table width="100%">
+		<tr class="hd">
+            <td>帐号ID</td>
+			<td>操作类型</td>
+            <td>金额</td>
+            <td>帐户类型</td>
+			<td>审核状态</td>
+			<td>详情状态</td>
+            <td>到期时间</td>
+            <td>申请人</td>
+            <td>任务申请时间</td>
+		</tr>
+        <?php foreach ($list as $task){ ?>
+        <tr class="ct">
+            <td><?php echo $task['email']?></td>
+            <td><?php echo $Admin_account_opertype_config[$task['opertype']]?></td>
+            <td><?php echo $task['money']?></td>
+            <td><?php echo $Admin_virtualaccount_type_config[$task['virtual_account_type']]?></td>
+            <td><?php echo $Admin_account_auditstate_config[$task['auditstate']]?></td>
+            <td><?php echo $Admin_account_taskdetailstate_config[$task['taskdetailstate']]?></td>
+            <td><?php echo date('Y-m-d H:i:s', $task['expire_time'])?></td>
+            <td><?php echo $task['applyby']?></td>
+            <td><?php echo date('Y-m-d H:i:s', $task['apply_time'])?></td>
+        </tr>
+        <?php }?>
+        </table>
+</div>
+
+
+<div class="mr10 cc tc">
+<?php echo $pager;?>
+</div>
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js?v=<?php echo $version;?>"></script>
+<script type="text/javascript">
+    
+$(function(){
+    
+    
+    $("#apply_sdate").val("<?php echo $apply_sdate ?>")
+    $("#apply_edate").val("<?php echo $apply_edate ?>")
+    $("#expire_sdate").val("<?php echo $expire_sdate ?>")
+    $("#expire_edate").val("<?php echo $expire_edate ?>")
+    $("#applyby").val("<?php echo $applyby ?>")
+    $("#email").val("<?php echo $email ?>")
+    $("#virtual_account_type").val("<?php echo $virtual_account_type ?>")
+    $("#taskid").val("<?php echo $taskid ?>")
+    $("#opertype").val("<?php echo $opertype ?>")
+    $("#auditstate").val("<?php echo $auditstate ?>")
+    $("#taskdetailstate").val("<?php echo $taskdetailstate ?>")
+    
+    $('#apply_sdate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#apply_edate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#expire_sdate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+    $('#expire_edate').datetimepicker({
+			showHour: false,
+			showMinute: false,
+			showTime: false,
+    });
+    
+         
+    
+    function submitForm(){
+        apply_sdate = $("#apply_sdate").val()
+        apply_edate = $("#apply_edate").val()
+        expire_sdate = $("#expire_sdate").val()
+        expire_edate = $("#expire_edate").val()
+        applyby = $("#applyby").val()
+        email = $("#email").val()
+        virtual_account_type = $("#virtual_account_type").val()
+        taskid = $("#taskid").val()
+        opertype = $("#opertype").val()
+        auditstate = $("#auditstate").val()
+        taskdetailstate = $("#taskdetailstate").val()
+        window.location.href='<?php echo $detailUrl ?>?apply_sdate=' + apply_sdate + "&apply_edate=" + apply_edate 
+                + "&expire_sdate="+ expire_sdate+ "&expire_edate="+ expire_edate 
+                + "&applyby="+ applyby+ "&taskid="+ taskid
+                + "&opertype="+ opertype
+                + "&email="+ email + "&virtual_account_type=" + virtual_account_type
+                + "&auditstate="+ auditstate+ "&taskdetailstate="+ taskdetailstate;
+    }
+    
+    function exportDetail(){
+        apply_sdate = $("#apply_sdate").val()
+        apply_edate = $("#apply_edate").val()
+        expire_sdate = $("#expire_sdate").val()
+        expire_edate = $("#expire_edate").val()
+        applyby = $("#applyby").val()
+        email = $("#email").val()
+        virtual_account_type = $("#virtual_account_type").val()
+        taskid = $("#taskid").val()
+        opertype = $("#opertype").val()
+        auditstate = $("#auditstate").val()
+        taskdetailstate = $("#taskdetailstate").val()
+        window.location.href='<?php echo $exportdetailUrl ?>?apply_sdate=' + apply_sdate + "&apply_edate=" + apply_edate 
+                + "&expire_sdate="+ expire_sdate+ "&expire_edate="+ expire_edate 
+                + "&applyby="+ applyby+ "&taskid="+ taskid
+                + "&opertype="+ opertype
+                + "&email="+ email + "&virtual_account_type=" + virtual_account_type
+                + "&auditstate="+ auditstate+ "&taskdetailstate="+ taskdetailstate;
+    }
+    
+    $("#submitForm").click(submitForm);
+    $("#exportDetail").click(exportDetail);
+    
+    
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

@@ -1,0 +1,200 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p><?php if($channel){ echo '编辑';}else{ echo '新建';} ?>投放渠道组</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <form class="layui-form">
+                    <!-- 基本信息 begin -->
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>基本信息:</p></div>
+                    <div class="inputs-wrap">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label long-label">渠道组名称</label>
+                            <div class="layui-input-block long-label-input">
+                                <input type="hidden" name="id" value="<?php echo $channelGroup['id']; ?>" />
+                                <input type="text" value="<?php echo $channelGroup['name']; ?>" class="layui-input" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="padding-top20"></p>
+                    <div class="subtitle"><p>所属子集:</p></div>
+                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">选择投放人</label>
+                        <div class="layui-input-block">
+                            <div id="user-group" class="layui-btn-group" >
+                                <?php $i=0;  if($channel){foreach($channel as $key => $value){ ?>
+                                    <button type="button" class="layui-btn layui-btn <?php if($i !=0){ echo 'layui-btn-primary';} ?>"><?php echo $key; ?></button>
+                                <?php $i++; } } ?>
+                            </div>
+                            <div class="group-user-btn">
+                                <button type="button" class="layui-btn group-user-add">
+                                    <i class="layui-icon">&#xe608;</i> 添加
+                                </button>
+                                <div class="group-userselect-hide">
+                                    <select lay-filter="usergroup" >
+                                        <?php foreach($userList as $key=>$value){ ?>
+                                            <option value="<?php echo $value['user_name']; ?>" ><?php echo $value['user_name']; ?></option>
+                                        <?php } ?>
+                                    </select>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">渠道列表</label>
+                        <div id="group-user-table" class="layui-input-block long-label-input">
+                            <?php $i=0; if($channel){foreach($channel as $key => $value){ ?>
+                            <div <?php if($i !=0){ echo 'style="display: none;"';} ?> class="user-table"> <input type="hidden" name="staff[]" value="<?php echo $key; ?>" />
+                                <table class="mui-data-table layui-table">
+                                    <thead><tr><th>序号</th><th>渠道名称</th><th>渠道号</th><th>操作</th></tr>
+                                        <?php foreach($value as $perKey => $perValue){ ?>
+                                            <tr><td class="number"><?php echo $perKey + 1; ?></td>
+                                            <td class="channel_name"><input type="text" name="channel_name[]" value="<?php echo $perValue['channel_name']; ?>" required  lay-verify="required" placeholder="请输入渠道名" autocomplete="off" class="layui-input iText"><input type="hidden" name="operator[]" value="<?php echo $perValue['operator']; ?>" /></td>
+                                            <td class="channel_no"><input type="text" name="channel_no[]" value="<?php echo $perValue['channel_no']; ?>" required  lay-verify="required" placeholder="请输入渠道号" autocomplete="off" class="layui-input iText"></td>
+                                            <td> <a href="javascript:void(0);" class="dels layui-btn layui-btn-sm">删除</a></td></tr>
+                                        <?php } ?>
+                                    </thead>
+                                </table><button class="bt2 layui-btn addNewList"  type="button">添加</button></div>
+                            <?php $i++; } } ?>
+                        </div>
+                    </div>                        
+                        <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="submit_form">保存</button>
+                            <button id="cancel" type="reset" class="layui-btn layui-btn-primary">取消</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end  -->
+            </div>
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接 */
+ var addAndroidChannelGroupPostUrl = baseurl + '<?php echo $addAndroidChannelGroupPostUrl; ?>'; // 提交表单
+ var callbackUrl = baseurl + '<?php echo $androidGroupUrl; ?>';
+
+/* 默认禁止切换应用  */
+$("select[name='app_id']").attr("disabled","disabled");
+
+ //JavaScript代码区域
+ layui.use(['element','form'], function(){
+     var element = layui.element;
+     var form = layui.form;
+     //表单提交
+     form.on('submit(submit_form)', function(data){
+         data.field.token = token;
+         data.field.app_id = $("select[name='app_id']").find("option:selected").val();
+         $.ajax({
+             url : addAndroidChannelGroupPostUrl,
+             async: false,
+             data : data.field,
+             type : 'post',
+             dataType : 'json',
+             jsonp : 'callback',
+             success:function(data){
+                 layer.msg(data.msg);
+                 if(data.success){
+                     setTimeout(function(){
+                         window.location.href = callbackUrl;
+                     },500);
+                 }
+             },
+             error:function(xhr,msg,e){
+                 layer.msg(msg);
+             }
+         });
+         return false;
+     });
+
+     // 取消
+     $("#cancel").click(function(){
+         window.location.href = callbackUrl;
+     });
+
+     // 监听 投放人
+     form.on('select(usergroup)', function(data){
+        var len = $(".user-table").length;
+        var isshow = '',btnClass="";
+        if(len!=0){
+            isshow = 'style="display:none;"';
+            btnClass = 'layui-btn-primary';
+        }
+        var htmltable = `<div `+isshow+` class="user-table"> <input type="hidden" name="staff[]" value="`+data.value+`" />
+                        <table class="mui-data-table layui-table">
+                        <thead><tr><th>序号</th><th>渠道名称</th><th>渠道号</th><th>操作</th>
+                        </tr></thead>
+                        </table><button class="bt2 layui-btn addNewList"  type="button">添加</button></div>`;
+        $("#user-group").append('<button type="button" class="layui-btn layui-btn '+btnClass+'">'+data.value+'</button>')
+        $("#group-user-table").append(htmltable)
+        $(data.elem).find("option:selected").remove();
+        renderLayuiFormAndTab();
+    });     
+
+
+
+ });
+
+ $(function(){
+     //删除
+     $(".dels").live('click', function(){       
+         var tbody = $(this).parent().parent().parent();
+         $(this).parent('td').parent('tr').remove();
+         tbody.find("tr").each(function(index){
+             $(this).find(".number").html(index+1);
+         }); 
+     });
+
+     // 新建渠道
+     $("#group-user-table").delegate('.addNewList','click',function(){
+        var len = $(this).parent().find(".mui-data-table tr").length;
+        var staff = $(this).parent().find("input[name='staff[]']").val();
+        var newtr = '<tr><td class="number">'+len+'<input type="hidden" name="operator[]" value="'+staff+'" /></td>';
+        newtr +='<td class="channel_name"><input type="text" name="channel_name[]" value="" required  lay-verify="required" placeholder="请输入渠道名" autocomplete="off" class="layui-input iText"></td>';
+        newtr +='<td class="channel_no"><input type="text" name="channel_no[]" value="" required  lay-verify="required" placeholder="请输入渠道号" autocomplete="off" class="layui-input iText"></td>';
+        newtr +='<td> <a href="javascript:void(0);" class="dels layui-btn layui-btn-sm">删除</a></td></tr>';
+        $(this).parent().find(".mui-data-table").append(newtr);
+     });
+
+     // 切换用户table 
+     $("#user-group").delegate("button","click",function(){
+         $("#user-group").find("button").addClass("layui-btn-primary");
+         $(this).removeClass("layui-btn-primary");
+         var text = $(this).text();
+         $(".user-table").hide();
+         $("input[name='staff[]']").each(function(){
+              if($(this).val()==text){
+                 $(this).parent().show();
+                 return ;
+              }
+         });
+     });
+ });
+
+
+</script>
+</body>
+</html>
+      

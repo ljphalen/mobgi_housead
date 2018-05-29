@@ -1,0 +1,223 @@
+@CHARSET "UTF-8";
+
+
+.topnav {
+	
+	font-size:14px;
+	line-height:20px;
+
+}
+.topnav  a.as{
+	background:#88bbd4;
+	padding:4px 6px 6px;
+	text-decoration:none;
+	font-weight:bold;
+	color:#fff;
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px;
+	*background:transparent url("../images/signin-nav-bg-ie.png") no-repeat 0 0;
+	*padding:4px 12px 6px;
+}
+.topnav a.menu-open {	
+    border-top: 1px solid #BBBBBB;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #BBBBBB;
+    border-bottom:none;
+    border-radius: 4px 4px 0 0 ;
+    box-shadow: 0 0 4px #8B99A8, 0 0 1px #8B99A8;
+}
+a.as.menu-open span {
+	background-image:url("../images/toggle_up_dark.png");
+	color: #FFFFFF;
+}
+
+a.as {
+	position:relative;
+	margin-left:3px;
+}
+a.as span {
+	background-image:url("../images/toggle_down_light.png");
+	background-repeat:no-repeat;
+	background-position:100% 50%;
+	padding:4px 16px 6px 0;
+	color:#ffffff;
+}
+
+
+
+/**按钮背景图.disk-info,*/
+.btn, .button,  .space-status, .space-status i, .file-list dt, .file-list dt a, .title-float, .title-float a, .file-more a, .file-more span, .file-pages, .pages, .page-index-list .box-con, .popup-space h3 {
+    background-image: url("../images/spr_x.png");
+    background-repeat: repeat-x;
+}
+
+
+
+
+.select-info {
+	-moz-user-select:none;
+    border: 1px solid #CECECE;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 0 1px 1px #FFFFFF inset, 0 1px 5px rgba(0, 0, 0, 0.1);    
+    margin: 8px;
+    overflow: hidden;
+    padding: 14px 10px 14px 60px;
+    position: relative;
+}
+.select-info  .top-label {
+    height: 20px;
+    left: 5px;
+    position: absolute;
+    top: 20px;
+    font-size: 14px;
+    font-weight: bold;
+	color: #5893B7;
+}
+.select-info ul{
+	margin-left:10px;
+	
+}
+
+.select-info ul li {
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    margin-right: 10px;
+    margin-top: 5px;
+    padding: 2px 15px;
+    text-align: center;
+	cursor: pointer;
+	list-style-type: none;
+}
+
+
+.select-info li:hover {
+	background-color: #DFECFF;
+}
+.select-info  li.current {
+    color: #F57900;
+	font-weight: bold;
+}
+
+
+/**xmenu样式*/
+.xmenu {
+	-moz-user-select:none;
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #BBBBBB;
+    border-top:none;
+    box-shadow: 0 0 4px #8B99A8, 0 0 1px #8B99A8;
+    border-radius: 0px 0px 4px 4px;
+    outline: medium none;
+	width: 500px;
+}
+
+
+.xmenu dl dt {
+	background: url('../images/bg_toggle_up2.gif') no-repeat scroll 8px	8px transparent;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	font-weight: bold;
+	color: #5893B7;
+	cursor: pointer;
+	margin: 8px 0;
+	padding-left: 25px;
+	display: block;
+}
+.xmenu dl dt:hover {
+	background-color: #F4FFF4;
+
+}
+
+
+.xmenu dl dt.open {
+	background:url('../images/bg_toggle_down2.gif') no-repeat scroll 8px 8px transparent;
+}
+.xmenu dl dt.open:hover {
+	background-color: #F4FFF4;
+}
+
+.xmenu dl dd {
+	padding-left: 10px;
+	line-height: 24px;
+}
+
+.xmenu dl dd h2 {
+	font-size: 15px;
+}
+
+.xmenu dl dd ul {
+   padding-bottom:12px; 
+   overflow: hidden;
+}
+
+.xmenu dl dd ul li {
+	background-position: 6px 6px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    float: left;
+    height: 25px;
+    overflow: hidden;
+    text-indent: 20px;
+    width: 100px;
+	color:#666666;
+
+}
+.xmenu dl dd ul  li:hover {
+    background-color: #DFECFF;
+}
+
+
+.xmenu dl dd ul  li.current {
+    color: #F57900;
+	font-weight: bold;
+}
+
+
+/** css动画按钮*/
+.a-btn {
+    -moz-transition: box-shadow 0.3s ease-in-out 0s;
+    background: -moz-linear-gradient(center top , #FFFFFF 0%, #F6F6F6 74%, #EDEDED 100%) repeat scroll 0 0 transparent;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(188, 188, 188, 0.1);
+    display: block;
+    float: right;
+    margin: 2px;
+    overflow: hidden;
+    position: relative;
+}
+.a-btn-text {
+    color: #D7565B;
+    display: block;
+    font-size: 12px;   
+    text-align:center;
+    line-height: 16px;
+    padding:5px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.a-btn:hover {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(188, 188, 188, 0.1);
+}
+.a-btn:hover .a-btn-symbol {
+    opacity: 0;
+}
+
+/**关闭按钮样式*/
+.m-close{
+	background: url("../images/controls.png") no-repeat scroll -25px 0 transparent;
+	bottom: 0;
+    height: 25px;
+    position: absolute;
+    right: 0;
+    text-indent: -9999px;
+    width: 25px;
+	cursor: pointer;
+	margin: 5px;
+}
+.m-close:hover {
+    background-position: -25px -25px;
+}

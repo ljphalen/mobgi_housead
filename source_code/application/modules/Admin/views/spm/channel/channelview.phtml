@@ -1,0 +1,134 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>查看投放渠道</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <form class="layui-form">
+                <!-- 基本信息 begin -->
+                <p class="padding-top20"></p>
+                <div class="subtitle"><p>基本参数:</p></div>
+                <div class="inputs-wrap">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">渠道编号</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="hidden" name="id" value="<?php echo $channel['id']; ?>" />
+                            <input type="text" name="channel_no" placeholder="" value="<?php echo $channel['channel_no']; ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">渠道名称</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" name="channel_name" placeholder="" value="<?php echo $channel['channel_name']; ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 基本信息 end  -->
+                <hr class="layui-bg-gray">
+                <div class="subtitle"><p>iOS:</p></div>
+                <div class="inputs-wrap">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">自投点击模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" name="template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['template']; }else{ echo $defaultTemplate['ios_track_template']; } ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">自投回调模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" lay-verify="url" name="callback_template" placeholder="" value="<?php echo $channelDetail['callback_template']; ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">代投点击模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" name="agent_template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['agent_template']; }else{ echo $defaultTemplate['ios_agent_track_template']; } ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">代投回调模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" name="callback_agent_template" placeholder="" value="<?php echo $channelDetail['callback_agent_template']; ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="layui-bg-gray">
+                <div class="subtitle"><p>Android:</p></div>
+                <div class="inputs-wrap">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">自投点击模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" name="android_template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['android_template']; }else{ echo $defaultTemplate['android_track_template']; } ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">自投回调模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" lay-verify="url" name="callback_android_template" placeholder="" value="<?php echo $channelDetail['callback_android_template']; ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">代投点击模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" name="agent_android_template" placeholder="" value="<?php if($channelDetail){ echo $channelDetail['agent_android_template']; }else{ echo $defaultTemplate['android_agent_track_template']; } ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label long-label">代投回调模板</label>
+                        <div class="layui-input-block long-label-input">
+                            <input type="text" name="callback_agent_android_template" placeholder="" value="<?php echo $channelDetail['callback_agent_android_template']; ?>" class="layui-input" disabled>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="layui-bg-gray">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button id="cancel" type="reset" class="layui-btn layui-btn-primary">取消</button>
+                    </div>
+                </div>
+            </form>
+            <!-- form end  -->
+
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+    var page = getQueryString("page");
+    var channel_name = getQueryString("channel_name");
+    var channel_no = getQueryString("channel_no");
+    var callbackUrl = baseurl + '/Admin/Spm_Channel/index?page='+page+'&channel_name='+channel_name+'&channel_no='+channel_no;
+    //JavaScript代码区域
+    layui.use(['element','form'], function(){
+        var element = layui.element;
+        var form = layui.form;
+       
+        // 取消
+        $("#cancel").click(function(){
+            window.location.href = callbackUrl;
+        });
+
+    });
+</script>
+</body>
+</html>
+      

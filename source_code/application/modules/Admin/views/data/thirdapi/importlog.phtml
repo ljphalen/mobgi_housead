@@ -1,0 +1,66 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<link media="screen" href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath;?>/css/jquery.datetimepicker.css" >
+<script type="text/javascript" src="<?php echo $staticPath;?>/js/admin/jquery.datetimepicker.full.min.js"></script>
+ <script>
+     $(function(){
+         $.datetimepicker.setLocale('ch');
+         $( "#datetimepicker" ).datepicker({dateFormat: "yy-mm-dd",maxDate :new Date()});
+
+     })
+ </script>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+        <li ><a href="<?php echo $importUrl;?>">三方数据导入</a></li>
+        <li class="current"><a href="<?php echo $importLogUrl;?>">导入日志</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="<?php echo $listUrl;?>" method="GET">
+                    <span>
+                     <input type="text" id="datetimepicker" class="iText" name='searchtime'  placeholder="按日期搜索" />
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th field='identifier' width='100px'>广告商</th>
+                            <th field='status'>状态</th>
+                            <th field='event'>异常原因</th>
+                            <th field='createtime' width='100px'>更新日期</th>
+                            <th field='username' width='80px'>执行用户</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($list as $k1=>$value){
+                                echo "<tr>";
+                                echo "<td class='blue'>".$value['identifier']."</td>";
+                                if($value['status']){
+                                    echo "<td>成功</td>";
+                                }else{
+                                    echo "<td style='color:red;'>失败</td>";
+                                }
+
+                                echo "<td>".$value['event']."</td>";
+                                echo "<td>".$value['createtime']."</td>";
+                                echo "<td>".$value['username']."</td>";
+                                echo "</tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+  </div>
+<?php echo $this->render("layout/footer1.phtml");?>

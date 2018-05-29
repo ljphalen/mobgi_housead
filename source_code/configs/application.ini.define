@@ -1,0 +1,67 @@
+[base]
+application.directory = APP_PATH
+
+;library
+application.library = APP_PATH "../library"
+application.models = APP_PATH "models"
+application.bootstrap = APP_PATH "Bootstrap.php"
+application.dispatcher.defaultModule = 'Index'
+application.dispatcher.defaultController = "Index"
+application.dispatcher.defaultAction = "index"
+application.view.ext = "phtml"
+;modules
+application.modules = Index,Admin,Advertiser,Api,Stat,Spm,Coupon
+
+;develop
+[develop:base]
+application.dispatcher.throwException = 1
+application.dispatcher.catchException = 1
+webroot     =  http://dev.admin.mobgi.com
+adminroot = http://dev.admin.mobgi.com
+staticroot   =  http://dev.admin.mobgi.com
+attachroot =  http://dev.admin.mobgi.com
+statroot =  http://dev.stat.ha.mobgi.com
+apiroot = http://dev.api.ha.mobgi.com
+wwwroot=http://dev.www.mobgi.com
+actroot=http://dev.act3.uu.cc
+mobgiroot = http://dev.api.mobgi.com
+spmroot = http://dev.spm.mobgi.com
+shorturlroot = http://dev.sl.mobgi.com
+iaadroot = http://localhost.www.iplaychess.cn
+couponroot = http://coupon.mobgi.dev
+
+;product
+[product:base]
+application.dispatcher.throwException = 1
+application.dispatcher.catchException = 1
+webroot = http://admin.mobgi.com
+adminroot = http://admin.mobgi.com
+staticroot   =   http://admin.mobgi.com
+attachroot  =   http://admin.mobgi.com
+statchroot = http://statha.mobgi.com
+apiroot = http://apiha.mobgi.com
+wwwroot=http://www.mobgi.com
+actroot=http://act3.uu.cc
+mobgiroot = http://api.mobgi.com
+spmroot = http://spm.mobgi.com
+shorturlroot = http://v1.53.vc
+iaadroot = http://www.iplaychess.cn
+couponroot = http://www.iplaychess.cn
+
+;test
+[test:base]
+application.dispatcher.throwException = 1
+application.dispatcher.catchException = 1
+webroot = http://test.admin.mobgi.com
+adminroot = http://test.admin.mobgi.com
+staticroot = http://test.admin.mobgi.com
+attachroot =http://test.admin.mobgi.com
+statchroot = http://test-stat-ha.mobgi.com
+apiroot = http://test-api-ha.mobgi.com
+wwwroot=http://test.www.mobgi.com
+actroot=http://test.admin.mobgi.com/attachs/landingpage
+mobgiroot = http://test-api.mobgi.com
+spmroot = http://test.spm.mobgi.com
+shorturlroot = http://test.sl.mobgi.com
+iaadroot = http://test.www.iplaychess.cn
+couponroot = http://test.www.iplaychess.cn

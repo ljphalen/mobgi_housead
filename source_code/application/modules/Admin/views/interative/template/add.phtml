@@ -1,0 +1,86 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+              <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li ><a href="<?php echo $listUrl;?>">原生模板管理列表</a></li>
+                        <li class="layui-this"><a href="<?php echo $addUrl;?>"><?php echo $info['id']?'编辑':'添加'; ?>原生模板</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <div class="temp-upload-wrap">
+                <form class="layui-form" action="<?php echo $addPostUrl;?>" method="POST"  id="addForm">
+                    <input name="token" type="hidden"  value="<?php  echo $token;  ?>" />
+                    <input name="id" type="hidden"  value="<?php  echo $info['id'];  ?>" />
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模板名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="template_name" placeholder="请输入模板名称" class="layui-input" value="<?php  echo $info['template_name'];  ?>">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">url</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="url" placeholder="请输入url" class="layui-input" value="<?php  echo $info['url'];  ?>">
+                        </div>
+                    </div>
+
+                      <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-big layui-btn-normal" type="button" lay-submit lay-filter="formTest">立即提交</button>
+                            <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+
+
+    //取消按钮
+    $(".cannel").click(function(){
+             window.location.href= baseurl +'<?php echo $listUrl;?>';
+     });
+
+
+    //form 表单 提交
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('submit(formTest)', function(data){
+                var jsonData = $("form").serializeArray();
+                $.ajax({
+                    url : baseurl + '<?php echo $addPostUrl?>',
+                    async: false,
+                    data : jsonData,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg); 
+                        if(data.success){
+                                setTimeout(function() {      
+                                window.location.href= baseurl +'<?php echo $listUrl;?>';
+                            }, 500); 
+                            //跳转
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg); 
+                    }
+                });
+                return false;  
+        }); 
+    });
+
+})();
+
+
+</script>

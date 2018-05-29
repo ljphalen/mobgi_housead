@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" readonly="true" id="3c3db646-7568-4e0d-9e59-8a9fc4dfe9d2" name="Default" comment="激活bug修复">
+      <change beforePath="$PROJECT_DIR$/account/account_consume.py" afterPath="$PROJECT_DIR$/account/account_consume.py" />
+      <change beforePath="$PROJECT_DIR$/account/conf/account_consume.conf" afterPath="$PROJECT_DIR$/account/conf/account_consume.conf" />
+      <change beforePath="$PROJECT_DIR$/account/log/account_consume.txt" afterPath="$PROJECT_DIR$/account/log/account_consume.txt" />
+      <change beforePath="$PROJECT_DIR$/account/log/recovery_expired_virtualmoney_setting.txt" afterPath="$PROJECT_DIR$/account/log/recovery_expired_virtualmoney_setting.txt" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/.settings/org.eclipse.php.core.prefs" afterPath="$PROJECT_DIR$/framework/Yaf/.settings/org.eclipse.php.core.prefs" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Action/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf/Action/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Application.php" afterPath="$PROJECT_DIR$/framework/Yaf/Application.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Bootstrap/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf/Bootstrap/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Config/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf/Config/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Config/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf/Config/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Config/Ini.php" afterPath="$PROJECT_DIR$/framework/Yaf/Config/Ini.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Config/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf/Config/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Controller/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf/Controller/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Dispatcher.php" afterPath="$PROJECT_DIR$/framework/Yaf/Dispatcher.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/DispatchFailed.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/DispatchFailed.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/Action.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/Action.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/Controller.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/Controller.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/Module.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/Module.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/View.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/LoadFailed/View.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/RouterFailed.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/RouterFailed.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/StartupError.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/StartupError.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Exception/TypeError.php" afterPath="$PROJECT_DIR$/framework/Yaf/Exception/TypeError.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/G.php" afterPath="$PROJECT_DIR$/framework/Yaf/G.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Loader.php" afterPath="$PROJECT_DIR$/framework/Yaf/Loader.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Plugin/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf/Plugin/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Registry.php" afterPath="$PROJECT_DIR$/framework/Yaf/Registry.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Request/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf/Request/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Request/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf/Request/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Request/Http.php" afterPath="$PROJECT_DIR$/framework/Yaf/Request/Http.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Request/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf/Request/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Response/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf/Response/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Response/Cli.php" afterPath="$PROJECT_DIR$/framework/Yaf/Response/Cli.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Response/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf/Response/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Response/Http.php" afterPath="$PROJECT_DIR$/framework/Yaf/Response/Http.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Interface.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Interface.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Map.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Map.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Regex.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Regex.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Rewrite.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Rewrite.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Static.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Static.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Route/Supervar.php" afterPath="$PROJECT_DIR$/framework/Yaf/Route/Supervar.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Router.php" afterPath="$PROJECT_DIR$/framework/Yaf/Router.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/Session.php" afterPath="$PROJECT_DIR$/framework/Yaf/Session.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/View/Interface.php" afterPath="$PROJECT_DIR$/framework/Yaf/View/Interface.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf/View/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf/View/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Action/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Action/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Application.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Application.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Bootstrap/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Bootstrap/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Ini.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Ini.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Config/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Controller/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Controller/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Dispatcher.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Dispatcher.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/DispatchFailed.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/DispatchFailed.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/Action.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/Action.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/Controller.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/Controller.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/LoadFailed.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/LoadFailed.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/Module.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/Module.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/View.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/LoadFailed/View.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/RouterFailed.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/RouterFailed.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/StartupError.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/StartupError.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/TypeError.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Exception/TypeError.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/G.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/G.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Loader.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Loader.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Plugin/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Plugin/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Registry.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Registry.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Http.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Http.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Request/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Abstract.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Abstract.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Cli.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Cli.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Http.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Response/Http.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Exception.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Exception.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Interface.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Interface.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Map.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Map.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Regex.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Regex.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Rewrite.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Rewrite.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Static.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Static.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Supervar.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Route/Supervar.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Router.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Router.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/Session.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/Session.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/View/Interface.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/View/Interface.php" />
+      <change beforePath="$PROJECT_DIR$/framework/Yaf_Namespace/View/Simple.php" afterPath="$PROJECT_DIR$/framework/Yaf_Namespace/View/Simple.php" />
+      <change beforePath="$PROJECT_DIR$/framework/loader.php" afterPath="$PROJECT_DIR$/framework/loader.php" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_active.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_active.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_base.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_base.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_charge.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_charge.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_charge_min.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_charge_min.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_client.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_client.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_client2.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_client2.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_dsp.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_dsp.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_fillrate.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_fillrate.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_hour.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_hour.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_housead.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_housead.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_ip.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_ip.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_test.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_test.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_try.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_try.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_mid_users.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_mid_users.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_server.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_server.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_dsp.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_dsp.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_exitstime.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_exitstime.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_fillrate.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_fillrate.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_hour.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_hour.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_housead.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_housead.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_ip.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_ip.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_test.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_test.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_test_dau.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_test_dau.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_test_dau_ver.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_test_dau_ver.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_times.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_times.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_try_hour.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_try_hour.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_stat_watchingtime.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_stat_watchingtime.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/ad_user.py" afterPath="$PROJECT_DIR$/idsy/adx/ad_user.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/adx/adx_set_frequency_cache.py" afterPath="$PROJECT_DIR$/idsy/adx/adx_set_frequency_cache.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/config/adx.py" afterPath="$PROJECT_DIR$/idsy/config/adx.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/lib/mybase.py" afterPath="$PROJECT_DIR$/idsy/lib/mybase.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/lib/mysql.py" afterPath="$PROJECT_DIR$/idsy/lib/mysql.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/tools/tool_base.py" afterPath="$PROJECT_DIR$/idsy/tools/tool_base.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/tools/tool_rainbow.py" afterPath="$PROJECT_DIR$/idsy/tools/tool_rainbow.py" />
+      <change beforePath="$PROJECT_DIR$/idsy/tools/tool_spm.py" afterPath="$PROJECT_DIR$/idsy/tools/tool_spm.py" />
+      <change beforePath="$PROJECT_DIR$/importUser/pay_user_to_cache.py" afterPath="$PROJECT_DIR$/importUser/pay_user_to_cache.py" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="ad_active.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/idsy/adx/ad_active.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1944">
+              <caret line="114" column="50" lean-forward="false" selection-start-line="114" selection-start-column="50" selection-end-line="114" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="account_consume.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/account/account_consume.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="390" column="76" lean-forward="true" selection-start-line="390" selection-start-column="76" selection-end-line="390" selection-end-column="76" />
+              <folding>
+                <element signature="e#45#64#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__builtin__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.PyCharmCE2017.3/system/python_stubs/348993582/__builtin__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45630">
+              <caret line="2535" column="8" lean-forward="false" selection-start-line="2535" selection-start-column="8" selection-end-line="2535" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="account_consume.conf.define" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/account/conf/account_consume.conf.define">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="account_consume.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/account/conf/account_consume.conf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="54">
+              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="recovery_expired_virtualmoney.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/account/recovery_expired_virtualmoney.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2070">
+              <caret line="122" column="77" lean-forward="false" selection-start-line="122" selection-start-column="77" selection-end-line="122" selection-end-column="77" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/account/settings/config.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="17" column="52" lean-forward="false" selection-start-line="17" selection-start-column="52" selection-end-line="17" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="threading.py" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/lib/python2.7/threading.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="13716">
+              <caret line="762" column="0" lean-forward="false" selection-start-line="762" selection-start-column="0" selection-end-line="762" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_strptime.py" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/lib/python2.7/_strptime.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8280">
+              <caret line="466" column="0" lean-forward="false" selection-start-line="466" selection-start-column="0" selection-end-line="466" selection-end-column="0" />
+              <folding>
+                <element signature="e#403#414#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>store Exception</find>
+      <find>UNIT_DAY_CONSUMPTION</find>
+      <find>unitid_consumption</find>
+      <find>uid_consumption</find>
+      <find>originalityid_unitid_dict</find>
+      <find>unitIdConsumption</find>
+      <find>unit_id</find>
+      <find>day_consumption_limit</find>
+      <find>unitid_consumption_limit_range</find>
+      <find>day_consumption</find>
+      <find>update_uid_accounttype_date_consumption</find>
+      <find>accountConsumptionLimit</find>
+      <find>accountConsumption</find>
+      <find>unit_date_originality_consumption</find>
+      <find>uid_date_accounttype_consumption</find>
+      <find>update_unit_originality_date_consumption</find>
+      <find>updateAdDayConsumption</find>
+      <find>updateAccountDayConsumption</find>
+      <find>unitIdDayConsumption</find>
+      <find>getUnitInfoByUnitid</find>
+      <find>getUnitOriginalityDayConsumption</find>
+      <find>getUnitDayConsumptions</find>
+      <find>getUnitConsumptiontotal</find>
+      <find>unitInfo</find>
+      <find>adInfo</find>
+      <find>getAdInfoConsumptiontotal</find>
+      <find>unitIdConsumptionList</find>
+      <find>getDayconsumptionlimitByUid</find>
+      <find>DayconsumptionlimitByUid</find>
+      <find>accountConsumptionLimitList</find>
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/importUser/pay_user_to_cache.py" />
+        <option value="$PROJECT_DIR$/idsy/monitor/monitor_base.py" />
+        <option value="$PROJECT_DIR$/idsy/config/redis.py" />
+        <option value="$PROJECT_DIR$/idsy/config/db.py" />
+        <option value="$PROJECT_DIR$/idsy/adx/log/ad_active.log" />
+        <option value="$PROJECT_DIR$/idsy/adx/ad_active.py" />
+        <option value="$PROJECT_DIR$/account/settings/config.py" />
+        <option value="$PROJECT_DIR$/account/account_consume.py" />
+        <option value="$PROJECT_DIR$/account/conf/account_consume.conf" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="536" />
+    <option name="y" value="62" />
+    <option name="width" value="1384" />
+    <option name="height" value="1018" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Python</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="cron_script" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Python" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/idsy/config" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.account_consume">
+    <configuration name="account_consume" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/account" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="cron_script" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/account/account_consume.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="ad_active" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/idsy/adx" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="cron_script" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/idsy/adx/ad_active.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="pay_user_to_cache" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/importUser" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="cron_script" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/importUser/pay_user_to_cache.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="recovery_expired_virtualmoney" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/account" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="cron_script" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/account/recovery_expired_virtualmoney.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <configuration name="threading" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="/usr/lib/python2.7" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="cron_script" />
+      <option name="SCRIPT_NAME" value="/usr/lib/python2.7/threading.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.pay_user_to_cache" />
+      <item index="1" class="java.lang.String" itemvalue="Python.account_consume" />
+      <item index="2" class="java.lang.String" itemvalue="Python.ad_active" />
+      <item index="3" class="java.lang.String" itemvalue="Python.threading" />
+      <item index="4" class="java.lang.String" itemvalue="Python.recovery_expired_virtualmoney" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.account_consume" />
+        <item index="1" class="java.lang.String" itemvalue="Python.recovery_expired_virtualmoney" />
+        <item index="2" class="java.lang.String" itemvalue="Python.ad_active" />
+        <item index="3" class="java.lang.String" itemvalue="Python.threading" />
+        <item index="4" class="java.lang.String" itemvalue="Python.pay_user_to_cache" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration" cleanupOnStartRun="true">
+    <configuration>$USER_HOME$/.subversion</configuration>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3c3db646-7568-4e0d-9e59-8a9fc4dfe9d2" name="Default" comment="" />
+      <created>1516356321888</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1516356321888</updated>
+    </task>
+    <task id="LOCAL-00001" summary="激活bug修复">
+      <created>1519885386588</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1519885386588</updated>
+    </task>
+    <task id="LOCAL-00002" summary="广告活动限额修改">
+      <created>1522734898351</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1522734898351</updated>
+    </task>
+    <task id="LOCAL-00003" summary="激活bug修复">
+      <created>1522734919555</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1522734919555</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="536" y="62" width="1922" height="1054" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18770054" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299435" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27118644" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881355" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12780748" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18305084" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.319774" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13107345" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="广告活动限额修改" />
+    <MESSAGE value="激活bug修复" />
+    <option name="LAST_COMMIT_MESSAGE" value="激活bug修复" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/account/import_direct.py</url>
+          <line>2</line>
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idsy/adx/ad_active.py</url>
+          <line>56</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/account/account_consume.py</url>
+          <line>235</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/account/account_consume.py</url>
+          <line>491</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/account/account_consume.py</url>
+          <line>502</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/account/account_consume.py</url>
+          <line>523</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/account/account_consume.py</url>
+          <line>439</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="48" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="jar:///usr/local/lib/python2.7/dist-packages/setuptools-38.5.1-py2.7.egg!/pkg_resources/_vendor/six.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3240">
+          <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/json/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6048">
+          <caret line="337" column="0" lean-forward="false" selection-start-line="337" selection-start-column="0" selection-end-line="337" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/json/decoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6570">
+          <caret line="369" column="0" lean-forward="false" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/config/db.dev.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="1" lean-forward="false" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/config/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/import_direct.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1764">
+          <caret line="98" column="22" lean-forward="false" selection-start-line="98" selection-start-column="22" selection-end-line="98" selection-end-column="22" />
+          <folding>
+            <element signature="e#45#56#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/import_direct.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1764">
+          <caret line="98" column="22" lean-forward="true" selection-start-line="98" selection-start-column="22" selection-end-line="98" selection-end-column="22" />
+          <folding>
+            <element signature="e#45#56#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/importUser/test1.py" />
+    <entry file="file://$PROJECT_DIR$/importUser/test1.py" />
+    <entry file="file://$PROJECT_DIR$/importUser/pay_user_to_cache.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="19" column="20" lean-forward="false" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/lib/python2.7/dist-packages/MySQL_python-1.2.3-py2.7-linux-x86_64.egg!/MySQLdb/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/monitor/monitor_check.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/monitor/monitor_active.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="10" column="26" lean-forward="true" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/lib/task.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2279">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/monitor/monitor_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/adx/ad_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-144">
+          <caret line="13" column="28" lean-forward="true" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/settings/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/logging/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/utils/mysql.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="116" column="24" lean-forward="true" selection-start-line="116" selection-start-column="24" selection-end-line="116" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/2/types.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/import_direct.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="689">
+          <caret line="98" column="22" lean-forward="false" selection-start-line="98" selection-start-column="22" selection-end-line="98" selection-end-column="22" />
+          <folding>
+            <element signature="e#45#56#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/config/warning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/config/redis.dev.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="27" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/config/redis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="13" column="16" lean-forward="false" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/config/db.dev.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="1" lean-forward="false" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/config/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="30" lean-forward="false" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/lib/python2.7/dist-packages/setuptools-38.5.1-py2.7.egg!/pkg_resources/_vendor/six.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3240">
+          <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey_qt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="101" column="0" lean-forward="false" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/local/lib/python2.7/dist-packages/setuptools-38.5.1-py2.7.egg!/pkg_resources/extern/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/json/decoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6570">
+          <caret line="369" column="0" lean-forward="false" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/json/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6048">
+          <caret line="337" column="0" lean-forward="false" selection-start-line="337" selection-start-column="0" selection-end-line="337" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/lib/mybase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2052">
+          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/adx/log/ad_active.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="67266">
+          <caret line="3737" column="48" lean-forward="false" selection-start-line="3737" selection-start-column="48" selection-end-line="3737" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/_strptime.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8280">
+          <caret line="466" column="0" lean-forward="false" selection-start-line="466" selection-start-column="0" selection-end-line="466" selection-end-column="0" />
+          <folding>
+            <element signature="e#403#414#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python2.7/threading.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13716">
+          <caret line="762" column="0" lean-forward="false" selection-start-line="762" selection-start-column="0" selection-end-line="762" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idsy/adx/ad_active.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1944">
+          <caret line="114" column="50" lean-forward="false" selection-start-line="114" selection-start-column="50" selection-end-line="114" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/log/recovery_expired_virtualmoney_setting.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/log/account_consume.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="15" column="66" lean-forward="false" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+        </state>
+      </provider>
+      <provider editor-type-id="LargeFileEditor">
+        <state relative-caret-position="46">
+          <caret line="9982" column="55" lean-forward="true" selection-start-line="9982" selection-start-column="55" selection-end-line="9982" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2017.3/system/python_stubs/348993582/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45630">
+          <caret line="2535" column="8" lean-forward="false" selection-start-line="2535" selection-start-column="8" selection-end-line="2535" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/recovery_expired_virtualmoney.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2070">
+          <caret line="122" column="77" lean-forward="false" selection-start-line="122" selection-start-column="77" selection-end-line="122" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/settings/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="52" lean-forward="false" selection-start-line="17" selection-start-column="52" selection-end-line="17" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/conf/account_consume.conf.define">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/conf/account_consume.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/account/account_consume.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="390" column="76" lean-forward="true" selection-start-line="390" selection-start-column="76" selection-end-line="390" selection-end-column="76" />
+          <folding>
+            <element signature="e#45#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

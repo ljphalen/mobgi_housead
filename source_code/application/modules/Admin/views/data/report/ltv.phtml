@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath; ?>/js/admin/lay/css/layui.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath; ?>/css/selectBox.css"/>
+
+
+<style>
+    *{ margin: 0; padding: 0;}
+    ul,li{ list-style: none; }
+    html,body{
+        font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        font-size: 14px;
+        background: #e5e6eb;
+    }
+    .wrapper{ background: #fff; padding:5px 20px 50px 20px; box-sizing:border-box; }
+
+    .search-wrap{   padding-top: 2px; }
+    .tchar-side{ padding: 5px 10px; height: 600px; width: 100%;   }
+</style>
+
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <!-- 广告用户LTV数据 begin -->
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md6 ">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>广告用户LTV数据</legend>
+                </fieldset>
+                <div class="layui-collapse">
+                    <!--  广告LTV报表   begin -->
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">广告LTV报表</h2>
+                        <div class="layui-colla-content layui-show">
+                            <!--  条件搜索 begin -->
+                            <div class="search-wrap">
+                                <form id='formDemo1' class="layui-form" action="getLtvData"  data-id="1">
+                                    <div class="layui-inline">
+                                        <input type="text" name="days" class="layui-input" id="datetime1">
+                                    </div>
+                                    <div class="layui-inline platform"></div>
+                                    <div class="layui-inline app_key"></div>
+                                    <div class="layui-inline channel_gid"></div>
+                                    <div class="layui-inline ad_type"></div>
+                                    <button class="layui-btn lay-submit" lay-submit lay-filter="formDemo">立即查询</button>
+                                </form>
+                            </div>
+                            <!--  条件搜索 end -->
+                            <div class="tchar-side" id="chart1" ></div>
+                        </div>
+                    </div>
+                    <!-- 广告LTV报表   end   -->
+                    <!-- 广告LTV详情   begin -->
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">广告LTV详情 <a data-table="table1"  class="export" style="float:right">导出</a></h2>
+                        <div class="layui-colla-content layui-show">
+                            <table id="table1" lay-filter="test"></table>
+                        </div>
+                    </div>
+                    <!-- 广告LTV详情  end -->
+                </div>
+            </div>
+            <!-- 广告用户LTV数据 end  -->
+            <!-- 广告生命周期内价值变化趋势 begin -->
+            <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>广告生命周期内价值变化趋势</legend>
+                </fieldset>
+                <div class="layui-collapse">
+                    <!-- 用户价值表报 begin -->
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">用户价值报表</h2>
+                        <div class="layui-colla-content layui-show">
+                            <!-- 条件搜索 begin -->
+                            <div class="search-wrap">
+                                <form id='formDemo2'  class="layui-form" action="getLtv2Data" data-id="2">
+                                    <div class="layui-inline">
+                                        <input type="text" name="days" class="layui-input" id="datetime2">
+                                    </div>
+                                    <div class="layui-inline platform"></div>
+                                    <div class="layui-inline app_key"></div>
+                                    <div class="layui-inline channel_gid"></div>
+                                    <div class="layui-inline ad_type"></div>
+                                    <button class="layui-btn lay-submit" lay-submit lay-filter="formDemo">立即查询</button>
+                                </form>
+                            </div>
+                            <!-- 条件搜索 end -->
+                            <!--  折线图  begin -->
+                            <div class="tchar-side" id="chart2" ></div>
+                            <!--  折线图  end  -->
+                        </div>
+                    </div>
+                    <!-- 用户价值表报 end  -->
+
+                    <!-- 用户价值详情 begin -->
+                    <div class="layui-colla-items">
+                        <h2 class="layui-colla-title">用户价值报表详情 <a data-table="table2" class="export" style="float:right">导出</a></h2>
+                        <div class="layui-colla-content layui-show">
+                            <table id="table2" lay-filter="test"></table>
+                        </div>
+                    </div>
+                    <!-- 用户价值详情 end  -->
+                </div>
+            </div>
+            <!-- 广告生命周期内价值变化趋势 end  -->
+        </div>
+    </div>
+</body>
+</html>
+<script src="<?php echo $staticPath; ?>/js/admin/lay/layui.js"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/selectBox.js"></script>
+<script>
+    ;(function(){
+        $(function(){
+            $(".export").click(function(e) {
+                var uri = 'data:application/vnd.ms-excel;base64,',text='',
+                template = '<html><head><meta charset="UTF-8"></head><body><table border="1">{table}</table></body></html>',
+                base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+                format = function(s, c) {
+                    return s.replace(/{(\w+)}/g,
+                        function(m, p) { return c[p]; })
+                }
+                $(this).parent().parent().find("table.layui-table").each(function(index, el) {
+                    if(index<2){
+                        text+=$(this).html();
+                    }
+                });
+                var ctx = {worksheet: 'sheet1', table: text}
+                window.location.href = uri + base64(format(template, ctx))
+                // this.href= window.URL.createObjectURL(new Blob([text], {type: 'text/plain'}));
+                e.stopPropagation();
+            });
+$(".app_key").selectBox({
+    name:"app_key",
+    title:"总体LTV",
+    data:<?php echo json_encode($apps); ?>
+});
+$(".channel_gid").selectBox({
+    name:"channel_gid",
+    title:"选择渠道",
+    data:<?php echo json_encode($channels); ?>
+});
+$(".ad_type").selectBox({
+    name:"ad_type",
+    title:"选择广告类型",
+    data:<?php echo json_encode($adType); ?>
+});
+$(".platform").selectBox({
+    name:"platform",
+    title:"选择平台",
+    data:<?php echo json_encode($platform); ?>
+});
+});
+
+function to_array(obj){
+    var arr=[]
+    for (var i in obj){
+        arr.push(obj[i]);
+    }
+    return arr;
+};
+function table_format(data){
+    var rdata=[]
+    var rdays=[]
+    var items={}
+    for (var i = 0; i <= data['days']; i++) {
+        rdays.push(i)
+    };
+    for (var key in data['data']) {
+        if(!items.hasOwnProperty(key)){
+            items[key]={}
+        }
+        if(data.hasOwnProperty('dims') && data['dims'].length){
+            for (var dim in data['dims']) {
+                items[key][data['dims'][dim]]=data['data'][key][data['dims'][dim]]
+            }
+        }else{
+        // items[key].push('总体LTV')
+    }
+    for (var rday in rdays) {
+        items[key]['ltv'+rday]=0;
+    }
+    for (var rday in data['data'][key]['ltv']) {
+        items[key]['ltv'+rday]=parseFloat(data['data'][key]['ltv'][rday])
+    }
+    rdata.push(items[key]);
+}
+
+return rdata;
+}
+
+function chart_render(chart,data){
+    var legend=[]
+    var xdata=[]
+    var series=[]
+    var rdays=[]
+    var items={}
+
+    for (var i = 0; i <= data['days']; i++) {
+        rdays.push(i)
+    };
+
+
+    for (var key in data['data']) {
+        if(!items.hasOwnProperty(key)){
+            items[key]={}
+        }
+
+        for (var rday in rdays) {
+            items[key][rday]=0;
+        }
+    }
+
+    var maxSize=5
+    for (var key in data['data']) {
+        for (var rday in data['data'][key]['ltv']) {
+            items[key][rday]=parseFloat(data['data'][key]['ltv'][rday])
+        }
+        var mySize=data['data'][key]['legend'].length
+        if(mySize>maxSize){
+            maxSize=mySize;
+        }
+        legend.push(data['data'][key]['legend'])
+        series.push({
+            name: data['data'][key]['legend'],
+            type:'line',
+            data:to_array(items[key])
+        })
+    }
+
+
+    var option = {
+        title: {
+            text: data['title']
+        },
+        tooltip: { trigger: 'axis' },
+        legend: { data:legend, type: 'scroll',orient: 'vertical',right: 0,
+        top: 50,
+        bottom: '3%',
+        textStyle:{
+            fontSize:10
+        }
+    },
+    grid: {
+        left: '3%',
+        right: maxSize*8+30,
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: to_array(rdays)
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series:series
+};
+chart.setOption(option,true);
+}
+
+layui.use(['element','laydate','form','table'],  function(){
+    var element = layui.element;
+    var laydate = layui.laydate;
+    var form = layui.form;
+    var table = layui.table;
+    laydate.render({elem: '#datetime1',range: true,value: '<?php echo $sdate." - ".$edate ?>'});
+    laydate.render({elem: '#datetime2',range: true,value: '<?php echo $sdate." - ".$edate ?>'});
+
+    form.on('submit(formDemo)',function  (data){
+        var formId=parseInt(data.form.id.replace(/[^0-9]/ig,""))
+        var chart=echarts.init(document.getElementById('chart'+formId))
+        chart.showLoading();
+        layui.$.ajax({
+            type: 'GET',
+            data: data.field,
+            url: data.form.action,
+            dataType: 'json',
+            success: function(data){
+                if(data.success){
+                    chart_render(chart,data.data);
+                    table.render({
+                        elem: "#table"+formId,
+                        data: table_format(data.data),
+                        cols: [data.data['cols']],
+                        page: false,
+                    });
+                }
+                chart.hideLoading();
+
+            },
+            error: function(xhr){
+                layer.msg("fail");
+            }
+        });
+        return false;
+    });
+
+    layui.$('.lay-submit').click();
+
+});
+
+
+
+
+
+
+
+
+
+})();
+
+
+
+
+</script>
+
+
+

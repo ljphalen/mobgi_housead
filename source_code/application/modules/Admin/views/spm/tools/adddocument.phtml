@@ -1,0 +1,182 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p><?php if($channelLabel){ echo '编辑';}else{ echo '新建';} ?>文档</p>
+                </div>
+                <!-- title end  -->
+                <!-- form begin -->
+                <div class="query-condition">
+                    <form class="layui-form" action="<?php echo $addPostUrl;?>" method="POST"  id="addForm">
+                        <input name="document_url" type="hidden"  value="<?php  echo $document['document_url'];  ?>" />
+                        <input name="token" type="hidden"  value="<?php  echo $token;  ?>" />
+                        <input name="id" type="hidden"  value="<?php  echo $document['id'];  ?>" />
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文档名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="document_name" placeholder="请输入文档名称" class="layui-input" value="<?php  echo $document['document_name'];  ?>">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文档类型</label>
+                            <div class="layui-input-inline">
+                                <select name="document_type">
+                                    <option value="" >请选择类型</option>
+                                    <?php foreach ($documentType as $key => $val){?>
+                                        <option value="<?php echo $val['id'];?>"  <?php echo ($document['document_type'] == $val['id'])?"selected":'';?>><?php echo $val['name']; ?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上传文档</label>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn" id="uploadTemplatid">
+                                    <i class="layui-icon">&#xe67c;</i>点击上传
+                                </button>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">
+                                <?php if($document['document_url']){?>
+                                    <?php echo $document['document_url']; ?>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <hr class="layui-bg-gray">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-big layui-btn-normal" type="button" lay-submit lay-filter="formTest">立即提交</button>
+                                <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- form end  -->
+            </div>
+        </div>
+        <!-- content end     -->
+    </div>
+    <script>
+        /* 请求链接 */
+        var addDocumentPostUrl = baseurl + '<?php echo $addDocumentPostUrl; ?>'; // 提交表单
+        var documentUrl = baseurl + '<?php echo $documentUrl; ?>'; //  列表页面
+        var attachPath = '<?php echo $attachPath;?>';
+        var uploadPostUrl = '<?php echo $uploadPostUrl;?>';
+        //JavaScript代码区域
+        ;(function(){
+
+            var xhrOnProgress=function(fun) {
+                xhrOnProgress.onprogress = fun; //绑定监听
+                //使用闭包实现监听绑
+                return function() {
+                    //通过$.ajaxSettings.xhr();获得XMLHttpRequest对象
+                    var xhr = $.ajaxSettings.xhr();
+                    //判断监听函数是否为函数
+                    if (typeof xhrOnProgress.onprogress !== 'function')
+                        return xhr;
+                    //如果有监听函数并且xhr对象支持绑定时就把监听函数绑定上去
+                    if (xhrOnProgress.onprogress && xhr.upload) {
+                        xhr.upload.onprogress = xhrOnProgress.onprogress;
+                    }
+                    return xhr;
+                }
+            }
+            //取消按钮
+            $(".cannel").click(function(){
+                window.location.href= documentUrl;
+            });
+            layui.use('upload', function(){
+                var upload = layui.upload;
+
+                var percent;
+                //执行实例
+                var uploadInst = upload.render({
+                    elem: '#uploadTemplatid' //绑定元素
+                    ,url: uploadPostUrl //上传接口
+                    ,method:'POST'
+                    ,accept:'file'
+                    ,size:0
+                    ,data:{'token':token}
+                    ,before: function(obj){
+                        //console.log(obj);
+                        var files = obj.pushFile();
+                        //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+                        // obj.preview(function(index, file, result){
+                        // console.log(index); //得到文件索引
+                        //   console.log(file); //得到文件对象
+                        //     console.log(result); //得到文件base64编码，比如图片
+
+                        //这里还可以做一些 append 文件列表 DOM 的操作
+
+                        //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                        //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+                        // });
+                        layer.load(); //上传loading
+                    }
+                    ,xhr:xhrOnProgress(function(e){
+                        var percent=e.loaded / e.total;//计算百分比
+                    })
+                    ,done: function(res){
+                        if(res.success){
+                            layer.closeAll('loading');
+                            var uploadtext = '<span class="green">上传成功：</span>'
+                            $("input[name='document_url']").val(attachPath+res.data);
+                            $(".layui-form-mid").html(uploadtext+attachPath+res.data);
+                            layer.msg('上传成功');
+                        }else{
+                            layer.closeAll('loading');
+                            layer.msg(res.msg);
+                        }
+                        //上传完毕回调
+                    }
+                    ,error: function(xhr,msg,e){
+                        layer.msg(msg);
+                    }
+                });
+            });
+
+            //form 表单 提交
+            layui.use('form', function(){
+                var form = layui.form;
+                form.on('submit(formTest)', function(data){
+                    var jsonData = $("form").serializeArray();
+                    $.ajax({
+                        url : addDocumentPostUrl,
+                        async: false,
+                        data : jsonData,
+                        type : 'post',
+                        dataType : 'json',
+                        jsonp : 'callback',
+                        success:function(data){
+                            layer.msg(data.msg);
+                            if(data.success){
+                                setTimeout(function() {
+                                    window.location.href= documentUrl;
+                                }, 500);
+                                //跳转
+                            }
+                        },
+                        error:function(xhr,msg,e){
+                            layer.msg(msg);
+                        }
+                    });
+                    return false;
+                });
+            });
+
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="items-main-title">
+        <p>优惠券列表</p>
+        <button style="margin-right:50px;" id="addLandingpagetemplate" data-href="<?php echo $adminroot; ?><?php echo $addUrl ?>" class="layui-btn layui-btn-normal">添加落地页模板</button>
+    </div>
+    <!-- 表单 begin -->
+<!--    <div class="items-main-form-wrap">-->
+<!--        <form class="layui-form"   >-->
+<!--            <div class="layui-input-inline">-->
+<!--                <select id="app_id" name="app_id" lay-search>-->
+<!--                    <option value="" --><?php //if ($params['app_id'] =='0'){?><!--SELECTED--><?php //} ?><!-- >不限应用</option>-->
+<!--                    --><?php //if($appList){?>
+<!--                        --><?php //foreach ($appList as $item){ ?>
+<!--                            <option value="--><?php //echo $item['app_id'] ?><!--" --><?php //if ($params['app_id'] ==$item['app_id']){?><!--SELECTED--><?php //} ?><!-- >--><?php //echo $item['app_name'] ?><!----><?php //echo $item['platform']==1?"(Android)":"(IOS)"; ?><!--</option>-->
+<!--                        --><?php //}?>
+<!--                    --><?php //}?>
+<!--                </select>-->
+<!--            </div>-->
+<!--            <div class="layui-input-inline" lay-search>-->
+<!--                <select id="type" name="type">-->
+<!--                    <option value="" --><?php //if ($params['type'] =='0'){?><!--SELECTED--><?php //} ?><!-- >不限模板类型</option>-->
+<!--                    <option value="1" --><?php //if ($params['type'] =='1'){?><!--SELECTED--><?php //} ?><!-- >动态模板</option>-->
+<!--                    <option value="2" --><?php //if ($params['type'] =='2'){?><!--SELECTED--><?php //} ?><!-- >静态模板</option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="text" value="--><?php //echo $params['name']; ?><!--" name="name" placeholder="可输入模板名称查询" autocomplete="off" class="layui-input" >-->
+<!--            </div>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="text" class="layui-input" id="laydate" placeholder="请选择日期">-->
+<!--                <input type="hidden" name="screatedate"  id="screatedate" value="--><?php //echo $params['screatedate'];?><!--">-->
+<!--                <input type="hidden" name="ecreatedate" id="ecreatedate" value="--><?php //echo $params['ecreatedate'];?><!--">-->
+<!--            </div>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <button type="submit" lay-filter="btn_submit" class="layui-btn submit">立即查询</button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+    <!-- 表单 begin -->
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <td>id</td>
+                <td>创建时间</td>
+                <td>所属应用</td>
+                <td>模板名称</td>
+                <td>模板类型</td>
+                <td>模板预览地址</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if($list){?>
+            <?php foreach ($list as $item){ ?>
+            <tr>
+                <td><?php echo $item['id']; ?></td>
+                <td><?php echo date("Y-m-d H:i:s", $item['create_time']); ?></td>
+                <td><?php echo $item['type']==1?'公用模板':$item['app_name']; ?></td>
+                <td><?php echo $item['name']; ?></td>
+                <td><?php echo $item['type']==1?"动态模板":"静态模板"; ?></td>
+                <td><a target="_blank" class="cursor blue" href="<?php echo $item['url']; ?>"><?php echo $item['url']; ?></a></td>
+                <td>
+                    <a class="layui-btn layui-btn-xs edit_table"  data-href="<?php echo $addUrl."?id=".$item['id']; ?>">编辑</a>
+                </td>
+            </tr> 
+            <?php }?>
+            <?php }?>
+        </tbody> 
+    </table>
+    <div class="mr10 cc tc">
+    <?php echo $pager;?>
+    </div>
+    <div>共 <span class="red"><?php echo $total;?> </span> 条结果</div>
+</div>
+<script>
+;(function(){
+    var addUrl = '<?php echo $addUrl; ?>';  // 添加模板
+    var screatedate = "<?php echo $params['screatedate'];?>";
+    var ecreatedate = "<?php echo $params['ecreatedate'];?>";
+    var page = getQueryString('page');
+    var app_id = getQueryString('app_id');
+    var name = getQueryString('name');
+    var type = getQueryString('type');
+
+    // 添加模板
+    $("#addLandingpagetemplate").click(function(){
+        window.location.href = addUrl + "?page="+page+"&app_id="+app_id+"&name="+name+"&type="+type+"&screatedate="+screatedate+"&ecreatedate="+ecreatedate;
+    });
+    
+    // 编辑模板
+    $(".edit_table").click(function(){
+        var href = $(this).attr("data-href");
+        window.location.href = href + "&page="+page+"&app_id="+app_id+"&name="+name+"&type="+type+"&screatedate="+screatedate+"&ecreatedate="+ecreatedate;
+    }); 
+
+    
+    layui.use(['form','element','laydate'], function(){
+        var laydate = layui.laydate;
+        var element = layui.element;
+        var form = layui.form;
+        laydate.render({
+            elem: '#laydate'
+            ,range: '到'
+            ,format: 'yyyy-MM-dd'
+            ,value : screatedate + " 到 " + ecreatedate
+            ,done: function(value, date, endDate){
+                if(value){
+                    var dates = value.split("到");
+                    $("#screatedate").val(dates[0].replace(/\s/g,""));
+                    $("#ecreatedate").val(dates[1].replace(/\s/g,""));
+                }      
+            }
+        });
+    });
+     
+})();
+
+</script>

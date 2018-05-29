@@ -1,0 +1,198 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="items-main-title">
+        <p><a href="<?php echo $checklistUrl;?>">审核应用</a> </p> 
+    </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap"  style="width:1000px;">
+        <form class="layui-form" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用名</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $appInfo['app_name']; ?>" name="app_name" placeholder="" autocomplete="off" class="layui-input" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">Appkey</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $appInfo['app_key']; ?>" name="app_key" placeholder="" autocomplete="off" class="layui-input" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">包名</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $appInfo['package_name']; ?>" name="package_name" placeholder="" autocomplete="off" class="layui-input" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用描述</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $appInfo['app_desc']; ?>" name="app_desc" placeholder="" autocomplete="off" class="layui-input" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">开发者</label>
+                <div class="layui-input-inline">
+                    <input type="text" value="<?php echo $appInfo['developer']; ?>" name="developer" placeholder="" autocomplete="off" class="layui-input" disabled>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">平台类型</label>
+                <div class="layui-input-inline">
+                    <select name="platform" lay-verify="" >
+                        <option value="1" <?php if( $appInfo['platform']==1 ): ?>selected<?php endif; ?> >Android</option>
+                        <option value="2" <?php if( $appInfo['platform']==2 ): ?>selected<?php endif; ?> >iOS</option>
+                    </select> 
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用类型</label>
+                <div class="layui-input-inline">
+                    <select id="appcate_id" name="appcate_id" lay-verify="" lay-search>
+                        
+                    </select> 
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">关键字</label>
+                <div class="layui-input-block">
+                    <table class="layui-table">
+                        <thead>
+                            <tr>
+                                <th>广告位ID</th>
+                                <th>广告位名称</th>
+                                <th>广告位形式</th>
+                                <th>广告位状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php if($appPosList){ ?>
+                        <?php foreach($appPosList as $k1=>$v1){ ?>
+                            <tr>
+                                <td> <?php echo $v1['dever_pos_key']; ?> </td>
+                                <td> <?php echo $v1['dever_pos_name']; ?> </td>
+                                <td> <?php  echo $adPosType[$v1['pos_key_type']]; ?> </td>
+                                <td>
+                                    <input type="checkbox" name="pos_state_<?php echo $v1['id']; ?>" value="<?php echo $v1['state']; ?>" lay-skin="switch" lay-text="开启|关闭" <?php if( $v1['state'] == 1  ){ ?>checked<?php }; ?> disabled>
+                                </td>
+                            </tr> 
+                        <?php }; ?>
+                        <?php }; ?>
+                        </tbody>   
+                    </table>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">应用链接</label>
+                <div class="layui-input-inline">
+                    <a href="<?php echo $appInfo['apk_url']; ?>">
+                        <label class="layui-form-label"><?php echo $appInfo['apk_url']; ?></label>
+                    </a>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">审批意见</label>
+                <div class="layui-input-block">
+                    <textarea name="check_msg" lay-verify="required" placeholder="请输入审批意见" class="layui-textarea"><?php echo $appInfo['check_msg']; ?></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" lay-submit lay-filter="submit_pass">通过审批</button>
+                    <button type="button" class="layui-btn layui-bg-red" lay-submit lay-filter="submit_nopass">审批驳回</button>
+                    <button type="reset" class="layui-btn layui-btn-primary return_list" >返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 表单 begin -->
+</div>
+<script>
+var checkPostUrl = baseurl + '<?php echo $checkPostUrl; ?>';  // 审核 是否通过
+var app_id = '<?php echo $appInfo['app_id']; ?>';  // 
+var checkListUrl = baseurl + '<?php echo $checkListUrl;?>';  //  审核列表页
+var platform = getQueryString('platform');
+var app_name = getQueryString('app_name');
+var page = getQueryString('page');
+
+
+layui.use(['element','form'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    
+    // 获取 应用类型 
+    $.ajax({
+        url : baseurl+"/admin/Baseinfo_App/appType",
+        async: false,
+        data : {'token':token },
+        type : 'post',
+        dataType : 'json',
+        jsonp : 'callback',
+        success:function(data){
+            var list = '<option value="">请选择</option>';
+            for(key in data){
+                var option  = '';
+                for(var i in data[key]){
+                    option = option + `<option value="`+ i +`">`+ data[key][i] +`</option>`;
+                }
+                list = list + `<optgroup label="`+ key +`"> `+ option +`</optgroup>`
+            }
+            $("#appcate_id").html(list); 
+            renderLayuiForm();
+        },
+        error:function(xhr,msg,e){
+            layer.msg(msg); 
+        }
+    });
+
+
+    // 通过 ：表单提交    is_check(是否通过): 1. 通过 -1.驳回不通过
+    form.on('submit(submit_pass)', function(data){
+        data.field.is_check = 1 ;
+        passCheckPost(data.field);
+        return false;
+    });
+
+    // 驳回不通过 ：表单提交    is_check(是否通过): 1. 通过 -1.驳回不通过
+    form.on('submit(submit_nopass)', function(data){
+        data.field.is_check = -1 ;
+        passCheckPost(data.field);
+        return false;
+    });
+
+    // 返回 审核列表
+    $(".return_list").click(function(){
+        window.location.href = checkListUrl + "?platform="+platform+"&app_name="+app_name+"&page="+page;
+        return false;
+    });
+    
+    //  审核ajax 
+    function passCheckPost(data){
+        var index = layer.load(1);
+        data.token = token;
+        data.app_id = app_id;
+        $.ajax({
+            url : checkPostUrl,
+            async: false,
+            data : data,
+            type : 'post',
+            dataType : 'json',
+            jsonp : 'callback',
+            success:function(data){
+                layer.close(index);
+                layer.msg(data.msg); 
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.href = checkListUrl + "?platform="+platform+"&app_name="+app_name+"&page="+page;
+                    },500);
+                }  
+            },
+            error:function(xhr,msg,e){
+                layer.close(index);
+                layer.msg(msg); 
+            }
+        });
+    }
+});
+
+</script>

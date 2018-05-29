@@ -1,0 +1,208 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="items-main-title">
+        <p><?php echo $result['id']!=''?"编辑":"新建"; ?>落地页--选择模板</p>  
+    </div>
+    <!-- 表单 begin -->
+    <div class="items-main-form-wrap">
+        <form class="layui-form" >
+            <input name="token" value="<?php echo $token;?>" type="hidden" />
+            <input type="hidden" name="id"   id=""  value='<?php echo $result['id']; ?>' />
+            <input type="hidden" name="action" id=""  value='<?php echo $result['action']; ?>' />
+            <div class="layui-form-item">
+                <label class="layui-form-label">模板类型</label>
+                <div class="layui-input-block">
+                    <?php if($result['template_type'] == ''){?>
+                        <input type="radio" lay-filter="template_type" value="1" name="template_type" title="动态模板" >
+                        <input type="radio" lay-filter="template_type" value="2" name="template_type" title="静态模板" checked>
+                    <?php }else{ ?>
+                        <input type="radio" lay-filter="template_type" value="1" name="template_type" title="动态模板" <?php echo  $result['template_type'] == 1?'checked':''; ?>>
+                        <input type="radio" lay-filter="template_type" value="2" name="template_type" title="静态模板" <?php echo  $result['template_type'] == 2?'checked':''; ?>>
+                    <?php }?>
+                </div>
+            </div>
+
+            <?php if($result['template_type'] == ''|| $result['template_type']== 2 ){?>
+            <div class="layui-form-item" id="app_select" style="display:block;" >
+            <?php }else{ ?>
+            <div class="layui-form-item" id="app_select" style="display:none;" >
+            <?php } ?>
+                <label class="layui-form-label">选择应用</label>
+                <div class="layui-input-inline">
+                    <select id="app_id" name="app_id" lay-filter="app_id" lay-verify="" lay-search >
+                        <option value="" selected="">请选择</option>
+                        <?php if($appList){?>
+                        <?php foreach ($appList as $item){ ?>
+                            <option value="<?php echo $item['app_id'] ?>" <?php if ($result['app_id'] ==$item['app_id']){?>SELECTED<?php } ?> ><?php echo $item['app_name'] ?><?php echo $item['platform']==1?"(Android)":"(IOS)"; ?></option>
+                        <?php }?>
+                        <?php }?>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="layui-form-item" id="dynamicTemplate">
+                <label class="layui-form-label">动态模板</label>
+                <div class="layui-input-block">
+                    <?php if($dynamicTemplate){?>
+                        <?php foreach ($dynamicTemplate as $item){ ?>
+                            <input type="radio" title="<?php echo $item['name'] ?>" value="<?php echo $item['id'] ?>" name="dynamicTemplate_id" class="radio" <?php echo  $result['template_id'] == $item['id']?'checked':''; ?> id="template_id<?php echo $item['id'] ?>">
+                        <?php }?>
+                    <?php }else{ ?>
+                        <label class="layui-form-label red">暂无</label>
+                    <?php }?>
+                </div>
+            </div>
+            
+            <div class="layui-form-item" id="staticTemplate">
+                <label class="layui-form-label">静态模板</label>
+                <div class="layui-input-block">
+                    <?php if($staticTemplate){?>
+                        <?php foreach ($staticTemplate as $item){ ?>
+                            <input type="radio" title="<?php echo $item['name'] ?>" value="<?php echo $item['id'] ?>" name="staticTemplate_id" class="radio" <?php echo  $result['template_id'] == $item['id']?'checked':''; ?> id="template_id<?php echo $item['id'] ?>">
+                        <?php }?>
+                    <?php }else{ ?>
+                        <label class="layui-form-label red">暂无</label>
+                    <?php }?>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button"  id="goback" type="reset" class="layui-btn layui-btn-primary">返回</button>
+                    <button type="button" lay-submit lay-filter="btn_next" class="layui-btn submit">下一步</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- 表单 begin -->
+</div>
+<script>
+;(function(){
+    var getStaticTemplateUrl = baseurl + '<?php echo $getStaticTemplateUrl ?>'; // 获取静态模板
+    var addPostUrl = baseurl + '<?php echo $addPostUrl; ?>'; // 提交模板选择
+    var addStaticUrl = baseurl + '/Admin/Systemtool_Landingpage/addStatic';  // 编辑模板内容页面
+    var listUrl = baseurl + '<?php echo $listUrl; ?>'; // 列表页面
+
+    var screatedate = getQueryString('screatedate');
+    var ecreatedate = getQueryString('ecreatedate');
+    var page = getQueryString('page');
+    var app_id = getQueryString('app_id');
+    var title = getQueryString('title');
+    
+    //判断 显示 静态模板 或 动态模板
+    function isTemplateType(checked){
+        if(checked){
+            if(checked==1){
+                $("#dynamicTemplate").show();
+                $("#staticTemplate").hide();
+            }else if(checked==2){
+                $("#dynamicTemplate").hide();
+                $("#staticTemplate").show();
+            }
+        }
+    }
+
+    //初始化 模板类型
+    var checked = $("input[name='template_type']:checked").val();
+    isTemplateType(checked);
+
+
+    layui.use(['form','element'], function(){
+        var element = layui.element;
+        var form = layui.form;
+
+        // 模板类型切换
+        form.on('radio(template_type)', function(data){
+            if(data.value==1){
+                $("#dynamicTemplate").show();
+                $("#staticTemplate").hide();
+                $("#app_select").hide();
+            }else{
+                $("#dynamicTemplate").hide();
+                $("#staticTemplate").show(); 
+                $("#app_select").show();
+            }
+        }); 
+
+        // 选择应用获取 静态列表
+        form.on('select(app_id)', function(data){
+            $.ajax({
+                url : getStaticTemplateUrl + "?app_id="+ data.value,
+                async: false,
+                data : null,
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    if(data.code==0){
+                        var list = data.data;
+                        var temp = '';
+                        if(list && list.length>0){
+                            for(var key in list){
+                                temp = temp + `<input type="radio" title="`+ list[key]['name'] +`" value="`+ list[key]['id'] +`" name="staticTemplate_id" class="radio">`; 
+                            }
+                        }else{
+                            temp = '<label class="layui-form-label red">暂无</label>';
+                        }
+                        $("#staticTemplate div").html(temp);
+                        renderLayuiFormAndTab();
+                    }else{
+                        layer.msg(data.msg); 
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg); 
+                }
+            });
+        });
+
+        // 提交 下一步
+        form.on('submit(btn_next)', function(data){
+            if(data.field.template_type==1){
+                data.field.template_id = $("input[name='dynamicTemplate_id']:checked").val();
+            }if(data.field.template_type==2){
+                data.field.template_id = $("input[name='staticTemplate_id']:checked").val();
+            }
+            var id = data.field.id;
+            $.ajax({
+                url : addPostUrl,
+                async: false,
+                data : data.field,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    if(data.success){
+                        window.location.href =addStaticUrl + "?id="+id+"&screatedate="+screatedate+"&ecreatedate="+ecreatedate+"&page="+page+"&app_id="+app_id+"&title="+title;
+                    }else{
+                        layer.msg(data.msg); 
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg); 
+                }
+            });
+            return false; 
+        });
+    });
+
+    // 返回上一页
+    $("#goback").click(function(){
+        window.location.href = listUrl + "?screatedate="+screatedate+"&ecreatedate="+ecreatedate+"&page="+page+"&app_id="+app_id+"&title="+title;
+    });
+
+
+})();
+
+//重新渲染
+function renderLayuiFormAndTab(){
+    layui.use(['element','form'], function(){
+        layui.element.init();
+        layui.form.render();
+    });
+}
+
+
+
+
+</script>

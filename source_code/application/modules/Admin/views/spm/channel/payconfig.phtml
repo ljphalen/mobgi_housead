@@ -1,0 +1,203 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>付费回调管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="channel_name" placeholder="请输入渠道名" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                            <button id="addConfig" type="button" class="right layui-btn layui-btn-normal">新建配置</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+
+                <script type="text/html" id="barstatus">
+                    {{#   if(d.status =='ON'){     }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" checked>
+                    {{#  } else { }}
+                    <input data-id={{d.id}} type="checkbox" name="" lay-filter="switchStatus" lay-skin="switch" lay-text="开启|关闭" >
+                    {{#  } }}
+                </script>
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+<script>
+    var searchCondition = { curr:1 , where:{ channel_name:'' } }; // 缓存搜索条件,查询数据
+    var addPayConfigUrl = baseurl + '<?php echo $addPayConfigUrl; ?>'; // 新建，编辑 付费回调配置
+    var changePayConfigStatusUrl = baseurl + '<?php echo $changePayConfigStatusUrl; ?>'; // 改变回调状态
+    var page = getQueryString("page");
+    var channel_name = getQueryString("channel_name");
+
+    // 初始化搜索条件
+    $("input[name='channel_name']").val(channel_name);
+
+    //JavaScript代码区域
+    layui.use(['element','form','laydate','table'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var table = layui.table;
+        var url = baseurl + "<?php echo $payConfigListUrl; ?>"; // 渲染表格
+        var cols = [[ //表头
+            {field: 'channel_no', title: '渠道编号',  sort: true  }
+            ,{field: 'channel_name', title: '渠道名称',  sort: true  }
+            ,{field: 'expression', title: '付费计算公式（原始金额币种为 元）',  sort: true }
+            ,{field: 'pay_callback', title: '付费回调地址',  sort: true }
+            ,{field: 'update_time', title: '更新时间',  sort: true }
+            ,{field: 'status', title: '合作状态',  sort: true , toolbar: '#barstatus' }
+            ,{field: '', title: '操作', align:'center', toolbar: '#barDemo'}
+        ]];
+
+        //初始化表格
+        var initTable = {
+            elem: '#activity_table',
+            where: { token:token , name:name },
+            url : url ,
+            cols: cols ,
+            page : { curr:page }
+        };
+        renderTable(table,initTable,null);
+
+        //监听搜索按钮
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            searchCondition = field;
+            field.token = token;
+            var params = {
+                elem: '#activity_table',
+                url : url,
+                where: field,
+                cols: cols,
+                page : true
+            }
+            renderTable(table,params,null);
+            return false;
+        });
+
+        //监听单元格事件  -- 查看 ， 编辑
+        table.on('tool(activity_table)', function(obj){
+            var data = obj.data;
+            var page = searchCondition.curr,
+                channel_name = searchCondition.where.channel_name;
+            if(obj.event === 'edit'){  // 编辑
+                window.location.href = addPayConfigUrl + "?id="+data.id;
+            }
+        });
+
+        // 更改合作状态
+        form.on('switch(switchStatus)', function(data){
+            var obj = new Object();
+            if(data.elem.checked){
+                obj.status = 'ON';
+            }else{
+                obj.status = 'OFF';
+            }
+            obj.token = token;
+            obj.id = $(data.elem).attr("data-id");
+            $.ajax({
+                url : changePayConfigStatusUrl ,
+                async: false,
+                data : obj,
+                type : 'post',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                    if(data.success){
+                        layer.msg("操作成功");
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                },
+                error:function(xhr,msg,e){
+                    layer.msg(msg);
+                }
+            });
+
+        });
+
+        // 新建渠道
+        $("#addConfig").click(function(){
+            var page = searchCondition.curr,
+                channel_name = searchCondition.where.channel_name;
+            window.location.href = addPayConfigUrl ;
+        });
+
+    });
+
+    //  渲染table
+    function renderTable(table,data,callback){
+        var callBakcData = {};
+        //第一个实例
+        table.render({
+            elem: data.elem
+            ,url: data.url //数据接口
+            ,method: 'post'
+            ,response: {
+                statusName: 'success' //数据状态的字段名称，默认：code success
+                ,statusCode: 0 //成功的状态码，默认：0
+                ,msgName: 'msg' //状态信息的字段名称，默认：msg
+                ,countName: 'count' //数据总数的字段名称，默认：count
+                ,dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            ,where: data.where
+            ,limit: '10'
+            ,page: data.page //开启分页
+            ,cols: data.cols
+            ,done: function(res, curr, count){
+                callBakcData.where = data.where;
+                callBakcData.curr = curr;
+                callBakcData.res = res;
+                callBakcData.count = count;
+                searchCondition = callBakcData;
+                //console.log(searchCondition);
+                if(callback){
+                    try{
+                        callback.done(callBakcData);
+                    }catch(e){
+
+                    }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+  <style>
+#gamelist{width:30%;background:#fff;border:1px solid #dedede;padding:5px;}
+#gamelist li{width:100%;height:25px;line-height:25px;text-indent:15px;
+             border-bottom:1px dashed #ccc;color:#666;cursor:pointer;}
+</style>
+<div class="colMain" style="min-height: 173px;">
+    <div class="nav">
+		<ul class="cc">
+	    	<li ><a href="<?php echo $listUrl;?>">应用列表</a></li>
+			<li class="current"><a href="<?php echo $addAppUrl;?>"><?php echo $navTitle; ?>应用</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="appdetail_nav">
+            <ul class="clearfix">
+                <li class="cur"><span>1</span>填写基本资料<i class="navline2"></i></li>
+                <li><span>2</span>添加广告位<i class="navline1"></i><i class="navline2"></i></li>
+                <li><span>3</span>添加完成<i class="navline1"></i></li>
+            </ul>
+        </div>
+        <div class="app-detail">
+            <form action="<?php echo $addAppPostUrl; ?>" method="POST" enctype="multipart/form-data" class="app_form"  id="addForm" >
+                <input type="hidden" name="app_id" value="<?php echo $appInfo['app_id'];?>">
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">
+                    <li>
+                        <span class="label">应用名称：</span>
+                        <div class="fc">
+					<?php if($appInfo['app_id']){?>
+							<input type="text" class="iText required" placeholder="请输入应用名称" required="" name="app_name" style="width: 220px;" value="<?php echo $appInfo['app_name']?>">
+							<?php }else{?>
+							<input type="text" class="iText required" placeholder="请输入应用名称" required="" name="app_name" style="width: 220px;"value="">
+							<?php }?>
+                            <span class="red">*</span>
+                            <ul id="gamelist" style="display:none;" onmouseout="javascript:$('#gamelist').toggle()"></ul>
+                        </div>
+                    </li>
+                     <li>
+                        <span class="label">应用链接：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="apk_url" class="iText " style="width:220px;" name="apk_url" value="<?php echo $appInfo['apk_url'];?>">
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">Appkey：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="app_key" class="iText required" required="" style="width:220px;" name="app_key" value="<?php echo $appInfo['app_key'];?>"    <?php echo $appInfo['app_id']?'readonly':''?>>
+                             <?php if(!$appInfo['app_id']){?>
+                             <input type="button" onclick="javascript:createAppkey()" value="点击生成app_key">
+                             <?php }?>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">平台类型：</span>
+                        <div class="fc">
+                            <select id="platform" name="platform">
+                                <option value="1"  <?php  echo ($appInfo['platform'] == 1)?'SELECTED':'' ; ?> >Android</option>
+                                <option value="2" <?php  echo ($appInfo['platform'] == 2)?'SELECTED':'' ; ?> >IOS</option>
+                            </select>
+                        </div>
+                    </li>
+                     <li>
+                        <span class="label">开发者：</span>
+                        <div class="fc">
+                       <select name='dev_id' class='' style='width:120px' id="dev_id">  
+	                	<option value=''>所有开发者</option>
+	                   <?php foreach($userList as $key=>$value){?>    
+                        <option value="<?php echo $value['user_id']; ?>"  <?php echo  $appInfo['dev_id'] == $value['user_id']?'selected=selected':''; ?>  ><?php echo $value['email']?></option>
+                        <?php } ?>   
+                        </select>
+                       </li>    
+                    <li>
+                        <span class="label">应用包名：</span>
+                        <div class="fc Menu2">
+                            <input type="text" id="package_name" placeholder="请输入应用包名" class="iText required" required="" style="width:220px;" name="package_name" value="<?php echo $appInfo['package_name'];?>">
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                     <li>
+                        <span class="label">业务类型：</span>
+                        <div class="fc">
+                            <select  name="app_type">
+                                <?php foreach($appType as $key=>$value){?>    
+                    				<option value="<?php echo $key; ?>"  <?php echo  $appInfo['app_type'] == $key?'selected=selected':''; ?>  ><?php echo $value;?></option>
+                   				 <?php } ?>  
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">应用分类：</span>
+                        <div class="fc">
+                            <div class="iText" id="appType"><span><?php echo $appInfo['appcate_name']?$appInfo['appcate_name']:'请选择应用分类';?></span><input type="hidden" name="appcate_id" value="<?php echo $appInfo['appcate_id'];?>" autocomplete="off"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">应用描述：</span>
+                        <div class="fc">
+                            <textarea name="app_desc" placeholder="英文逗号分割，最多100个字符。"><?php echo $appInfo['app_desc'];?></textarea>
+                        </div>
+                    </li>
+                     <li>
+                        <span class="label">关键字：</span>
+                        <div class="fc">
+                            <textarea name="keyword" placeholder="英文逗号分割，最多100个字符。"><?php echo $appInfo['keyword'];?></textarea>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">icon图片上传：</span>
+                            <div id="iconImg" >
+                                <span>icon</span><br>
+                                    <img class="fc" src="<?php echo $appInfo['icon']?$attachPath.$appInfo['icon']:$staticPath.'/img/content/nopic.jpg';?>" style="width:100px;height:100px;"/>
+                                    <input type="hidden" name="icon" value="<?php echo  $appInfo['icon'] ; ?>">
+                            </div>
+                                <div class="fc"  >
+                                <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=iconImg';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                    </li>
+                    <li>
+                        <span class="label">游戏中心的ＩＤ：</span>
+                        <div class="fc">
+                            <input type="text" id="out_game_id" placeholder="请输入游戏中心的ID" class="iText " required="" style="width:220px;" name="out_game_id" value="<?php echo $appInfo['out_game_id'];?>">
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">投放监控：</span>
+                        <div class="fc">
+                            <select id="is_track" name="is_track">
+                                <option value="0" <?php echo  $appInfo['is_track'] == '0'?'selected=selected':''; ?> >关闭</option>
+                                <option value="1" <?php echo  $appInfo['is_track'] == '1'?'selected=selected':''; ?> >开启</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="deliverySpm" <?php echo  $appInfo['is_track'] == '1'?'':'style="display: none;"'; ?> >
+                        <span class="label">投放类型：</span>
+                        <div class="fc">
+                            <select  name="delivery_type">
+                                <option value="1" <?php echo  $appInfo['delivery_type'] == '1'?'selected=selected':''; ?> >普通</option>
+                                <option value="2" <?php echo  $appInfo['delivery_type'] == '2'?'selected=selected':''; ?> >代理(SDK不植入)</option>
+                                <option value="3" <?php echo  $appInfo['delivery_type'] == '3'?'selected=selected':''; ?> >代理(SDK植入)</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="deliverySpm" <?php echo  $appInfo['is_track'] == '1'?'':'style="display: none;"'; ?> >
+                        <span class="label">appstoreId：</span>
+                        <div class="fc">
+                            <input type="text" id="appstore_id" placeholder="请输入游戏的商店ID" class="iText " required="" style="width:220px;" name="appstore_id" value="<?php echo $appInfo['appstore_id'];?>">
+                        </div>
+                    </li>
+                    <li class="deliverySpm" <?php echo  $appInfo['is_track'] == '1'?'':'style="display: none;"'; ?> >
+                        <span class="label">consumerKey：</span>
+                        <div class="fc">
+                            <input type="text" id="consumer_key" placeholder="请输入乐逗游戏Key" class="iText " required="" style="width:220px;" name="consumer_key" value="<?php echo $appInfo['consumer_key'];?>">
+                        </div>
+                    </li>
+                    <input type="hidden" id="save_type" value="0" />
+                    <li>
+                        <div class="fc">
+                            <input type="button" id="saveForm" value="保存应用" class="submit">
+                            <input type="button" id="saveFormAddPos" value="保存应用并新建广告位" style="width:150px;" class="submit">
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl?>'">
+                        </div>
+                    </li>
+                </ul>
+            </form>
+           
+        </div>
+    </div>
+</div>
+<script src="<?php echo $staticPath; ?>/js/common/app-type.js?<?php echo $version; ?>" type="text/javascript"></script>
+ <script src="<?php echo $staticPath; ?>/js/common/games.js?<?php echo $version; ?>" type="text/javascript"></script>
+ <script src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js?<?php echo $version; ?>" type="text/javascript" ></script>
+<link   href="<?php echo $staticPath; ?>/css/chosen.css?<?php echo $version; ?>" rel="stylesheet"  type="text/css" >
+<script>
+$(function(){
+   	 	$('#dev_id').chosen();
+        $("#appType").appType({
+            url:baseurl+"/admin/Baseinfo_App/appType",
+            param:{'token':token}
+        });
+        $("#is_track").change(function(){
+            var is_track = $("#is_track").val();
+            if(is_track == 1){
+                $(".deliverySpm").show();
+            }else{
+                $(".deliverySpm").hide();
+            }
+        });
+        $("#saveForm").bind("click", function () {
+            $("#save_type").val("1");
+            $("#addForm").submit();
+        });
+        $("#saveFormAddPos").bind("click", function () {
+            $("#save_type").val("0");
+            $("#addForm").submit();
+        });
+        ajaxForm('addForm',function(ret){
+            var save_type = $("#save_type").val();
+            if(save_type == "1"){
+                ajaxRedirect(ret, baseurl+'/admin/Baseinfo_App/index');
+            }else{
+                ajaxRedirect(ret, baseurl+'<?php echo $addPosUrl."?app_id="; ?>'+ret.data.app_id);
+            }
+        });
+
+	})   
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

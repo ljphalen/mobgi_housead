@@ -1,0 +1,168 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<body>
+    <div class="layui-fluid wrapper">
+        <div class="layui-row layui-col-space30">
+            <div class="items-wrap wrap-bg space-top mian-h">
+                <!-- titile begin -->
+              <div class="layui-tab layui-tab-brief">
+                    <ul class="layui-tab-title">
+                        <li ><a href="<?php echo $listUrl;?>">原生模板管理列表</a></li>
+                        <li class="layui-this"><a href="<?php echo $addUrl;?>"><?php echo $info['id']?'编辑':'添加'; ?>原生模板</a></li>
+                    </ul>
+                </div>
+                <!-- titile end  -->
+                <div class="temp-upload-wrap">
+                <form class="layui-form" action="<?php echo $addPostUrl;?>" method="POST"  id="addForm">
+                     <input name="url" type="hidden"  value="<?php  echo $info['url'];  ?>" />
+                    <input name="token" type="hidden"  value="<?php  echo $token;  ?>" />
+                    <input name="id" type="hidden"  value="<?php  echo $info['id'];  ?>" />
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模板名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" placeholder="请输入模板名称" class="layui-input" value="<?php  echo $info['name'];  ?>">
+                        </div>
+                    </div>
+                   <div class="layui-form-item">
+                    <label class="layui-form-label">广告类型</label>
+                    <div class="layui-input-inline">
+                      <select name="ad_type">
+                                <option value="" >所有广告类型</option>
+                               <?php foreach ($adTypeList as $adType=> $val){?>
+                                 <option value="<?php echo $adType;?>"  <?php echo ($info['ad_type'] == $adType)?"selected":'';?>><?php echo $val; ?></option>
+                                <?php }?>
+                             </select> 
+                    </div> 
+                </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">上传模板</label>
+                        <div class="layui-input-inline">
+                            <button type="button" class="layui-btn" id="uploadTemplatid">
+                                <i class="layui-icon">&#xe67c;</i>点击上传
+                            </button>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <?php if($info['url']){?>
+                             <?php echo $attachPath.$info['url']; ?>
+                            <?php } ?>
+                        </div>
+                    </div>
+                      <hr class="layui-bg-gray">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-big layui-btn-normal" type="button" lay-submit lay-filter="formTest">立即提交</button>
+                            <button class="layui-btn layui-btn-big layui-btn-primary cannel" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function(){
+
+	var xhrOnProgress=function(fun) {
+		  xhrOnProgress.onprogress = fun; //绑定监听
+		  //使用闭包实现监听绑
+		  return function() {
+		    //通过$.ajaxSettings.xhr();获得XMLHttpRequest对象
+		    var xhr = $.ajaxSettings.xhr();
+		    //判断监听函数是否为函数
+		    if (typeof xhrOnProgress.onprogress !== 'function')
+		      return xhr;
+		    //如果有监听函数并且xhr对象支持绑定时就把监听函数绑定上去
+		    if (xhrOnProgress.onprogress && xhr.upload) {
+		      xhr.upload.onprogress = xhrOnProgress.onprogress;
+		    }
+		    return xhr;
+		  }
+		}
+    //取消按钮
+    $(".cannel").click(function(){
+             window.location.href= baseurl +'<?php echo $listUrl;?>';
+     });
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        var $ = layui.jquery;
+        var percent;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadTemplatid' //绑定元素
+            ,url: '<?php echo $uploadPostUrl;?>' //上传接口
+            ,method:'POST'
+            ,accept:'file'
+            ,size:0
+            ,data:{'token':token}
+            ,before: function(obj){ 
+                //console.log(obj);
+                var files = obj.pushFile();
+                //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+               // obj.preview(function(index, file, result){
+                 // console.log(index); //得到文件索引
+               //   console.log(file); //得到文件对象
+             //     console.log(result); //得到文件base64编码，比如图片
+                  
+                  //这里还可以做一些 append 文件列表 DOM 的操作
+                  
+                  //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+                  //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+              // });
+               layer.load(); //上传loading
+              }
+            ,xhr:xhrOnProgress(function(e){
+                var percent=e.loaded / e.total;//计算百分比
+              })
+            ,done: function(res){
+                if(res.success){
+              	     layer.closeAll('loading'); 
+                    var attachPath = '<?php echo $attachPath;?>';
+                    var uploadtext = '<span class="green">上传成功：</span>'
+                    $("input[name='url']").val(res.data);
+                    $(".layui-form-mid").html(uploadtext+attachPath+res.data);
+                    layer.msg('上传成功'); 
+                 }else{
+               	     layer.closeAll('loading'); 
+                     layer.msg(res.msg); 
+                  }
+            //上传完毕回调
+            }
+            ,error: function(xhr,msg,e){
+            	layer.msg(msg); 
+              }
+        });
+    });
+
+    //form 表单 提交
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('submit(formTest)', function(data){
+                var jsonData = $("form").serializeArray();
+                $.ajax({
+                    url : baseurl + '<?php echo $addPostUrl?>',
+                    async: false,
+                    data : jsonData,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.msg(data.msg); 
+                        if(data.success){
+                                setTimeout(function() {      
+                                window.location.href= baseurl +'<?php echo $listUrl;?>';
+                            }, 500); 
+                            //跳转
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.msg(msg); 
+                    }
+                });
+                return false;  
+        }); 
+    });
+
+})();
+
+
+</script>

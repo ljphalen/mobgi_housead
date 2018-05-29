@@ -1,0 +1,1 @@
+hello,{$nick_name},截至{$last_time},任务报警{$taskLog_count}条,其中,ecpm报警{$ecpm_count}条,人均报警{$capital_count}条,活跃报警{$active_count}条,请尽快上线处理!

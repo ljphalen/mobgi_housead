@@ -1,0 +1,49 @@
+<table border="0" cellpadding="0" cellspacing="0" width="100%">	
+		<tr>
+			<td style="padding: 10px 0 30px 0;">
+				<table align="center" border="0" cellpadding="0" cellspacing="0" width="1000" style="border: 1px solid #cccccc; border-collapse: collapse;">
+					<tr>
+						<td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+							<table border="0" cellpadding="0" cellspacing="0" width="100%">
+								<tr>
+									<td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+										<b>Hello,{$nick_name}:</b>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">截至{$last_time},任务报警{$taskLog_count}条,请尽快处理,详情如下:
+									</td>
+								</tr>
+							</table>
+							<table border="0" cellpadding="0" cellspacing="0" width="100%" align="center" >
+									<tr> 
+										<th style="width:14.28%;border:1px solid #ccc;padding:5px;">监控项</th> 
+										<th style="width:14.28%;border:1px solid #ccc;padding:5px;">所属应用</th> 
+										<th style="width:14.28%;border:1px solid #ccc;padding:5px;">报警时间</th>
+										<th style="width:14.28%;border:1px solid #ccc;padding:5px;">级别</th> 
+										<th style="width:14.28%;border:1px solid #ccc;padding:5px;">实际值</th> 
+										<th style="width:14.28%;border:1px solid #ccc;padding:5px;">预估值</th> 
+										<th style="width:14.28%;border:1px solid #ccc;padding:5px;">差值</th> 								
+									</tr>
+										{$content}
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
+							<table border="0" cellpadding="0" cellspacing="0" width="100%">
+								<tr>
+									<td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
+										&reg;IdreamSky AD Department <br>
+										16/F, A3 Bld, Kexing Science Park, 15 Keyuan Rd, Nanshan District, Shenzhen,China 2017 <br>
+										The E-mail sent automatically, please do not reply
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+</table>
+

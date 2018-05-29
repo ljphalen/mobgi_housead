@@ -1,0 +1,239 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl">定向管理</p>
+        </div>
+        <div class="main">
+            <div class="toolbar">
+                <a href="<?php echo $addUrl ?>" class="fr add" style="width:80px;">新增定向</a>
+            </div>
+            
+            <div style="margin:10px 0" class="app-detail">
+                <div class="main">
+                    <div class="content">
+                        <div class="grid">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th width="13%">定向名称</th>
+                                        <th width="7%">关联广告数</th>
+                                        <th width="15%">地域定向</th>
+                                        <th width="10%">用户属性定向</th>
+                                        <th width="25%">移动设备定向</th>
+                                        <th width="20%">游戏行为定向</th>
+                                        <th width="10%">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($list as $direct){ ?>
+                                    <tr>
+                                        <td>
+                                            <span class='direct_name_span'>
+                                                <?php echo $direct['direct_name']?>
+                                            </span>
+                                            <a  class='edit ml20 edit_name'  direct_name='<?php echo $direct['direct_name']?>' direct_id='<?php echo $direct['id'];?>'></a>
+                                        </td>
+                                        <td><?php echo $direct['relation_ad_num']?></td>
+                                        <td>
+                                            <?php 
+                                            if($direct['area_type'] == 0){
+                                                echo "不限";
+                                            }else{
+                                                 foreach ($provinceList as $key=>$val){
+                                                     if(in_array($key, $direct['area_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php 
+                                            if($direct['age_direct_type'] == 0){
+                                                echo "不限年龄;";
+                                            }else{
+                                                foreach ($ageDirectList as $key=>$val){
+                                                    if(in_array($key, $direct['age_direct_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                }
+                                                echo ";";
+                                            }
+                                            if($direct['sex_direct_type'] == 0){
+                                                echo "不限性别;";
+                                            }else{
+                                                echo $sexTypeList[$direct['sex_direct_type']];
+                                            }
+                                            
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            if($direct['os_direct_type'] == 0){
+                                                echo "不限系统;";
+                                            }else{
+                                                echo $osTypeList[$direct['os_direct_type']].";";
+                                            }
+                                            
+                                            if($direct['network_direct_type'] == 0){
+                                                echo "不限网络环境;";
+                                            }else{
+                                                 foreach ($netWorkList as $key=>$val){
+                                                     if(in_array($key, $direct['network_direct_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                                 echo ";";
+                                            }
+                                            
+                                            if($direct['operator_direct_type'] == 0){
+                                                echo "不限运营商;";
+                                            }else{
+                                                 foreach ($operatorList as $key=>$val){
+                                                     if(in_array($key, $direct['operator_direct_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                                 echo ";";
+                                            }
+                                            
+                                            if($direct['brand_direct_type'] == 0){
+                                                echo "不限手机品牌;";
+                                            }else{
+                                                 foreach ($brandList as $key=>$val){
+                                                     if(in_array($key, $direct['brand_direct_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                                 echo ";";
+                                            }
+                                            
+                                            if($direct['screen_direct_type'] == 0){
+                                                echo "不限屏幕大小;";
+                                            }else{
+                                                 foreach ($screenList as $key=>$val){
+                                                     if(in_array($key, $direct['screen_direct_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                                 echo ";";
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php 
+                                            if($direct['interest_direct_type'] == 0){
+                                                echo "不限游戏兴趣;";
+                                            }else{
+                                                 foreach ($interestList as $key=>$val){
+                                                     if(in_array($key, $direct['interest_direct_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                                 echo ";";
+                                            }
+                                            
+                                            if($direct['pay_ability_type'] == 0){
+                                                echo "不限付费能力;";
+                                            }else{
+                                                 foreach ($payAbilityList as $key=>$val){
+                                                     if(in_array($key, $direct['pay_ability_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                                 echo ";";
+                                            }
+                                            
+                                            if($direct['game_frequency_type'] == 0){
+                                                echo "不限游戏频率;";
+                                            }else{
+                                                 foreach ($gameFrequencyList as $key=>$val){
+                                                     if(in_array($key, $direct['game_frequency_range'])){
+                                                         echo $val." ";
+                                                     }
+                                                 }
+                                                 echo ";";
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <a id="<?php echo $direct['id'] ?>" class="copy">复制</a>&nbsp;
+                                            <a href="<?php echo $addUrl. "?id=". $direct['id']?>">编辑</a>&nbsp;
+                                            <a onclick="deleteOne('<?php echo $delUrl;?>/?id=<?php echo $direct['id'];?>', '是否要删除该定向？', event);" href='javascript:'>删除</a>
+                                        </td>
+                                    </tr>
+                                    <?php }?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <?php echo $pager;?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js??v=<?php echo $version;?>"></script>
+<link href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script type="text/javascript">
+$(function(){
+   
+    $(".copy").click(function(){
+        id = $(this).attr('id')
+        $.ajax({
+            url: "<?php echo $copyUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'id':id },
+            success: function(ret) {
+                if (ret.success) {
+                    showMsg('', ret.msg);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    });
+    
+    $(".edit_name").click(function(){
+        direct_name = $(this).attr('direct_name')
+        direct_id = $(this).attr('direct_id')
+        input_id = 'name_input_' + direct_id
+        input_str = '<input type="text" class="" value="'+ direct_name +'" class="direct_name" id="'+input_id+'">'
+        $(this).siblings('.direct_name_span').hide().after(input_str);
+        $("#" + input_id).focus()
+        $("#" + input_id).blur(function(){
+            $.ajax({
+                url: "<?php echo $changenameUrl  ?>",
+                type: "POST",
+                dataType : 'json',
+                data : { 'token':token, 'id':direct_id, 'direct_name':$("#"+input_id).val() },
+                success: function(ret) {
+                    if (ret.success) {
+                        showMsg('', ret.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                    $("#" + input_id).siblings('.direct_name_span').show()
+                    $("#" + input_id).remove()
+                }
+            });
+        });
+    });
+    
+    
+    
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

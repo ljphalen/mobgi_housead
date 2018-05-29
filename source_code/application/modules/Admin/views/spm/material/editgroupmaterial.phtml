@@ -1,0 +1,268 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<link href="<?php echo $staticPath?>/css/spm/material.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticPath?>/css/spm/groupDropdown2.css?v=<?php echo $version;?>" rel="stylesheet" />
+<style>
+    .layui-btn-sm{
+        margin-top: 10px;
+    }
+    .layui-form-item .layui-input-inline {
+        float: left;
+        width: 190px;
+        margin-right: 20px;
+    }
+</style>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+        <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>编辑<?php echo $info['name'];?></p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <select name="mk_operator" lay-verify="" lay-search>
+                                    <option value="" selected>所有创意</option>
+                                    <?php foreach ($userList as $key=>$val){?>
+                                        <option value="<?php echo $val['user_id'];?>" ><?php echo $val['user_name'];?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <!-- <input type="hidden" name="selectLabels[]" id="selectlabels" value=""> -->
+                                <div class="test">
+                                </div>
+                            </div>
+
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn submit" >批量操作</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 查询条件 end  -->
+                <!-- 素材列表 begin-->
+                <div class="material-wrap layui-form" style="overflow: hidden;">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th><input lay-filter="layTableCheckboxAll" class="layTableCheckboxAll" type="checkbox" name="layTableCheckbox" lay-skin="primary"></th>
+                            <th>名称</th>
+                            <th>标签</th>
+                            <th>创意</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($list as $key=>$val){?>
+                        <tr>
+                            <td><input type="checkbox" value="<?php echo $val['id'];?>" lay-filter="layTableCheckbox" class="layTableCheckbox" name="layTableCheckbox" lay-skin="primary"></td>
+                            <td><?php echo $val['name'];?></td>
+                            <td><?php echo $val['labelName'];?></td>
+                            <td><?php echo $val['mk_operator'];?></td>
+                            <td><?php echo $val['create_time'];?></td>
+                            <td width="20%;"><a href="editMaterial?id=<?php echo $val['id'];?>" class="layui-btn" >修改</a>&nbsp;<button class="layui-btn layui-btn-danger delGroup" data-id="<?php echo $val['id'];?>" href="#">删除</button></td>
+                        </tr>
+                        <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 素材列表 end-->
+                <div id="page" style="padding-left: 40%;"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="<?php echo $staticPath?>/js/common/groupDropdown2.js"></script>
+<script>
+
+    var editGroupMaterialUrl = baseurl +'/Admin/Spm_Material/saveEditGroupMaterial'; // 批量修改
+    var delGroupMaterialUrl = baseurl +'/Admin/Spm_Material/delMaterial'; // 删除
+    //JavaScript代码区域
+    
+    $(document).ready(function(){
+         //多选插件
+        var data =JSON.parse('<?php echo $labelList;?>');
+        $(".test").groupDropdown({
+            //data: data, // 所有数据
+            name: 'label',
+            // 标签数据请求
+            requestData: {
+                data: {token:token}, // 请求参数
+                url: 'getLabels', // 请求url
+            },
+            isUpdata: true, // 是否每次打开，请求标签数据
+            selected: [], // 选中值
+            selectedShow: false, // 是否显示侧边栏
+            // 添加 二级标签
+            addLabelOpts: {
+                data: {token:token}, // 请求参数
+                url: 'addLevel2Label',
+            },
+            addLabelCallback: function (data) {
+                //console.log(data);
+                //  $("select[name='label[]']").val(data.toString())
+            },
+            //
+            // 选中值 回调函数
+            onSelect(arr) {
+                // console.log("arr:", arr)
+                // console.log(this)
+            }
+        });
+
+        layui.use(['element', 'form', 'laydate', 'table'], function () {
+            var $ = layui.$;
+            var element = layui.element;
+            var table = layui.table;
+            var form = layui.form;
+            form.on('checkbox(layTableCheckboxAll)', function(data){
+                var e = window.event 
+                e.stopPropagation()
+                if(data.elem.checked){
+                    $(".layTableCheckbox").prop("checked",true);      
+                }else{
+                    $(".layTableCheckbox").prop("checked",false);
+                }
+                console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+                renderLayuiForm();
+            }); 
+
+            form.on('checkbox(layTableCheckbox)', function(data){
+                var e = window.event 
+                e.stopPropagation()
+                console.log(data.elem.checked)
+                console.log(data.value);
+                //$("input[name='ids[]']").val(data.value)
+                renderLayuiForm();
+            }); 
+
+
+        });
+    })  
+    
+    $(".submit").click(function(){
+         var fields = $(".query-condition :input").serializeArray();
+         var ids = [];
+         $(".layTableCheckbox").each(function(){
+             if($(this).prop('checked')){
+                 var a = $(this).val();
+                 ids.push(a);
+             }
+         });
+         if(ids.length == 0){
+             layer.msg("请勾选需要修改的素材!");
+             return false;
+         }
+         var id = ids.join(',');
+         layer.confirm('是否确认修改', {icon: 3, title:'提示'}, function(index){
+             $.ajax({
+                 url : editGroupMaterialUrl,
+                 async: false,
+                 data : {ids:id,params:fields,token:token},
+                 type : 'post',
+                 dataType : 'json',
+                 jsonp : 'callback',
+                 success:function(data){
+                     layer.msg(data.msg);
+                     if(data.success){
+                         setTimeout(function(){
+                             window.location.reload();
+                         },500);
+                     }
+                 },
+                 error:function(xhr,msg,e){
+                     layer.msg(msg);
+                 }
+             });
+         });
+
+    });
+  
+
+
+
+    // 删除记录
+    $(".delGroup").click(function(e){
+        var id = $(this).attr('data-id');
+        layer.confirm('是否确认删除', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url : delGroupMaterialUrl,
+                async: false,
+                data : {id:id},
+                type : 'get',
+                dataType : 'json',
+                jsonp : 'callback',
+                success:function(data){
+                layer.msg(data.msg);
+                if(data.success){
+                    setTimeout(function(){
+                        window.location.reload();
+                    },500);
+                }
+            },
+            error:function(xhr,msg,e){
+                layer.msg(msg);
+            }
+        });
+//            oLi.remove();
+//            layer.close(index);
+        });
+       //
+        // 阻止冒泡
+        var ev = e || event;
+        ev.stopPropagation();
+        ev.preventDefault();
+    });
+
+
+   
+
+  //重新渲染form
+    function renderLayuiForm(){
+        layui.use(['form','element'], function(){
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+    //  table 表格
+    $(".layTableCheckboxAll").click(function(){
+        var checked =  $(this).prop("checked");
+        if(checked){
+            $(".layTableCheckbox").prop("checked",true);
+        }else{
+            $(".layTableCheckbox").prop("checked",false);
+        }
+    });
+
+
+    //   topMenu 切换app 回调
+    var appIdSelectChange = {
+        callBack:function(id){
+           window.location.href = 'index';
+        }
+    };
+</script>

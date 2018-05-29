@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title><?php echo $titlepre ?>子客投放系统</title>
+<link rel="shortcut icon" href="<?php echo $staticAdvertiserPath;?>/favicon.ico" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/reset.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/style.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/layout.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/jquery-ui.css?v=<?php echo $version;?>" rel="stylesheet"  />
+<link href="<?php echo $staticAdvertiserPath;?>/css/star/star.source.css?v=<?php echo $version;?>" rel="stylesheet" />
+<link href="<?php echo $staticAdvertiserPath;?>/css/advertiser.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery.js??v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery-ui.min.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/jquery.form.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/common/common.js?v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/advertiser/core.js??v=<?php echo $version;?>"></script>
+<script src="<?php echo $staticAdvertiserPath;?>/js/advertiser/advertiser.js??v=<?php echo $version;?>"></script>
+<script>
+var token = "<?php echo $token; ?>";
+var baseurl = "<?php echo $webRoot;?>";
+</script>
+</head>
+
+<style type="text/css">
+.login{width:500px;height:240px;padding:20px;position:absolute;top:50%;left:50%;margin:-141px 0 0 -271px;border:1px solid #bbb;background:#fff;}
+.login h1{float:none;clear:both;text-align:center;margin-bottom:20px;}
+</style>
+</head>
+<body>
+
+    <div class="colMain" style="min-height:900px">
+        <div class="title"><p class="fl">重置密码</p></div>
+        <form id="resetpwd_form" name="form" method="post" action="<?php echo $pwdsendemailUrl ?>">
+            <div class="main" style='padding:20px;position:absolute;top:20%;left:35%;width: 550px;'>
+                <div class="app-detail">
+                    <ul class="form" id='form_ul'>
+                        <li>
+                            <span class="label">邮箱：</span>
+                            <div class="fc">
+                                <input type="text" style="width:200px;" class="iText required" value="" name="email" id="email" class='email'>
+                                <span class="red">*</span>
+                                <span class='tips'></span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label"></span>
+                            <div class="fc">
+                                <span >输入您的邮箱地址重置密码</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="fc">
+                                <input type="button" class="submit" id='submit_button' value="发送邮件" onclick="confirmSubmit();">
+                            </div>
+                        </li>
+                        <li>
+                            <span class="label"></span>
+                            <div class="fc">
+                                <p >没有收到验证邮件？</p>
+                                <p > 1. 到广告邮件、垃圾邮件目录里找找看</p>
+                                <p > 2. 不小心填错了Email？<a onclick="register();">再申请一个</a></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+<div id="error_msg_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/error_bg.gif" /> <span id="err_content"><span></div>
+<div id="msg_box_box" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/success_bg.gif" /> <span id="msg_content"><span></div>
+<div id="ajax_loader" style="margin: 20px; line-height: 32px; font-size: 14px; display: none"><img align="absmiddle" style="position: relative; margin: -4px 5px 0 0" src="<?php echo $staticAdvertiserPath;?>/img/common/ajax-loader.gif" /> <span id="msg_content">正在处理，请稍后...<span></div>
+</body>
+</html>
+
+<script type="text/javascript">
+     $(document).ready(function(){
+        ajaxForm('resetpwd_form',function(ret){
+            ajaxRedirect(ret,ret['data']['redirect_url']);
+        });
+    });
+    
+    function confirmSubmit(){
+        var email = $.trim($("#email").val());
+        
+        if(email == ''){
+            showError('', '请输入邮箱');
+            return false
+        }
+        
+        if (!isEmail(email)){
+            showError('', '邮件格式不正确');
+            return false;
+        }
+        $('form').submit()
+    }
+    
+    function register(){
+        window.location='<?php echo $registerindexUrl ?>'
+    }
+    
+</script>

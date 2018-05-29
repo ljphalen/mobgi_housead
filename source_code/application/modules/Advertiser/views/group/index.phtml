@@ -1,0 +1,29 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li class="current"><a href="<?php echo $listUrl;?>">用户组列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">添加用户组</a></li>
+	</ul>
+</div>
+<div class="table_list">
+	<table width="100%">
+		<tr class="hd">
+			<td width="60">用户组ID</td>
+			<td>用户组名称</td>
+			<td>描述</td>
+			<td>操作</td>
+		</tr>
+<?php foreach($groups as $key => $value) {?>
+		<tr class="ct">
+			<td><?php echo $value['groupid'];?></td>
+			<td><?php echo $value['name']?></td>
+			<td><?php echo $value['descrip']?></td>
+			<td><a href="<?php echo $editUrl;?>/?groupid=<?php echo $value['groupid'];?>" class="mr10">编辑</a><a onclick="deleteOne('<?php echo $delUrl;?>/?groupid=<?php echo $value['groupid'];?>', '是否要删除该用户组？', event);" href='javascript:'>删除</a></td>
+		</tr>
+<?php }?>
+	</table>
+</div>
+<div class="mr10 cc">
+<?php echo $pager;?>
+</div>
+<?php echo $this->render("layout/footer.phtml");?>

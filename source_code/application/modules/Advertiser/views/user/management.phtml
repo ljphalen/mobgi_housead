@@ -1,0 +1,262 @@
+<?php echo $this->render("layout/header.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl">帐号管理</p>
+        </div>
+        <div class="main">
+            <div style="margin:10px 0" class="app-detail">
+                <div class="subtitle" style="width:100%">基本信息</div>
+                <ul class="form">
+                    <li> 
+                        <span class="label">邮箱帐号：</span>
+                        <div class="fc">
+                            <input type="hidden" value="<?php echo $userInfo['email']?>" name="email" id="email" >
+                            <span><?php echo $userInfo['email']?></span>
+                            <span class='fr' style='padding-right: 50px;' id='edit_baseinfo'><a>编辑</a></span>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="label">帐户密码：</span>
+                        <div class="fc">
+                            <a id="changepasswd">修改密码</a>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="label">帐户名称：</span>
+                        <div class="fc">
+                            <input type="text" class="iText" value="<?php echo $userInfo['advertiser_name']?>" name="advertiser_name" id="advertiser_name" disabled="disabled" defaultadvertiser_name='<?php echo $userInfo['advertiser_name']?>'>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="label">所在地区：</span>
+                        <div class="fc">
+                            <input type="text" class="iText" value="<?php echo $userInfo['address']?>" name="address" id="address" disabled="disabled" default_address='<?php echo $userInfo['address']?>'>
+                        </div>
+                    </li>
+                    <li id='baseinfo_buttons' style='display: none'>
+                        <div class="fc">
+                            <input type="button" class="submit" id='confirm_baseinfo' value="确定" >
+                            <input type="button" class="cancel" id='cancel_baseinfo' value="取消" >
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div style="margin:10px 0" class="app-detail">
+                <div class="subtitle" style="width:100%">广告主信息</div>
+                <ul class="form">
+                    <li> 
+                        <span class="label">公司名称：</span>
+                        <div class="fc">
+                            <input type="text" class="iText" value="<?php echo $userInfo['company_name']?>" name="company_name" id="company_name" disabled="disabled" defaultcompany_name='<?php echo $userInfo['company_name']?>'>
+                            <span class='fr' style='padding-right: 50px;' id='edit_advertiserinfo'><a>编辑</a></span>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="label">营业执照：</span>
+                        <div class="fc">
+                            <div id="business_licenseImg" >
+                                <?php if($userInfo['business_license']){?>
+                                    <img src="<?php echo $attachPath.$userInfo['business_license'];?>" style="width:100px;height:100px;"/>
+                                <?php }else{?>
+                                    <img src="<?php echo $staticPath;?>/img/content/nopic.jpg" style="width:100px;height:100px;"/>
+                                <?php }?>
+                                <input type="hidden" name="business_license_img" id="business_license_img" value="<?php echo $userInfo['business_license'];?>">
+                            </div>
+                            <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=business_licenseImg';?>" style="height:50px;width:100%;display: none;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                            </p>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="label">广告资质：</span>
+                        <div class="fc">
+                            <div id="ad_qualificationImg" >
+                                <?php if($userInfo['ad_qualification']){?>
+                                    <img src="<?php echo $attachPath.$userInfo['ad_qualification'];?>" style="width:100px;height:100px;"/>
+                                <?php }else{?>
+                                    <img src="<?php echo $staticPath;?>/img/content/nopic.jpg" style="width:100px;height:100px;"/>
+                                <?php }?>
+                                <input type="hidden" name="ad_qualification_img" id="ad_qualification_img" value="<?php echo $userInfo['ad_qualification'];?>">
+                            </div>
+                            <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=ad_qualificationImg';?>" style="height:50px;width:100%;display: none;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                            </p>
+                        </div>
+                    </li>
+                    <li id='advertiserinfo_buttons' style='display: none'>
+                        <div class="fc">
+                            <input type="button" class="submit" id='confirm_advertiserinfo' value="确定" >
+                            <input type="button" class="cancel" id='cancel_advertiserinfo' value="取消" >
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div id="changePasswordDiv" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+    <ul class="form">
+        <li> 
+            <span class="label">当前密码：</span>
+            <div class="fc">
+                <input type="password" class="iText" value="" name="current_password" id="current_password">
+            </div>
+        </li>
+        <li> 
+            <span class="label">新密码：</span>
+            <div class="fc">
+                <input type="password" class="iText" value="" name="password" id="password">
+            </div>
+        </li>
+        <li> 
+            <span class="label">确认密码：</span>
+            <div class="fc">
+                <input type="password" class="iText" value="" name="r_password" id="r_password">
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    function showChangePasswordDiv(){
+        return $("#changePasswordDiv").dialog({
+            title : '修改密码',
+            draggable : false,
+            width:500,
+            modal : true,
+            resizable : false,
+            buttons: {
+                'ok': function() {
+                    current_password= $("#current_password").val()
+                    password= $("#password").val()
+                    r_password= $("#r_password").val()
+                    var object = $(this);
+                    $.ajax({
+                        url : baseurl+'/Advertiser/User/passwd_post',
+                        type : 'POST',
+                        dataType : 'json',
+                        data : { 'token':token, 'current_password':current_password , 'password': password, 'r_password':r_password },
+                        success : function(ret) {
+                            if (ret.success) {
+                                object.dialog('close');
+                                showMsg('', '修改成功,请重新登录')
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 500);
+                            } else {
+                                showError('', ret.msg);
+                            }
+                        }
+                    });
+                },
+                Cancel: function() {
+                    $(this).dialog('close');
+                }
+                
+            },
+        });
+    }
+    
+    function beginEdit(){
+        $("#advertiser_name").removeAttr('disabled')
+        $("#address").removeAttr('disabled')
+        $("#baseinfo_buttons").show();
+    }
+    function exitEdit(){
+        $("#advertiser_name").attr('disabled','disabled')
+        $("#address").attr('disabled','disabled')
+        $("#baseinfo_buttons").hide();
+    }
+    
+    function beginEditAdvertiser(){
+        $("#company_name").removeAttr('disabled')
+        $("#advertiserinfo_buttons").show();
+        $("iframe").show()
+    }
+    function exitEditAdvertiser(){
+        $("#company_name").attr('disabled','disabled')
+        $("#advertiserinfo_buttons").hide();
+        $("iframe").hide()
+    }
+    
+$(function(){
+    $("#changepasswd").click(showChangePasswordDiv);
+    $("#edit_baseinfo").click(function(){
+        if($("#advertiser_name").attr("disabled") == true || $("#address").attr("disabled") == true){
+            beginEdit()
+        }else{
+            exitEdit()
+        }
+    });
+    
+    $("#confirm_baseinfo").click(function(){
+        advertiser_name=$("#advertiser_name").val()
+        address=$("#address").val()
+        $.ajax({
+            url : baseurl+'/Advertiser/User/baseinfo_post',
+            type : 'POST',
+            dataType : 'json',
+            async:false,
+            data : { 'token':token, 'advertiser_name':advertiser_name , 'address': address },
+            success : function(ret) {
+                if (ret.success) {
+                    $("#advertiser_name").attr('defaultadvertiser_name', advertiser_name)
+                    $("#address").attr('default_address', address)
+                    showMsg('', '修改成功')
+                    exitEdit()
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    })
+    $("#cancel_baseinfo").click(function(){
+        $("#advertiser_name").val($("#advertiser_name").attr('defaultadvertiser_name'))
+        $("#address").val($("#address").attr('default_address'))
+        exitEdit()
+    });
+    
+    $("#edit_advertiserinfo").click(function(){
+        if($("#company_name").attr("disabled") == true ){
+            beginEditAdvertiser()
+        }else{
+            exitEditAdvertiser()
+        }
+    });
+    
+    $("#confirm_advertiserinfo").click(function(){
+        company_name=$("#company_name").val()
+        business_license=$("#business_license_img").val()
+        ad_qualification=$("#ad_qualification_img").val()
+        $.ajax({
+            url : baseurl+'/Advertiser/User/advertiserinfo_post',
+            type : 'POST',
+            dataType : 'json',
+            async:false,
+            data : { 'token':token, 'company_name':company_name , 'business_license': business_license, 'ad_qualification': ad_qualification },
+            success : function(ret) {
+                if (ret.success) {
+                    $("#company_name").attr('defaultcompany_name', company_name)
+                    showMsg('', '保存成功')
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    })
+    
+    $("#cancel_advertiserinfo").click(function(){
+        $("#company_name").val($("#company_name").attr('defaultcompany_name'))
+        exitEditAdvertiser()
+    });
+    
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

@@ -1,0 +1,89 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $listUrl;?>">菜单配置列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">添加菜单配置</a></li>
+	</ul>
+</div>
+<form action="<?php echo $listUrl;?>" method="GET">
+<input name="token" type="hidden" value="<?php echo $token;?>" />
+<div class="table_full">
+    <table width="100%">
+         <tr class="tr">
+            <th class="th">菜单id</th>
+            <td class="td">
+           <select  name="menu_id" id="menu_id">
+                 <?php foreach($menuIds as $k1=>$v1){ ?>
+                 <option value="<?php echo $k1; ?>"  <?php if( $search['menu_id']==$k1){ ?> selected <?php } ?>><?php echo $v1; ?> </option>
+               <?php } ?>
+                </select>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button type="submit" id="submitForm">搜 索</button></span></span></div>
+</form>
+<div class="table_list">
+    <div class="h_a">
+        <span>共 <?php echo $total;?> 条结果</span>
+    </div>
+	<table width="100%">
+		<tr class="hd">
+			<td >菜单ID</td>
+			<td >菜单名称</td>
+			<td>模块</td>
+			<td>控制器</td>
+            <td >action</td>
+            <td >名称</td>
+			<td>更新时间</td>
+			<td>操作</td>
+		</tr>
+<?php foreach($menuList as $key => $value) {?>
+		<tr class="ct">
+			<td><?php echo $value['menu_id'];?></td>
+			<td><?php echo $menuIds[$value['menu_id']];?></td>
+			<td><?php echo $value['module']?></td>
+            <td><?php echo $value['controler']?></td>
+			<td width=120px><?php echo $value['action']?></td>
+			<td><?php echo $value['name']?></td>
+			<td><?php echo $value['update_time']?></td>
+			<td>
+                <a href="<?php echo $addUrl;?>/?id=<?php echo $value['id'];?>" class="mr10">编辑</a>
+                 <a href="<?php echo $viewUrl;?>/?id=<?php echo $value['id'];?>" class="mr10">查看</a>
+                 <a href="#"  class="delgroup"   menu_id="<?php echo $value['id'] ?>"  class="mr10" >删除</a>
+                
+            </td>
+		</tr>
+<?php }?>
+	</table>
+</div>
+<div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript">
+$(function(){
+	 $('#menu_id').chosen({
+		 search_contains:true,
+		});
+    $(".delgroup").click(function(){
+    	menu_id = $(this).attr("menu_id")
+        $.ajax({
+            url: "<?php echo $deleteUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'id':menu_id},
+            success: function(ret) {
+                if (ret.success) {
+                    showMsg('', ret.msg);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    })
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

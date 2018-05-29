@@ -1,0 +1,52 @@
+<?php echo $this->render("layout/header1.phtml");?>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+        <li class="current"><a href="<?php echo $globalConfigUrl;?>">全局配置列表</a></li>
+        <li><a href="<?php echo $addGlobalConfigUrl;?>">添加全局配置</a></li>
+	</ul>
+	</div>
+    <div class="main">
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>广告商利益分成比例</th>
+                            <th>自投利益分成比例</th>
+                             <th>操作人</th>
+                            <th>生效日期</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($configList as $k1=>$v1): ?>
+                        <tr>
+                            <td><?php echo $v1['ads_division_rate']; ?></td>
+                            <td><?php echo $v1['own_division_rate']; ?></td>
+                            <td><?php echo $v1['operator']; ?></td>
+                            <td><?php echo $v1['effect_date']; ?></td>
+                            <td style="color:<?php echo $configStatus[$v1['status']]['color']; ?>;"><?php echo $configStatus[$v1['status']]['value']; ?></td>
+                            <td><?php echo $v1['notice']; ?></td>
+                        </tr> 
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script type="text/javascript">
+$(function(){
+	 $('#group_id').chosen();
+
+});
+
+
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

@@ -1,0 +1,198 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl">资金流水</p>
+        </div>
+        <div class="main">
+            <div style="margin:10px 0" class="app-detail account_log">
+                <div class="subtitle" style="width:100%">基本信息：<span class="grid">日消耗限额：<span id="day_consume"><?php echo $accountDayAmountLimitList;?></span>&nbsp;<a class="edit" id="set_dayconsumption_limit"></a>
+                </span>
+                <span>当日已消耗：<span id="day_consume"><?php echo $accountTodayConsumeAmount;?></span></span></div>
+                <div class="content" style='margin-left:50px;' >
+                    <ul id='account_log_ul'>
+                        
+                        <?php foreach($account_detail_arr as $key => $value) {?>
+                        <li>
+                            <div class="account_name"><?php echo $value['account_type_str']; ?></div>
+                            <div>
+                                <p>余额：<?php echo $value['balance']; ?></p>
+                                <p>今日消耗：<?php echo floatval($day_consumption_arr[$key]['consumption']); ?></p>
+                            </div>
+                        </li>
+                        <?php }?>
+                       <li >
+                        <div class="ml20" >
+                         <p  class="ml20" >
+                           <span>广告总量：<?php echo $adTotal; ?></span>
+                           <span >审核通过：<?php echo $checkPassTotal; ?></span></p>
+                           <p   class="ml20" > <span>投放中：<?php echo $checkingTotal; ?></span>
+                               <span>  审核不通过：<?php echo $checkNoPassTotal; ?></span></p>
+                           </div>
+                       </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            
+              <div class="title">
+            <?php if($account_detail_arr['cache']['balance']<$advertiserCacheTipLimit){?>
+            您的现金余额已低于 <?php echo $advertiserCacheTipLimit ?>元，将影响广告正常曝光，请及时充值
+            <?php } ?>
+        </div>
+            
+            <div style="margin:10px 0" class="app-detail">
+                <div class="subtitle" style="width:100%">资金流水</div>
+                <ul class="form">
+                    <li> 
+                        <span class="label">选择时间：</span>
+                        <div class="fc">
+                            <div class="mui-filter-group" id="date_range" sdate="<?php echo $sdate;?>" edate="<?php echo $edate;?>" csdate="" cedate=""></div>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="label">交易类型：</span>
+                        <div class="fc">
+                            <select id="operate_type" name="operate_type" >
+                                <option value="">全部</option>
+                                <option way="" value="recharge">充值</option>
+                                <option way="" value="deduction">扣费</option>
+                                <option way="" value="recovery">回收</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="label">帐户类型：</span>
+                        <div class="fc">
+                            <select id="account_type" name="account_type" >
+                                <option value="">全部</option>
+                                <option way="" value="cache">现金帐户</option>
+                                <option way="" value="virtual_account1">虚拟帐户1</option>
+                                <option way="" value="virtual_account2">虚拟帐户2</option>
+                                <option way="" value="virtual_account3">虚拟帐户3</option>
+                                <option way="" value="virtual_account4">虚拟帐户4</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li> 
+                        <span class="" style='width:100%;margin-left: 80px;'>选择周期内总充值：<span id="recharge_total"><?php echo $recharge_total?></span> 元, 选择周期内总扣费：<span id="deduction_total"><?php echo $deduction_total?></span> 元</span>
+                    </li>
+                </ul>
+                
+                <div class="mui-filter mui-global-bb mui-global-bt" style="float: left;height: 100px;">
+                    <div class="mui-filter-group" id="date_range" sdate="<?php echo $data['params']['sdate'];?>" edate="<?php echo $data['params']['edate'];?>" csdate="" cedate=""></div>
+                </div>
+                
+                <div class="main">
+                    <div class="content">
+                        <div class="grid">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>时间</th>
+                                        <th>账户类型</th>
+                                        <th>交易类型</th>
+                                        <th>金额</th>
+                                        <th>备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($loglist as $key => $value) {?>
+                                    <tr>
+                                        <td><?php echo $value['create_time_str'];?></td>
+                                        <td><?php echo $value['account_type_str']; ?></td>
+                                        <td><?php echo $value['operate_type_str']; ?></td>
+                                        <td><?php echo $value['trade_balance']; ?></td>
+                                        <td><?php echo $value['description']; ?></td>
+                                    </tr>
+                                    <?php }?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <?php echo $pager;?>
+                            <!--<span class="inactivePrev">«</span> <a href="javascript:void(0);" class="current">1</a> <a href="/mpurchase/activitylist?data_platform=monitor&amp;page=2" class="paginate"> 2</a> <a href="/mpurchase/activitylist?data_platform=monitor&amp;page=3" class="paginate"> 3</a> <a href="/mpurchase/activitylist?data_platform=monitor&amp;page=4" class="paginate"> 4</a> <a href="/mpurchase/activitylist?data_platform=monitor&amp;page=5" class="paginate"> 5</a> <a href="/mpurchase/activitylist?data_platform=monitor&amp;page=97" class="paginate">... 97</a> <a href="/mpurchase/activitylist?data_platform=monitor&amp;page=2" class="next">»</a>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="<?php echo $staticPath;?>/js/common/gri.dateRange.js??v=<?php echo $version;?>"></script>
+<link href="<?php echo $staticPath;?>/css/gri.controls.css?v=<?php echo $version;?>" rel="stylesheet" />
+<script type="text/javascript">
+$(function(){
+    $("#operate_type").val("<?php echo $operate_type ?>")
+    $("#account_type").val("<?php echo $account_type ?>")
+    var dateRange = new pickerDateRange("date_range",'date', {
+        theme : 'ta', // 日期选择器TA主题
+        isTodayValid : 1,
+        startDate : "<?php echo $sdate;?>",
+        endDate : "<?php echo $edate;?>",
+        minValidDate : 1379174400,
+        needCompare : 0,
+        success : function (dateObj){
+            $("#date_range").attr("sdate", dateObj.startDate);
+            $("#date_range").attr("edate", dateObj.endDate);
+            $("#date_range").attr("csdate", "");
+            $("#date_range").attr("cedate", "");
+        }
+    });
+    
+    // 时间选择 改变时候直接提交 dateRange.submitBtn为对应提交按钮
+    $("#"+dateRange.submitBtn).click(function(){
+        submitForm()
+    });
+    $(".ta_select_day").click(function(){
+        submitForm()
+    });
+    $("#operate_type").change(function(){
+        submitForm()    
+    })
+    $("#account_type").change(function(){
+        submitForm()
+    })
+    
+    function submitForm(){
+        sdate = $("#date_range").attr("sdate")
+        edate = $("#date_range").attr("edate")
+        operate_type = $("#operate_type").val()
+        account_type = $("#account_type").val()
+        window.location.href='<?php echo $listUrl; ?>?sdate=' + sdate + "&edate=" + edate + "&operate_type="+ operate_type + "&account_type="+ account_type;
+    }
+    
+    $("#set_dayconsumption_limit").click(function(){
+        oldvalue = $("#day_consume").html();
+        str = '<input type="text" class="input" value="'+ oldvalue +'"   id="set_dayconsumption_limit_value">'
+        $(this).siblings('.input').remove();
+        $("#day_consume").hide().after(str)
+        inputId='set_dayconsumption_limit_value'
+        $("#set_dayconsumption_limit_value").focus()
+        $("#set_dayconsumption_limit_value").blur(function(){
+            limit = $("#set_dayconsumption_limit_value").val();
+            $.ajax({
+                url:  baseurl+"<?php echo $setCosumeLimitUrl; ?>",
+                type: "POST",
+                dataType : 'json',
+                data : { 'token':token, 'limit':limit},
+                success: function(ret) {
+                    if (ret.success) {
+                        showMsg('', ret.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                    $("#day_consume").show()
+                    $("#" + inputId).remove()
+                }
+            });
+        });
+    });
+    
+})
+</script>
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>

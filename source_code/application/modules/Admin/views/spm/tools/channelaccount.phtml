@@ -1,0 +1,150 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>渠道账号管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" placeholder="请输入邮箱或用户名" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="check_msg" placeholder="请输入账号备注" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+<script>
+    /* 请求链接 */
+    var editChannelAccountUrl = baseurl + '<?php echo $editChannelAccountUrl; ?>'; // 编辑渠道账号
+    var channelAccountListUrl = baseurl + "<?php echo $channelAccountListUrl; ?>"; // 渲染表格列表
+
+    /* table 渲染参数 */
+    var layuiTable;
+    var page = true;
+    var where = { token: token, name: '', check_msg: ''};
+    var table_id = '#activity_table';
+    var cols = [[ //表头
+        {field: 'email', title: '邮箱',  sort: true }
+        ,{field: 'user_name', title: '用户名',  sort: true }
+        ,{field: 'check_msg', title: '账号备注',  sort: true }
+        ,{field: 'create_time', title: '创建时间',  sort: true }
+        ,{field: '', title: '操作', align:'center', toolbar: '#barDemo'}
+    ]];
+
+    // 判断本地缓存是否 有渲染表格参数
+    if(localStorage.searchData){
+        if(window.location.href == JSON.parse(localStorage.searchData).url){
+            page = JSON.parse(localStorage.searchData).page;
+            where = JSON.parse(localStorage.searchData).where;
+            // 初始化搜索条件
+            $("input[name='name']").val(where.name);
+            $("input[name='chekc_msg']").val(where.check_msg);
+            // 设置日期
+            $("#date").val(where.date);
+            $("#sdate").val(where.sdate);
+            $("#edate").val(where.edate);
+        }
+    }
+
+    //JavaScript代码区域
+    layui.use(['element','form','laydate','table'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        layuiTable = layui.table;
+        // 初始化 date 插件
+        laydate.render({
+            elem: '#date' //指定元素
+            ,value: ''
+            ,range: true
+            ,done: function(value, date, endDate){
+                var begin = '',end='';
+                if(value){
+                    begin = date.year + "-" + date.month + '-' + date.date;
+                    end  = endDate.year + "-" + endDate.month + '-' + endDate.date;
+                }
+                $("input[name='sdate']").val(begin);
+                $("input[name='edate']").val(end);
+            }
+        });
+
+        //初始化表格
+        var initTable = {
+            elem: table_id,
+            where: where,
+            url : channelAccountListUrl ,
+            cols: cols ,
+            page : page
+        };
+        renderTable(table,initTable,null);
+
+        //监听搜索按钮
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            field.token = token;
+            where = field;
+            var params = {
+                elem: table_id,
+                where: where,
+                url : channelAccountListUrl ,
+                cols: cols ,
+                page : page
+            }
+            renderTable(table,params,null);
+            return false;
+        });
+
+        //监听单元格事件  -- 查看 ， 编辑
+        table.on('tool(activity_table)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'edit'){  // 编辑
+                window.location.href = editChannelAccountUrl + "?id="+data.user_id;
+            }
+        });
+    });
+</script>
+</body>
+</html>

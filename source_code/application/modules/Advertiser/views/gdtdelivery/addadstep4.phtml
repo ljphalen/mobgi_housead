@@ -1,0 +1,131 @@
+<?php echo $this->render("layout/header.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl"><?php if($result['oid'] && !$result['clone']){echo '编辑';}else{echo '创建';} ?>广告预览</p>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="<?php echo $addAdStep4PostUrl; ?>" method="POST"  id="addFrom" >
+                	<input name="token" value="<?php echo $token;?>" type="hidden" />
+                    <input type="hidden" name="oid"   id=""  value='<?php echo $result['oid']; ?>' />
+                    <input type="hidden" name="clone"   id=""  value='<?php echo $result['clone']; ?>' />
+                   <input type="hidden" name="id"   id=""  value='<?php echo $step1Reslut['id']; ?>' />
+                    <ul class="form">
+                        <li> 
+                            <span class="label">推广计划(id)：</span>
+                            <span><?php echo $gdtconfig['plan_id']?></span>
+                        </li>
+                        <li> 
+                              <span class="label">广告名称：</span>
+                              <span><?php echo $step1Reslut['adgroup_name'] ; ?></span>
+                        </li>
+                        <li> 
+                              <span class="label">投放日期：</span>
+                              <span><?php echo $step1Reslut['begin_date'] ; ?></span>
+                              至 <span><?php echo $step1Reslut['end_date'] ; ?></span>
+                        </li>
+                        <li> 
+                            <span class="label">投放时段：</span>
+                            <input type="hidden" name="time_series"  id="timeset"  value='<?php echo $step1Reslut['time_series']; ?>' />
+                            <?php  if($step1Reslut['hour_type']==0){ ?>
+                                <span> 0:00</span> 至 <span> 24:00 </span> 
+                            <?php }else if($step1Reslut['hour_set_type']==0){ ?>
+                                <span><?php echo $step1Reslut['start_hour'] ; ?>:00</span> 至 <span><?php echo $step1Reslut['end_hour'] ; ?>:00</span>
+                            <?php }else if($step1Reslut['hour_set_type']==1){ ?>
+                                <div style="margin-left: 170px"><ol class="_timesetSelected" style=""></ol></div>
+                            <?php } ?>
+                        </li>
+                        <li> 
+                            <span class="label">广告目标：</span>
+                            <span>普通链接 </span>
+                            <span><a href="<?php echo $step1Reslut['destination_url'] ; ?>" target="_blank"><?php echo $step1Reslut['destination_url'] ; ?></a></span>
+                        </li>
+                        
+                        <li class="line"></li> 
+                         <li> 
+                              <span class="label">创意形式：</span>
+                              <span><?php echo $gdt_creative_template[$step2Reslut['template_id']]['name'] ; ?></span>
+                        </li>
+                        <li> 
+                              <span class="label">创意曝光策略：</span>
+                              <span><?php echo $creative_selection_type[$step2Reslut['creative_selection_type']] ; ?></span>
+                        </li>
+                        <li class="line"></li> 
+                        <li> 
+                              <span class="label">定向：</span>
+                              <span ><span><?php echo $targetinglist[$step3Reslut['targeting_id']]['targeting_name'] ; ?></span></span>
+                        </li>
+                         <li> 
+                              <span class="label">计费类型：</span>
+                              <span ><?php echo $gdt_bid_type[$step3Reslut['bid_type']]; ?></span>
+                        </li>
+                         <li> 
+                              <span class="label">出价(单位:分)：</span>
+                              <span ><?php echo $step3Reslut['bid_amount']; ?></span>
+                        </li>
+                        <li>
+                            <div class="fc">
+                              <?php $forwardUrl =  $addAdStep3Url;
+                                    if($result['oid'])  $forwardUrl .= "?oid=".$result['oid'];
+                                    if($result['clone'])  $forwardUrl .= "&clone=".$result['clone'];
+                                    if($result['oid']) {$forwardUrl .= "&step=3";}else{$forwardUrl .= "?step=3";}
+                              ?>
+                                <input type="button"  onclick="javascript:forwardToPrePage('<?php echo $forwardUrl; ?>');" value="上一步" class="submit btn">
+                                <input type="submit"  value=" 完成<?php if($result['oid'] && !$result['clone']){echo '编辑';}else{echo '创建';} ?>" class="submit btn">
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="showCreateAdFinishedDiv" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+  <ul class="form">
+    <li> 
+        <span class="label">广告<?php if($result['oid'] && !$result['clone']){echo '编辑';}else{echo '创建';} ?>成功</span>
+    </li>
+     <li>
+        <div class="fc">
+            <a type="button"   class="submit btn" href="<?php echo $addAdStep1Url; ?>">创建广告 </a>
+            <a type="button"   class="submit btn" href="<?php echo $adManageListUrl; ?>">查看广告</a>
+            <a type="button" id="copy_id"  class="submit btn" href="<?php echo $addAdStep1Url; ?>">复制广告 </a>
+        </div>
+    </li>
+	</ul>
+</div>
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<link href="<?php echo $staticPath;?>/css/gdt_daterange.css" rel="stylesheet" />
+<script src="<?php echo $staticPath;?>/js/advertiser/gdt_daterange.js"></script>
+<script type="text/javascript">
+var nextUrl = '<?php echo $addAdStep4Url; ?>';
+var listUrl   = '<?php echo $adManageListUrl; ?>';
+var copyUrl = '<?php echo $addAdStep1Url; ?>';
+//广告表单数据提交
+$(document).ready(function(){
+	ajaxForm('addFrom',function(ret){
+		if (ret.success) {
+		    $("#copy_id").attr('href',copyUrl+'?oid='+ret.data+'&clone=1')
+			showCreateAdFinishedDiv('创建广告完成');
+		} else {
+			showError('', ret.msg);
+		}
+	});
+    var e = $("#timeset").val();
+    timeStrToArr(e)
+})
+function showCreateAdFinishedDiv(title){
+	return $("#showCreateAdFinishedDiv").dialog({
+		title : title,
+		draggable : false,
+		width:600,
+		modal : true,
+		resizable : false,
+		close: function() {
+		   location.href=baseurl+listUrl;
+		} 
+	});
+}
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

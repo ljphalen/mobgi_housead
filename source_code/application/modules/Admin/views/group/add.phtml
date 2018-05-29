@@ -1,0 +1,215 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li><a href="<?php echo $listUrl;?>">用户组列表</a></li>
+        <li class="layui-this"><a href="<?php echo $addUrl;?>">添加用户组</a></li>
+    </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+            <div class="layui-tab-item layui-show">
+                <div class="items-main-title">
+                    <p>编辑用户组 </p>
+                </div>
+                <div style="width:880px; margin:20px 0;">
+                    <form class="layui-form" method="post" action="<?php echo $editPostUrl;?>" id='groupForm'>
+                        <input name="token" value="<?php echo $token;?>" type="hidden" />
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >用户组名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" required  maxlength="30" value="<?php echo $groupInfo['name'];?>" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户组描述</label>
+                            <div class="layui-input-block">
+                                <textarea name="descrip" placeholder="请输入内容" class="layui-textarea"><?php echo $groupInfo['descrip'];?></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户组权限</label>
+                            <div class="layui-input-block">
+                                <ul class="groupstatus-list">
+                                    <?php $i =0; foreach($levels as $levelKey => $levelVal){ ?>
+                                        <li tab-index="<?php echo $i;?>"  >
+                                            <button type="button" class="layui-btn <?php if($i != 0){echo 'layui-btn-primary' ;} ?>"><?php echo $levelVal['name'] ?><span class="layui-badge-dot <?php if(!isset($groupInfo['top_module_config'][$levelKey])){ echo ' layui-bg-default';} ?>"></span></button>
+                                        </li>
+                                        <?php $i++; } ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <?php $i =0; foreach($levels as $levelKey => $levelVal){ ?>
+                            <div tab-index="<?php echo $i; ?>" class="layui-form-item groupstatus-item <?php if($i != 0){echo 'groupstatus-item-hide'; }?> ">
+                                <div class="items-groupcontent">
+                                    <?php foreach($levelVal['items'] as $moduleKey => $moduleVal) {?>
+                                        <div class="layui-input-block">
+                                            <div>
+                                                <input lay-filter="checkSome" type="checkbox" onClick="checkSome('<?php echo $moduleKey;?>');" <?php echo ($groupInfo['menu_config'][$moduleKey])?'checked="checked"':''; ?>
+                                                       class="CheckSome<?php echo $moduleKey;?>" name="<?php echo $moduleKey;?>" title="<?php echo $moduleVal['name']; ?>" lay-skin="primary" value="1" >
+                                                <span class="igroup-show">[展开]</span>
+                                            </div>
+                                            <div class="igroup-content" style="display:none;" >
+                                                <?php foreach($moduleVal['items'] as $sonModuleKey => $sonModuleVal){ ?>
+                                                    <div style="padding-left:30px;">
+                                                        <div> <?php echo $sonModuleVal['name']; ?>：</div>
+                                                        <div style=" margin:5px 0; padding:0 0 0 20px; background:#f2f2f2; ">
+                                                            <?php foreach($sonModuleVal['items'] as $viewKey => $viewVal){
+                                                                $vieName = 'menu_config['.$moduleKey.']['.$viewVal['id'].']';
+                                                                ?>
+                                                                <div style="padding-bottom:10px;">
+                                                                    <div style="display:inline-block; margin-right:20px;">
+                                                                        <input lay-filter="checkSome" name="<?php echo $vieName;?>"  title="<?php echo $viewVal['name'];?>"
+                                                                               type="checkbox" value="1" lay-skin="primary" class="CheckSome<?php echo $moduleKey;?> CheckSome<?php echo $viewVal['id'];?>"
+                                                                            <?php echo ($groupInfo['menu_config'][$moduleKey][$viewVal['id']] && $groupInfo['menu_config'][$moduleKey][$viewVal['id']]  == 1)?'checked="checked"':''; ?> />
+                                                                        <span style="position: relative; top:10px; display:inline-block; height:20px;width:1px; background:#01AAED"></span>
+                                                                    </div>
+
+
+                                                                    <?php if($menuList[$viewVal['id']]) { ?>
+
+                                                                        <?php foreach($menuList[$viewVal['id']] as $actionKey => $actionVal) {
+                                                                            $name = 'menu_right['.$moduleKey.']['.$viewVal['id'].']['.$actionVal['id'].']';
+                                                                            ?>
+
+                                                                            <input name="<?php echo $name;?>" class="CheckSome<?php echo $moduleKey;?>  CheckSome<?php echo $viewVal['id'];?>" type="checkbox" value="1" title="<?php echo $actionVal['name'];?>" lay-skin="primary"
+                                                                                <?php echo ($groupInfo['menu_right'][$viewVal['id']][$actionVal['id']] && $groupInfo['menu_right'][$viewVal['id']][$actionVal['id']]  == 1)?'checked="checked"':''; ?> />
+                                                                        <?php } ?>
+
+                                                                    <?php } ?>
+                                                                </div>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    <?php }?>
+                                </div>
+                            </div>
+
+                            <?php $i++; } ?>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                                <button type="button" onclick="window.location.href='/Admin/Group/index'" class="layui-btn layui-btn-primary">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script type="text/javascript">
+
+        // 展开 ， 隐藏
+        $(".igroup-show").click(function(){
+            if(!$(this).hasClass('igroup-hide')){
+                $(this).addClass('igroup-hide')
+                $(this).html('[隐藏]');
+                $(this).parent().parent().find('.igroup-content').show()
+            }else{
+                $(this).removeClass('igroup-hide')
+                $(this).html('[展开]');
+                $(this).parent().parent().find('.igroup-content').hide()
+            }
+        });
+
+        // tab 切换
+        $(".groupstatus-list li").click(function(){
+            var tindex = $(this).attr("tab-index");
+            $(".groupstatus-list li button").addClass('layui-btn-primary');
+            $(this).find('button').removeClass('layui-btn-primary');
+
+            $(".groupstatus-item").addClass('groupstatus-item-hide')
+            $(".groupstatus-item").each(function(index,element){
+                if($(this).attr("tab-index")==tindex){
+                    $(this).removeClass('groupstatus-item-hide')
+                    return ;
+                }
+            });
+        });
+
+
+        //表单数据提交
+        //$(document).ready(function(){
+        //    ajaxForm('groupForm',function(ret){
+        //        ajaxRedirect(ret, baseurl+'/Admin/Group/index');
+        //    });
+        //})
+        //权限选中大类的时候同时选中小类
+        function checkSome(val) {
+            var className = 'CheckSome'+val;
+            var classObj  = $('.'+className);
+            for (var i=1;i<classObj.length;i++) {
+                var e = classObj[i];
+                if (classObj[0].checked == true) {
+                    e.checked = true;
+                } else {
+                    e.checked = false;
+                }
+            }
+            renderLayuiForm();
+        }
+
+        layui.use(['element','form'], function(){
+            var $ = layui.jquery
+                ,element = layui.element, //Tab的切换功能，切换事件监听等，需要依赖element模块
+                form = layui.form;
+
+            form.on('checkbox(checkSome)', function(data){
+                var c = $(data.elem).attr('class');
+                var classObj;
+                if(c){
+                    var arr_class = c.split(' ');
+                    if(arr_class.length>1){
+                        classObj = $("."+arr_class[1]);
+                    }else{
+                        classObj = $("."+arr_class[0]);
+                    }
+                }
+                for (var i=1;i<classObj.length;i++) {
+                    var e = classObj[i];
+                    if (classObj[0].checked == true) {
+                        e.checked = true;
+                    } else {
+                        e.checked = false;
+                    }
+                }
+                renderLayuiForm();
+            });
+            // form 表单 提交
+            var form = layui.form;
+            form.on('submit(formDemo)', function(data){
+                var jsonData = $("form").serializeArray();
+                var index = layer.load();
+                $.ajax({
+                    url : baseurl + '<?php echo $addPostUrl;?>',
+                    async: false,
+                    data : jsonData,
+                    type : 'post',
+                    dataType : 'json',
+                    jsonp : 'callback',
+                    success:function(data){
+                        layer.close(index);
+                        layer.msg(data.msg);
+                        if(data.success){
+                            setTimeout(function() {
+                                window.location.href= baseurl+'/Admin/Group/index';
+                            }, 500);
+                            //跳转
+                        }
+                    },
+                    error:function(xhr,msg,e){
+                        layer.close(index);
+                        layer.msg(msg);
+                    }
+                });
+                return false;
+            });
+
+        });
+
+    </script>
+
+<?php echo $this->render("layout/footer.phtml");?>

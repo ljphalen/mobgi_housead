@@ -1,0 +1,30 @@
+.t-table-bar{ margin: 50px 0 10px 0; padding:10px;  background: #e5e5e5; overflow: hidden;    }
+    .t-table-search{ float:left;   }
+    .t-t-item{  float:left; margin-right: 10px; display:inline;  }
+    .t-t-item span{ display: inline-block; height: 30px; line-height: 30px; color:#333; font-size:14px;   }
+    .t-t-item input[type='text']{ border:1px solid #ddd; background:#fff; outline: none; font-size:14px; color:#333; width: 140px; height:28px; padding: 0 10px; }
+    .t-t-item select{ border:1px solid #ddd; background:#fff; outline: none; font-size:14px; color:#333; width: 140px; height: 30px; }
+    .t-t-item button{ border:1px solid #ddd; border-radius: 4px; background:#479d19; outline: none; height: 28px; font-size: 14px; color:#fff; padding: 0 20px; cursor: pointer;  }
+    .t-table-bar .new-template{ float:right; min-width: 80px; height: 30px; line-height: 30px; border-radius: 4px; text-decoration: none; background:#479d19; text-align: center; padding: 0 10px; color:#fff;  }
+    
+    .template-table{ width: 100%; border-collapse:collapse;  border-collapse:separate;   }
+    .template-table thead tr th{ height: 40px; padding:0 10px; text-align: center;  background:#e5e5e5; color: #666; font-weight: 900; border-collapse:collapse;  border-collapse:separate;   }
+    .template-table tbody tr td{ height: 40px; padding:0 10px; text-align: center; color:#333; border-bottom:1px solid #ddd;   }
+    .template-table tbody tr{ background: #fff;}
+    .template-table tbody tr:nth-child(even){ background:#f7f7f7; }
+    .template-table tbody tr:hover{ background: #d3f0fd;}
+    .template-table tbody tr .t-table-link{ color:#17648c; }
+    .template-table tbody tr .t-table-link:hover{ color:#17648c; }
+    .t-table-button{ display:inline-block; padding: 0 10px; height: 30px; line-height: 30px; color:#fff; border-radius: 4px; cursor: pointer; text-decoration: none;   }
+    .t-table-button:hover{ text-decoration: none;}
+    .t-table-edit{ background: #1fb1f0; }
+    .t-table-preview{  background: #1fb1f0; }
+    .t-table-handle{ background: #fa2f2f; padding: 0 20px; }
+    
+    .t-table-paging{ width: 100%; padding: 20px 0; overflow: hidden; }
+    .t-table-pagingbar{ float:right; margin-right: 10px; display: inline; }
+    .t-table-paging-btn{ display: inline-block; box-shadow: 0 1px 2px #999; -moz-box-shadow: 0 1px 2px #999; -khtml-box-shadow: 0 1px 2px #999;  background: #fff; padding: 0 10px; height: 30px; line-height: 30px; color:#333; text-decoration: none; border-radius: 2px; margin-right:5px; }
+    .t-table-paging-btn:hover{ text-decoration: none; background: #ddd; }
+    .t-table-paging-in{ outline: none; width: 24px; text-align: center; border:1px solid #ddd; background: #fff; height: 28px; color:#333; padding: 0 5px; }
+    .t-table-paging-text{ display: inline-block; height: 30px; line-height: 30px; }
+    .t-table-paging-select{ outline: none; border:1px solid #ddd; background: #fff; width: 80px; height: 30px;  }

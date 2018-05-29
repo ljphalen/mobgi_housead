@@ -1,0 +1,306 @@
+<?php echo $this->render("layout/header.phtml");?>
+    <div class="colMain">
+        <div class="title">
+        <p class="fl"><?php if($result['oid'] && !$result['clone']){echo '编辑';}else{echo '创建';} ?>广告创意</p>
+        </div>
+        <div class="main">
+            <div class="app-detail">
+                <form action="<?php echo $addAdStep2PostUrl; ?>" method="POST"  id="addFrom" >
+                	<input name="token" id="token" value="<?php echo $token;?>" type="hidden" />
+                    <input type="hidden" name="oid"   id=""  value='<?php echo $result['oid']; ?>' />
+                    <input type="hidden" name="clone"   id=""  value='<?php echo $result['clone']; ?>' />
+                    <input name="creative_name" id="creative_name" type="hidden" value="<?php echo  $result['creative_name']; ?>" >
+                    <input name="creative_arr" id="creative_arr" type="hidden" value="<?php echo  $result['creative_name']; ?>" >
+                    <input name="creative_desc" id="creative_desc" type="hidden" value="<?php echo  $result['creative_desc']; ?>" >
+                    <input class='our_image' type="hidden" name="template271_img1" value="<?php echo  $result['template271_img1'] ; ?>">
+                    <input class='our_imageid' type="hidden" name="template271_ourimageid1" value="<?php echo  $result['template271_ourimageid1'] ; ?>">
+                    <input class='our_image' type="hidden" name="template271_img2" value="<?php echo  $result['template271_img2'] ; ?>">
+                    <input class='our_imageid' type="hidden" name="template271_ourimageid2" value="<?php echo  $result['template271_ourimageid2'] ; ?>">
+                    <input class='our_image' type="hidden" name="template271_img3" value="<?php echo  $result['template271_img3'] ; ?>">
+                    <input class='our_imageid' type="hidden" name="template271_ourimageid3" value="<?php echo  $result['template271_ourimageid3'] ; ?>">
+                    <input class='our_image' type="hidden" name="template351_img1" value="<?php echo  $result['template351_img1'] ; ?>">
+                    <input class='our_imageid' type="hidden" name="template351_ourimageid1" value="<?php echo  $result['template351_ourimageid1'] ; ?>">
+                    <input class='our_image' type="hidden" name="template351_img2" value="<?php echo  $result['template351_img2'] ; ?>">
+                    <input class='our_imageid' type="hidden" name="template351_ourimageid2" value="<?php echo  $result['template351_ourimageid2'] ; ?>">
+                    <input class='our_media' type="hidden" name="template351_video" value="<?php echo  $result['template351_video'] ; ?>">
+                    <input class='our_mediaid' type="hidden" name="template351_ourvideoid" value="<?php echo  $result['template351_ourvideoid'] ; ?>">
+                    <ul class="form">
+                    <li> 
+                        <span class="label">创意类型：</span>
+                        <div class="fc">
+                            <select id="template_id" name="template_id"  <?php if($result['oid'] && !$result['clone'])echo 'disabled="disabled"' ?>>
+                                <option value="" selected="">请选择</option>
+                                <?php foreach ($gdt_creative_template as $key=>$val){?>
+                                <option site_set="<?php echo $val['site_set'];?>" template_id="<?php echo $val['template_id']; ?>" value="<?php echo $val['template_id']; ?>"    <?php echo  $result['template_id'] == $val['template_id']?'selected=selected':''?>> <?php echo $val['name'] ?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                        <?php if($result['oid'] && !$result['clone']){ ?>
+                            <input type="hidden" name="template_id_e"   value='<?php echo $result['template_id']; ?>' />
+                        <?php } ?>
+                    </li>
+                    <li> 
+                        <span class="label">创意曝光策略：</span>
+                        <div class="fc">
+                            <?php foreach ($creative_selection_type as $key=>$val){?>
+                            <p><label><input type="radio" value="<?php echo $key;?>" name="creative_selection_type" class="radio" <?php echo  $result['creative_selection_type'] == $key?'checked=checked':''; ?> ><?php echo $val;?></label></p>
+							<?php }?>
+                        </div>
+                    </li>
+                    </ul>
+                </form>
+                <div class="creative_upload_list">
+                    <div class='upload_sub_div' id="template_id65"  style="<?php echo  $result['template_id'] != 65?'display:none':''; ?>">
+                    <ul class="form">
+                     <li id="upload_div">
+                          <span class="label">上传创意：</span>
+<!--   --------------------------------------------批量上传----------------------------------------------  -->
+                            <div class="guige-detail _detail_65">
+                             <ul class="updata-sucai _creativeFormList _creativeWrap" >
+                             <!--             循环展示创意                -->
+                             <?php if(is_array($result['creative_arr'])){ foreach ($result['creative_arr'] as $key=>$val ){?>
+                             <li class="sucai-list _creativeForm <?php if($val['is_edit']){echo '_creativeEdit';} ?>" id="65_creativeForm_<?php echo $key+1; ?>" >
+                               <div class="sucai-list-inner">
+                                <?php if(!($val['is_edit'])){ ?>
+                                <div class="close _removeCabinet">
+                                 关闭
+                                </div>
+                                <?php } ?>
+                                 <div class="sucai-area  sucai-num" >
+                                  <span class="prompt _tnameTextarea">
+                                  <textarea placeholder="创意标题" name="creative_name" class="_tnameInput" onkeyup="changeLength(this,30)" <?php if($val['is_edit']){echo "disabled";} ?> ><?php echo  $val['creative_name']; ?></textarea>
+                                      <span class="somets c-tx3"><strong class="_current"><?php echo  mb_strlen($val['creative_name']); ?></strong>/<span>30</span></span>
+                                      <input  name="tid" class="" type="hidden" /> </span>
+                                 </div>
+                                 <div class="sucai-area sucai-wenan" style="overflow: visible;">
+                                  <span class="prompt"> <textarea  name="creative_desc" placeholder="创意描述" class="_tdescInput" onkeyup="changeLength(this,30)" <?php if($val['is_edit']){echo "disabled";} ?>><?php echo  $val['creative_desc']; ?></textarea>
+                                      <span class="somets c-tx3" >
+                                          <strong class="_current"><?php echo  mb_strlen($val['creative_desc']); ?></strong>/<span>30</span>
+                                      </span></span>
+                                 </div>
+                                 <div class="sucai-area sucai-img"  data-format="JPG/JPEG/PNG">
+                                  <div class="prompt">
+                                   <div class="sucai-img-container init-img ng-hide" >
+                                    <img src="<?php echo $staticPath.'/css/gdt-img/img218.png';?>" />
+                                   </div>
+                                   <div class="sucai-img-standard init-img ng-hide" >
+                                    <p class="standard-size"> <span class="c-red">1000px</span>&times; <span class="c-red">560px</span> </p>
+                                    <p class="c-tx3">(90KB以内的JPG/JPEG/PNG图片)</p>
+                                    <label class="btn-upload input-file-sizeimg" for="creativeList_<?php echo $key+1; ?>_multiple_image" title="可以按住CTRL键在对话框中点选不超过5张图片，不符合当前规格的图片不能上传。">批量上传</label>
+                                    <form name="creativeChild" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="token" value="<?php echo $token;?>" />
+                                    <input name="filelist[]" id="creativeList_<?php echo $key+1; ?>_multiple_image" class="_multiple_upload_65" accept="" multiple="" type="file" />
+                                    <input name="file" id="creativeList_<?php echo $key+1; ?>_image" class="_upload_65" accept=""  type="file" />
+                                    </form>
+                                   </div>
+                                   <div class="_displayWrap" >
+                                    <div class="sucai-img-container _displayContainer">
+                                        <span class="dot _preview_image"><img src="<?php echo $val['template65_img_url']; ?>" /></span>
+                                        <input class="our_image" type="hidden" name="upload_template65_img" value="<?php echo  $val['template65_img'] ; ?>">
+                                        <input class="our_imageid" type="hidden" name="upload_template65_ourimageid" value="<?php echo  $val['template65_ourimageid'] ; ?>">
+                                    </div>
+                                    <?php if(!($val['is_edit'])){ ?>
+                                    <div class="sucai-img-standard _reupload none">
+                                     <div class="sucai-img-reupload-area">
+                                      <p>重新选择创意</p>
+                                      <p> <label class="btn-upload input-file-sizebtn" for="creativeList_<?php echo $key+1; ?>_image" title="可以按住CTRL键在对话框中点选不超过5张图片。">本地</label></p>
+                                     </div>
+                                    </div>
+                                    <?php } ?>
+                                   </div>
+                                  </div>
+                                 </div>
+                               </div>
+                               </li>
+                             <?php }}?>
+                              <li class="sucai-list sucai-list-add _modAddCreative"  style="display: list-item;">
+                               <div class="sucai-list-inner">
+                                <a href="javascript:;" class="_addCreative">
+                                    <span class="add-sym">+</span>
+                                    <span class="add-wd">最多可使用5个创意<i class="icon ico-help" title="最多可使用5个创意"><i></i></i></span> </a>
+                               </div>
+                              </li>
+                             </ul>
+                            </div>
+<!--   --------------------------------------------批量上传----------------------------------------------  -->
+                    </li>
+                    </ul>
+                    </div>
+                     <div class='upload_sub_div' id="template_id271"  style="<?php echo  $result['template_id'] != 271?'display:none':''; ?>">
+                    <ul class="form">
+                     <li>
+                        <span class="label">创意标题：</span>
+                        <div class="fc">
+                           <input name="creative_name_271" id="creative_name_271" type="text" value="<?php echo  $result['creative_name']; ?>" class="iText " >
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">创意描述：</span>
+                        <div class="fc">
+                           <input name="creative_desc_271" id="creative_desc_271" type="text" value="<?php echo  $result['creative_desc']; ?>" class="iText " >
+                        </div>
+                    </li>
+                     <li id="upload_div">
+                            <span class="label">上传创意：</span>
+                            <div id="271Img1" class="fc">
+                                <span>1000*560图片</span><br>
+                                <img src="<?php echo $result['template271_img1_url']?$result['template271_img1_url']:$staticPath.'/img/content/nopic.jpg';?>" style="width:200px;height:100px;"/>
+                                <input class='our_image' type="hidden" name="upload_template271_img1" value="<?php echo  $result['template271_img1'] ; ?>">
+                                <input class='our_imageid' type="hidden" name="upload_template271_ourimageid1" value="<?php echo  $result['template271_ourimageid1'] ; ?>">
+                            </div>
+                            <div class="fc" >
+                                <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=271Img1&template_id=271';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                            
+                            <div id="271Img2" class="fc">
+                                <span>1000*560图片</span><br>
+                                <img src="<?php echo $result['template271_img2_url']?$result['template271_img2_url']:$staticPath.'/img/content/nopic.jpg';?>" style="width:200px;height:100px;"/>
+                                <input class='our_image' type="hidden" name="upload_template271_img2" value="<?php echo  $result['template271_img2'] ; ?>">
+                                <input class='our_imageid' type="hidden" name="upload_template271_ourimageid2" value="<?php echo  $result['template271_ourimageid2'] ; ?>">
+                            </div>
+                            <div class="fc"  >
+                                <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=271Img2&template_id=271';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                            
+                            <div id="271Img3" class="fc">
+                                <span>1000*560图片</span><br>
+                                <img src="<?php echo $result['template271_img3_url']?$result['template271_img3_url']:$staticPath.'/img/content/nopic.jpg';?>" style="width:200px;height:100px;"/>
+                                <input class='our_image' type="hidden" name="upload_template271_img3" value="<?php echo  $result['template271_img3'] ; ?>">
+                                <input class='our_imageid' type="hidden" name="upload_template271_ourimageid3" value="<?php echo  $result['template271_ourimageid3'] ; ?>">
+                            </div>
+                            <div class="fc"  >
+                                <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=271Img3&template_id=271';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                    </li>
+                    </ul>
+                    </div>
+                    <div class='upload_sub_div' id="template_id351" style="<?php echo  $result['template_id'] != 351?'display:none':''; ?>">
+                    <ul class="form">
+                     <li>
+                        <span class="label">创意标题：</span>
+                        <div class="fc">
+                           <input name="creative_name_351" id="creative_name_351" type="text" value="<?php echo  $result['creative_name']; ?>" class="iText " >
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">创意描述：</span>
+                        <div class="fc">
+                           <input name="creative_desc_351" id="creative_desc_351" type="text" value="<?php echo  $result['creative_desc']; ?>" class="iText " >
+                        </div>
+                    </li>
+                     <li id="upload_div">
+                            <span class="label">上传创意：</span>
+                            
+                            <div id="351Img1" class="fc">
+                                <span>640*360图片</span><br>
+                                <img src="<?php echo $result['template351_img1_url']?$result['template351_img1_url']:$staticPath.'/img/content/nopic.jpg';?>" style="width:200px;height:100px;"/>
+                                <input class='our_image' type="hidden" name="upload_template351_img1" value="<?php echo  $result['template351_img1'] ; ?>">
+                                <input class='our_imageid' type="hidden" name="upload_template351_ourimageid1" value="<?php echo  $result['template351_ourimageid1'] ; ?>">
+                            </div>
+                            <div class="fc"  >
+                                <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=351Img1&template_id=351';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                            <div id="351Img2"  class="fc">
+                                <span>300*300图片</span><br>
+                                <img src="<?php echo $result['template351_img2_url']?$result['template351_img2_url']:$staticPath.'/img/content/nopic.jpg';?>" style="width:200px;height:100px;"/>
+                                <input class='our_image' type="hidden" name="upload_template351_img2" value="<?php echo  $result['template351_img2'] ; ?>">
+                                <input class='our_imageid' type="hidden" name="upload_template351_ourimageid2" value="<?php echo  $result['template351_ourimageid2'] ; ?>">
+                            </div>
+                            <div class="fc"  >
+                                <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadUrl.'/?imgId=351Img2&template_id=351&type=image2';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                            
+                            <div id="351Video"  class="fc">
+                                <span>视频</span><br>
+                                <input class='our_media_url' type="hidden" name="upload_template351_video_url" value="<?php echo  $result['template351_video'] ; ?>">
+                                <input class='our_media' type="hidden" name="upload_template351_video" value="<?php echo  $result['template351_video'] ; ?>">
+                                <input class='our_mediaid' type="hidden" name="upload_template351_ourvideoid" value="<?php echo  $result['template351_ourvideoid'] ; ?>">
+                            </div>
+                            <div class="fc"  >
+                                <p style="clear:both;">
+                                <iframe name="upload" src="<?php echo $uploadOtherUrl.'/?otherId=351Video&template_id=351&type=video';?>" style="height:50px;width:100%;" frameborder="0" scrolling="no">                                         
+                                 </iframe>
+                                </p>
+                            </div>
+                    </li>
+                    </ul>
+                    </div>
+                    </div>
+                    <ul class="form">
+    				<li>
+                        <div class="fc">
+                              <?php $forwardUrl =  $addAdStep1Url;
+                                    if($result['oid'])  $forwardUrl .= "?oid=".$result['oid'];
+                                    if($result['clone'])  $forwardUrl .= "&clone=".$result['clone'];
+                                    if($result['oid']) {$forwardUrl .= "&step=1";}else{$forwardUrl .= "?step=1";}
+                              ?>
+                         	<input type="button"  onclick="javascript:forwardToPrePage('<?php echo $forwardUrl; ?>');" value="上一步" class="submit btn">
+                            <input type="button"  id="submitform"  value="下一步" class="submit btn">
+                        </div>
+                    </li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="<?php echo $staticPath;?>/css/gdt.css" rel="stylesheet" />
+<link href="<?php echo $staticPath;?>/css/jquery.loadmask.css" rel="stylesheet" />
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<script src="<?php echo $staticPath;?>/js/common/jquery.loadmask.min.js"></script>
+<script src="<?php echo $staticPath;?>/js/advertiser/gdt.js"></script>
+<script type="text/javascript">
+var oid = '<?php echo $result['oid']; ?>';
+var clone = '<?php echo $result['clone']; ?>';
+var nextUrl = '<?php echo $addAdStep3Url; ?>';
+if(oid){
+	nextUrl +='?oid='+oid;
+}
+if(clone){
+	nextUrl +='&clone='+clone;
+}
+
+//广告表单数据提交
+$(document).ready(function(){
+    $("#submitform").bind("click",function(){
+        // 在这里将多个65创意组合成一个数组提交
+        var template_id = $("#template_id").val();
+        if(template_id == 65){
+            updateTemplateId65();
+        }else if(template_id == 271){
+            updateTemplateId271();
+        }else if(template_id == 351){
+            updateTemplateId351();
+        }
+        $("#addFrom").submit();
+    });
+    ajaxForm('addFrom',function(ret){
+        ajaxRedirect(ret, baseurl+nextUrl);
+    });
+	$('#template_id').change(function(){
+		var template_id = $("#template_id").val();
+		if(template_id){
+			$("#template_id"+template_id).show().siblings().hide();
+		}else{
+            $(".upload_sub_div").hide();
+        }
+	});
+    
+	
+})
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

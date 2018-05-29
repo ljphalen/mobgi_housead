@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>磨基广告管理系统后台</title>
+	<link rel="shortcut icon" href="<?php echo $staticPath;?>/img/favicon.ico" />
+	<link href="<?php echo $staticPath?>/css/page_layout.css?v=<?php echo $version;?>" rel="stylesheet" type="text/css"/>
+	<style>
+	body,html{ background:#f2f2f2; }
+	</style>
+</head>
+<body>
+	<div class="default-page">
+		<div class="main">
+			<div class="main-title">当前用户 <i></i></div>
+			<hr class="bg-gray"></hr>
+			<ul class="main-list">
+				<li>UID ： <?php echo $user_id ?> </li>
+				<li>邮箱 ： <?php echo $email ?> </li>
+				<li>用户名 ： <?php echo $user_name ?> </li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

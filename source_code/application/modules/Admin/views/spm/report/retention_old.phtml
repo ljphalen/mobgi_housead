@@ -1,0 +1,170 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  -->
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   -->
+
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>用户留存管理</p>
+                </div>
+                <!-- title end  -->
+                <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">查询日期：</label>
+                            <div class="layui-inline">
+                                <input type="text" name="create_date" class="layui-input" id="datetime1">
+                            </div>
+                            <div class="layui-inline">
+                                <select name="activity_id"  lay-search="">
+                                    <option value="">直接选择或搜索活动</option>
+                                    <?php foreach($activities as $keys=>$val){?>
+                                        <option value="<?php echo $keys;?>" <?php if($val == $params['id']){echo "selected";}?>><?php echo $val;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <select name="activity_gid"  lay-search="">
+                                    <option value="">直接选择或搜索活动组</option>
+                                    <?php foreach($activity_group as $keys=>$val){?>
+                                        <option value="<?php echo $keys;?>" <?php if($val == $params['id']){echo "selected";}?>><?php echo $val;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <select name="channel_id"  lay-search="">
+                                    <option value="">直接选择或搜索渠道</option>
+                                    <?php foreach($channel_no as $keys=>$val){?>
+                                        <option value="<?php echo $keys;?>" <?php if($val == $params['channel_id']){echo "selected";}?>><?php echo $val;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <div class="layui-inline">
+                                <select name="channel_gid"  lay-search="">
+                                    <option value="">直接选择或搜索渠道组</option>
+                                    <?php foreach($channel_group as $keys=>$val){?>
+                                        <option value="<?php echo $keys;?>" <?php if($val == $params['channel_gid']){echo "selected";}?>><?php echo $val;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                            <input type="hidden" name="app_id" value="">
+                            <div class="layui-inline"></div>
+                            <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="retention_table" lay-filter="retention_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a> -->
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+        </div>
+
+    </div>
+    <!-- content end     -->
+</div>
+</body>
+</html>
+<script>
+
+
+    //注意：导航 依赖element 模块，否则无法进行功能性操作
+    //JavaScript代码区域
+    layui.use(['element','form','laydate','table'], function(){
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var table = layui.table;
+        var url = 'retentionList';
+        var sdate = "<?php echo $sdate;?>";
+        var edate = "<?php echo $edate;?>";
+
+        laydate.render({elem: '#datetime1',range: true,value: '<?php echo $sdate." - ".$edate ?>'});
+
+        var cols = [[ //表头
+            <?php foreach ($toolBar as $item=>$val){?>
+            {field: '<?php echo $item;?>', title: '<?php echo $val;?>'},
+            <?php }?>
+        ]];
+
+        //初始化表格
+        var initTable = {
+            elem: '#retention_table',
+            where: {token: token, app_id: JSON.parse(localStorage.app_data).app_id,sdate:sdate,edate:edate},
+            url : url,
+            cols: cols
+        };
+        renderTable(table,initTable);
+
+
+        //监听搜索按钮
+        form.on('submit(search)', function(data){
+            var field = data.field;
+            field.app_id = JSON.parse(localStorage.app_data).app_id;
+            if((field.activity_id != '' && field.channel_id != '')||(field.activity_id != '' && field.channel_gid != '')||(field.activity_gid != '' && field.channel_gid != '')||(field.activity_gid != '' && field.channel_id != '')){layer.alert('维度选择错误!');return false;}
+            field.token = token;
+            var params = {
+                elem: '#retention_table',
+                url : url,
+                where: field,
+                cols: cols
+            };
+            renderTable(table,params);
+            return false;
+        });
+    });
+
+    //  渲染table
+    function renderTable(table,data){
+        //第一个实例
+        table.render({
+            elem: data.elem
+            ,url: data.url //数据接口
+            ,method: 'post'
+            ,response: {
+                statusName: 'success' //数据状态的字段名称，默认：code success
+                ,statusCode: 0 //成功的状态码，默认：0
+                ,msgName: 'msg' //状态信息的字段名称，默认：msg
+                ,countName: 'count' //数据总数的字段名称，默认：count
+                ,dataName: 'data' //数据列表的字段名称，默认：data
+            }
+            ,where: data.where
+            ,limit: '20'
+            ,page: true //开启分页
+            ,cols: data.cols
+        });
+    }
+
+
+    //重新渲染
+    function renderLayuiFormAndTab(){
+        layui.use(['element','form'], function(){
+            layui.element.init();
+            layui.form.render();
+        });
+    }
+
+
+
+</script>
+

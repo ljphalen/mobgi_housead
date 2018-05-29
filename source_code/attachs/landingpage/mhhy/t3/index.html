@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>《梦幻花园》手游</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="shortcut icon" href="images/icon.png">
+    <script src="js/jquery-2.1.0.min.js"></script>
+    <script>
+          var oMeta = document.createElement('meta');
+          oMeta.name = 'viewport';
+          var scale = window.screen.width/640;
+          //console.log(scale)
+          oMeta.content = 'width=device-width, initial-scale='+scale+',maximum-scale='+scale+',minimum-scale='+scale;
+          document.getElementsByTagName('head')[0].appendChild(oMeta);
+    </script>
+    <style>
+
+        /*设置IOS页面长按不可复制粘贴，但是IOS上出现input、textarea不能输入，因此将使用-webkit-user-select:auto;*/
+        *{
+            -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+            -webkit-user-select:none; /*webkit浏览器*/
+            -khtml-user-select:none; /*早期浏览器*/
+            -moz-user-select:none;/*火狐*/
+            -ms-user-select:none; /*IE10*/
+            user-select:none;
+        }
+        input,textarea {
+            -webkit-user-select:auto; /*webkit浏览器*/
+            margin: 0px;
+            padding: 0px;
+            outline: none;
+        }
+        img{ vertical-align: top;}
+        a,input,button{ -webkit-tap-highlight-color: rgba(0, 0, 0, 0); -webkit-appearance : none ;  border-radius: none;   }
+        html,body{ position: relative; width: 100%; height: 100%;  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;  }
+        html,body{ overflow-x: hidden;}
+        .wrap{ position: relative;  width: 640px; height: 100%; overflow: hidden;  }
+        .header{ position:absolute; z-index: 99; height: 126px; width:640px; background: url('images/headbg1.jpg') repeat-x;  }
+        .header i{ position: relative; z-index: 100; float:left; display: inline-block; width: 96px; height:96px; margin: 12px 11px 0 16px;    }
+        .header i img{ width: 96px; height:96px; }
+        .head-info{ position: relative; z-index: 100; float:left; height:100%; }
+        .head-title{ color:#fff; font-size: 30px; margin: 13px 0 0 0;}
+        .head-description{ color:#b2d3f3; font-size: 16px; height: 30px; line-height: 30px; }
+        .head-grade{ overflow: hidden;  }
+        .head-grade span{ float:left; color:#b2d3f3; font-size: 16px;}
+        .head-grade ul{ float:left; padding: 2px 5px 0 0 ;} 
+        .head-grade ul li{ float:left; margin:0 0 0 5px; }
+        .mask-head{ position: absolute; z-index: 99; width: 100%; height: 100%;  background: #042e35; filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity:0.9; -webkit-opacity:0.9; opacity:0.9;  }
+        .all-star{ width: 17px; height: 16px; background:url('images/star.png') no-repeat; background-size:17px 16px; }
+        .half-star{ width: 17px; height: 16px; background:url('images/half-star.png') no-repeat; background-size:17px 16px;}
+        .head-download{ position: relative; z-index: 100; float:right; display: inline-block; margin:18px 16px 0 0; cursor: pointer; }
+        .head-download img{  width: 187px; height: 80px; }
+        .main{ height: 100%; overflow-x: hidden; overflow-y: auto;   }
+        .pic-wrap{  position: relative; z-index: 2; width: 100%; }
+        .pic-wrap>img{   position: relative; z-index: 2; width: 100%; }
+        .video_el{ position:absolute; left:50%; bottom:192px;  z-index: 3; width: 433px; height: 270px; margin-left:-220px; }
+        .video_el_mask{ position:absolute; left:50%; bottom:192px;  z-index: 3; width: 433px; height: 270px; margin-left:-220px; display: none;  opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0; background: rgba(0,0,0,0); }
+        #play{ position: absolute; left:50%; top:700px; margin-left:-46.5px;  z-index: 5; width: 93px; height: 93px; display: block;  }
+        #play img{  width: 93px; height: 93px;  }
+
+        .footer-wrap{ position: relative; z-index: 2; width: 100%; height: 126px; background: url("images/footerbg1.jpg") repeat-x;   }
+        .footer-wrap p{ color:#fff; font-size: 16px; text-align: center; padding-top: 35px; }
+        .footer-wrap img{ position:absolute; z-index: 2; left:0; bottom:0; width: 121px; height: 35px;  }
+    </style>
+</head>
+<body>
+      <div id="wrap" class="wrap">
+           <header class="header">
+                <i><img src="images/icon.png" /></i>  
+                <div class="head-info">
+                     <p class="head-title">梦幻花园</p>
+                     <p class="head-description">萌趣消除关卡 专属花园建造</p>
+                     <div class="head-grade">
+                         <span>推荐指数:</span>
+                         <ul>
+                             <li class="all-star"></li>
+                             <li class="all-star"></li>
+                             <li class="all-star"></li>
+                             <li class="all-star"></li>
+                             <li class="all-star"></li>
+                         </ul>
+                         <span>4.9分</span>
+                     </div>
+                </div>
+                <a class="head-download download" href=""><img src="images/d1.png" /></a>    
+           </header>
+           <div class="main">
+               <section class="pic-wrap">
+                   <img src="images/bg1.png" />
+                   <video class="video_el" id="video_el" width="433" height="270" poster="images/video.jpg"   preload="none" > 
+                       <source src="https://dl2.gxpan.cn/ad/delivery/201709/59bf24cc623e9.mp4" />
+                   </video>
+                   <div id="v_mask" onclick="pausevideo()" class="video_el_mask"></div>  
+                   <a href="javascript:;" id="play" onclick="playvideo()" ><img src="images/play.png" /></a>
+                   
+               </section>
+               <div class="footer-wrap">
+                    <p>
+                        Copyright2009-2017 深圳市创梦天地科技股份有限公司版权所有 <br>
+                         粤ICP备11018438号 粤网文【2016】6781-1632号
+                    </p> 
+                    <img src="images/footer_icon.png" /> 
+               </div>
+            </div>
+            
+            
+      </div>
+</body>
+</html>
+<script>
+    (function(){
+        // 判断是否为pc
+        var os = function() {  
+            var ua = navigator.userAgent,  
+            isWindowsPhone = /(?:Windows Phone)/.test(ua),  
+            isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,   
+            isAndroid = /(?:Android)/.test(ua),   
+            isFireFox = /(?:Firefox)/.test(ua),   
+            isChrome = /(?:Chrome|CriOS)/.test(ua),  
+            isTablet = /(?:iPad|PlayBook)/.test(ua) || (isAndroid && !/(?:Mobile)/.test(ua)) || (isFireFox && /(?:Tablet)/.test(ua)),  
+            isPhone = /(?:iPhone)/.test(ua) && !isTablet,  
+            isPc = !isPhone && !isAndroid && !isSymbian;  
+            return {  
+                isTablet: isTablet,  
+                isPhone: isPhone,  
+                isAndroid : isAndroid,  
+                isPc : isPc  
+            };  
+        }(); 
+       
+
+        if(os.isPc && !os.isTablet){
+            document.getElementById("wrap").style.margin = 'auto';
+        };
+
+        function getQueryString(name) { 
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+            var r = window.location.search.substr(1).match(reg); 
+            if (r != null) return unescape(r[2]); return null; 
+        } 
+        
+        var id = getQueryString('id');
+        $.ajax({
+            url :'http://hunterdev.admin.mobgi.com/api/Landingpage/getTemplateData?id='+id,
+            async:false,
+            data : '',
+            type : 'post',
+            dataType : 'jsonp',
+            jsonp : 'callback',
+            success:function(data){
+                $('.download').attr('href',data.url);
+            },
+            error :function(xhr,msg,e){
+                console.log(xhr+", "+msg+", "+e);
+            }
+        });
+
+    })();
+
+    function playvideo(){
+        var video_el = document.getElementById('video_el');
+        var btn = document.getElementById('play');
+        var mask = document.getElementById('v_mask');
+        video_el.play();
+        btn.style.display = 'none';
+        mask.style.display = 'block';
+    }
+
+    function pausevideo(){
+        var video_el = document.getElementById('video_el');
+        var btn = document.getElementById('play');
+        var mask = document.getElementById('v_mask');
+        video_el.pause();
+        btn.style.display = 'block';
+        mask.style.display = 'none';
+    }
+
+</script>

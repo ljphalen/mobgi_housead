@@ -1,0 +1,290 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath?>/css/layui.css"/>
+<style>
+    *{ margin: 0; padding: 0;}
+    ul,li{ list-style: none; }
+    html,body{
+        font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        font-size: 14px;
+    }
+    .wrapper{
+        background:#f2f2f2; padding:5px 20px 50px 20px; box-sizing:border-box;
+    }
+    .items-main-title{ width: 100%; overflow:hidden; padding: 10px 0 5px 0; box-sizing: border-box; border-bottom:1px solid #eee;  }
+    .items-main-title p{ float:left; padding-left: 5px; color: #1E9FFF; display: inline-block; font-size: 20px; line-height: 40px;  }
+    .items-main-search{ width: 100%;  padding: 10px 0 0 0; }
+    .items-main-buttons{ float:right; display: inline-block; }
+    .table-wrap{ width: 100%;}
+</style>
+<body>
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this"><a href="runDetailReport">经营概况</a></li>
+        <li><a href="monthAppReport">月运营明细</a></li>
+        <li><a href="weekAppReport">周运营明细</a></li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-fluid">
+                <div class="items-main-title"><p>经营概况</p></div>
+                <!-- top begin -->
+                <div class="items-main-search ">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">查询年份：</label>
+                            <div class="layui-input-inline">
+                                <select name="years" id="years" lay-filter="years">
+                                    <option value="2017" <?php if($years == 2017) echo "selected";?>>2017</option>
+                                    <option value="2018" <?php if($years == 2018) echo "selected";?>>2018</option>
+                                    <option value="2019" <?php if($years == 2019) echo "selected";?>>2019</option>
+                                    <option value="2020" <?php if($years == 2020) echo "selected";?>>2020</option>
+                                </select>
+                            </div>
+                            <div class="items-main-buttons">
+                                <a class="layui-btn layui-btn-normal export">导出为excel</a>
+                                <a href="<?php echo $setKpi;?>" class="layui-btn layui-btn-normal">KPI设置</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- top end  -->
+                <div class="layui-row">
+                    <div class="layui-col-sm6">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                            <legend>一.总体概况</legend>
+                        </fieldset>
+                        <blockquote class="layui-elem-quote">
+                            截止到<?Php echo $lastUpdate;?>:
+                            <br>本年共完成收益：<?php echo $sumData['yearCount']['finish'];?>元，计划应完成：<?php echo $sumData['yearCount']['plan'];?>元，实际完成：<?php echo $sumData['yearCount']['rate'];?>%，差额：<?php echo $sumData['yearCount']['diff'];?>元.
+                            <hr>
+                            休闲游戏kpi需完成<?php echo $data[1][0]['plan'];?>元，实际完成<?php echo $data[1][0]['finish'];?>元，实际完成<?php echo $data[1][0]['rate'];?>%
+<!--                            <br>独立游戏kpi需完成--><?php //echo $data[2][0]['plan'];?><!--元，实际完成--><?php //echo $data[2][0]['finish'];?><!--元，实际完成--><?php //echo $data[2][0]['rate'];?><!--%-->
+                            <br>联盟流量kpi需完成<?php echo $data[3][0]['plan'];?>元，实际完成<?php echo $data[3][0]['finish'];?>元，实际完成<?php echo $data[3][0]['rate'];?>%
+                            <br>
+                        </blockquote>
+                        <!--  图表1 -->
+                        <div class="tchar-side" id="chart1" style="width: 700px;height: 400px;"></div>
+                    </div>
+                    <div class="layui-col-sm6">
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                            <legend>二.月度概况</legend>
+                        </fieldset>
+                        <blockquote class="layui-elem-quote">
+                            截止到<?Php echo $lastUpdate;?>:
+                            <br>本月共完成收益：<?php echo $sumData['monthCount']['finish'];?>元，计划应完成：<?php echo $sumData['monthCount']['plan'];?>元，实际完成：<?php echo $sumData['monthCount']['rate'];?>%，差额：<?php echo $sumData['monthCount']['diff'];?>元.
+                            <hr>
+                            休闲游戏kpi需完成<?php echo $data[1][date('n')]['plan'];?>元，实际完成<?php echo $data[1][date('n')]['finish'];?>元，实际完成<?php echo $data[1][date('n')]['rate'];?>%，
+<!--                            <br>独立游戏kpi需完成--><?php //echo $data[2][date('n')]['plan'];?><!--元，实际完成--><?php //echo $data[2][date('n')]['finish'];?><!--元，实际完成--><?php //echo $data[2][date('n')]['rate'];?><!--%，-->
+                            <br>联盟流量kpi需完成<?php echo $data[3][date('n')]['plan'];?>元，实际完成<?php echo $data[3][date('n')]['finish'];?>元，实际完成<?php echo $data[3][date('n')]['rate'];?>%。
+                            <br>
+                        </blockquote>
+                        <!--  图表2 -->
+                        <div class="tchar-side" id="chart2" style="width: 700px;height: 400px;"></div>
+                    </div>
+                </div>
+
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                    <legend>三.数据报表</legend>
+                </fieldset>
+                <!-- table begin -->
+                <div class="table-wrap">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>业务</th>
+                            <th>指标</th>
+                            <th>一月</th>
+                            <th>二月</th>
+                            <th>三月</th>
+                            <th>四月</th>
+                            <th>五月</th>
+                            <th>六月</th>
+                            <th>七月</th>
+                            <th>八月</th>
+                            <th>九月</th>
+                            <th>十月</th>
+                            <th>十一月</th>
+                            <th>十二月</th>
+                            <th>总计</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($data as $type=>$items) {
+                            ?>
+                            <tr>
+                                <td rowspan="3"><?php if($type == 1){echo '休闲游戏';}elseif($type == 2){echo '独立游戏';}else{echo '联盟流量';}?></td>
+                                <td>计划</td>
+                                <?php foreach ($items as $key=>$val){?>
+                                    <td>￥<?php echo $val['plan'];?></td>
+                                <?php }?>
+                            </tr>
+                            <tr>
+                                <td>实际完成</td>
+                                <?php foreach ($items as $key=>$val){?>
+                                    <td>￥<?php echo $val['finish'];?></td>
+                                <?php }?>
+                            </tr>
+                            <tr>
+                                <td>完成率</td>
+                                <?php foreach ($items as $key=>$val){?>
+                                    <td><?php echo $val['rate'];?>%</td>
+                                <?php }?>
+                            </tr>
+                        <?php }?>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table end   -->
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
+<script src="<?php echo $staticPath; ?>/js/admin/lay/layui.js"></script>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/admin/lay/echarts.min.js"></script>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['table','form'], function(){
+        var form = layui.form;
+        form.on('select(years)', function(data){
+            window.location="runDetailReport?years="+data.value;
+        });
+    });
+    $(function(){
+        var years = $('#years').val();
+        layui.$.ajax({
+            type: 'GET',
+            data: {years:years},
+            url: 'getRunRepoetDataByajax',
+            dataType: 'json',
+            success: function(data){
+                table1 = document.getElementById('chart1')
+                table2 = document.getElementById('chart2')
+                chart1=echarts.init(table1);
+                chart2=echarts.init(table2);
+                chart_render(chart1,data.year);
+                chart_render(chart2,data.month);
+                //chart.hideLoading();
+            },
+            error: function(xhr){
+                layer.msg("fail");
+            }
+        });
+        //自适应宽高
+        var myChartContainer = function () {
+            table1.style.width = window.innerWidth/2+'px';
+            table1.style.height = window.innerHeight+'px';
+            table2.style.width = window.innerWidth/2+'px';
+            table2.style.height = window.innerHeight+'px';
+        };
+
+        //浏览器大小改变时重置大小
+        window.onresize = function () {
+            myChartContainer();
+            chart1.resize();
+            chart2.resize();
+        };
+    });
+    function chart_render(chart,data){
+        finish = to_array(data['finishrate']);
+        notFinish = to_array(data['notfinishrate']);
+        option = {
+            tooltip : {
+                trigger: 'axis',
+                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            legend: {
+                data: ['已完成', '未完成']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            yAxis:  {
+                type: 'value'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['总体情况','休闲游戏','独立游戏']
+            },
+            series: [
+                {
+                    name: '已完成',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data:finish
+                },
+                {
+                    name: '未完成',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data:notFinish
+                },
+                {
+                    name:'基准线',
+                    type:'line',
+                    smooth:true,
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:[data['average'],data['average'],data['average']],
+                },
+            ]
+        };
+        chart.setOption(option,true);
+    }
+
+
+    function to_array(obj){
+            var arr=[]
+            for (var i in obj){
+                arr.push(obj[i]);
+            }
+            return arr;
+    };
+    $(".export").click(function(e) {
+        var uri = 'data:application/vnd.ms-excel;base64,',text='',
+            template = '<html><head><meta charset="UTF-8"></head><body><table>{table}</table></body></html>',
+            base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+            format = function(s, c) {
+                return s.replace(/{(\w+)}/g,
+                    function(m, p) { return c[p]; })
+            }
+        //console.log($(this).parent().parent().parent().parent().parent().find("table.layui-table").html())
+        $(this).parent().parent().parent().parent().parent().find("table.layui-table").each(function(index, el) {
+            if(index<2){
+                text+=$(this).html();
+            }
+        });
+        var ctx = {worksheet: 'sheet1', table: text}
+        window.location.href = uri + base64(format(template, ctx))
+        // this.href= window.URL.createObjectURL(new Blob([text], {type: 'text/plain'}));
+        e.stopPropagation();
+    });
+</script>
+<?php echo $this->render("layout/footer.phtml"); ?>

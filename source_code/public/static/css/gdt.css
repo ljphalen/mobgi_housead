@@ -1,0 +1,364 @@
+.guige-detail {
+    margin-bottom: 30px;
+    padding-top: 17px;
+    line-height: normal;
+}
+.guige-detail h3 {
+    padding: 10px 40px 0 40px;
+    font-size: 14px;
+}
+.guige-detail .none {
+    display: none !important;
+}
+.guige-detail a,.guige-detail a:hover {
+    text-decoration: none;
+    background: transparent;
+}
+.guige-detail .updata-sucai {
+    height: auto;
+    margin-top: 15px;
+    float: left;
+}
+.guige-detail .sucai-list {
+    position: relative;
+    float: left;
+    width: 220px;
+    padding: 10px;
+    margin: 0 30px 15px 0;
+    border: 1px solid white;
+}
+.guige-detail li {
+    list-style: none;
+}
+.guige-detail .sucai-list .sucai-list-inner {
+    width: 220px;
+    height: auto;
+}
+.guige-detail .updata-sucai .close {
+    position: absolute;
+    top: -11px;
+    right: -11px;
+    height: 23px;
+    width: 22px;
+    background-image: url(gdt-img/gdt-toufang-edit-20170221_21334.png);
+    background-position: -154px -226px;
+    line-height: 75px;
+    overflow: hidden;
+    cursor: pointer;
+    display: none;
+}
+.guige-detail .close,.guige-detail .close:hover,.guige-detail .close:focus {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+.guige-detail .close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .2;
+    filter: alpha(opacity=20);
+}
+.guige-detail .sucai-area {
+    position: relative;
+    font-size: 14px;
+}
+.guige-detail .sucai-edit {
+    height: 77px;
+    line-height: 26px;
+    position: relative;
+}
+.guige-detail .updata-sucai .runing-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 9;
+    font-size: 12px;
+    line-height: normal;
+    padding: 3px 5px;
+    background-color: #EEF3F8;
+    border: 1px solid #CDD0D2;
+    border-bottom: none;
+}
+.guige-detail .prompt {
+    position: relative;
+    display: inline-block;
+}
+.guige-detail .sucai-list textarea {
+    border: 0;
+    width: 218px;
+    outline: none;
+    resize: none;
+    padding: 8px 10px;
+}
+.guige-detail textarea {
+    box-sizing: border-box;
+}
+.guige-detail input,.guige-detail select,.guige-detail textarea {
+    border-radius: 2px;
+}
+.guige-detail textarea {
+    overflow-y: auto;
+}
+.guige-detail input,.guige-detail textarea,.guige-detail select,.guige-detail button {
+    font-size: 12px;
+    font-weight: normal;
+    font-family: inherit;
+}
+.guige-detail .sucai-list .somets {
+    position: absolute;
+    bottom: 2px;
+    right: 10px;
+}
+.guige-detail .c-tx3 {
+    color: #909090;
+}
+.guige-detail .c-tx0 {
+    color: #999;
+}
+.guige-detail input {
+    position: relative;
+    vertical-align: middle;
+}
+.guige-detail .c-warn,.guige-detail .c-red {
+    color: #e33244;
+}
+.guige-detail .sucai-num, .guige-detail .sucai-wenan {
+    height: 76px;
+    width: 218px;
+    background: #fff;
+    border: 1px solid #CDD0D2;
+}
+.guige-detail .sucai-num textarea, .guige-detail .sucai-wenan textarea {
+    height: 76px;
+}
+.guige-detail textarea {
+    box-sizing: border-box;
+}
+.guige-detail .icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+.guige-detail .icon {
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+    height: 10px;
+    width: 16px;
+    position: relative;
+}
+.guige-detail ol ol, ol ul, ul ol, ul ul {
+    margin-bottom: 0;
+}
+.guige-detail .sucai-num, .guige-detail .sucai-img, .guige-detail .sucai-wenan, .guige-detail .sucai-miaoshu, .guige-detail .sucai-hudong, .sucai-list-inner .updata-sucai-brand {
+    margin-top: -1px;
+}
+.guige-detail .sucai-img {
+    height: 218px;
+    width: 218px;
+    border: 1px solid #dcdee3;
+    text-align: center;
+}
+.guige-detail .sucai-img-container {
+    height: 218px;
+    width: 218px;
+    overflow: hidden;
+    line-height: 218px;
+    display: table-cell;
+    vertical-align: middle;
+}
+.guige-detail .sucai-img img {
+    display: inline-block;
+    max-height: 218px;
+    max-width: 218px;
+    vertical-align: middle;
+}
+.guige-detail img {
+    -ms-interpolation-mode: bicubic;
+}
+.guige-detail fieldset, img, a img, iframe {
+    border-width: 0;
+    border-style: none;
+}
+.guige-detail .sucai-img-standard {
+    height: 218px;
+    width: 218px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+}
+.guige-detail .sucai-img-standard .standard-size {
+    margin-top: 40px;
+    font-size: 16px;
+    color: #999;
+}
+.guige-detail .updata-sucai .btn-upload {
+    height: 33px;
+    line-height: 33px;
+    width: 130px;
+    display: block;
+    color: #fff;
+    background: #13c4a5;
+    margin: 0 auto;
+    margin-top: 10px;
+    border: 1px solid #13c4a5;
+    box-sizing: border-box;
+}
+.guige-detail label.input-file-sizeimg {
+    margin-top: 10px;
+    height: 31px;
+    width: 130px;
+}
+.guige-detail .sucai-img input, .input-file-hide {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    width: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0;
+    border: 0;
+}
+.guige-detail input[type="file"] {
+    display: block;
+}
+.guige-detail .sucai-img .dot {
+    font-size: 0;
+    color: #bdc4c8;
+    vertical-align: middle;
+}
+.guige-detail .sucai-img-standard .sucai-img-reupload-area {
+    color: #fff;
+    font-size: 18px;
+    padding-top: 54px;
+}
+.guige-detail label.input-file-sizebtn {
+    height: 31px;
+    width: 160px;
+}
+.guige-detail a {
+    text-decoration: none;
+}
+.guige-detail .icon.ico-help i{
+    background-image: url(gdt-img/module-v2.png?20161220114537);
+}
+.guige-detail .icon.ico-help i {
+    height: 16px;
+    width: 16px;
+    background-position: -73px 0;
+}
+.guige-detail .icon.ico-help i {
+    background-position: -73px 0;
+    top: -3px;
+}
+.guige-detail .ico-help i {
+    height: 16px;
+    width: 16px;
+    background-image: url(gdt-img/gdt-toufang-pop-20170110_21328.32.png);
+    background-position: -105px 0;
+    top: -2px;
+    cursor: pointer;
+}
+.guige-detail .icon i {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    position: absolute;
+}
+.guige-detail .ng-hide:not(.ng-hide-animate) {
+    display: none !important;
+}
+.guige-detail .sucai-list-add {
+    width: 66px;
+}
+.guige-detail .sucai-list-add .sucai-list-inner {
+    border: none;
+}
+.guige-detail .sucai-list-add a {
+    display: block;
+    margin-top: 48px;
+    width: 72px;
+    height: 135px;
+}
+.guige-detail .sucai-list-add a span.add-sym {
+    font-size: 100px;
+}
+.guige-detail .sucai-list-add a span {
+    display: block;
+    color: #999;
+    text-decoration: none;
+    text-align: center;
+}
+.guige-detail .updata-sucai .hover,.guige-detail .updata-sucai .reupload-hover{
+    border-color: #CDD0D2;
+}
+.guige-detail .guige-detail .sucai-img{
+    margin-top: -1px;
+}
+.guige-detail .sucai-img-standard .c-tx3 {
+    margin-top: 3px;
+    font-size: 12px;
+}
+.guige-detail .sucai-img-standard .standard-size .c-red {
+    padding: 0 5px;
+}
+.guige-detail img,span,div,p{
+    margin: 0;
+    padding: 0;
+}
+.guige-detail img, iframe {
+    border: 0;
+}
+.guige-detail {
+    cursor: pointer;
+}
+.guige-detail .updata-sucai .sucai-img-reupload .sucai-img-standard {
+    background: rgba(0,0,0,.6);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#88000000,endColorstr=#88000000)
+}
+.guige-detail .updata-sucai .sucai-img-reupload .btn-upload {
+    display: inline-block;
+    width: 130px;
+    border: none;
+    font-weight: normal;
+    font-size: 14px;
+    margin-left: 0;
+    margin-top: 10px;
+    vertical-align: top
+}
+.guige-detail .updata-sucai .sucai-img-reupload .sucai-img-standard {
+    background: rgba(0,0,0,.6);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#88000000,endColorstr=#88000000)
+}
+.guige-detail .updata-sucai-imgmore .btn-upload,.guige-detail .updata-sucai-imgmore .updata-sucai .sucai-img-reupload .btn-upload {
+    height: 24px;
+    line-height: 24px;
+    width: 75px;
+    font-size: 12px
+}
+.guige-detail .updata-sucai-imgmore .single .btn-upload,.guige-detail .updata-sucai-imgmore .single .sucai-img-reupload .btn-upload {
+    width: 130px;
+    height: 33px;
+    line-height: 33px
+}
+
+:root .guige-detail .updata-sucai.updata-sucai-del .close,:root .guige-detail .updata-sucai .sucai-img-reupload .sucai-img-standard {
+    filter: none
+}
+.guige-detail .sucai-list-add a:hover span {
+    color: #13c4a5
+}
+.guige-detail .updata-sucai .hover .close, .guige-detail .updata-sucai .reupload-hover .close {
+    display: block;
+}
+.guige-detail .close, .close:hover, .close:focus {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+strong {
+    font-weight:bold;
+}

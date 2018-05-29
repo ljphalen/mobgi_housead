@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+import time
+
+LOGPATH = "log"
+SQLFILEPATH = "sql"
+SLEEPSECOND = 5
+READ_CACHE_COUNT = 2000
+
+REDIS_RQ_REQUEST = "adx_RQ:adx_data_request"
+
+ENV = "DEV"  # 环境模式
+if ENV == "DEV":
+    REDIS_QUEUE = {
+        "host": "192.168.141.216",
+        "port": 6378
+    }
+    MYSQL_MOBGI_ADX_DATA = {
+        "host": "192.168.141.216",
+        "port": 3306,
+        "db": "mobgi_adx_data",
+        "user": "root",
+        "passwd": "123456",
+        "tables": {
+            "adx_request": ['provider_id', 'bid_id', 'request', 'create_time']
+        }
+    }
+elif ENV == "TEST":
+    REDIS_QUEUE = {
+        "host": "127.0.0.1",
+        "port": 6378
+    }
+    MYSQL_MOBGI_ADX_DATA = {
+        "host": "10.50.10.12",
+        "port": 3306,
+        "db": "mobgi_housead_data",
+        "user": "eric",
+        "passwd": "XqfX29pXso",
+        "tables": {
+            "adx_request": ['provider_id', 'bid_id', 'request', 'create_time']
+        }
+    }
+else:
+    REDIS_QUEUE = {
+        "host": "codis.ad.housead.queue.ids.com",
+        "port": 18000
+    }
+    MYSQL_MOBGI_ADX_DATA = {
+        "host": "db.housead.ad.ids.com",
+        "port": 3306,
+        "db": "mobgi_housead_data",
+        "user": "mobgi_housead",
+        "passwd": "RUdqc9Ek7A9U",
+        "tables": {
+            "adx_request": ['provider_id', 'bid_id', 'request', 'create_time']
+        }
+    }
+
+
+

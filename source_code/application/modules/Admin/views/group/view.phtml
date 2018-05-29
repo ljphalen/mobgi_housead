@@ -1,0 +1,73 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+    <li class="current"><a href="<?php echo $listUrl;?>">用户组列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">查看用户组</a></li>
+	</ul>
+</div>
+<div class="h_a">查看用户组</div>
+<input type="hidden" name="group_id" value="<?php echo $groupInfo['group_id'];?>">
+<input name="token" value="<?php echo $token;?>" type="hidden" />
+<div class="table_full">
+    <table width="100%">
+        <tr class="tr">
+            <th class="th">用户组名称</th>
+            <td class="td"><input type="text" maxlength="30" value="<?php echo $groupInfo['name'];?>" name="name" class="input"></td>
+        </tr>
+        <tr class="tr">
+            <th class="th">用户组描述</th>
+            <td class="td"><textarea class="textarea" name="descrip"><?php echo $groupInfo['descrip'];?></textarea></td>
+        </tr>
+          <tr class="tr">
+            <th class="th">权限菜单分配</th>
+            <td class="td">
+			<?php foreach($level as $key => $value) { ?>
+          <dl class="cc purview_list">
+            <dt><label><input name="<?php echo $key;?>" onClick="checkSome('<?php echo $key;?>');" type="checkbox" value="1" class="CheckSome<?php echo $key;?>" /><?php echo $value['name'];?></label></dt>
+           <?php foreach($value['items'] as $ke => $val) { ?>
+           	<div class="clear"><label><?php echo $val['name'];?></label>
+            <dd >
+            <?php foreach($val['items'] as $sonKey => $sonVal) { 
+            	$name = 'menu_config['.$key.']['.$sonVal['id'].']';
+            	?> 
+	              <dl>
+	                 <label style='width:100%;margin-left:10px;'><input name="<?php echo $name;?>" onClick="checkSome('<?php echo $sonVal['id'];?>');"  type="checkbox" value="1"    class="CheckSome<?php echo $key;?> CheckSome<?php echo $sonVal['id'];?>"  <?php echo ($groupInfo['menu_config'][$key][$sonVal['id']] && $groupInfo['menu_config'][$key][$sonVal['id']]  == 1)?'checked="checked"':''; ?> /><?php echo $sonVal['name'];?></label>
+                    <?php if($menuList[$sonVal['id']]) { ?> 
+                     <?php foreach($menuList[$sonVal['id']] as $actionKey => $actionVal) { 
+                     	$name = 'menu_right['.$key.']['.$sonVal['id'].']['.$actionVal['id'].']';
+                     	?> 
+                     	<div><label><input name="<?php echo $name;?>"  type="checkbox" value="1"  class="CheckSome<?php echo $key;?>  CheckSome<?php echo $sonVal['id'];?>"  <?php echo ($groupInfo['menu_right'][$sonVal['id']][$actionVal['id']] && $groupInfo['menu_right'][$sonVal['id']][$actionVal['id']]  == 1)?'checked="checked"':''; ?> /><?php echo $actionVal['name'];?></label></div>
+                      <?php } ?>
+                      <?php } ?>
+                  	</dl> 
+                  	<?php } ?> 
+                </dd>
+                  </div>
+                <?php } ?> 
+            </dl>
+			<?php } ?>
+            </td>
+        </tr>
+
+        
+    </table>
+</div>
+<div class="mb10 tac">
+<span class="btn"><span><button type="button" onclick="window.location.href='<?php echo $listUrl;?>'" >返回</button></span></span>
+</div>
+<script type="text/javascript">
+//权限选中大类的时候同时选中小类
+function checkSome(val) {
+    var className = 'CheckSome_'+val;
+    var classObj  = $('.'+className);
+    for (var i=1;i<classObj.length;i++) {
+        var e = classObj[i];
+        if (classObj[0].checked == true) {
+            e.checked = true;
+        } else {
+            e.checked = false;
+        }
+    }
+}
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

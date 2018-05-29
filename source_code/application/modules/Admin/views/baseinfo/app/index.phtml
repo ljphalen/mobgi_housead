@@ -1,0 +1,144 @@
+<?php echo $this->render("layout/header1.phtml");?>
+
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+    	<li class="current"><a href="<?php echo $listUrl;?>">应用列表</a></li>
+		<li><a href="<?php echo $addAppUrl;?>">添加应用</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <div class="search fl">
+                <form action="<?php echo $listUrl;?>" method="GET"  id="searchForm">
+                 <input type="hidden" name="is_check" value="1">
+                 <input type="hidden" name="platform" value="<?php echo $search['platform'] ;?>">
+                <span>
+	                <select name='dev_id' class='' style='width:120px'>  
+	                	<option value=''>所有用户</option>
+	                   <?php foreach($userList as $key=>$value){?>    
+                        <option value="<?php echo $value['user_id']; ?>"  <?php echo  $search['dev_id'] == $value['user_id']?'selected=selected':''; ?>  ><?php echo $value['user_name']?></option>
+                        <?php } ?>            
+	                </select>
+                </span>
+                <span>
+                    <select name="state" >
+                        <option value=''>全部应用</option>
+                        <option value='1'  <?php echo  $search['state'] == 1?'selected=selected':''?> >关闭广告的应用</option>
+                        <option value='2'  <?php echo  $search['state'] == 2?'selected=selected':''?>>开启广告的应用</option>
+                    </select>
+                    <label class="ig_label">平台：</label>
+                    <ul class="ip_ul clearfix platform">
+                        <li  class="<?php echo ($search['platform'] == '')?'cur':'';?>"  data-platform="">全部</li>
+                        <li class="<?php echo ($search['platform'] == 1)?'cur':'';?>" data-platform="1">Android</li>
+                        <li class="<?php echo ($search['platform'] == 2)?'cur':'';?>" data-platform="2">IOS</li>
+                    </ul>
+                    <input type="text" class="iText" name='app_name' value='<?php echo $search['app_name'] ;?>' placeholder="可输入应用名称或key查询" />
+                    <input type="submit" class="submit" value="" 　/>
+                </span>
+                </form>
+            </div>
+        </div>
+        <div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>应用名</th>
+                            <th>平台</th>
+                            <th>应用广告开关</th>
+                            <th>广告位信息</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <?php foreach($appList as $key => $value) {?>
+                           <tr>
+                            <td class="clearfix">
+                                <div class="fl">
+                                    <img class="imgRadio" alt="" src="<?php echo $value['icon'];?>">
+                                </div>
+                                <div class="fl">
+                                    <div class="ig_appname"><?php echo $value['app_name'];?></div>
+                                    <div class="ig_appkey">App Key：<a href="<?php echo $addAppUrl;?>/?app_id=<?php echo $value['app_id'];?>" ><span class="blue"><?php echo $value['app_key'];?></span></a></div>
+                                </div>
+                            </td>   
+                             <td><?php echo ($value['platform'] == 1)?'Android':'IOS';?> </td>
+                              <td>
+                                <div class="app_info_gg" style="width:80px;">
+	                                <span class="onfbk">
+	                                    <a class="aon setAppstateOn <?php echo ($value['state']==1)?'cur':'';?>"  app_id="<?php echo $value['app_id']; ?>">ON</a>
+	                                    <a class="aoff setAppstateOFF <?php echo ($value['state']==0)?'cur':'';?>"  app_id="<?php echo $value['app_id'];?>">OFF</a>
+	                                </span>
+                                </div>
+                            </td>
+                             <td><a href="<?php echo $addPosUrl;?>/?app_id=<?php echo $value['app_id'];?>" ><font color='blue'><b><?php echo $value['pos_open'];?></b></font>个广告位<u>开启</u><br><font color='blue'><b><?php echo $value['pos_close'];?></b></font>个广告位<u>关闭</u></a></td>
+                            <td><?php echo date('Y-m-d H:i:s', $value['update_time']);?> </td>
+                            <td>
+                            <a href="<?php echo $value['is_check']?$addAppUrl:$checkUrl;?>/?app_id=<?php echo $value['app_id'];?>" class="mr10">编辑</a>
+							<!-- <a href="javascript:" onclick="deleteOne('<?php echo $deleteUrl;?>/?app_id=<?php echo $value['user_id'];?>', '', event);"　class="mr10">删除</a> -->
+							<a href="<?php echo $viewUrl;?>/?app_id=<?php echo $value['app_id'];?>" class="mr10">查看</a>
+                            </td>
+                        </tr> 
+                      <?php } ?>  
+                </table>
+            </div>
+			<div class="mr10 mt10 cc tc">
+			<?php echo $pager;?>
+			</div>
+            </div>
+   </div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$(".platform li").click(function () {
+	    $(this).addClass("cur").siblings().removeClass("cur");
+	     platform = $(this).attr('data-platform');
+	     $("input[name='platform']").val(platform);
+	     $("#searchForm").submit()
+	});
+
+	
+$(".setAppstateOn").click(function(){
+        if($(this).hasClass('cur')){
+            return;
+        }
+        if(!confirm("您确认要打开这个应用吗？")){
+            return;
+        }
+        $(this).parent().find('input').val(1);
+        $(this).addClass("cur");
+        $(this).parent().find(".aoff").removeClass('cur');
+        set_appstate($(this).attr("app_id"), 1);
+    });
+
+$(".setAppstateOFF").click(function(){
+        if($(this).hasClass('cur')){
+            return;
+        }
+        if(!confirm("您确认要关闭这个应用吗？")){
+            return;
+        }
+        $(this).parent().find('input').val(0);
+        $(this).addClass("cur");
+        $(this).parent().find(".aon").removeClass('cur');
+        set_appstate($(this).attr("app_id"), 0);
+    });
+
+
+});
+
+function set_appstate(app_id, state)
+{
+    ajaxGET("<?php echo $updateAppStateUrl;?>", "app_id=" + app_id + "&state=" + state, function(data) {
+        if (data.success) {
+            //location.reload();
+            jAlert(data.msg)
+        } else {
+            alert(data.msg)
+        }
+    })
+}
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

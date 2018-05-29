@@ -1,0 +1,147 @@
+php 5.6 + nginx1.2.9以上+mysql5.5以上+redis2.2以上
+
+yum install libmcrypt libmcrypt-devel mcrypt mhash mhash-devel libtool-ltdl libtool-ltdl-devel libxml2-devel curl-devel 
+yum install libjpeg.x86_64 libpng.x86_64 freetype.x86_64 libjpeg-devel.x86_64 libpng-devel.x86_64 freetype-devel.x86_64 -y
+
+cd php-5.6
+编译参数
+	./configure  --prefix=/usr/local/php5.6 --with-config-file-path=/usr/local/php5.6/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-iconv-dir --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl --enable-mbregex --enable-mbstring --with-mcrypt --enable-ftp --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --with-gettext --disable-fileinfo
+php扩展安装
+
+tar -zxvf yaf-2.3.5.tgz
+cd yaf-2.3.5
+ /usr/local/php5.6/bin/phpize
+./configure --with-php-config=/usr/local/php5.6/bin/php-config
+make && make install
+
+
+tar -zxvf redis-2.2.8.tgz
+cd redis-2.2.8
+ /usr/local/php5.6/bin/phpize
+./configure --with-php-config=/usr/local/php5.6/bin/php-config
+make && make install
+
+
+nginx配置如下：
+server {
+    listen 80 ;
+
+
+        root /data/www/test/public/game;
+        index index.php index.html index.htm;
+        server_name  test.localhost.com;
+        location ~ \.php$ {
+                fastcgi_pass 127.0.0.1:9000;
+                fastcgi_index index.php;
+                include fastcgi.conf;
+        }
+         location /
+        {
+             index index.php;
+              if (!-f $request_filename){
+                 rewrite (.*) /index.php;
+              }
+              try_files $uri $uri/ /index.html;
+         }
+         location /attachs/game/ {
+            proxy_pass http://127.0.0.1:8090/;
+          }
+          location /static/ {
+            proxy_pass http://127.0.0.1:8092/;
+          }
+}
+
+server
+{
+   server_name  a.test.localhost.com;
+   index  index.php index.html index.htm;
+   root  /data/www/test/public/admin/;
+
+   location ~ .*\.(php|php5)?$
+   {
+     fastcgi_pass  127.0.0.1:9000;
+     fastcgi_index index.php;
+     include fastcgi.conf;
+   }
+
+	   location /
+	   {
+	       index index.php;
+	       if (!-f $request_filename){
+	           rewrite (.*) /index.php;
+	        }
+	        try_files $uri $uri/ /index.html;
+	   }
+
+	   location /attachs/game/ {
+	       proxy_pass http://127.0.0.1:8091/;
+	   }
+	   location /static/ {
+	       proxy_pass http://127.0.0.1:8092/;
+	   }
+	  location ~ .*\.(js|css)?$
+	    {
+	        expires      1d;
+	        access_log off;
+	    }
+}
+
+server
+{
+  listen   8091;
+  server_name  127.0.0.1;
+  index  index.php index.html index.htm;
+  root /data/www/trunk/attachs/game/attachs/;
+
+  expires    modified +24h;
+ location ~ .*\.(jpg|jpeg)$
+  {
+       
+       #if (-f $request_filename.webp) { set $webp "exist"; }
+       #if ($http_accept ~* "webp") { set $webp "${webp}-rwebp"; }
+      # if ($http_user_agent ~ (Android\s4|Chrome|Opera)) { set $webp "${webp}-allow"; }
+       #if ($webp ~ (exist-rwebp|exist-allow|exist-rwebp-allow)) {rewrite (.*) $1.webp break;}
+  }
+
+}
+
+
+server
+  {
+    listen 8092;
+    server_name 127.0.0.1;
+    #server_name  assets.test.localhost.com;
+    index  index.php index.html index.htm;
+    root /data/www/test/public/static/;
+
+
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+    {
+      expires 30d;
+    }
+
+    location ~ .*\.(js|css)$
+    {
+       expires 30d;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

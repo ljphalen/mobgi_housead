@@ -1,0 +1,75 @@
+<?php echo $this->render("layout/header1.phtml"); ?>
+<div class="colMain">
+   <div class="nav">
+		<ul class="cc">
+            <li><a href="<?php echo $listUrl;?>">菜单列表</a></li>
+			<li class="current"><a href="<?php echo $addUrl;?>"><?php echo $navTitle; ?>菜单</a></li>
+		</ul>
+	</div>
+    <div class="main">
+        <div class="app-detail">
+              <form action="<?php echo $addPostUrl; ?>" method="POST" class="app_form"  id="addForm" >
+                <input type="hidden" name="id"  id="id" value='<?php echo $info['id']; ?>' />
+                 <input type="hidden" name="token" value="<?php echo $token;?>">
+                <ul class="form">
+                    <li>
+                        <span class="label">菜单类别：</span>
+                        <div class="fc">
+                            <select id="level"  name="level">
+                                <?php foreach($level as $k1=>$v1){ ?>
+                                    <option value="<?php echo $k1; ?>"  <?php if( $info['level']==$k1 ): ?> selected <?php endif; ?>><?php echo $v1; ?> </option>
+                                <?php } ?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">所属菜单：</span>
+                        <div class="fc">
+                            <select name="parent_id" id="parent_id" >
+                                <option value="0">无</option>
+                                <?php foreach($menuList as $k1=>$v1){ ?>
+                                    <option value="<?php echo $v1['id']; ?>"  <?php if( $info['parent_id']==$v1['id'] ){ ?> selected <?php } ?> ><?php echo $v1['name']; ?></option>
+                                <?php } ?>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">菜单名称：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="name"  value="<?php echo $info['name']; ?>" />
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">排序：</span>
+                        <div class="fc">
+                            <input type="text" class="iText required" required name="sort"  value="<?php echo $info['sort']; ?>" />
+                            <span class="red">*(整数)</span>
+                        </div>
+                    </li>
+					<li>
+                        <div class="fc">
+                            <input type="submit"  value="保存" class="submit"  />
+                            <input type="button" value="取消" class="cancel" onclick="window.location.href='<?php echo $listUrl;?>' " />
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+<script>
+$(document).ready(function(){
+    $('#parent_id').chosen();
+	ajaxForm('addForm',function(ret){ 
+	        ajaxRedirect(ret, baseurl+'<?php echo $listUrl;?>');
+	 },function(){
+		 return true;
+	});
+});
+</script>
+<?php echo $this->render("layout/footer1.phtml"); ?>

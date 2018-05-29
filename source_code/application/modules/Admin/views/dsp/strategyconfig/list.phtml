@@ -1,0 +1,98 @@
+<?php echo $this->render("layout/header.phtml");?>
+
+<div class="nav">
+	<ul class="cc">
+    <li class="current"><a href="<?php echo $listUrl;?>">配置列表</a></li>
+		<li><a href="<?php echo $addUrl;?>">添加配置</a></li>
+	</ul>
+</div>
+
+<div class="table_full">
+    <table width="100%">
+         <tr class="tr">
+            <th class="th">配置名称</th>
+            <td class="td"><input type="text" class="iText" name="name"  id="name" value=""></td>
+        </tr>
+    </table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button type="button" id="submitForm">搜 索</button></span></span></div>
+
+
+<div class="table_list">
+    <div class="h_a">
+        <span>共 <?php echo $total;?> 条结果</span>
+    </div>
+    <table width="100%">
+		<tr class="hd">
+            <td><input type="checkbox" id="checkall"></td>
+			<td width="20%">配置名</td>
+			<td width="20%">最后操作者</td>
+			<td width="20%">更新时间</td>
+			<td width="20%">操作</td>
+		</tr>
+        <?php foreach ($configs as $config){ ?>
+        <tr class="ct">
+            <td><input class="checkbox" name="configids[]" value="<?php echo $config['configid']?>"   type="checkbox"></td>
+            <td><?php echo $config['name']?></td>
+            <td><?php echo $config['operator_name']?></td>
+            <td><?php echo date("Y-m-d H:i:s", $config['update_time'])?></td>
+            <td>
+                <a href="<?php echo $addUrl.'?id='.$config['id']?>" >编辑</a>
+                <?php if($config['appkey_config_num'] == 0) { ?>
+                    <a href="#" class="delconfig" configid="<?php echo $config['id'] ?>">删除</a>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php }?>
+        
+        </table>
+</div>
+
+
+<div class="mr10 cc">
+<?php echo $pager;?>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $("#name").val("<?php echo $name ?>")
+    function submitForm(){
+        name = $("#name").val()
+        window.location.href='<?php echo $listUrl ?>?name=' + name 
+    }
+    $("#submitForm").click(submitForm);
+    
+    
+    $(".delconfig").click(function(){
+        configid = $(this).attr("configid")
+        
+        $.ajax({
+            url: "<?php echo $delUrl  ?>",
+            type: "POST",
+            dataType : 'json',
+            data : { 'token':token, 'id':configid},
+            success: function(ret) {
+                if (ret.success) {
+                    showMsg('', ret.msg);
+                    setTimeout(function() {
+                        location.reload();
+                    }, 500);
+                } else {
+                    showError('', ret.msg);
+                }
+            }
+        });
+    })
+    
+    $("#checkall").click(function(){
+        if($(this).attr("checked")){
+            $("input:checkbox[name='configids[]']").attr("checked",'true');
+	    }
+	    else{
+            $("input:checkbox[name='configids[]']").removeAttr("checked");
+	    }
+    });
+})
+</script>
+
+<?php echo $this->render("layout/footer.phtml");?>

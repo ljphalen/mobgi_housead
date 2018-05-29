@@ -1,0 +1,391 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+<link href="<?php echo $staticPath; ?>/css/zTreeStyle.css?v=$version" rel="stylesheet"/>
+<form action="<?php echo $origainalityListUrl; ?>" method="post">
+    <input name="token" type="hidden" value="<?php echo $token; ?>"/>
+    <div class="table_full">
+        <table width="100%">
+            <tr class="tr">
+                <th class="th">创意标题</th>
+                <td class="td"><input type="text" class="iText" name="title" value="<?php echo $search['title']; ?>">
+                </td>
+                <th class="th">创意ID</th>
+                <td class="td"><input type="text" class="iText" name="id" value="<?php echo $search['id']; ?>"></td>
+                <th class="th">广告ID</th>
+                <td class="td"><input type="text" class="iText" name="ad_id" value="<?php echo $search['ad_id']; ?>">
+                </td>
+                <th class="th">帐号ID</th>
+                <td class="td">
+                    <select name="account_id" class="select wa">
+                        <option value="0">全部</option>
+						<?php foreach ($accountList as $key => $val) { ?>
+                            <option value="<?php echo $val['user_id']; ?>" <?php echo $search['account_id'] == $val['user_id'] ? 'selected=selected' : '' ?> ><?php echo $val['user_name']; ?></option>
+						<?php } ?>
+                    </select>
+
+                </td>
+
+            </tr>
+            <tr class="tr">
+                <th class="th">创意状态</th>
+                <td class="td">
+                    <select name="status" class="select wa">
+                        <option value="0">全部</option>
+						<?php foreach ($status as $key => $val) { ?>
+                            <option value="<?php echo $key; ?>" <?php echo $search['status'] == $key ? 'selected=selected' : '' ?> ><?php echo $val; ?></option>
+						<?php } ?>
+                    </select>
+                </td>
+                <th class="th">创意类型</th>
+                <td class="td">
+                    <select name="originality_type" class="wa">
+                        <option value="0">全部</option>
+						<?php foreach ($originalityType as $key => $val) { ?>
+                            <option value="<?php echo $key; ?>" <?php echo $search['originality_type'] == $key ? 'selected=selected' : '' ?> ><?php echo $val; ?></option>
+						<?php } ?>
+                    </select>
+                </td>
+                <th class="th">计费类型</th>
+                <td class="td">
+                    <select name="charge_type" class="wa">
+                        <option value="0">全部</option>
+						<?php foreach ($chargeTypeList as $key => $val) { ?>
+                            <option value="<?php echo $key; ?>" <?php echo $search['charge_type'] == $key ? 'selected=selected' : '' ?> ><?php echo $val; ?></option>
+						<?php } ?>
+                    </select>
+                </td>
+                <th class="th">广告目标</th>
+                <td class="td">
+                    <select name="ad_target_type" class="wa">
+                        <option value="0">全部</option>
+						<?php foreach ($adTargetType as $key => $val) { ?>
+                            <option value="<?php echo $key; ?>" <?php echo $search['ad_target_type'] == $key ? 'selected=selected' : '' ?> ><?php echo $val; ?></option>
+						<?php } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr class="tr">
+                <th class="th">所属创意id</th>
+                <td class="td"><input type="text" class="iText" name="originality_conf_id"
+                                      value="<?php echo $search['originality_conf_id']; ?>"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="mb10 tac"><span class="btn"><span><button type="submit">搜 索</button></span></span></div>
+</form>
+<form id="batchForm" action="<?php echo $batchUpdateCheckUrl; ?>" method="post">
+    <input name="token" type="hidden" value="<?php echo $token; ?>"/>
+    <input name="action" id="action" type="hidden" value=""/>
+    <input name="content" id="content" type="hidden" value=""/>
+    <input name="editId" id="editId" type="hidden" value=""/>
+    <div class="h_a">
+	<span class="btn2">
+	   <span><button onclick="$('#action').val('checkPass');" type="submit">审核通过</button></span>
+	</span>
+        <span class="btn2">
+	   <span><button onclick="$('#action').val('checkNoPass');" type="submit">审核不通过</button></span>
+	</span>
+        <span class="btn2">
+	    <span><button onclick="fiterApp('屏蔽应用')" type="button">屏蔽应用</button></span>
+	</span>
+        <span class="btn2">
+	   <span><button onclick="modifyWeight('修改权重')" type="button">修改权重</button></span>
+	</span>
+        <span>共<?php echo $total; ?>条结果</span>
+    </div>
+    <div class="table_list">
+        <table width="100%">
+            <tr class="hd">
+                <td><input type="checkbox" onclick="checkAll('.checkbox')"></td>
+                <td>操作</td>
+                <td>创意id</td>
+                <td>创意标题</td>
+                <td>创意类型</td>
+                <td>创意状态</td>
+                <td>所属广告ID</td>
+                <td>所属广告计划ID</td>
+                <td>广告目标</td>
+                <td width="100px">过滤的应用</td>
+                <td>权重</td>
+                <td>计费类型</td>
+                <td>出价(元)</td>
+                <td>帐号id</td>
+            </tr>
+			<?php foreach ($origainalityList as $key => $value) { ?>
+                <tr class="ct">
+                    <td><input class="checkbox" name="ids[]" value="<?php echo $value['id']; ?>" type="checkbox"></td>
+                    <td>
+                        <a href="javascript:" title="预览" OriginalityId="<?php echo $value['id']; ?>"
+                           class="preview_originality">预览</a>
+                    </td>
+                    <td><?php echo $value['id']; ?></td>
+                    <td>
+						<?php echo $value['title']; ?>
+                    </td>
+                    <td><?php echo $originalityType[$value['originality_type']]; ?></td>
+                    <td><?php echo in_array($value['status'], array(2, 3, 5)) ? $status[$value['status']] : '审核通过'; ?></td>
+                    <td><?php echo $value['ad_id']; ?></td>
+                    <td><?php echo $value['unit_id']; ?></td>
+                    <td><p><?php echo $adTargetType[$value['ad_target_type']]; ?></p>
+                        <p><?php echo $value['ad_target']; ?></p>
+                    </td>
+                    <td><?php echo $value['filter_app_conf']; ?><a class="edit ml20 edit_fiter_app"
+                                                                   data_id="<?php echo $value['id']; ?>"
+                                                                   href="javascript::"> </a></td>
+                    <td><?php echo $value['weight']; ?></td>
+
+                    <td><?php echo $chargeTypeList[$value['charge_type']]; ?></td>
+                    <td><?php echo $value['price']; ?></td>
+                    <td><?php echo $accountList[$value['account_id']]['user_name']; ?></td>
+                </tr>
+			<?php } ?>
+        </table>
+    </div>
+</form>
+<div class="mr10 cc tc">
+	<?php echo $pager; ?>
+</div>
+
+<div id="fiterApp" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+    <ul class="form">
+
+        <li>
+            <span class="label">应用列表:</span>
+            <div class="fc">
+                <div class="clearfix config" id="app_box"></div>
+            </div>
+        </li>
+
+    </ul>
+</div>
+<div id="modifyWeight" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+    <ul class="form">
+        <li>
+            <span class="label">权重：</span>
+            <input name="weight" type="text" value="" class="iText ">
+        </li>
+    </ul>
+</div>
+
+<div id="preview" style="margin: 20px; line-height: 32px; font-size: 14px; display: none">
+    <ul class="form">
+        <li class="preview_li">
+            <span class="label">创意类型</span>
+            <div class="fc">
+                <select id="preview_originality_type" disabled="disabled">
+                    <option value="" selected="">请选择</option>
+					<?php foreach ($originalityType as $key => $val) { ?>
+                        <option value="<?php echo $key; ?>"><?php echo $val; ?></option>
+					<?php } ?>
+                </select>
+            </div>
+        </li>
+        <li class="preview_li">
+            <div>
+                <span class="label">创意标题</span>
+                <div id="preview_title">
+
+                </div>
+            </div>
+        </li>
+        <li class="preview_li">
+            <div>
+                <span class="label">创意描述(推广文案)</span>
+                <div id="preview_desc">
+
+                </div>
+            </div>
+        </li>
+        <li class="preview_li">
+            <div>
+                <span class="label">icon</span>
+                <img id="preview_icon" class="fc" src="" style="width:100px;height:100px;"/>
+            </div>
+        </li>
+
+        <li class="preview_originality5" style="display: none;">
+            <p class="label">行动语：</p>
+            <div id="preview_action_text">
+
+            </div>
+            <p class="label">评分：</p>
+            <div id="preview_score">
+
+            </div>
+            <p class="label">尺寸：</p>
+            <div id="preview_size">
+
+            </div>
+            <div id="preview_single_img_div" style="display: none;">
+                <span class="label">单图：</span>
+                <img id="preview_single_img" class="fc" src="" style="width:100px;height:100px;"/>
+            </div>
+            <div id="preview_muti_img_div" style="display: none;">
+                <span class="label">多图：</span>
+                <img id="preview_muti_img1" class="fc" src="" style="width:100px;height:100px;"/>
+                <img id="preview_muti_img2" class="fc" src="" style="width:100px;height:100px;"/>
+                <img id="preview_muti_img3" class="fc" src="" style="width:100px;height:100px;"/>
+            </div>
+        </li>
+        <li class="preview_originality1" style="display: none;">
+            <span class="label">H5：</span>
+            <div id="preview_h5">
+
+            </div>
+            <span class="label">video：</span>
+            <div id="preview_video">
+            </div>
+            <video width="300" height="200" controls>
+                <source id="preview_video_src" src="" type="video/mp4"/>
+                Your browser does not support the
+                <video> element.
+                </video>
+        </li>
+        <li class="preview_originality2 preview_originality3 preview_originality4" style="display: none;">
+            <span class="label">横屏图片：</span>
+            <div>
+                <img id="preview_cross_img" class="fc" src="" style="width:100px;height:100px;"/>
+            </div>
+            <span class="label">竖屏图片：</span>
+            <div>
+                <img id="preview_vertical_img" class="fc" src="" style="width:100px;height:100px;"/>
+            </div>
+        </li>
+
+    </ul>
+</div>
+
+
+<script src="<?php echo $staticPath; ?>/js/common/jquery-ui-timepicker.js"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.ztree.core-3.5.js"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.ztree.excheck-3.5.js"></script>
+<script src="<?php echo $staticPath; ?>/js/common/Categorywidget_sdk.js"></script>
+<script type="text/javascript">
+    //广告表单数据提交
+    $(document).ready(function () {
+        $('#start_time').datetimepicker();
+        $('#end_time').datetimepicker();
+        ajaxForm('batchForm', function (ret) {
+            ajaxRedirect(ret, baseurl + '<?php echo $origainalityListUrl;?>');
+        });
+        $(".preview_originality").click(function () {
+            var id = $(this).attr('OriginalityId');
+            var attachPath = '<?php echo $attachPath; ?>';
+            url = '<?php echo $getOriginalityInfoUrl;?>';
+            previewOriginality(id, url, attachPath);
+        });
+        initAppKeyList();
+        $(".edit_fiter_app").click(function () {
+            $("#app_key").empty();
+            var title = '编辑屏蔽应用';
+            var data_id = $(this).attr('data_id');
+            $.ajax({
+                url: baseurl + "<?php echo $getFiterAppUrl;  ?>",
+                type: "POST",
+                dataType: 'json',
+                data: {'token': token, 'id': data_id},
+                success: function (ret) {
+                    if (ret.success) {
+                        $.each(ret.data, function (name, value) {
+                            $("#app_key").append("<option selected value='" + name + "'>" + value.app_name + "</option>");
+                        });
+                        return $("#fiterApp").dialog({
+                            title: title,
+                            draggable: false,
+                            width: 1000,
+                            modal: true,
+                            resizable: false,
+                            buttons: {
+                                '完成': function () {
+                                    $('#action').val('editFiterApp');
+                                    $('#editId').val(data_id);
+                                    var app_list = [];
+                                    $("#app_key option:selected").each(function () {
+                                        app_list.push($(this).val());
+                                    });
+                                    $('#content').val(app_list);
+                                    $("#batchForm").submit();
+                                },
+                                '取消': function () {
+                                    $(this).dialog('close');
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } else {
+                        showError('', ret.msg);
+                    }
+                }
+            });
+
+
+        });
+    });
+
+    function initAppKeyList() {
+        var Gs1 = new Categorywidget_sdk({
+            interfaceName: 'Gs1',
+            boxId: 'app_box',
+            ComboId: 'app_list',
+            ComboName: 'n1',
+            ComboSaveId: 'app_key',
+            ComboSaveName: 'app_key[]',
+            DataConfig: {text: 'code_name', value: 'code_id'},
+            DataSourceConfig: {
+                CategoryListCombo: '<?php echo $getAppTypeUrl . '/?token' . $token; ?>',
+                CategoryDataUrl: '<?php echo $getAppListUrl . '/?token' . $token; ?>',
+                DataType: 'app_key'
+            }
+        });
+    }
+
+
+    function fiterApp(title) {
+        return $("#fiterApp").dialog({
+            title: title,
+            draggable: false,
+            width: 1000,
+            modal: true,
+            resizable: false,
+            buttons: {
+                '完成': function () {
+                    $('#action').val('fiterApp');
+                    var app_list = [];
+                    $("#app_key option:selected").each(function () {
+                        app_list.push($(this).val());
+                    });
+                    if (app_list.length == 0) {
+                        alert('选择应用列表');
+                        return false;
+                    }
+                    $('#content').val(app_list);
+                    $("#batchForm").submit();
+                },
+                '取消': function () {
+                    $(this).dialog('close');
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    function modifyWeight(title) {
+        return $("#modifyWeight").dialog({
+            title: title,
+            draggable: false,
+            width: 600,
+            modal: true,
+            resizable: false,
+            buttons: {
+                '完成': function () {
+                    $('#action').val('modifyWeight');
+                    $('#content').val($("input[name='weight']").val());
+                    $("#batchForm").submit();
+                },
+                '取消': function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    }
+</script>
+<?php echo $this->render("layout/footer.phtml"); ?>

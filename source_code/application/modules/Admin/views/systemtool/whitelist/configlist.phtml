@@ -1,0 +1,95 @@
+<?php echo $this->render("../../Admin/views/layout/header2.phtml");?>
+<div class="colMain" style="min-height: 196px;">
+	<div class="main">
+	<form action="/Admin/systemtool_Whitelist/configlist" id="searchForm" method="get">
+		<!--<input name="token" type="hidden" value="<?php echo $token;?>" />-->
+        <input type ="hidden" name="action" id="action" value="check" />
+        <div class="table_full">
+        	<table width="100%">
+        	   <tr class="tr">
+        			<th class="th">聚合类型</th>
+        			<td class="td">
+                        <select id="intergration_type" name="intergration_type">
+                            <option value="" <?php if($params['intergration_type'] == 0){echo 'selected';}; ?> >所有聚合类型  </option>
+                            <?php foreach($intergrationTypeArr as $key=>$value){?>
+                                <option value="<?php echo $key; ?>" <?php if($params['intergration_type'] == $key){echo 'selected';}; ?> ><?php echo $value; ?></option>
+                            <?php } ?>
+                        </select>
+                    </td>
+                    <th class="th">配置名称</th>
+                    <td class="td">
+                        <input type="text" class="iText" name='conf_name' id='conf_name' value='<?php echo $params['conf_name']; ?>' placeholder="可输入配置名称查询" />
+                    </td>
+            	</tr>
+        	</table>
+        </div>
+        <div class="mb10 tac">
+            <span><button type="button" class="btn" onclick="confirmSubmit();">搜 索</button></span>
+        </div>
+    </form>
+
+    <div class="table_list">
+        <div class="h_a">
+            <span class="btn2">
+                <span><button id="added" type="button">新增</button></span>
+            </span>
+            <span>共 <?php echo $total;?> 条结果</span>
+        </div>
+    
+        <table width="100%">
+            <tr class="hd">
+                <td width="">平台类型</td>
+                <td width="">配置名</td>
+                <td width="">聚合类型</td>
+                <td width="">更新时间</td>
+                <td width="">操作</td>
+            </tr>
+            <?php if($arealist){?>
+                <?php foreach ($arealist as $item){ ?>
+                <tr class="ct">
+                    <td><?php if($item['platform'] == 1){echo "Android";}else{echo "IOS";}?></td>
+                    <td><?php echo $item['conf_name'];?></td>
+                    <td><?php echo $item['intergrationTypeStr'];;?></td>
+                    <td><?php echo date("Y-m-d H:i:s", $item['updatetime']);?></td>
+                    <td>
+                        <a href="<?php echo $whiteconfigUrl.'?id='.$item['id'];?>" title="编辑">编辑</a>
+                        <a href="javascript:" onclick="deleteOne('<?php echo $deleteconfigUrl;?>?id=<?php echo $item['id'];?>', '', event);"　class="mr10">删除</a> 
+                        <a href="<?php echo $whiteconfigUrl.'?id='.$item['id'].'&act=view';?>"  title="查看">查看</a>
+                    </td>
+                </tr>
+                <?php }?>
+            <?php }?>
+        </table>
+        </div>
+        <div class="mr10 cc tc">
+        <?php echo $pager;?>
+        </div>
+	</div>
+</div>
+</div>
+
+
+<?php echo $this->render("../../Admin/views/layout/footer.phtml");?>
+
+<script type="text/javascript" src="<?php echo $staticPath; ?>/js/common/chosen.jquery.js"></script>
+<link   type="text/css" href="<?php echo $staticPath; ?>/css/chosen.css" rel="stylesheet" >
+
+<script type="text/javascript">
+function confirmSubmit()
+{
+    $("#searchForm").submit();
+}
+
+$(function(){
+    $("#intergration_type").chosen({}); 
+
+});
+</script>
+
+<script>
+$(function(){
+    $("#added").click(function(){
+        window.location.href='<?php echo $whiteconfigUrl; ?>'
+    });
+});
+</script>

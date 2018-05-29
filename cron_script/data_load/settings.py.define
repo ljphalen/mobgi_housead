@@ -1,0 +1,168 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+
+import time
+
+CHAREG_TYPE_VIEW = 5
+CHAREG_TYPE_CLICK = 6
+SQLFILEPATH = "sql"
+LOGPATH = "log"
+
+UNIT_ID_YEZI=30
+ORIGINAL_ID_YEZI=58
+
+REDIS_RQ_YEZI="housead_RQ:housead_third_report"
+
+REDIS_RQ_ORIGINAL = "housead_RQ:housead_data_original"
+REDIS_RQ_CHARGE = "housead_RQ:housead_data_charge"
+REDIS_CHARGE_PREFIX = "housead_originality_detail_"  # 必须_结尾
+
+REDIS_MINUTE_STAT = "housead_minute_stat"
+# 缓存origid关联信息
+REDIS_ORIGINFO= "housead_origid_"
+
+
+SLEEPSECOND = 5
+READ_CACHE_COUNT = 2000
+
+ENV = "PROD"  # 环境模式
+if ENV == "DEV":
+    SLEEPSECOND = 1
+    READ_CACHE_COUNT = 1000
+    REDIS_QUEUE = {
+        "host": "192.168.141.216",
+        "port": 6378
+    }
+    REDIS_HOUSEAD = {
+        "host": "192.168.141.216",
+        "port": 6378
+    }
+    MYSQL_MOBGI_HOUSEAD = {
+        "host": "192.168.141.216",
+        "port": 3306,
+        "db": "mobgi_housead",
+        "user": "root",
+        "passwd": "123456",
+        "tables": {
+            "advertiser_batch_deduction_detail": ['originality_id', 'create_time', 'price']
+        }
+    }
+    MYSQL_MOBGI_HOUSEAD_DATA = {
+        "host": "192.168.141.216",
+        "port": 3306,
+        "db": "mobgi_housead_data",
+        "user": "root",
+        "passwd": "123456",
+        "tables": {
+            "charge_data": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price'],
+            "original_data": ['ad_id', 'originality_id', 'block_id', 'app_key', 'ad_type', 'brand', 'model', 'event_type', 'net_type', 'charge_type', 'price', 'imei', 'imsi',
+                              'operator', 'platform', 'resolution', 'app_version', 'sdk_version', 'client_ip', 'created_time', 'uuid']
+        }
+    }
+
+    MYSQL_MOBGI_HOUSEAD_STAT = {
+        "host": "192.168.141.216",
+        "port": 3306,
+        "db": "mobgi_housead_stat",
+        "user": "root",
+        "passwd": "123456",
+        "tables": {
+            "stat_minute": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price'],
+            "stat_day": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price']
+        },
+    }
+
+elif ENV == "TEST":
+    UNIT_ID_YEZI = 41
+    ORIGINAL_ID_YEZI = 63
+    REDIS_QUEUE = {
+        "host": "127.0.0.1",
+        "port": 6378
+    }
+    REDIS_HOUSEAD = {
+        "host": "127.0.0.1",
+        "port": 6378
+    }
+    MYSQL_MOBGI_HOUSEAD = {
+        "host": "10.50.10.12",
+        "port": 3306,
+        "db": "mobgi_housead",
+        "user": "eric",
+        "passwd": "XqfX29pXso",
+        "tables": {
+            "advertiser_batch_deduction_detail": ['originality_id', 'create_time', 'price']
+        }
+    }
+
+    MYSQL_MOBGI_HOUSEAD_DATA = {
+        "host": "10.50.10.12",
+        "port": 3306,
+        "db": "mobgi_housead_data",
+        "user": "eric",
+        "passwd": "XqfX29pXso",
+        "tables": {
+            "charge_data": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price'],
+            "original_data": ['ad_id', 'originality_id', 'block_id', 'app_key', 'ad_type', 'brand', 'model', 'event_type', 'net_type', 'charge_type', 'price', 'imei', 'imsi',
+                              'operator', 'platform', 'resolution', 'app_version', 'sdk_version', 'client_ip', 'created_time', 'uuid']
+        }
+    }
+
+    MYSQL_MOBGI_HOUSEAD_STAT = {
+        "host": "10.50.10.12",
+        "port": 3306,
+        "db": "mobgi_housead_stat",
+        "user": "eric",
+        "passwd": "XqfX29pXso",
+        "tables": {
+            "stat_minute": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price'],
+            "stat_day": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price']
+        },
+    }
+
+else:
+    REDIS_HOUSEAD = {
+        "host": "codis.ad.housead.cache.ids.com",
+        "port": 18000
+    }
+    REDIS_QUEUE = {
+        "host": "codis.ad.housead.queue.ids.com",
+        "port": 18000
+    }
+
+
+    MYSQL_MOBGI_HOUSEAD = {
+        "host": "db.api.ad.ids.com",
+        "port": 3306,
+        "db": "mobgi_housead",
+        "user": "ad_system",
+        "passwd": "wY7DTW6aBXV9ljG_g4sE",
+        "tables": {
+            "advertiser_batch_deduction_detail": ['originality_id', 'create_time', 'price']
+        }
+    }
+    MYSQL_MOBGI_HOUSEAD_DATA = {
+        "host": "db.housead.ad.ids.com",
+        "port": 3306,
+        "db": "mobgi_housead_data",
+        "user": "mobgi_housead",
+        "passwd": "RUdqc9Ek7A9U",
+        "tables": {
+            "charge_data": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price'],
+            "original_data": ['ad_id', 'originality_id', 'block_id', 'app_key', 'ad_type', 'brand', 'model', 'event_type', 'net_type', 'charge_type', 'price', 'imei', 'imsi',
+                              'operator', 'platform', 'resolution', 'app_version', 'sdk_version', 'client_ip', 'created_time', 'uuid']
+        }
+    }
+
+    MYSQL_MOBGI_HOUSEAD_STAT = {
+        "host": "db.housead.ad.ids.com",
+        "port": 3306,
+        "db": "mobgi_housead_stat",
+        "user": "mobgi_housead",
+        "passwd": "RUdqc9Ek7A9U",
+        "tables": {
+            "stat_minute": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price'],
+            "stat_day": ['originality_id', 'uuid', 'created_time', 'charge_type', 'event_type', 'price']
+        },
+    }
+
+

@@ -1,0 +1,592 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2016-10-20, 16:43:24
+    Author     : hunter.fang
+*/
+
+
+.ui-button {
+	display: inline-block;
+	height: 28px;
+	line-height: 28px;
+	color: #666;
+	overflow: hidden;
+	vertical-align: middle;
+	padding: 0 12px;
+	font-size: 12px;
+	border: 1px solid #C3C6C9;
+	background-color: #fff
+}
+
+.ui-button:hover {
+	border-color: #bdbfc2;
+	background-color: #fafafa;
+	text-decoration: none
+}
+
+.qz_areaselector_addop {
+	padding: 142px 11px 0;
+	float: left;
+	width: 55px
+}
+
+.qz_areaselector_addop .qz_as_icon_add {
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	width: 25px;
+	height: 24px;
+	display: block;
+	margin: 0 15px 5px
+}
+
+.qz_areaselector_addop .qz_as_add {
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: -27px 0;
+	background-repeat: no-repeat;
+	width: 55px;
+	height: 24px;
+	border: none
+}
+
+.qz_areaselector .tab, .qz_areaselector h4 {
+	font-weight: 900;
+	height: 30px;
+	margin-left: -1px;
+	line-height: 30px;
+	font-size: 12px;
+	text-indent: 11px;
+	border-bottom: 1px solid #e7e7e7;
+	margin-bottom: 4px
+}
+
+.qz_areaselector .tab strong, .qz_areaselector h4 strong {
+	color: #c00
+}
+
+.qz_areaselector .tab li {
+	width: 99px;
+	float: left;
+	border-left: 1px solid #e7e7e7;
+	text-align: center
+}
+
+.qz_areaselector_box .qz_areaselector ul.tab li {
+	padding: 0
+}
+
+.qz_areaselector .tab li a {
+	display: block;
+	width: 99px;
+	height: 30px;
+	line-height: 30px;
+	color: #000;
+	padding: 0 !important
+}
+
+.qz_areaselector .tab li a:hover, .qz_areaselector .tab li a.on {
+	background: #fff
+}
+
+.qz_areaselector .tab li a.on {
+	cursor: default
+}
+
+.qz_dialog_layer_cont a, .qz_dialog_layer_cont a:link,
+	.qz_dialog_layer_cont a:visited {
+	text-decoration: none
+}
+
+.qz_areaselector {
+	float: left;
+	width: 200px;
+	border: 1px solid #e7e7e7;
+	zoom: 1;
+	overflow: hidden;
+	background: #fff
+}
+
+.qz_areaselector .qz_as_list {
+	z-index: 11;
+	zoom: 1;
+	position: relative
+}
+
+.qz_areaselector .qz_as_list_detail {
+	width: auto;
+	position: relative;
+	overflow: auto;
+	height: 280px
+}
+
+.qz_areaselector .qz_as_list_detail li {
+	line-height: 24px;
+	z-index: 10;
+	padding: 1px;
+	position: relative
+}
+
+.qz_areaselector .qz_as_list_detail li a {
+	display: block;
+	line-height: 24px;
+	padding: 1px;
+	padding-left: 10px;
+	color: #000;
+	zoom: 1;
+	outline: 0
+}
+
+.qz_areaselector .qz_as_list_detail li a.qz_as_bg_blue {
+	color: #fff
+}
+
+.qz_areaselector a.qz_as_bg_blue {
+	background: #025e8b;
+	color: #fff
+}
+
+.qz_areaselector .qz_as_list_detail .qz_as_bg_ok {
+	background: #FFF8DE
+}
+
+.qz_areaselector .qz_as_list_detail .qz_as_bg_blue_h {
+	border: 1px solid #025e8b;
+	padding: 0
+}
+
+.qz_areaselector .qz_as_list_detail li.qz_as_byselt {
+	text-decoration: none;
+	background: #069;
+	color: #fff
+}
+
+.qz_areaselector .qz_as_list_detail li .qz_as_bt_del {
+	position: absolute;
+	right: 10px;
+	top: 10px
+}
+
+.qz_areaselector .qz_as_list_detail .qz_as_disabled {
+	cursor: auto
+}
+
+.qz_areaselector .qz_as_list_detail .qz_as_disabled, .qz_areaselector .qz_as_list_detail .qz_as_disabled .qz_as_letter
+	{
+	color: #A8A8A8
+}
+
+.qz_areaselector .qz_as_list .qz_as_letter {
+	color: #666
+}
+
+.qz_areaselector .qz_as_choose_list a {
+	position: relative
+}
+
+.qz_areaselector .qz_as_choose_list .qz_as_letter {
+	padding-left: 17px
+}
+
+.qz_areaselector .qz_as_list .qz_as_open_list {
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: -105px 0;
+	background-repeat: no-repeat;
+	width: 11px;
+	height: 11px;
+	line-height: 60px;
+	font-size: 0;
+	position: absolute;
+	top: 8px;
+	overflow: hidden
+}
+
+.qz_areaselector .qz_as_list .tits {
+	max-width: 130px;
+	display: inline-block;
+	line-height: 21px;
+	margin-left: 18px;
+	margin-top: 2px
+}
+
+.qz_areaselector .qz_as_list .qz_as_close_list {
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: -123px 0
+}
+
+.qz_areaselector .qz_as_list .qz_as_icon_point {
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: -141px 0;
+	width: 11px;
+	height: 12px;
+	position: absolute;
+	top: 2px;
+	left: 15px
+}
+
+.qz_areaselector .qz_as_urban_list, .qz_areaselector .qz_as_city_list {
+	border-left: 1px dashed #ccc;
+	margin-left: 15px;
+	zoom: 1;
+	position: relative
+}
+
+.qz_areaselector .qz_as_urban_list li, .qz_areaselector .qz_as_city_list li
+	{
+	zoom: 1
+}
+
+.qz_areaselector .qz_as_list .qz_as_bg_blue .qz_as_letter {
+	color: #fff
+}
+
+.qz_areaselector .qz_as_list .qz_as_bg_blue .qz_as_open_list {
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: -159px 0
+}
+
+.qz_areaselector .qz_as_list .qz_as_bg_blue .qz_as_close_list {
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: -177px 0
+}
+
+.qz_areaselector .qz_as_city_list .qz_as_urban_list .qz_as_icon_point {
+	left: 32px
+}
+
+.qz_areaselector_del {
+	width: 200px
+}
+
+.qz_areaselector_del .qz_as_list {
+	height: 280px
+}
+
+.qz_areaselector_del .qz_as_list .qz_as_list_detail {
+	height: 280px;
+	overflow: auto
+}
+
+.qz_areaselector_del .qz_as_list .qz_as_list_detail a {
+	width: 160px;
+	cursor: default
+}
+
+.qz_areaselector_del .qz_as_list .qz_as_letter {
+	color: #666;
+	float: left;
+	padding-right: 8px
+}
+
+.qz_areaselector_del .qz_as_list .qz_as_where {
+	float: left;
+	width: 140px;
+	_padding-top: 1px
+}
+
+.qz_areaselector_del .qz_as_list .qz_as_list_detail .qz_as_close {
+	cursor: pointer;
+	font-family: Simsun, Tahoma, Helvetica, Arial;
+	font-weight: bold;
+	height: 10px;
+	width: 11px;
+	line-height: 9px;
+	color: #12637e;
+	zoom: 1;
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: 6px
+}
+
+.qz_areaselector_del .qz_as_list .qz_as_list_detail .qz_as_close:hover {
+	color: #000
+}
+
+.qunselect .qz_areaselector_del .qz_as_list .qz_as_where {
+	width: 170px
+}
+
+.keyword-detail .qz_areaselector {
+	width: 250px !important
+}
+
+.addkeywords .qz_as_choose_list textarea {
+	border: none;
+	padding: 5px;
+	width: 250px;
+	height: 303px;
+	resize: none;
+	color: #999
+}
+
+.uploadtips {
+	height: 30px;
+	margin: 15px 0 15px
+}
+
+.uploadtips .ico-help i {
+	left: 0
+}
+
+.uploadtips label {
+	cursor: pointer
+}
+
+.upload-native {
+	width: 0;
+	height: 0;
+	font-size: 0;
+	line-height: 0;
+	outline: none
+}
+
+.upload-native-tips {
+	color: #999;
+	padding-left: 4px;
+	vertical-align: -1px
+}
+
+.qz_areaselector .search {
+	height: 29px;
+	border-bottom: 1px solid #e7e7e7;
+	width: 200px;
+	overflow: hidden;
+	position: relative
+}
+
+.qz_areaselector .search .ico-search {
+	display: block;
+	height: 19px;
+	width: 19px;
+	position: absolute;
+	right: 3px;
+	top: 5px;
+	background-image: url(img/gdt-mod-areaselect-20160614_21267.png);
+	background-position: -84px 0
+}
+
+.qz_areaselector .search input {
+	height: 29px;
+	width: 0;
+	padding: 0 5px;
+	border-width: 0;
+	width: 167px;
+	color: #747474
+}
+
+.qz_areaselector .search input:focus, .qz_areaselector .search input:active,
+	.qz_areaselector .search input:focus:active {
+	outline: none;
+	border: none;
+	box-shadow: none;
+	color: #000
+}
+
+.qz_areaselector .searching-info {
+	height: 284px;
+	overflow-y: auto;
+	overflow-x: hidden
+}
+
+.qz_areaselector .searching-info li a {
+	display: block;
+	width: 190px;
+	padding: 5px;
+	line-height: 19px;
+	border-bottom: 1px solid #e7e7e7
+}
+
+.qz_style_start {
+	display: none
+}
+
+.qz_areaselector_box {
+	font-family: Tahoma;
+	line-height: 1.333;
+	font-size: 12px
+}
+
+.qz_areaselector_box div, .qz_areaselector_box ul, .qz_areaselector_box li,
+	.qz_areaselector_box h4, .qz_areaselector_box input,
+	.qz_areaselector_box button, .qz_areaselector_box p {
+	margin: 0;
+	padding: 0
+}
+
+.qz_areaselector_box h4 {
+	font-size: 100%
+}
+
+.qz_areaselector_box input, .qz_areaselector_box button {
+	font-size: 12px;
+	font-weight: normal
+}
+
+.qz_areaselector_box input[type="button"], .qz_areaselector_box input[type="submit"],
+	.qz_areaselector_box button {
+	cursor: pointer
+}
+
+.qz_areaselector_box li {
+	list-style: none
+}
+
+.qz_areaselector_box iframe {
+	border-width: 0;
+	border-style: none
+}
+
+.qz_areaselector_box iframe {
+	overflow: hidden
+}
+
+.qz_areaselector_box a:link, .qz_areaselector_box a:visited {
+	text-decoration: none
+}
+
+.clearfix {
+	zoom: 1;
+	*position: relative
+}
+
+.clearfix:after {
+	zoom: 1;
+	content: "";
+	display: block;
+	height: 0;
+	line-height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.qz_areaselector_box {
+	margin-top: 9px
+}
+
+.qz_areaselector .qz_as_search {
+	padding-bottom: 5px;
+	text-align: left
+}
+
+.qz_areaselector .qz_as_search .qz_as_search_text {
+	width: 190px;
+	color: #999;
+	margin-left: 3px;
+	padding-top: 2px
+}
+
+.qz_areaselector_box .qz_areaselector_addop {
+	padding: 142px 11px 0;
+	float: left;
+	width: 55px
+}
+
+.qz_areaselector_box .qz_areaselector {
+	float: left;
+	width: 200px;
+	border: 1px solid #e7e7e7;
+	zoom: 1
+}
+
+.qz_areaselector_box .qz_areaselector h4 strong {
+	color: #c00
+}
+
+.qz_areaselector_box .qz_areaselector .qz_as_list {
+	z-index: 11;
+	zoom: 1;
+	position: relative
+}
+
+.qz_areaselector_box .qz_areaselector .qz_as_list_detail {
+	width: auto;
+	position: relative;
+	overflow: auto;
+	height: 280px
+}
+
+.qz_areaselector_box .qz_areaselector ul li {
+	line-height: 24px;
+	z-index: 10;
+	padding: 1px;
+	position: relative
+}
+
+.qz_areaselector_box .qz_areaselector ul li a {
+	display: block;
+	padding-left: 10px;
+	color: #000;
+	zoom: 1;
+	outline: 0
+}
+
+.qz_areaselector_box .qz_areaselector ul .qz_as_bg_blue {
+	background: #025e8b
+}
+
+.qz_areaselector_box .qz_areaselector ul .qz_as_bg_blue {
+	color: #fff
+}
+
+.qz_areaselector_box .qz_areaselector ul .qz_as_bg_ok {
+	background: #FFF8DE
+}
+
+.qz_areaselector_box .qz_areaselector ul .qz_as_bg_blue_h {
+	border: 1px solid #025e8b;
+	padding: 0
+}
+
+.qz_areaselector_box .qz_areaselector ul li.qz_as_byselt {
+	text-decoration: none;
+	background: #069;
+	color: #fff
+}
+
+.qz_areaselector_box .qz_areaselector ul li .qz_as_bt_del {
+	position: absolute;
+	right: 10px;
+	top: 10px
+}
+
+.qz_areaselector_box .qz_areaselector .qz_as_disabled {
+	cursor: auto
+}
+
+.qz_areaselector_box .qz_areaselector .qz_as_disabled,
+	.qz_areaselector_box .qz_areaselector .qz_as_disabled .qz_as_letter {
+	color: #A8A8A8
+}
+
+.qz_areaselector .qz_as_list strong {
+	margin-left: 15px;
+	font-weight: 400
+}
+
+.qz_areaselector .qz_as_city_list .qz_as_urban_list .qz_as_icon_point {
+	left: 32px
+}
+
+.qz_style_end {
+	display: none
+}
+
+.MT_icon_loading {
+	background: url(../img/loading.gif) no-repeat;
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	overflow: hidden;
+	margin-left: 10px
+}
+
+
+.qz_areaselector .qz_as_list_detail ul {
+    border-left: 1px dashed #ccc;
+    margin-left: 10px;
+    position: relative;
+}

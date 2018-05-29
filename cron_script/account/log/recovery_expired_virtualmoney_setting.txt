@@ -1,0 +1,12 @@
+2018-01-16 15:12:08 start RecoveryExpiredVirtualMoney.
+2018-01-16 15:12:08 len(self.expired_records) == 0
+2018-01-16 15:12:08 sleep 5 seconds!
+
+2018-04-02 16:48:37 start RecoveryExpiredVirtualMoney.
+2018-04-02 16:48:37 len(self.expired_records) == 0
+2018-04-02 16:48:37 sleep 5 seconds!
+
+2018-04-02 16:48:42 start RecoveryExpiredVirtualMoney.
+2018-04-02 16:48:42 len(self.expired_records) == 0
+2018-04-02 16:48:42 sleep 5 seconds!
+

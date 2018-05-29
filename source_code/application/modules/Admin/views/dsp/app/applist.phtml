@@ -1,0 +1,122 @@
+<?php echo $this->render("layout/header.phtml");?>
+<div class="nav">
+	<ul class="cc">
+	<li class="current"><a href="<?php echo $appListUrl;?>">应用管理</a></li>
+    <li ><a href="<?php echo $positionListUrl;?>">广告位管理</a></li>
+	</ul>
+</div>
+<form action="<?php echo $origainalityListUrl;?>" method="get">
+<input name="token" type="hidden" value="<?php echo $token;?>" />
+<div class="table_full">
+	<table width="100%">
+   	     <tr class="tr">
+   	     	<th class="th">应用名称</th>
+			<td class="td"><input type="text" class="iText" name="app_name" value="<?php echo $search['app_name'];?>"></td>
+			<th class="th">应用appkey</th>
+			<td class="td"><input type="text" class="iText" name="app_key" value="<?php echo $search['app_key'];?>"></td>
+    	</tr>
+	</table>
+</div>
+<div class="mb10 tac"><span class="btn"><span><button type="submit">搜 索</button></span></span></div>
+</form>
+<form id="batchForm" action="<?php echo $batchUpdateCheckUrl;?>" method="post">
+<input name="token" type="hidden" value="<?php echo $token;?>" />
+<input name="action" id="action" type="hidden" value="" />
+<div class="h_a">
+
+	<span>共<?php echo $total;?>条结果</span>
+</div>
+<div class="table_list">
+	<table width="100%">
+		<tr class="hd">
+		    <td><input type="checkbox" onclick="checkAll('.checkbox')"></td> 
+		    <td>应用appkey</td>	
+		    <td>应用名称</td> 
+            <td>平台</td> 
+			<td>广告位数量</td>	
+            <td>展示配置</td>
+		</tr>
+	<?php foreach ($appList as $key =>$value){?>
+		<tr class="ct">
+		    <td><input class="checkbox" name="ids[]" value="<?php echo $value['id'];?>" type="checkbox"></td>	
+		    <td><?php echo $value['app_key'];?></td>	
+			<td><?php echo $value['app_name'];?></td>
+            <td><?php echo $value['platform'] == 1?'Android':'IOS';?></td>
+		    <td><a href="<?php echo $positionListUrl.'?app_key='.$value['app_key']; ?>"><?php echo $value['num']; ?></a></td>
+            <td>
+                <select class="appkey_config_select" app_key="<?php echo $value['app_key'];?>" >
+                    <option>请选择配置</option>
+                    <?php foreach($appkey_configs as $config){ ?>
+                    <option value="<?php echo $config['id']; ?>" <?php if($config['id'] == $value['appkey_config_id']){ ?> selected="selected" <?php } ?> ><?php echo $config['name'] ?></option>
+                    <?php } ?>
+                </select>
+            </td> 
+		</tr>
+		<?php }?>
+	</table>
+</div>
+</form>
+<div class="mr10 cc tc">
+<?php echo $pager;?>
+</div>
+
+
+
+<script src="<?php echo $staticPath;?>/js/common/jquery-ui-timepicker.js"></script>
+<script type="text/javascript">
+//广告表单数据提交
+$(document).ready(function(){
+	 $('#start_time').datetimepicker();
+     $('#end_time').datetimepicker();
+	ajaxForm('addAdOriginalityForm',function(ret){
+		ajaxRedirect(ret, baseurl+'<?php echo $origainalityListUrl; ?>');
+	});
+	
+    $(".appkey_config_select").change(function(){
+    	appKey = $(this).attr('app_key');
+          configid = $(this).val();
+          $.ajax({
+                url:  baseurl+"<?php echo $updAppkeyConfigUrl;  ?>",
+                type: "POST",
+                dataType : 'json',
+                data : { 'token':token, 'appKey':appKey, 'configId': configid},
+                success: function(ret) {
+                    if (ret.success) {
+                        showMsg('', ret.msg);
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    } else {
+                        showError('', ret.msg);
+                    }
+                }
+            });
+      });
+
+    $(".policy_config_select").change(function(){
+    	appKey = $(this).attr('app_key');
+        configId = $(this).val();
+        $.ajax({
+              url:  baseurl+"<?php echo $updatePolicyConfigUrl;  ?>",
+              type: "POST",
+              dataType : 'json',
+              data : { 'token':token, 'appKey':appKey, 'configId': configId},
+              success: function(ret) {
+                  if (ret.success) {
+                      showMsg('', ret.msg);
+                      setTimeout(function() {
+                          location.reload();
+                      }, 500);
+                  } else {
+                      showError('', ret.msg);
+                  }
+              }
+          });
+    });
+
+});
+
+
+
+</script>
+<?php echo $this->render("layout/footer.phtml");?>

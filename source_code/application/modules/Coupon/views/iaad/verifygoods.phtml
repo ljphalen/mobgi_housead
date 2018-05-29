@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, user-scalable=0, minimal-ui" charset="UTF-8">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="Keywords" content="">
+    <meta name="author" content="idreamsky">
+    <title><?php echo $goodsInfo['title'];?></title>
+    <link href="<?php echo $staticPath?>/images/icon.ico?v=<?php echo $version;?>" rel="shortcut icon">
+    <link rel="stylesheet" href="<?php echo $staticPath?>/css/style.css?v=<?php echo $version;?>">
+    <script src="<?php echo $staticPath?>/js/jquery-3.2.1.min.js?v=<?php echo $version;?>"></script>
+    <script src="<?php echo $staticPath?>/js/common.js?v=<?php echo $version;?>"></script>
+    <script>
+        var token ='<?php echo $token; ?>';
+        var cw = document.documentElement.clientWidth || document.body.clientWidth;
+        document.documentElement.style.fontSize = cw / 7.5 + 'px';
+    </script>
+
+</head>
+
+<body>
+    <div class="prize-wrapper">
+        <div class="banner">
+            <img src="<?php echo $attachPath.$goodsInfo['big_img'] ;?>" />
+        </div>
+        <div class="main-box">
+            <p class="box-text">商品名称:<span><?php echo $goodsInfo['title'] ;?></span></p>
+            <p class="box-text">中奖时间：<span><?php echo $codeInfo['update_time'] ;?></span>
+            </p>
+            <div class="item-box">
+                <p class="box-text">请输入店员密码核销：</p>
+                <div class="input-wrap">
+                    <input name="password" id="password" class="input-text" type="password" value="" />
+                    <input name="user_id" id="user_id" class="input-text" type="hidden" value="<?php echo $userId ;?>" />
+                    <input name="code" id="code" class="input-text" type="hidden" value="<?php echo $codeInfo['code'] ;?>" />
+                    <input name="activity_id" id="activity_id" class="input-text" type="hidden" value="<?php echo $activityId ;?>" />
+                </div>
+            </div>
+            <p class="submit-btn">确认核销</p>
+        </div>
+    </div>
+</body>
+<script>
+$(function(){
+    $(".submit-btn").click(function () {
+        if($.trim($('#password').val()) == ''){
+            zdalert('提示','密码不能为空');
+            return false;
+        }
+        $.ajax({
+            url: '<?php echo $postVerifyGoodsUrl;?>',
+            async: false,
+            data: {'token':token,'user_id':$('#user_id').val(),'password':$('#password').val(),'code':$('#code').val(),'activity_id':$('#activity_id').val()},
+            type: 'post',
+            dataType: 'json',
+            jsonp: '',
+            success: function (data) {
+                if(data.success ){
+                    zdalert('提示',data.msg);
+                    $('#password').val('');
+                }else{
+                    zdalert('提示',data.msg);
+                }
+            },
+            error: function (xhr, msg, e) {
+                console.log(xhr + "," + msg + "," + e);
+            }
+        });
+
+    });
+
+});
+</script>
+</html>

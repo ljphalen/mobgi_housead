@@ -1,0 +1,153 @@
+<?php echo $this->render("layout/header.phtml"); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" type="text/css" href="<?php echo $staticPath?>/css/layui.css"/>
+<style>
+    *{ margin: 0; padding: 0;}
+    ul,li{ list-style: none; }
+    html,body{
+        font-family: 'STHeiti Light [STXihei]', Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;
+        font-size: 14px;
+    }
+    .wrapper{
+        background:#f2f2f2; padding:5px 20px 50px 20px; box-sizing:border-box;
+    }
+    .items-main-title{ width: 120%; overflow:hidden; padding: 10px 0 5px 0; box-sizing: border-box; border-bottom:1px solid #eee;  }
+    .items-main-title p{ float:left; padding-left: 5px; color: #1E9FFF; display: inline-block; font-size: 20px; line-height: 40px;  }
+    .items-main-search{ width: 120%;  padding: 10px 0 0 0; }
+    .items-main-buttons{ float:right; display: inline-block; }
+    .table-wrap{ width: 120%;}
+</style>
+<body>
+<div class="layui-fluid">
+
+    <div class="items-main-title"><p>KPI设置</p></div>
+    <!-- top begin -->
+    <div class="items-main-search ">
+        <form class="layui-form" action="setKpi" class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">年份：</label>
+                <div class="layui-input-inline">
+                    <select name="years" lay-filter="years">
+                        <option value="2017" selected>2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2020">2021</option>
+                    </select>
+                </div>
+                <label class="layui-form-label">业务类型：</label>
+                <div class="layui-input-inline">
+                    <select name="type" lay-filter="type">
+                        <option value="1" selected>休闲游戏</option>
+<!--                        <option value="2">独立游戏</option>-->
+                        <option value="3">联盟流量</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">KPI：</label>
+                <div class="layui-input-block" style="width: 65%;">
+                    <table class="layui-table" lay-data="{url:'getKpi', id:'test3'}" lay-filter="test3">
+                        <thead>
+                        <tr>
+                            <th lay-data="{field:'1',width:100,edit:'text'}" >一月</th>
+                            <th lay-data="{field:'2',width:100,edit:'text'}">二月</th>
+                            <th lay-data="{field:'3',width:100,edit:'text'}">三月</th>
+                            <th lay-data="{field:'4',width:100,edit:'text'}">四月</th>
+                            <th lay-data="{field:'5',width:100,edit:'text'}">五月</th>
+                            <th lay-data="{field:'6',width:100,edit:'text'}">六月</th>
+                            <th lay-data="{field:'7',width:100,edit:'text'}">七月</th>
+                            <th lay-data="{field:'8',width:100,edit:'text'}">八月</th>
+                            <th lay-data="{field:'9',width:100,edit:'text'}">九月</th>
+                            <th lay-data="{field:'10',width:100,edit:'text'}">十月</th>
+                            <th lay-data="{field:'11',width:100,edit:'text'}">十一月</th>
+                            <th lay-data="{field:'12',width:100,edit:'text'}">十二月</th>
+                            <th lay-data="{field:'total',width:100}">总计</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- top end  -->
+
+</div>
+</body>
+</html>
+<script src="<?php echo $staticPath; ?>/js/admin/lay/layui.js"></script>
+<script src="<?php echo $staticPath; ?>/js/common/jquery.js"></script>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['laydate','form','table'], function(){
+        var table = layui.table;
+        //监听单元格编辑
+        var _data = null;
+        table.on('edit(test3)', function(obj){
+            var _total = 0;
+            var parent = $(this).parent().parent();
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            for (item in data){
+                if(item != 0 && item != 'total'){
+                    _total += parseFloat(data[item]);
+                }
+            }
+            $(parent.find("td").get(12)).find(".layui-table-cell").html(_total);
+            obj.data.total= _total;
+            _data = obj.data
+        });
+        var form = layui.form;
+        form.on('submit(formDemo)',function  (data){
+            data['field']['data'] = _data
+            layui.$.ajax({
+                type: 'GET',
+                data: data.field,
+                url: data.form.action,
+                dataType: 'json',
+                success: function(data){
+                    if(data.success){
+                      layer.msg('修改成功!');
+                    }
+                },
+                error: function(xhr){
+                    layer.msg("fail");
+                }
+            });
+            return false;
+        });
+        form.on('select(years)', function(data){
+            var type = $("*[name='type']").val();
+            var info = {
+                'years':data.value,
+                'type':type
+            }
+            table.reload('test3', {
+                url: 'getKpi'
+                ,where: info //设定异步数据接口的额外参数
+                //,height: 300
+            });
+        });
+        form.on('select(type)', function(data){
+            var type = $("*[name='years']").val();
+            var info = {
+                'years':type,
+                'type':data.value
+            }
+            table.reload('test3', {
+                url: 'getKpi'
+                ,where: info //设定异步数据接口的额外参数
+            });
+        });
+    });
+</script>
+<?php echo $this->render("layout/footer.phtml"); ?>

@@ -1,0 +1,112 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <script type="text/javascript" src="<?php echo $staticPath;?>/js/common/WdatePicker.js"></script>
+    <script type="text/javascript">
+        function confirmSubmit(){
+            var title = $("#title").val();
+            if(title == ''){
+                layer.msg("请输入名称!",{icon: 2});
+                return false;
+            }
+            var content = $("#content").val();
+            if(title == ''){
+                layer.msg("请输入内容!",{icon: 2});
+                return false;
+            }
+            var status = $('#status').val();
+            var level = $('#level').val();
+            var id = $('#id').val();
+            var url = '<?php echo $editInformUrl;?>';
+            var fd = new FormData();//h5上传
+            fd.append('id',id);
+            fd.append('title',title);
+            fd.append('content',content);
+            fd.append('status',status);
+            fd.append('level',level);
+            fd.append('token',token);
+            $.ajax({
+                url: url,
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: fd,
+                success: function(data) {
+                    if(data == 1){
+                        layer.msg('操作成功',{icon: 1});
+                        //location.reload();
+                        window.parent.location.reload();
+                        parent.layer.close();
+                    }else{
+                        layer.msg('操作失败',{icon: 2});
+                        //location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+    <style>
+        .importtable{
+            border-collapse: collapse;border-spacing:0;
+        }
+        .importtable thead{
+            border: 1px solid #e8e8e8; border-width: 1px;
+        }
+        .importtable thead tr th{
+            padding: 10px;
+        }
+        .importtable tbody tr td{
+            padding: 10px;
+        }
+    </style>
+<div class="colMain">
+
+    <div class="main">
+        <div class="app-detail">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <ul class="form">
+                    <li>
+                        <span class="label">公告标题：</span>
+                        <div class="fc">
+                                <input type="text" name='title' id='title' value="<?php echo $data['title'];?>" />
+                                <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">公告等级：</span>
+                        <div class="fc">
+                            <select id="level"  name="level">
+                                <option value="1" <?php if($data['level'] == 1) echo 'selected';?>>- 正常 -</option>
+                                <option value="2" <?php if($data['level'] != 1) echo 'selected';?>>- 严重 -</option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">公告详情：</span>
+                        <div class="fc">
+                            <textarea name="content" id="content"><?php echo $data['content'];?></textarea>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="label">是否开启：</span>
+                        <div class="fc">
+                            <select id="status"  name="status">
+                                <option value="1" <?php if($data['status'] == 1) echo 'selected';?>>- 开 -</option>
+                                <option value="0" <?php if($data['status'] == 0) echo 'selected';?>>- 关 -</option>
+                            </select>
+                            <span class="red">*</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="fc">
+                            <input type="hidden" value="<?php echo $data['id'];?>" name="id" id="id">
+                            <input type=""  value="保存" class="submit"  onclick="confirmSubmit()"/>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->render("layout/footer1.phtml");?>

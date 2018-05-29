@@ -1,0 +1,129 @@
+<?php echo $this->render("layout/header_layui.phtml");?>
+<div class="items-wrap wrap-bg wrapper">
+    <div class="items-main-title">
+        <p>落地页管理</p> 
+        <button style="margin-right:50px;" id="addLandingpage" data-href="<?php echo $adminroot; ?><?php echo $addUrl ?>" class="layui-btn layui-btn-normal">新建落地页</button>
+    </div>
+     <!-- 表单 begin -->
+     <div class="items-main-form-wrap">
+        <form class="layui-form"   >
+            <div class="layui-input-inline">
+                <select id="app_id" name="app_id" lay-verify="" lay-search >
+                    <option value="" <?php if ($params['app_id'] =='0'){?>SELECTED<?php } ?> >不限应用</option>
+                    <?php if($appList){?>
+                        <?php foreach ($appList as $item){ ?>
+                            <option value="<?php echo $item['app_id'] ?>" <?php if ($params['app_id'] ==$item['app_id']){?>SELECTED<?php } ?> ><?php echo $item['app_name'] ?><?php echo $item['platform']==1?"(Android)":"(IOS)"; ?></option>
+                        <?php }?>
+                    <?php }?>
+                </select> 
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" value="<?php echo $params['title']; ?>" name="title" placeholder="可输入标题查询" autocomplete="off" class="layui-input" >
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="laydate" placeholder="请选择日期">
+                <input type="hidden" name="screatedate"  id="screatedate" value="<?php echo $params['screatedate'];?>">
+                <input type="hidden" name="ecreatedate" id="ecreatedate" value="<?php echo $params['ecreatedate'];?>">
+            </div>
+            <div class="layui-input-inline">
+                <button type="submit" lay-filter="btn_submit" class="layui-btn submit">立即查询</button>
+            </div>
+        </form>
+    </div>
+    <!-- 表单 begin -->
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>创建时间</th>
+                <th>所属应用</th>
+                <th>页面标题</th>
+                <th>跳转地址</th>
+                <th>落地页地址</th>
+                <th style="width:300px;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if($list){?>
+            <?php foreach ($list as $item){ ?>
+            <tr>
+                <td><?php echo $item['id']; ?></td>
+                <td><?php echo date("Y-m-d H:i:s", $item['create_time']); ?></td>
+                <td><?php echo $item['app_name']; ?></td>
+                <td><?php echo $item['title']; ?></td>
+                <td><?php echo $item['url']; ?></td>
+                <td>
+                    <i title="复制" class="layui-icon copy-btn" style="color:#1E9FFF; cursor:pointer; ">&#xe630;</i>  
+                    <span class="copy-btn"><?php echo $item['template_url']; ?></span>
+                </td>
+                <td>
+                    <a target="_blank" href="<?php echo $item['template_url']; ?>"  class="layui-btn layui-btn-primary layui-btn-xs detail_form" lay-event="detail">预览</a>
+                    <button data-id="<?php echo $item['id'];?>" class="layui-btn layui-btn-xs edit_form" lay-event="edit">编辑</button>
+                </td>
+            </tr> 
+            <?php }?>
+            <?php }?>
+        </tbody> 
+    </table>
+    <input id="copy" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;" value="" >
+    <div class="mr10 cc tc">
+    <?php echo $pager;?>
+    </div>
+    <div>共 <span class="red"><?php echo $total;?> </span> 条结果</div>
+</div>
+<script>
+var addUrl = '<?php echo $adminroot; ?><?php echo $addUrl ?>';
+var screatedate = "<?php echo $params['screatedate'];?>";
+var ecreatedate = "<?php echo $params['ecreatedate'];?>";
+var page = getQueryString('page');
+var app_id = getQueryString('app_id');
+var title = getQueryString('title');
+
+layui.use(['form','element','laydate'], function(){
+    var laydate = layui.laydate;
+    var element = layui.element;
+    var form = layui.form;
+
+    laydate.render({
+        elem: '#laydate'
+        ,range: '到'
+        ,format: 'yyyy-MM-dd'
+        ,value : screatedate + " 到 " + ecreatedate
+        ,done: function(value, date, endDate){
+            if(value){
+                var dates = value.split("到");
+                $("#screatedate").val(dates[0].replace(/\s/g,""));
+                $("#ecreatedate").val(dates[1].replace(/\s/g,""));
+            }      
+        }
+    });
+    
+    //复制到剪贴板
+    $(".copy-btn").click(function(){
+        var copy =document.getElementById("copy");
+        var link = $(this).parent().find("span").html();
+        $("#copy").val(link);
+        copy.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令 */
+        layer.msg("复制到剪切板");
+    });
+
+    // 新增落地页
+    $("#addLandingpage").click(function(){
+        var href = $(this).attr("data-href");
+        window.location.href = href + "?screatedate="+screatedate+"&ecreatedate="+ecreatedate+"&page="+page+"&app_id="+app_id+"&title="+title;
+    });
+
+    // 编辑页面
+    $(".edit_form").click(function(){
+        var id = $(this).attr("data-id"); 
+        window.location.href = addUrl + "?id="+ id +"&screatedate="+screatedate+"&ecreatedate="+ecreatedate+"&page="+page+"&app_id="+app_id+"&title="+title;
+    });
+
+
+
+
+});
+
+
+</script>

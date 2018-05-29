@@ -1,0 +1,118 @@
+<?php echo $this->render("layout/header1.phtml");?>
+    <style>
+        .m-btn {
+            cursor: pointer;
+            display: inline-block;
+            background: #1296db;
+            padding: 0 20px;
+            height: 32px;
+            line-height: 32px;
+            color: #fff;
+            text-align: center;
+            vertical-align: top;
+            text-decoration: none;
+            float: right;
+        }
+    </style>
+<div class="colMain">
+    <div class="nav">
+	<ul class="cc">
+        <li ><a href="<?php echo $adsListUrl;?>">API广告商列表</a></li>
+        <li ><a href="<?php echo $manageLog;?>">操作记录</a></li>
+        <li class="current"><a href="<?php echo $informUrl;?>">公告管理</a></li>
+	</ul>
+	</div>
+    <div class="main">
+        <div class="toolbar">
+            <a class="m-btn m-right" id="addInform" href="javascript:;">新增公告</a>
+        </div>
+
+		<div class="content">
+            <div class="grid">
+                <table>
+                    <thead>
+                    <tr>
+                        <th field='identifier' width='100px'>名称</th>
+                        <th field='status'>添加日期</th>
+                        <th field='event'>等级</th>
+                        <th field='event'>状态</th>
+                        <th field='createtime' width='100px'>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($inform as $key=>$value){
+                        echo "<tr>";
+                        echo "<td class='blue' style='width: 20%;'>".$value['title']."</td>";
+                        echo "<td>".$value['days']."</td>";
+                        if($value['level']==1){
+                            echo "<td>正常</td>";
+                        }else{
+                            echo "<td style='color:red;'>重要</td>";
+                        }
+                        if($value['status']){
+                            echo "<td>开启</td>";
+                        }else{
+                            echo "<td style='color:red;'>关闭</td>";
+                        }
+                        echo "<td style='width: 20%;'><a href='#' class='editInform' Iid='".$value['id']."'>编辑</a>&nbsp;<a href='#' class='delInform' Iid='".$value['id']."'>删除</a></td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mr10 mt10 cc tc"><?php echo $pager;?></div>
+        </div>
+        </div>
+  </div>
+<script>
+    $('#addInform').bind('click',function(){
+        layer.open({
+            type: 2,
+            title: '新增公告',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['700px', '700px'],
+            content: '<?php echo $addInformUrl;?>',
+            end:function(){
+                location.reload();
+            }
+        });
+    })
+
+    $('.editInform').bind('click',function(){
+        var id = $(this).attr('Iid');
+        layer.open({
+            type: 2,
+            title: '编辑公告',
+            shadeClose: true,
+            shade: false,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['700px', '700px'],
+            content: '<?php echo $editInformUrl;?>'+'?id='+id,
+            end:function(){
+                location.reload();
+            }
+        });
+    })
+
+
+    $('.delInform').bind('click',function(){
+        var id = $(this).attr('Iid');
+        layer.confirm('确定要删除选中项?删除后不可恢复!', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $.get("<?php echo $delInformUrl;?>", {id:id}, function(result){
+                if (result== 1){
+                    //layer.msg('删除成功!',{'icon':1});
+                    location.reload();
+                }else{
+                    layer.msg('删除失败!',{'icon':1});
+                }
+            },'json');
+        }, function(){
+        });
+    })
+</script>
+<?php echo $this->render("layout/footer1.phtml");?>

@@ -1,0 +1,163 @@
+<?php echo $this->render("./spm/layout/header.phtml");?>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!-- 头部区域 begin  --> 
+    <?php echo $this->render("./spm/layout/topMenu.phtml");?>
+    <!-- 头部区域 end   --> 
+    
+    <!-- content begin   -->
+    <div class="content-wrap">
+        <!-- leftMenu begin   -->
+        <?php echo $this->render("./spm/layout/leftMenu.phtml");?>
+        <!-- leftMenu begin   -->
+         
+        <div class="content-main">
+            <div class="wrapper">
+                <!-- title begin -->
+                <div class="title">
+                    <p>投放渠道组管理</p>
+                </div>
+                <!-- title end  -->
+                 <!-- 查询条件 begin -->
+                <div class="query-condition">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <select name="label_id" lay-verify="" lay-search >
+                                    <option value="" selected>所有标签</option>
+                                    <?php foreach($channelLabel as $key=>$value){ ?>
+                                        <option value="<?php echo $value['id'] ?>" ><?php echo $value['name'] ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" placeholder="请输入渠道组名称" value=""  class="layui-input" />
+                            </div>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                            </div>
+
+                            <div class="layui-input-inline">
+                                <button id="label" type="button" class="layui-btn layui-btn-normal">渠道标签配置</button>
+                            </div>
+
+                            <button id="addChannelGroup" type="button" class="right layui-btn layui-btn-normal">新建投放渠道组</button>
+
+                        </div>
+                    </form>
+                </div>
+                <!-- 查询条件 end  -->
+                <!-- table begin -->
+                <table id="activity_table" lay-filter="activity_table" >
+
+                </table>
+
+                <script type="text/html" id="barDemo">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="specConfig">素材规格配置</a>
+                </script>
+
+                <!-- table end  -->
+            </div>
+            <input id="copy" type="text" style="opacity:0; filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity:0; -webkit-opacity:0;  " value="" >
+
+
+        </div>
+         
+    </div>  
+    <!-- content end     --> 
+</div>
+<script>
+/* 请求链接 */
+var addChannelGroupUrl = baseurl + '<?php echo $addChannelGroupUrl; ?>'; // 新建，编辑 渠道组
+var labelUrl = baseurl + '<?php echo $labelUrl; ?>'; // 配置渠道标签
+var channelGroupViewUrl = baseurl + '<?php echo $channelGroupViewUrl; ?>'; // 查看 渠道组
+var channelGroupListUrl = baseurl + "<?php echo $channelGroupListUrl; ?>"; // 渲染表格列表
+var channelSepcConfigUrl = baseurl + "<?php echo $channelSepcConfigUrl;?>";
+/* table 渲染参数 */
+var layuiTable;
+var page = true; 
+var where = { token: token ,name: '' };
+var table_id = '#activity_table';
+var cols = [[ //表头
+    {field: 'id', title: '渠道组编号',  sort: true  }
+    ,{field: 'name', title: '渠道组名称',  sort: true }
+    ,{field: 'label_name', title: '渠道标签',  sort: true }
+    ,{field: 'num', title: '渠道数量',  sort: true }
+    ,{field: '', title: '操作', align:'center', toolbar: '#barDemo'}
+]];   
+
+// 判断本地缓存是否 有渲染表格参数
+if(localStorage.searchData){
+    if(window.location.href == JSON.parse(localStorage.searchData).url){
+        page = JSON.parse(localStorage.searchData).page;
+        where = JSON.parse(localStorage.searchData).where; 
+        // 初始化搜索条件
+        $("input[name='name']").val(where.name); //
+        $("select[name='label_id'] option").each(function(){
+            if($(this).val()==where.label_id){
+                $(this).attr("selected","selected");
+                return;
+            }
+        });
+    }
+}
+
+//JavaScript代码区域
+layui.use(['element','form','laydate','table'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var table = layui.table;
+    layuiTable = layui.table;
+    //初始化表格
+    var initTable = {
+        elem: table_id,
+        where: where,
+        url : channelGroupListUrl ,
+        cols: cols ,
+        page : page
+    };
+    renderTable(table,initTable,null);
+
+    //监听搜索按钮
+    form.on('submit(search)', function(data){
+        var field = data.field;
+        field.token = token;
+        where = field;
+        var params = {
+            elem: table_id,
+            where: where,
+            url : channelGroupListUrl ,
+            cols: cols ,
+            page : page
+        }
+        renderTable(table,params,null);
+        return false;
+    });
+
+    //监听单元格事件  -- 查看 ， 编辑
+    table.on('tool(activity_table)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'detail'){  // 查看
+            window.location.href = channelGroupViewUrl + "?id="+data.id;
+        }else if(obj.event === 'edit'){  // 编辑
+            window.location.href = addChannelGroupUrl + "?id="+data.id;
+        }else if(obj.event ==  'specConfig'){
+            window.location.href = channelSepcConfigUrl + "?id="+data.id;
+        }
+    });
+
+    // 新建渠道
+    $("#addChannelGroup").click(function(){
+        window.location.href = addChannelGroupUrl;
+    });
+
+    // 新建渠道
+    $("#label").click(function(){
+        window.location.href = labelUrl;
+    });
+});
+</script>
+</body>
+</html>
+      

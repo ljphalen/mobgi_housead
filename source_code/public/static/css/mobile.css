@@ -1,0 +1,452 @@
+/*设置IOS页面长按不可复制粘贴，但是IOS上出现input、textarea不能输入，因此将使用-webkit-user-select:auto;*/
+
+* {
+    -webkit-touch-callout: none;
+    /*系统默认菜单被禁用*/
+    -webkit-user-select: none;
+    /*webkit浏览器*/
+    -khtml-user-select: none;
+    /*早期浏览器*/
+    -moz-user-select: none;
+    /*火狐*/
+    -ms-user-select: none;
+    /*IE10*/
+    user-select: none;
+    margin: 0;
+    padding: 0;
+}
+
+input,
+textarea {
+    -webkit-user-select: auto;
+    /*webkit浏览器*/
+    margin: 0px;
+    padding: 0px;
+    outline: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+a,
+input,
+button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-appearance: none;
+    border-radius: none;
+}
+
+html,
+body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', STHeiti, 'Microsoft Yahei', Tahoma, Simsun, sans-serif;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+
+/* 登录页 */
+
+.login_wrap {
+    position: relative;
+    z-index: 1;
+    width: 6.4rem;
+    height: 100%;
+    margin: 0 auto;
+    overflow: auto;
+}
+
+.login_wrap .login_bg {
+    width: 100%;
+}
+
+.login_wrap .login_bg img {
+    width: 100%;
+}
+
+.login_wrap .login {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4.7rem;
+    height: 5rem;
+    z-index: 10;
+    background: #fff;
+    box-shadow: 0 0 0.05rem #666;
+    border-radius: 0rem;
+    margin: -2rem 0 0 -2.35rem;
+}
+
+.login_wrap .login form {
+    padding: 1.22rem 0 0 0;
+}
+
+.login_wrap .login .login-item {
+    width: 100%;
+    margin-bottom: 0.65rem;
+}
+
+.login_wrap .login .login-item label {
+    padding: 0 0.15rem 0 0.45rem;
+}
+
+.login_wrap .login .login-item label img {
+    width: 0.4rem;
+}
+
+.login_wrap .login .login-item .login-text {
+    font-size: 0.18rem;
+    outline: none;
+    border: none;
+    background: #f6f6f4;
+    width: 2.8rem;
+    padding: 0 0.2rem;
+    height: 0.46rem;
+    line-height: 0.46rem;
+    color: #333;
+    border-radius: 0.2rem;
+}
+
+.login_wrap .login .btn-login {
+    position: relative;
+    left: 50%;
+    margin: 0 0 0 -1rem;
+    outline: none;
+    border: none;
+    background: #1e9fff;
+    width: 2rem;
+    border-radius: 0.2rem;
+    height: 0.46rem;
+    line-height: 0.46rem;
+    color: #fff;
+    font-size: 0.18rem;
+}
+
+
+/* mobgi 主页  */
+
+.home-wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #e1e1e1;
+}
+
+.home-wrap .home-head {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    background: #262d38;
+    width: 100%;
+    height: 1.18rem;
+}
+
+.home-wrap .home-head .logo {
+    padding: 0.26rem 0 0 0.29rem;
+    display: inline-block;
+}
+
+.home-wrap .home-head .logo img {
+    width: 2.4rem;
+}
+
+.home-wrap .home-head .menu {
+    float: right;
+    padding: 0.35rem 0.4rem 0 0;
+}
+
+.home-wrap .home-head .menu img {
+    width: 0.48rem;
+}
+
+.home-wrap .home-main {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 2.18rem;
+    right: 0;
+    bottom: 0;
+    padding: 0.1rem 0.42rem 0 0.42rem;
+    box-sizing: border-box;
+}
+
+.home-wrap .home-iframe-wrap {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 1.18rem;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+
+.home-wrap .home-iframe-wrap .home-iframe {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 1rem;
+}
+
+.home-wrap .home-iframe-wrap .home-iframe {
+    outline: none;
+    background: none;
+    border: none;
+}
+
+.home-iframe-footer {
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    height: 1rem;
+    bottom: 0;
+    right: 0;
+    background: #272f3a;
+    display: none;
+}
+
+.home-wrap .home-footer {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.home-wrap .home-footer img {
+    width: 100%;
+}
+
+.home-wrap .home-main .home-userinfo {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 0.05rem #999;
+    width: 100%;
+    height: 100%;
+    padding: 0.6rem 0.47rem 0 0.47rem;
+    box-sizing: border-box;
+}
+
+.home-wrap .home-main .home-userinfo .userinfo-title {
+    color: #858585;
+    font-size: 0.24rem;
+    padding-bottom: 0.23rem;
+    border-bottom: 0.01rem solid #b9b9b9;
+}
+
+.home-wrap .home-main .home-userinfo .userinfo-items {
+    width: 100%;
+    overflow: hidden;
+    padding: 0.86rem 0 0 0;
+}
+
+.home-wrap .home-main .home-userinfo .userinfo-items li {
+    float: left;
+    width: 100%;
+    height: 0.46rem;
+    margin-bottom: 0.3rem;
+    display: inline-block;
+}
+
+.home-wrap .home-main .home-userinfo .userinfo-items li i {
+    display: inline-block;
+    padding: 0 0.17rem 0 0.32rem;
+    float: left;
+}
+
+.home-wrap .home-main .home-userinfo .userinfo-items li i img {
+    width: 0.5rem;
+}
+
+.home-wrap .home-main .home-userinfo .userinfo-items li p {
+    float: left;
+    color: #808080;
+    font-size: 0.2rem;
+    display: inline-block;
+    border-left: 0.01rem solid #666666;
+    padding-left: 0.2rem;
+    margin-top: 0.11rem;
+}
+
+.home-wrap .home-menu {
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+}
+
+.home-wrap .home-menu .menu-mask {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    filter: alpha(opacity=30);
+    opacity: 0.3;
+}
+
+.home-wrap .home-menu-remove {
+    position: fixed;
+    z-index: 4;
+    left: 0.48rem;
+    top: 0.42rem;
+    right: 0;
+    bottom: 0;
+    width: 0.36rem;
+    height: 0.36rem;
+}
+
+.home-wrap .home-menu-remove img {
+    width: 0.36rem;
+    height: 0.36rem;
+}
+
+.home-wrap .home-menu .home-menu-items {
+    background: #262d38;
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 4.5rem;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.home-wrap .home-menu .home-menu-items ul {
+    padding: 0.78rem 1.1rem;
+}
+
+.home-wrap .home-menu .home-menu-items ul li {
+    width: 100%;
+    height: 0.95rem;
+    border-bottom: 0.01rem solid #9a9da2;
+    color: #fff;
+    font-size: 0.26rem;
+    text-align: center;
+    line-height: 1.05rem;
+}
+
+.home-wrap .home-menu .home-submenu-items {
+    position: absolute;
+    z-index: 4;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #fffef7;
+    display: none;
+}
+
+.home-wrap .home-menu .home-submenu-items .left-wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1.3rem;
+    height: 100%;
+    background: #262d38;
+}
+
+.home-wrap .home-menu .home-submenu-items .left-wrap .submenu-remove {
+    position: absolute;
+    z-index: 2;
+    left: 0.38rem;
+    top: 0.32rem;
+    text-align: center;
+    width: 0.56rem;
+    height: 0.56rem;
+    border-radius: 50%;
+    background: #404750;
+}
+
+.home-wrap .home-menu .home-submenu-items .left-wrap .submenu-remove img {
+    width: 0.27rem;
+    height: 0.27rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -0.135rem 0 0 -0.135rem;
+}
+
+.home-wrap .home-menu .home-submenu-items .submenu-wrap {
+    position: absolute;
+    left: 1.3rem;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    display: none;
+}
+
+.home-wrap .home-menu .home-submenu-items .submenu-wrap .submenu-title {
+    margin: 0.7rem 0.47rem 0 0.47rem;
+    border-bottom: 0.01rem solid #bcbcb8;
+    color: #7a7a7a;
+    font-size: 0.38rem;
+}
+
+.home-wrap .home-menu .home-submenu-items .submenu-wrap .submenu-content {
+    position: absolute;
+    left: 1rem;
+    top: 2rem;
+    right: 0;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.home-wrap .home-menu .home-submenu-items .submenu-wrap .submenu-content>ul {
+    width: 100%;
+}
+
+.home-wrap .home-menu .home-submenu-items .submenu-wrap .submenu-content>ul>li {
+    width: 100%;
+    margin-bottom: 0.6rem;
+}
+
+.home-wrap .home-menu .home-submenu-items .submenu-wrap .submenu-content .submenu-iteme-name {
+    font-size: 0.3rem;
+    color: #7a7a7a;
+    width: 100%;
+    line-height: 0.5rem;
+}
+
+.submenu-iteme-list {
+    width: 100%;
+    overflow: hidden;
+}
+
+.submenu-iteme-list li {
+    float: left;
+    width: 100%;
+    color: #7a7a7a;
+    font-size: 0.23rem;
+    height: 0.44rem;
+    line-height: 0.44rem;
+}
+
+.submenu-active {
+    background: #afafac;
+    color: #fff !important;
+}
